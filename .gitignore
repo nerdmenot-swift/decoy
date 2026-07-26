@@ -1,0 +1,15 @@
+.DS_Store
+/.build/
+/Packages/
+/*.xcodeproj
+xcuserdata/
+DerivedData/
+.swiftpm/
+Package.resolved
+
+# Extractor workspace
+node_modules/
+/Tools/extractor/out/
+
+# proto toolchain install logs
+proto-*.log
