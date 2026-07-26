@@ -20,9 +20,47 @@ public struct Faker: Sendable {
     /// `.rule(\.email) { "user\($0.index)@example.com" }`.
     public internal(set) var index: Int
 
-    public init(seed: UInt64, index: Int = 0) {
+    /// The locale and its fallback chain, which every generator reads through.
+    public let locale: LocaleCorpus
+
+    public init(seed: UInt64, index: Int = 0, locale: LocaleCorpus = .builtIn) {
         self.rng = Xoshiro256StarStar(seed: seed)
         self.index = index
+        self.locale = locale
+    }
+
+    // MARK: - Corpus access
+
+    /// Draws one string from the table at `path`, honouring weights when present.
+    ///
+    /// Returns `nil` when no locale in the chain supplies the key, so callers can
+    /// choose between a fallback and a hard failure.
+    public mutating func draw(_ path: String) -> String? {
+        guard let table = locale.strings(path), !table.isEmpty else { return nil }
+        return try? table.draw(using: &rng)
+    }
+
+    /// Draws one string from `path`, or traps with an actionable message.
+    ///
+    /// Missing corpus data is a configuration error the developer must fix — a wrong
+    /// locale, or a corpus that was never compiled — so it fails loudly rather than
+    /// silently substituting English and leaving the problem to be noticed by a native
+    /// speaker looking at production-shaped fixtures.
+    public mutating func require(_ path: String) -> String {
+        guard let value = draw(path) else {
+            preconditionFailure(
+                "Decoy: locale '\(locale.code)' has no data for '\(path)'. "
+                    + "Either the locale lacks this field or its corpus was not compiled."
+            )
+        }
+        return value
+    }
+
+    /// Draws a whole row from the composite table at `path`, keeping correlated
+    /// fields consistent with one another.
+    public mutating func drawRow(_ path: String) -> [String: String]? {
+        guard let table = locale.composite(path), !table.isEmpty else { return nil }
+        return try? table.drawRow(using: &rng)
     }
 
     // MARK: - Primitive draws

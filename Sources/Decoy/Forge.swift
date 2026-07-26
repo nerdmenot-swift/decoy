@@ -35,6 +35,9 @@ public struct Forge<T>: Sendable {
     /// Number of `unique` rules, so a run can size its bookkeeping up front.
     private var uniqueSlots: Int = 0
 
+    /// The locale every generated row draws from.
+    private var localeCorpus: LocaleCorpus = .builtIn
+
     private struct Step: Sendable {
         let apply: @Sendable (inout Faker, inout T, inout [Set<AnyHashable>]) throws -> Void
     }
@@ -159,6 +162,20 @@ public struct Forge<T>: Sendable {
         return copy
     }
 
+    /// Returns a copy that generates from the given locale.
+    ///
+    /// ```swift
+    /// let users = Forge<User> { User() }.locale(german)
+    /// ```
+    ///
+    /// Because a `LocaleCorpus` is just a fallback chain, this is also how you supply
+    /// your own data — see ``LocaleCorpus/overlaid(by:)``.
+    public func locale(_ locale: LocaleCorpus) -> Forge {
+        var copy = self
+        copy.localeCorpus = locale
+        return copy
+    }
+
     /// Returns a copy with the given traits applied.
     public func applying(_ traits: Trait<T>...) -> Forge {
         traits.reduce(self) { $1.transform($0) }
@@ -263,6 +280,7 @@ public struct Forge<T>: Sendable {
             finishers: resolved.finishers,
             uniqueSlots: resolved.uniqueSlots,
             baseSeed: SeedDerivation.derive(seed, for: T.self),
+            locale: resolved.localeCorpus,
             startingAt: row
         )
     }
@@ -286,6 +304,7 @@ struct ForgeRun<T> {
     private let steps: [@Sendable (inout Faker, inout T, inout [Set<AnyHashable>]) throws -> Void]
     private let finishers: [@Sendable (inout Faker, inout T) throws -> Void]
     private let baseSeed: UInt64
+    private let locale: LocaleCorpus
     private var used: [Set<AnyHashable>]
     private var row: Int
 
@@ -295,18 +314,24 @@ struct ForgeRun<T> {
         finishers: [@Sendable (inout Faker, inout T) throws -> Void],
         uniqueSlots: Int,
         baseSeed: UInt64,
+        locale: LocaleCorpus,
         startingAt row: Int
     ) {
         self.factory = factory
         self.steps = steps
         self.finishers = finishers
         self.baseSeed = baseSeed
+        self.locale = locale
         self.used = Array(repeating: [], count: uniqueSlots)
         self.row = row
     }
 
     mutating func nextOrThrow() throws -> T {
-        var faker = Faker(seed: SeedDerivation.rowSeed(baseSeed, row: row), index: row)
+        var faker = Faker(
+            seed: SeedDerivation.rowSeed(baseSeed, row: row),
+            index: row,
+            locale: locale
+        )
         row += 1
 
         var value = factory()

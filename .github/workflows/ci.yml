@@ -15,8 +15,18 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
       - run: swift --version
       - run: swift build
+      # Without this the corpus integration tests skip rather than fail, so a
+      # regression in the extractor or compiler would go unnoticed.
+      - name: Build corpus
+        run: |
+          npm ci --prefix Tools/extractor
+          node Tools/extractor/extract.js
+          swift run -c release decoy-compile-corpus Tools/extractor/out Corpus/binary
       - run: swift test
 
   linux:
@@ -25,8 +35,16 @@ jobs:
     container: swift:6.3
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
       - run: swift --version
       - run: swift build
+      - name: Build corpus
+        run: |
+          npm ci --prefix Tools/extractor
+          node Tools/extractor/extract.js
+          swift run -c release decoy-compile-corpus Tools/extractor/out Corpus/binary
       - run: swift test
 
   # Best-effort. Swift on Windows is the least mature of the three toolchains;

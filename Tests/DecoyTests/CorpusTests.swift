@@ -146,7 +146,7 @@ struct CorpusTests {
     func nullVersusMissing() throws {
         let corpus = try Corpus(bytes: buildSample())
 
-        guard case .none = try #require(try corpus.lookup("person.prefix")) else {
+        guard case .explicitlyEmpty = try #require(try corpus.lookup("person.prefix")) else {
             return #expect(Bool(false), "an explicitly null key must resolve to .none")
         }
         #expect(try corpus.lookup("person.nonexistent") == nil)

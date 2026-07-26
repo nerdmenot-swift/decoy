@@ -156,7 +156,7 @@ public struct Corpus: Sendable {
 
     private func entry(kind: UInt32, tableID: UInt32) throws -> Entry {
         switch kind {
-        case 0: return .none
+        case 0: return .explicitlyEmpty
         case 1: return .strings(try stringTable(tableID))
         case 2: return .composite(try compositeTable(tableID))
         case 3: return .model(id: tableID)
@@ -294,7 +294,11 @@ public struct Source: Sendable, Equatable {
 public enum Entry: Sendable {
     /// The locale explicitly defines this key as having no value, which blocks
     /// fallback to a parent locale.
-    case none
+    ///
+    /// Named to avoid colliding with `Optional.none`: lookups return `Entry?`, and
+    /// `case .none` would then be ambiguous between "no entry" and "an entry saying
+    /// there is deliberately nothing" -- which are the two things this distinguishes.
+    case explicitlyEmpty
     case strings(StringTable)
     case composite(CompositeTable)
     /// Reserved for generative models; not yet produced by the compiler.

@@ -334,12 +334,21 @@ struct FakerHelperTests {
         #expect(address == "jlia.bergstrm@example.com")
     }
 
+    /// A row marked `.male` must not be handed a name from the female pool — the
+    /// whole reason the corpus keeps them separate.
     @Test("gendered first names come from the matching pool")
-    func genderedNames() {
+    func genderedNames() throws {
+        let locale = LocaleCorpus.builtIn
+        let female = try #require(locale.strings("person.first_name.female"))
+        let male = try #require(locale.strings("person.first_name.male"))
+        let femalePool = Set(try (0..<female.count).map { try female.string(at: $0) })
+        let malePool = Set(try (0..<male.count).map { try male.string(at: $0) })
+        #expect(femalePool.isDisjoint(with: malePool), "pools must be distinguishable")
+
         var f = faker()
         for _ in 0..<200 {
-            #expect(StubCorpus.femaleFirstNames.contains(f.name.firstName(.female)))
-            #expect(StubCorpus.maleFirstNames.contains(f.name.firstName(.male)))
+            #expect(femalePool.contains(f.name.firstName(.female)))
+            #expect(malePool.contains(f.name.firstName(.male)))
         }
     }
 }
