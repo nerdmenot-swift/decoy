@@ -203,6 +203,164 @@ struct CorpusTests {
     func deterministicOutput() {
         #expect(buildSample() == buildSample())
     }
+
+    // MARK: - Encoding shapes
+
+    /// A table of all-new strings occupies a consecutive arena run, so it stores one
+    /// starting index instead of one index per entry.
+    @Test("contiguous tables round-trip")
+    func contiguousTable() throws {
+        var builder = CorpusBuilder(version: CorpusVersion(major: 1, minor: 0, patch: 0))
+        let id = builder.addStringTable(["alpha", "beta", "gamma", "delta"])
+        builder.index("run", stringTable: id)
+        let corpus = try Corpus(bytes: builder.build())
+
+        guard case .strings(let table) = try #require(try corpus.lookup("run")) else {
+            return #expect(Bool(false), "expected a string table")
+        }
+        #expect(table.isContiguous, "all-new strings should form a run")
+        #expect(try (0..<4).map { try table.string(at: $0) } == ["alpha", "beta", "gamma", "delta"])
+    }
+
+    /// Strings already interned elsewhere break the run, so the table must fall back
+    /// to an explicit index list — and still read back correctly.
+    @Test("non-contiguous tables round-trip")
+    func nonContiguousTable() throws {
+        var builder = CorpusBuilder(version: CorpusVersion(major: 1, minor: 0, patch: 0))
+        let first = builder.addStringTable(["alpha", "beta", "gamma"])
+        // Reuses "alpha" and "gamma", so this table's indices are not consecutive.
+        let second = builder.addStringTable(["gamma", "alpha", "epsilon"])
+        builder.index("first", stringTable: first)
+        builder.index("second", stringTable: second)
+        let corpus = try Corpus(bytes: builder.build())
+
+        guard case .strings(let table) = try #require(try corpus.lookup("second")) else {
+            return #expect(Bool(false), "expected a string table")
+        }
+        #expect(table.isContiguous == false)
+        #expect(try (0..<3).map { try table.string(at: $0) } == ["gamma", "alpha", "epsilon"])
+    }
+
+    /// The case that motivated run encoding: one repeated string in a large table.
+    /// An all-or-nothing scheme would write out all 300 indices to accommodate it.
+    @Test("run-encoded tables round-trip")
+    func runEncodedTable() throws {
+        var builder = CorpusBuilder(version: CorpusVersion(major: 1, minor: 0, patch: 0))
+        builder.index("earlier", stringTable: builder.addStringTable(["repeated"]))
+
+        var values = (0..<300).map { "value\($0)" }
+        values[150] = "repeated"
+        values[275] = "value7"
+        builder.index("big", stringTable: builder.addStringTable(values))
+        let corpus = try Corpus(bytes: builder.build())
+
+        guard case .strings(let table) = try #require(try corpus.lookup("big")) else {
+            return #expect(Bool(false), "expected a string table")
+        }
+        guard case .runs(let runCount) = table.layout else {
+            return #expect(Bool(false), "expected run encoding, got \(table.layout)")
+        }
+        #expect(runCount == 5, "two interruptions should split the table into five runs")
+        for i in 0..<300 {
+            #expect(try table.string(at: i) == values[i], "entry \(i) misread")
+        }
+    }
+
+    /// Every entry of every layout must resolve, including the boundaries where a
+    /// binary search over runs is most likely to be off by one.
+    @Test("run boundaries resolve exactly", arguments: [1, 2, 5, 17, 64])
+    func runBoundaries(stride: Int) throws {
+        var builder = CorpusBuilder(version: CorpusVersion(major: 1, minor: 0, patch: 0))
+        builder.index("seed", stringTable: builder.addStringTable(["A", "B", "C"]))
+
+        // Interleaving reused strings at varying intervals produces very different
+        // run counts, exercising short and long binary searches alike.
+        let values = (0..<200).map { $0 % stride == 0 ? "A" : "v\($0)" }
+        builder.index("mixed", stringTable: builder.addStringTable(values))
+        let corpus = try Corpus(bytes: builder.build())
+
+        guard case .strings(let table) = try #require(try corpus.lookup("mixed")) else {
+            return #expect(Bool(false), "expected a string table")
+        }
+        for i in 0..<200 {
+            #expect(try table.string(at: i) == values[i], "stride \(stride), entry \(i)")
+        }
+    }
+
+    @Test("weights survive on both contiguous and non-contiguous tables")
+    func weightsWithBothLayouts() throws {
+        var builder = CorpusBuilder(version: CorpusVersion(major: 1, minor: 0, patch: 0))
+        let run = builder.addStringTable(["p", "q"], weights: [3, 7])
+        let reused = builder.addStringTable(["q", "p"], weights: [11, 13])
+        builder.index("run", stringTable: run)
+        builder.index("reused", stringTable: reused)
+        let corpus = try Corpus(bytes: builder.build())
+
+        guard case .strings(let a) = try #require(try corpus.lookup("run")),
+            case .strings(let b) = try #require(try corpus.lookup("reused"))
+        else { return #expect(Bool(false), "expected string tables") }
+
+        #expect(a.isContiguous && !b.isContiguous)
+        #expect(try a.weight(at: 0) == 3 && a.weight(at: 1) == 7)
+        #expect(try b.weight(at: 0) == 11 && b.weight(at: 1) == 13)
+        #expect(try b.string(at: 0) == "q")
+    }
+
+    /// Lengths under 255 use one byte; anything longer escapes to a `UInt32`. Both
+    /// paths must be exercised, and a string either side of the boundary is where an
+    /// off-by-one would hide.
+    @Test("long strings use the escape encoding", arguments: [0, 1, 253, 254, 255, 256, 70_000])
+    func longStrings(length: Int) throws {
+        let long = String(repeating: "x", count: length)
+        var builder = CorpusBuilder(version: CorpusVersion(major: 1, minor: 0, patch: 0))
+        builder.index("padding", stringTable: builder.addStringTable(["a", "b"]))
+        builder.index("long", stringTable: builder.addStringTable([long, "after"]))
+        let corpus = try Corpus(bytes: builder.build())
+
+        guard case .strings(let table) = try #require(try corpus.lookup("long")) else {
+            return #expect(Bool(false), "expected a string table")
+        }
+        #expect(try table.string(at: 0).count == length)
+        #expect(try table.string(at: 0) == long)
+        #expect(try table.string(at: 1) == "after", "the entry after a long string must still resolve")
+    }
+
+    /// Only every 16th string is indexed, so reads scan forward. This crosses many
+    /// checkpoint boundaries and checks every single string, which is what catches a
+    /// mis-sized skip.
+    @Test("checkpoint scanning resolves every string")
+    func checkpointScanning() throws {
+        var builder = CorpusBuilder(version: CorpusVersion(major: 1, minor: 0, patch: 0))
+        // Deliberately varied lengths, including escape-encoded ones, so the forward
+        // scan cannot accidentally work by every entry being the same width.
+        let values = (0..<200).map { i in
+            String(repeating: "\(i % 10)", count: i % 7 == 0 ? 300 : (i % 13) + 1)
+        }
+        builder.index("many", stringTable: builder.addStringTable(values))
+        let corpus = try Corpus(bytes: builder.build())
+
+        guard case .strings(let table) = try #require(try corpus.lookup("many")) else {
+            return #expect(Bool(false), "expected a string table")
+        }
+        for i in 0..<200 {
+            #expect(try table.string(at: i) == values[i], "string \(i) misread")
+        }
+    }
+
+    @Test("unicode survives the length prefix")
+    func unicodeStrings() throws {
+        let values = ["Müller", "北京", "🇮🇳 भारत", "Ωμέγα", "أبجدية"]
+        var builder = CorpusBuilder(version: CorpusVersion(major: 1, minor: 0, patch: 0))
+        builder.index("unicode", stringTable: builder.addStringTable(values))
+        let corpus = try Corpus(bytes: builder.build())
+
+        guard case .strings(let table) = try #require(try corpus.lookup("unicode")) else {
+            return #expect(Bool(false), "expected a string table")
+        }
+        // Length is counted in UTF-8 bytes, not characters — a multi-byte string that
+        // read back short would mean the prefix was measured in the wrong unit.
+        #expect(try (0..<values.count).map { try table.string(at: $0) } == values)
+    }
 }
 
 @Suite("Corpus validation")
@@ -220,6 +378,17 @@ struct CorpusValidationTests {
         var bytes = buildSample()
         bytes[8] = 0xFF  // formatVersion low byte
         bytes[9] = 0x00
+        #expect(throws: CorpusError.self) { try Corpus(bytes: bytes) }
+    }
+
+    /// An older blob must be refused, not read. Its chunks would parse as plausible
+    /// garbage under the current layout, and silently serving wrong data is worse
+    /// than failing to load.
+    @Test("rejects a format version from the past")
+    func rejectsOlderFormat() {
+        var bytes = buildSample()
+        bytes[8] = 1
+        bytes[9] = 0
         #expect(throws: CorpusError.self) { try Corpus(bytes: bytes) }
     }
 
@@ -242,7 +411,7 @@ struct CorpusValidationTests {
         let bytes = builder.build()
 
         #expect(Array(bytes[0..<8]) == Array("DECOYBIN".utf8))
-        #expect(bytes[8] == 1 && bytes[9] == 0, "formatVersion 1 as LE u16")
+        #expect(bytes[8] == 2 && bytes[9] == 0, "formatVersion 2 as LE u16")
         // 0x0102 little-endian is [0x02, 0x01]; big-endian would be [0x01, 0x02].
         #expect(bytes[12] == 0x02 && bytes[13] == 0x01, "corpusMajor as LE u16")
         #expect(bytes[14] == 3 && bytes[15] == 0)

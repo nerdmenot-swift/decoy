@@ -15,11 +15,18 @@ let package = Package(
         .visionOS(.v1),
     ],
     products: [
-        .library(name: "Decoy", targets: ["Decoy"])
+        .library(name: "Decoy", targets: ["Decoy"]),
+        .executable(name: "decoy-compile-corpus", targets: ["DecoyCorpusCompiler"]),
     ],
     targets: [
         .target(
             name: "Decoy",
+            swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
+        // A host build tool, so unlike the library it may use Foundation freely.
+        .executableTarget(
+            name: "DecoyCorpusCompiler",
+            dependencies: ["Decoy"],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .testTarget(

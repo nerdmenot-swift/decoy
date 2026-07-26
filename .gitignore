@@ -11,5 +11,9 @@ Package.resolved
 node_modules/
 /Tools/extractor/out/
 
+# Compiled corpus — a build artifact, reproducible from the extractor output.
+# Revisit when per-locale targets need blobs committed for distribution.
+/Corpus/binary/
+
 # proto toolchain install logs
 proto-*.log

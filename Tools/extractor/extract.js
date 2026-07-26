@@ -126,6 +126,9 @@ async function main() {
 
   manifest.fakerVersion = require('@faker-js/faker/package.json').version
   manifest.localeCount = codes.length
+  // Day granularity, not a timestamp: provenance needs a retrieval date, but a
+  // per-second stamp would make two extracts of the same upstream differ.
+  manifest.extractedAt = new Date().toISOString().slice(0, 10)
   await writeFile(join(outDir, 'manifest.json'), JSON.stringify(manifest, null, 2))
 
   const totalOwn = codes.reduce((s, c) => s + manifest.locales[c].ownStrings, 0)

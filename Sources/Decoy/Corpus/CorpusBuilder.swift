@@ -233,22 +233,36 @@ public struct CorpusBuilder {
         return out
     }
 
+    /// How many strings sit between indexed positions in the arena.
+    ///
+    /// Sets the space/time trade directly: a checkpoint costs 4 bytes and bounds the
+    /// forward scan on lookup. At 16 the index costs a quarter of a byte per string
+    /// and no lookup skips more than 15 length prefixes.
+    static let checkpointInterval = 16
+
     private func buildArena() -> [UInt8] {
-        var offsets = [UInt32]()
-        offsets.reserveCapacity(internedStrings.count + 1)
         var body = [UInt8]()
-        var running: UInt32 = 0
-        for string in internedStrings {
-            offsets.append(running)
+        var checkpoints = [UInt32]()
+
+        for (index, string) in internedStrings.enumerated() {
+            if index % Self.checkpointInterval == 0 {
+                checkpoints.append(UInt32(body.count))
+            }
             let utf8 = Array(string.utf8)
+            if utf8.count < Int(Arena.escape) {
+                body.append(UInt8(utf8.count))
+            } else {
+                body.append(Arena.escape)
+                body.appendLE(UInt32(utf8.count))
+            }
             body.append(contentsOf: utf8)
-            running += UInt32(utf8.count)
         }
-        offsets.append(running)
 
         var out = [UInt8]()
         out.appendLE(UInt32(internedStrings.count))
-        for offset in offsets { out.appendLE(offset) }
+        out.appendLE(UInt32(Self.checkpointInterval))
+        out.appendLE(UInt32(checkpoints.count))
+        for checkpoint in checkpoints { out.appendLE(checkpoint) }
         out.append(contentsOf: body)
         return out
     }
@@ -256,12 +270,41 @@ public struct CorpusBuilder {
     private func buildStringTables() -> [UInt8] {
         var bodies = [[UInt8]]()
         for table in stringTables {
+            // Interning happens in insertion order, so a table's strings land in
+            // consecutive arena slots except where a string was already seen. Encoding
+            // the result as runs matters more than it sounds: an all-or-nothing scheme
+            // lets a single repeat in a 2,240-entry table force every index to be
+            // stored, and only ~6% of entries are repeats.
+            let runs = Self.runs(in: table.indices)
+
+            var flags: UInt32 = 0
+            if table.weights != nil { flags |= 1 }
+
             var body = [UInt8]()
             body.appendLE(UInt32(table.indices.count))
-            body.appendLE(UInt32(table.weights == nil ? 0 : 1))
-            body.appendLE(table.sourceID)
-            body.appendLE(UInt32(0))  // reserved
-            for index in table.indices { body.appendLE(index) }
+
+            if runs.count == 1 {
+                flags |= 2  // contiguous: the start index alone describes the table
+                body.appendLE(flags)
+                body.appendLE(table.sourceID)
+                body.appendLE(runs[0].arena)
+            } else if runs.count * 3 < table.indices.count {
+                flags |= 4  // runs are smaller than one index per entry
+                body.appendLE(flags)
+                body.appendLE(table.sourceID)
+                body.appendLE(UInt32(runs.count))
+                for run in runs {
+                    body.appendLE(run.logical)
+                    body.appendLE(run.arena)
+                    body.appendLE(run.length)
+                }
+            } else {
+                body.appendLE(flags)
+                body.appendLE(table.sourceID)
+                body.appendLE(UInt32(0))
+                for index in table.indices { body.appendLE(index) }
+            }
+
             if let weights = table.weights {
                 for weight in weights { body.appendLE(weight) }
             }
@@ -283,6 +326,24 @@ public struct CorpusBuilder {
             bodies.append(body)
         }
         return packTables(bodies)
+    }
+
+    /// Collapses arena indices into maximal ascending consecutive runs.
+    ///
+    /// Each run records where it starts in the table, where it starts in the arena,
+    /// and how long it is, so a reader can binary-search rather than walk.
+    private static func runs(
+        in indices: [UInt32]
+    ) -> [(logical: UInt32, arena: UInt32, length: UInt32)] {
+        var result: [(logical: UInt32, arena: UInt32, length: UInt32)] = []
+        for (position, index) in indices.enumerated() {
+            if let last = result.last, index == last.arena &+ last.length {
+                result[result.count - 1].length += 1
+            } else {
+                result.append((logical: UInt32(position), arena: index, length: 1))
+            }
+        }
+        return result
     }
 
     /// Writes a table count, a directory of relative offsets, then the bodies.

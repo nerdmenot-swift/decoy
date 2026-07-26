@@ -7,8 +7,12 @@
 /// See `docs/corpus-format.md` for the on-disk layout.
 public struct Corpus: Sendable {
 
-    /// The highest format version this build can read.
-    public static let supportedFormatVersion: UInt16 = 1
+    /// The format version this build reads.
+    ///
+    /// Version 2 replaced version 1's fixed-width arena offsets and per-entry table
+    /// indices with length-prefixed strings and contiguous runs, which cut roughly
+    /// 40% off a compiled locale.
+    public static let supportedFormatVersion: UInt16 = 2
 
     static let magic: [UInt8] = Array("DECOYBIN".utf8)
     static let headerSize = 32
@@ -42,8 +46,11 @@ public struct Corpus: Sendable {
             throw CorpusError.notADecoyCorpus
         }
 
+        // Exact match, not `<=`. An older blob's chunks would parse as garbage rather
+        // than fail, and reading a stale corpus silently is worse than refusing it.
+        // Backward compatibility becomes worth building once a version has shipped.
         let formatVersion = try reader.u16(at: 8)
-        guard formatVersion <= Self.supportedFormatVersion else {
+        guard formatVersion == Self.supportedFormatVersion else {
             throw CorpusError.unsupportedFormatVersion(
                 found: formatVersion,
                 supported: Self.supportedFormatVersion
@@ -163,14 +170,30 @@ public struct Corpus: Sendable {
         let body = try tableBody(in: .stringTables, id: id)
         let entryCount = Int(try reader.u32(at: body))
         let flags = try reader.u32(at: body + 4)
+        let extra = try reader.u32(at: body + 12)
+
+        let layout: StringTable.Layout
+        let payloadSize: Int
+        if flags & 2 != 0 {
+            layout = .contiguous(first: extra)
+            payloadSize = 0
+        } else if flags & 4 != 0 {
+            layout = .runs(count: Int(extra))
+            payloadSize = Int(extra) * 12
+        } else {
+            layout = .explicit
+            payloadSize = entryCount * 4
+        }
+
         return StringTable(
             reader: reader,
             arena: arena,
             count: entryCount,
             hasWeights: flags & 1 != 0,
+            layout: layout,
             sourceID: try reader.u32(at: body + 8),
-            indicesOffset: body + 16,
-            weightsOffset: body + 16 + entryCount * 4
+            payloadOffset: body + 16,
+            weightsOffset: body + 16 + payloadSize
         )
     }
 
@@ -279,40 +302,86 @@ public enum Entry: Sendable {
 }
 
 /// The shared, deduplicated string pool.
+///
+/// Strings are stored back to back with a length prefix, and only every
+/// `checkpointInterval`-th position is indexed. Corpus strings average ~10.6 bytes,
+/// so a fixed 4-byte offset per string cost 38% of the text it pointed at; a one-byte
+/// length plus a sparse checkpoint costs about 1.25 bytes instead.
+///
+/// The trade is a short forward scan — at most `checkpointInterval - 1` length-prefix
+/// skips — on each access, which is cheap next to constructing the `String`.
 struct Arena: Sendable {
+    /// Marks a length that did not fit in one byte; a `UInt32` follows.
+    static let escape: UInt8 = 0xFF
+
     private let reader: ByteReader
-    private let offsetsBase: Int
+    private let checkpointsBase: Int
     private let bytesBase: Int
+    private let bytesLimit: Int
+    private let interval: Int
     let count: Int
 
     init(reader: ByteReader, chunk: Corpus.Chunk) throws {
         self.reader = reader
         self.count = Int(try reader.u32(at: chunk.offset))
-        self.offsetsBase = chunk.offset + 4
-        self.bytesBase = offsetsBase + (count + 1) * 4
+        self.interval = Int(try reader.u32(at: chunk.offset + 4))
+        let checkpointCount = Int(try reader.u32(at: chunk.offset + 8))
+        self.checkpointsBase = chunk.offset + 12
+        self.bytesBase = checkpointsBase + checkpointCount * 4
+        self.bytesLimit = chunk.offset + chunk.length
 
-        // Validated once here rather than on every access: monotonic offsets are what
-        // make each later slice safe without re-checking the neighbouring entry.
+        guard interval > 0 else {
+            throw CorpusError.malformed("string arena checkpoint interval must be positive")
+        }
+        let expected = count == 0 ? 0 : (count + interval - 1) / interval
+        guard checkpointCount == expected else {
+            throw CorpusError.malformed(
+                "string arena has \(checkpointCount) checkpoints, expected \(expected)"
+            )
+        }
+        guard bytesBase <= bytesLimit else {
+            throw CorpusError.malformed("string arena checkpoints extend past the chunk")
+        }
+
+        // Checkpoints must advance, or a lookup could scan backwards forever.
         var previous: UInt32 = 0
-        for i in 0...count {
-            let value = try reader.u32(at: offsetsBase + i * 4)
-            guard value >= previous else {
-                throw CorpusError.malformed("string arena offsets are not monotonic at \(i)")
+        for i in 0..<checkpointCount {
+            let value = try reader.u32(at: checkpointsBase + i * 4)
+            guard i == 0 ? value == 0 : value > previous else {
+                throw CorpusError.malformed("string arena checkpoints are not increasing at \(i)")
             }
             previous = value
         }
-        guard bytesBase + Int(previous) <= chunk.offset + chunk.length else {
-            throw CorpusError.malformed("string arena bytes extend past the chunk")
+    }
+
+    /// Returns the byte length of the string starting at `position`, and where its
+    /// text begins.
+    private func header(at position: Int) throws -> (length: Int, text: Int) {
+        let first = try reader.u8(at: position)
+        if first != Self.escape {
+            return (Int(first), position + 1)
         }
+        return (Int(try reader.u32(at: position + 1)), position + 5)
     }
 
     func string(at index: UInt32) throws -> String {
         guard Int(index) < count else {
             throw CorpusError.malformed("string index \(index) out of range (\(count) strings)")
         }
-        let start = Int(try reader.u32(at: offsetsBase + Int(index) * 4))
-        let end = Int(try reader.u32(at: offsetsBase + (Int(index) + 1) * 4))
-        return try reader.string(at: bytesBase + start, length: end - start)
+        let target = Int(index)
+        let checkpoint = Int(try reader.u32(at: checkpointsBase + (target / interval) * 4))
+
+        var position = bytesBase + checkpoint
+        for _ in 0..<(target % interval) {
+            let (length, text) = try header(at: position)
+            position = text + length
+        }
+
+        let (length, text) = try header(at: position)
+        guard text + length <= bytesLimit else {
+            throw CorpusError.malformed("string \(index) extends past the arena")
+        }
+        return try reader.string(at: text, length: length)
     }
 }
 
@@ -322,17 +391,76 @@ public struct StringTable: Sendable {
     let arena: Arena
     public let count: Int
     public let hasWeights: Bool
+
+    /// How the table's arena indices are stored.
+    ///
+    /// The builder interns in insertion order, so a table's strings land in
+    /// consecutive arena slots wherever they were new. Storing that as runs rather
+    /// than one index per entry is what keeps the table chunk small — and it has to be
+    /// runs rather than a single all-or-nothing flag, because one repeated string in a
+    /// 2,240-entry table would otherwise force every index to be written out.
+    enum Layout: Sendable {
+        /// One run: the whole table is consecutive from this arena index.
+        case contiguous(first: UInt32)
+        /// `count` triples of (logical start, arena start, length).
+        case runs(count: Int)
+        /// One arena index per entry.
+        case explicit
+    }
+
+    let layout: Layout
     public let sourceID: UInt32
-    let indicesOffset: Int
+    let payloadOffset: Int
     let weightsOffset: Int
 
     public var isEmpty: Bool { count == 0 }
+
+    /// True when the entire table is one consecutive arena run.
+    var isContiguous: Bool {
+        if case .contiguous = layout { return true }
+        return false
+    }
 
     public func string(at index: Int) throws -> String {
         guard index >= 0, index < count else {
             throw CorpusError.malformed("string table index \(index) out of range (\(count))")
         }
-        return try arena.string(at: try reader.u32(at: indicesOffset + index * 4))
+        return try arena.string(at: try arenaIndex(for: index))
+    }
+
+    private func arenaIndex(for index: Int) throws -> UInt32 {
+        switch layout {
+        case .contiguous(let first):
+            return first &+ UInt32(index)
+
+        case .explicit:
+            return try reader.u32(at: payloadOffset + index * 4)
+
+        case .runs(let runCount):
+            // Binary search for the last run beginning at or before `index`; runs are
+            // written in ascending logical order, so this is well defined.
+            var low = 0
+            var high = runCount - 1
+            var found = 0
+            while low <= high {
+                let mid = low + (high - low) / 2
+                let logical = Int(try reader.u32(at: payloadOffset + mid * 12))
+                if logical <= index {
+                    found = mid
+                    low = mid + 1
+                } else {
+                    high = mid - 1
+                }
+            }
+            let base = payloadOffset + found * 12
+            let logical = Int(try reader.u32(at: base))
+            let arenaStart = try reader.u32(at: base + 4)
+            let length = Int(try reader.u32(at: base + 8))
+            guard index - logical < length else {
+                throw CorpusError.malformed("string table run does not cover index \(index)")
+            }
+            return arenaStart &+ UInt32(index - logical)
+        }
     }
 
     /// The stored weight, or 1 for an unweighted table.

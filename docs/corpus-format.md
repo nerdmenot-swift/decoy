@@ -1,4 +1,4 @@
-# Decoy binary corpus format v1
+# Decoy binary corpus format v2
 
 The on-disk format for compiled locale data. Read by `Decoy`'s Foundation-free
 reader; written by `decoy-compile-corpus`.
@@ -39,7 +39,11 @@ is only reproducible with respect to a specific corpus, so users must be able to
 it. See `corpus-strategy.md`.
 
 A reader must reject a file whose `magic` does not match or whose `formatVersion` is
-greater than it understands. It must **not** reject unknown chunk kinds.
+anything other than the one it implements — **including an older one**, since a v1
+blob's chunks parse as plausible garbage under the v2 layout, and silently serving
+wrong data is worse than refusing to load. Backward compatibility becomes worth
+building once a version has actually shipped. A reader must **not** reject unknown
+chunk kinds.
 
 ## Chunk directory — `chunkCount` entries of 24 bytes, at offset 32
 
@@ -72,13 +76,24 @@ Every distinct string in the corpus, stored once. Measured 21.2% redundancy acro
 the 76 faker-js locales, so deduplication here is worth roughly 40,000 strings.
 
 ```
-u32            count
-u32[count + 1] offsets     // relative to the start of `bytes`; offsets[count] == byte length
-u8[]           bytes       // UTF-8, not null-terminated
+u32                  count
+u32                  checkpointInterval    // 16
+u32                  checkpointCount       // ceil(count / checkpointInterval)
+u32[checkpointCount] checkpoints           // byte offset, relative to `bytes`, of
+                                           // the string at index i * interval
+u8[]                 bytes                 // sequence of length-prefixed UTF-8
 ```
 
-String *i* is `bytes[offsets[i] ..< offsets[i + 1]]`. Offsets are monotonically
-non-decreasing, which the reader validates once on load.
+Each string is a length prefix followed by its UTF-8 bytes. A prefix below `0xFF` is
+a single byte holding the length; `0xFF` escapes to a following `u32`.
+
+Corpus strings average 10.6 bytes, so v1's fixed `u32` offset per string cost **38%
+of the text it pointed at**. A one-byte length plus a checkpoint every 16 strings
+costs about 1.25 bytes instead, at the price of a forward scan of at most 15 length
+prefixes per lookup — cheap next to constructing the `String`.
+
+To read string *i*: seek to `checkpoints[i / interval]`, skip `i % interval` strings
+by their prefixes, then read the length and slice.
 
 ## Chunk 2 — String tables
 
@@ -87,13 +102,32 @@ u32                 tableCount
 u64[tableCount + 1] tableOffsets   // relative to chunk data start
 
 per table:
-  u32            entryCount
-  u32            flags            // bit 0: weights present
-  u32            sourceID         // index into the provenance chunk
-  u32            —                // reserved
-  u32[entryCount] arenaIndex
-  u32[entryCount] weight          // present only if bit 0 of flags is set
+  u32 entryCount
+  u32 flags        // bit 0: weights present
+                   // bit 1: contiguous layout
+                   // bit 2: run layout
+  u32 sourceID     // index into the provenance chunk
+  u32 extra        // contiguous: first arena index
+                   // runs:       run count
+                   // explicit:   unused
+
+  then, by layout:
+    contiguous  (nothing)
+    runs        { u32 logicalStart; u32 arenaStart; u32 length } × extra
+    explicit    u32[entryCount] arenaIndex
+
+  u32[entryCount] weight    // present only if bit 0 is set
 ```
+
+The builder interns in insertion order, so a table's strings occupy consecutive arena
+slots wherever they were new. **Run encoding rather than a single contiguous flag is
+load-bearing**: only ~6% of entries in `en` are repeats, but an all-or-nothing scheme
+lets one repeat in a 2,240-entry table force all 2,240 indices to be written. Runs
+took this chunk from 86 KB to 23 KB for `en`.
+
+A reader binary-searches the runs on `logicalStart`; runs are written in ascending
+logical order. The `explicit` layout is kept for tables so fragmented that runs would
+cost more than one index per entry.
 
 Weights are stored as raw integers exactly as the source provides them; the reader
 normalises. faker-js already ships non-uniform weights (95, 99, 50, 49, 25, …) across
@@ -179,9 +213,11 @@ A `kind == 0` entry stops the walk. A missing entry continues it.
 
 The reader checks, once, on construction:
 
-- `magic` matches and `formatVersion` is supported
+- `magic` matches and `formatVersion` is exactly the implemented one
 - every chunk's `offset + length` lies within the file
-- the arena's offsets are monotonic and terminate at the byte-region length
+- the arena's `checkpointCount` agrees with `count` and `checkpointInterval`, and the
+  checkpoints strictly increase — a non-increasing checkpoint could send a lookup
+  scanning backwards indefinitely
 - the index is sorted by `keyHash`
 
 Anything else — an arena index out of range, a malformed table — is caught at access
