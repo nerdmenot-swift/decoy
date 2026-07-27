@@ -48,18 +48,27 @@ and it has three problems Decoy exists to fix:
   and resumable, and `Forge` is `Sendable`.
 
 ```swift
-let users = Forge<User> { User() }
+import Decoy
+import DecoyLocaleDE
+
+let users = Forge<User>("user") { User() }
+    .locale(DecoyLocaleDE.locale)
     .rule(\.id)        { _ in UUID() }
-    .rule(\.firstName) { $0.name.firstName() }
-    .rule(\.email)     { $0.internet.email() }
-    .rule(\.deletedAt) { $0.maybe(0.9) { $0.date.past() } }
+    .rule(\.gender)    { $0.pick(Gender.allCases) }
+    .rule(\.firstName) { f, u in f.person.firstName(u.gender) }  // agrees with gender
+    .rule(unique: \.email) { $0.internet.email() }               // unique-constraint safe
+    .rule(\.deletedAt) { $0.maybe(chance: 0.1) { $0.date.past() } }
     .generate(1_000, seed: 1337)
 
-let orders = Forge<Order> { Order() }
+let orders = Forge<Order>("order") { Order() }
     .rule(\.userId) { f in f.pick(users).id }    // referential integrity
     .rule(\.total)  { $0.commerce.price() }
     .generate(5_000, seed: 1337)
 ```
+
+Locales are compiled into the binary as ordinary Swift source, so there is no resource
+loading at runtime and nothing to ship alongside your executable. One module per
+locale means importing `DecoyLocaleDE` costs you `de`, `en` and `base` — not all 76.
 
 Referential integrity falls out of closures capturing already-generated arrays. No
 "World" abstraction, no inheritance gymnastics.
@@ -83,12 +92,13 @@ cross-compiling against the Swift Static Linux SDK. Windows is best-effort.
 ## v1 scope
 
 - [x] Multi-platform package skeleton, verified cross-compiling to Linux
-- [ ] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
-- [ ] `Forge<T>` with `.rule(_:_:)`, `.generate(_:seed:)`, `.maybe(_:_:)`, `.pick(_:)`
-- [ ] Node extractor: `@faker-js/faker` → JSON
-- [ ] JSON → binary corpus format + Swift reader
-- [ ] Core generators: name, address, internet, company, phone, commerce, date
-- [ ] `en` + 2–3 locales, per-locale targets
+- [x] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
+- [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
+- [x] Node extractor: `@faker-js/faker` → JSON, with verified fallback chains
+- [x] JSON → binary corpus format + Swift reader
+- [x] 204 generators across 22 namespaces, including dates
+- [x] `base`, `en`, `de`, `ja` compiled in as per-locale modules
+- [ ] CI actually run (the workflow exists but has never executed)
 
 Deferred: strict-mode rule checking (needs a macro, and macro plugins are
 host-executed and historically awkward under cross-compilation), rule sets, the other

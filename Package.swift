@@ -1,6 +1,33 @@
 // swift-tools-version: 6.0
 import PackageDescription
 
+/// Locales shipped as compiled-in modules, each with the chain it falls back through.
+///
+/// One target per locale so `import Decoy` does not drag in every locale's data — an
+/// app needing German pays for `de`, `en` and `base`, not for all 76. Regenerate the
+/// sources with:
+///
+///     swift run decoy-compile-corpus Tools/extractor/out Corpus/binary \
+///       --emit-swift Sources --locales de,ja
+let locales: [(name: String, chain: [String])] = [
+    ("Base", []),
+    ("EN", ["Base"]),
+    ("DE", ["EN", "Base"]),
+    ("JA", ["EN", "Base"]),
+]
+
+let localeTargets: [Target] = locales.map { locale in
+    .target(
+        name: "DecoyLocale\(locale.name)",
+        dependencies: ["Decoy"] + locale.chain.map { .target(name: "DecoyLocale\($0)") },
+        swiftSettings: [.swiftLanguageMode(.v6)]
+    )
+}
+
+let localeProducts: [Product] = locales.map {
+    .library(name: "DecoyLocale\($0.name)", targets: ["DecoyLocale\($0.name)"])
+}
+
 let package = Package(
     name: "Decoy",
     // NOTE: `platforms` declares Apple minimums ONLY. Linux and Windows are
@@ -17,7 +44,7 @@ let package = Package(
     products: [
         .library(name: "Decoy", targets: ["Decoy"]),
         .executable(name: "decoy-compile-corpus", targets: ["DecoyCorpusCompiler"]),
-    ],
+    ] + localeProducts,
     targets: [
         .target(
             name: "Decoy",
@@ -31,8 +58,8 @@ let package = Package(
         ),
         .testTarget(
             name: "DecoyTests",
-            dependencies: ["Decoy"],
+            dependencies: ["Decoy", "DecoyLocaleEN", "DecoyLocaleDE", "DecoyLocaleJA"],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
-    ]
+    ] + localeTargets
 )
