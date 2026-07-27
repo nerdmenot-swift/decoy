@@ -203,7 +203,7 @@ struct DateGenerationTests {
         struct Row: Equatable {
             var created = Timestamp(secondsSinceEpoch: 0)
         }
-        let forge = Forge<Row> { Row() }.rule(\.created) { $0.instant.past(years: 5) }
+        let forge = Forge<Row>("row") { Row() }.rule(\.created) { $0.instant.past(years: 5) }
         #expect(forge.generate(100, seed: 7) == forge.generate(100, seed: 7))
     }
 
@@ -213,7 +213,7 @@ struct DateGenerationTests {
             var created = Timestamp(secondsSinceEpoch: 0)
         }
         let anchor = Timestamp(year: 1990, month: 1, day: 1)
-        let rows = Forge<Row> { Row() }
+        let rows = Forge<Row>("row") { Row() }
             .reference(anchor)
             .rule(\.created) { $0.instant.past(years: 1) }
             .generate(50, seed: 3)

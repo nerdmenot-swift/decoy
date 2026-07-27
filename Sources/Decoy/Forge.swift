@@ -42,10 +42,25 @@ public struct Forge<T>: Sendable {
     private var referenceInstant: Timestamp = .decoyReference
 
     private struct Step: Sendable {
-        let apply: @Sendable (inout Faker, inout T, inout [Set<AnyHashable>]) throws -> Void
+        let apply: @Sendable (inout Faker, inout T, inout [Set<UInt64>]) throws -> Void
     }
 
-    public init(_ factory: @escaping @Sendable () -> T) {
+    /// Identifies this entity when deriving its seed stream.
+    private let entityName: String
+
+    /// Creates a recipe.
+    ///
+    /// - Parameter name: Identifies this entity's seed stream. Two forges with
+    ///   different names draw independent streams from the same seed, so unrelated
+    ///   tables do not come out correlated.
+    ///
+    /// The name is required rather than derived from the type. Reflecting on
+    /// `T.self` would work, but it would tie every fixture to the type's
+    /// fully-qualified name — renaming `User` to `Account`, or moving it to another
+    /// module, would silently change all of its generated data. An explicit name puts
+    /// that under your control, and makes the seed contract visible at the call site.
+    public init(_ name: String, _ factory: @escaping @Sendable () -> T) {
+        self.entityName = name
         self.factory = factory
     }
 
@@ -95,8 +110,9 @@ public struct Forge<T>: Sendable {
     ///
     /// - Note: Uniqueness requires rows to see each other, so a forge using this
     ///   cannot be split with ``generate(rows:seed:)``.
-    public func rule<Value: Hashable & Sendable>(
+    public func rule<Value: UniqueKey & Sendable>(
         unique keyPath: any WritableKeyPath<T, Value> & Sendable,
+        label: String? = nil,
         attempts: Int = 1_000,
         _ body: @escaping @Sendable (inout Faker) throws -> Value
     ) -> Forge {
@@ -104,17 +120,27 @@ public struct Forge<T>: Sendable {
         var copy = self
         let slot = copy.uniqueSlots
         copy.uniqueSlots += 1
+
+        // Named by ordinal unless the caller supplies something better. Describing
+        // the key path would read nicer but costs reflection, and the message stays
+        // actionable without it.
+        let described = label ?? "unique rule #\(slot) (pass `label:` to name it)"
         copy.steps.append(
             Step { faker, target, used in
                 for _ in 0..<attempts {
                     let candidate = try body(&faker)
-                    if used[slot].insert(AnyHashable(candidate)).inserted {
+                    // Membership is tracked by a 64-bit digest rather than the value.
+                    // A collision would make this re-draw a value it has not actually
+                    // produced, which costs one extra attempt and leaves the guarantee
+                    // -- that no duplicate is ever emitted -- exactly intact.
+                    let digest = SeedDerivation.fnv1a(candidate.decoyUniqueKey)
+                    if used[slot].insert(digest).inserted {
                         target[keyPath: keyPath] = candidate
                         return
                     }
                 }
                 throw ForgeError.uniqueConstraintExhausted(
-                    property: String(describing: keyPath),
+                    property: described,
                     attempts: attempts
                 )
             }
@@ -195,7 +221,7 @@ public struct Forge<T>: Sendable {
     }
 
     private func appending(
-        _ apply: @escaping @Sendable (inout Faker, inout T, inout [Set<AnyHashable>]) throws -> Void
+        _ apply: @escaping @Sendable (inout Faker, inout T, inout [Set<UInt64>]) throws -> Void
     ) -> Forge {
         var copy = self
         copy.steps.append(Step(apply: apply))
@@ -292,7 +318,7 @@ public struct Forge<T>: Sendable {
             steps: resolved.steps.map(\.apply),
             finishers: resolved.finishers,
             uniqueSlots: resolved.uniqueSlots,
-            baseSeed: SeedDerivation.derive(seed, for: T.self),
+            baseSeed: SeedDerivation.derive(seed, entity: resolved.entityName),
             locale: resolved.localeCorpus,
             reference: resolved.referenceInstant,
             startingAt: row
@@ -315,17 +341,17 @@ public struct Forge<T>: Sendable {
 /// bookkeeping.
 struct ForgeRun<T> {
     private let factory: @Sendable () -> T
-    private let steps: [@Sendable (inout Faker, inout T, inout [Set<AnyHashable>]) throws -> Void]
+    private let steps: [@Sendable (inout Faker, inout T, inout [Set<UInt64>]) throws -> Void]
     private let finishers: [@Sendable (inout Faker, inout T) throws -> Void]
     private let baseSeed: UInt64
     private let locale: LocaleCorpus
     private let reference: Timestamp
-    private var used: [Set<AnyHashable>]
+    private var used: [Set<UInt64>]
     private var row: Int
 
     init(
         factory: @escaping @Sendable () -> T,
-        steps: [@Sendable (inout Faker, inout T, inout [Set<AnyHashable>]) throws -> Void],
+        steps: [@Sendable (inout Faker, inout T, inout [Set<UInt64>]) throws -> Void],
         finishers: [@Sendable (inout Faker, inout T) throws -> Void],
         uniqueSlots: Int,
         baseSeed: UInt64,
@@ -436,13 +462,13 @@ enum SeedDerivation {
         return hash
     }
 
-    /// Gives each entity type its own stream from one user-facing seed.
+    /// Gives each entity its own stream from one user-facing seed.
     ///
     /// Without this, `Forge<User>` and `Forge<Order>` seeded 1337 would draw
     /// identical bits, correlating unrelated tables and making a rule added to
     /// `User` silently shift every `Order`.
-    static func derive(_ seed: UInt64, for type: Any.Type) -> UInt64 {
-        var expander = SplitMix64(seed: seed ^ fnv1a(String(reflecting: type)))
+    static func derive(_ seed: UInt64, entity: String) -> UInt64 {
+        var expander = SplitMix64(seed: seed ^ fnv1a(entity))
         return expander.next()
     }
 

@@ -37,8 +37,11 @@ and it has three problems Decoy exists to fix:
   arena + offset table) loaded once and sliced. Notably this avoids `Bundle.module`,
   the most platform-fragile part of SPM and a large share of Fakery's trouble off
   macOS.
-- **Typed key paths, no reflection.** Rules are `WritableKeyPath`s, so the value type
-  of every rule is checked at compile time.
+- **Typed key paths, no reflection anywhere.** Rules are `WritableKeyPath`s, so the
+  value type of every rule is checked at compile time. Nothing in the library reflects
+  on a type — which is why a `Forge` is named explicitly: deriving the seed from
+  `String(reflecting: T.self)` would mean renaming `User` to `Account`, or moving it
+  to another module, silently changing every fixture it generates.
 - **Rows are independent.** Each row is seeded from `(seed, rowIndex)` rather than
   continuing one long stream, so row 500 is the same value whether you generated
   1,000 rows or asked for rows `500..<600`. Generation is therefore parallelisable

@@ -22,7 +22,9 @@ extension Faker {
     /// Scanned by hand rather than with `range(of:)`, which lives in Foundation — the
     /// one import this module does not take.
     private mutating func expand(_ template: String, depth: Int) -> String {
-        guard template.contains("{{"), depth < Self.maxTemplateDepth else { return template }
+        guard depth < Self.maxTemplateDepth, Self.containsPlaceholder(template) else {
+            return template
+        }
 
         let characters = Array(template)
         var out = String()
@@ -112,6 +114,24 @@ extension Faker {
         case "finance.currencyName": return finance.currencyName()
         default: return nil
         }
+    }
+
+    /// Whether the string contains `{{`.
+    ///
+    /// Hand-rolled because `String.contains(_: StringProtocol)` is a Foundation-era
+    /// convenience that embedded Swift does not provide; only the `Character` overload
+    /// exists there.
+    static func containsPlaceholder(_ text: String) -> Bool {
+        var previousWasBrace = false
+        for character in text {
+            if character == "{" {
+                if previousWasBrace { return true }
+                previousWasBrace = true
+            } else {
+                previousWasBrace = false
+            }
+        }
+        return false
     }
 
     /// Converts `firstName` to `first_name`, leaving already-snake_case input alone.

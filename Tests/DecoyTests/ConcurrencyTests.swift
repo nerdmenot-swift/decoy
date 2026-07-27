@@ -12,7 +12,7 @@ private struct Row: Equatable, Sendable {
 struct ConcurrencyTests {
 
     private var forge: Forge<Row> {
-        Forge<Row> { Row() }
+        Forge<Row>("row") { Row() }
             .rule(\.index) { $0.index }
             .rule(\.name) { $0.person.fullName() }
             .rule(\.score) { $0.double(in: 0...100) }

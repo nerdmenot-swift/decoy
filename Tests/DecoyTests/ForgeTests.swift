@@ -31,7 +31,7 @@ struct ForgeTests {
 
     @Test("same seed produces identical output")
     func deterministic() {
-        let forge = Forge<User> { User() }
+        let forge = Forge<User>("user") { User() }
             .rule(\.firstName) { $0.person.firstName() }
             .rule(\.lastName) { $0.person.lastName() }
 
@@ -40,7 +40,7 @@ struct ForgeTests {
 
     @Test("different seeds produce different output")
     func seedsMatter() {
-        let forge = Forge<User> { User() }.rule(\.firstName) { $0.person.firstName() }
+        let forge = Forge<User>("user") { User() }.rule(\.firstName) { $0.person.firstName() }
         #expect(forge.generate(50, seed: 1) != forge.generate(50, seed: 2))
     }
 
@@ -48,8 +48,8 @@ struct ForgeTests {
     /// share a bit stream, or unrelated tables come out suspiciously in lockstep.
     @Test("distinct entity types get independent streams from one seed")
     func perTypeSeedDerivation() {
-        let users = Forge<User> { User() }.rule(\.firstName) { $0.person.firstName() }
-        let accounts = Forge<Account> { Account() }.rule(\.firstName) { $0.person.firstName() }
+        let users = Forge<User>("user") { User() }.rule(\.firstName) { $0.person.firstName() }
+        let accounts = Forge<Account>("account") { Account() }.rule(\.firstName) { $0.person.firstName() }
 
         let userNames = users.generate(20, seed: 1337).map(\.firstName)
         let accountNames = accounts.generate(20, seed: 1337).map(\.firstName)
@@ -61,10 +61,10 @@ struct ForgeTests {
     /// from the same seed — otherwise fixtures churn every time a model changes.
     @Test("one entity is stable when another changes")
     func entityIsolation() {
-        let accounts = Forge<Account> { Account() }.rule(\.firstName) { $0.person.firstName() }
+        let accounts = Forge<Account>("account") { Account() }.rule(\.firstName) { $0.person.firstName() }
         let before = accounts.generate(10, seed: 99)
 
-        _ = Forge<User> { User() }
+        _ = Forge<User>("user") { User() }
             .rule(\.firstName) { $0.person.firstName() }
             .rule(\.lastName) { $0.person.lastName() }
             .generate(10, seed: 99)
@@ -72,9 +72,43 @@ struct ForgeTests {
         #expect(accounts.generate(10, seed: 99) == before)
     }
 
+    /// The reason the name is explicit rather than reflected from `T`. `Account` and
+    /// `User` have identical shapes; giving them the same forge name yields identical
+    /// data, which is exactly what makes renaming a type — or moving it to another
+    /// module — safe for fixtures already committed.
+    @Test("the stream follows the forge name, not the type")
+    func nameDrivesStream() {
+        let asUser = Forge<User>("customer") { User() }
+            .rule(\.firstName) { $0.person.firstName() }
+            .generate(20, seed: 1337)
+            .map(\.firstName)
+
+        let asAccount = Forge<Account>("customer") { Account() }
+            .rule(\.firstName) { $0.person.firstName() }
+            .generate(20, seed: 1337)
+            .map(\.firstName)
+
+        #expect(asUser == asAccount, "renaming the type must not change the data")
+    }
+
+    @Test("different names draw independent streams")
+    func namesSeparateStreams() {
+        let a = Forge<User>("users") { User() }
+            .rule(\.firstName) { $0.person.firstName() }
+            .generate(20, seed: 1337)
+            .map(\.firstName)
+
+        let b = Forge<User>("admins") { User() }
+            .rule(\.firstName) { $0.person.firstName() }
+            .generate(20, seed: 1337)
+            .map(\.firstName)
+
+        #expect(a != b)
+    }
+
     @Test("rules run in declaration order and can read earlier values")
     func derivedRules() {
-        let users = Forge<User> { User() }
+        let users = Forge<User>("user") { User() }
             .rule(\.firstName) { _ in "Ada" }
             .rule(\.lastName) { _ in "Lovelace" }
             .rule(\.email) { _, user in "\(user.firstName).\(user.lastName)@example.com" }
@@ -87,7 +121,7 @@ struct ForgeTests {
 
     @Test("row index is available to rules")
     func rowIndex() {
-        let users = Forge<User> { User() }
+        let users = Forge<User>("user") { User() }
             .rule(\.id) { $0.index }
             .generate(5, seed: 1)
 
@@ -96,7 +130,7 @@ struct ForgeTests {
 
     @Test("cycle distributes values round-robin")
     func cycleRoundRobin() {
-        let users = Forge<User> { User() }
+        let users = Forge<User>("user") { User() }
             .cycle(\.plan, through: ["free", "pro", "team"])
             .generate(7, seed: 1)
 
@@ -105,7 +139,7 @@ struct ForgeTests {
 
     @Test("unique rule never repeats a value")
     func uniqueRule() {
-        let users = Forge<User> { User() }
+        let users = Forge<User>("user") { User() }
             .rule(unique: \.id) { $0.int(in: 1...10_000) }
             .generate(500, seed: 1)
 
@@ -114,7 +148,7 @@ struct ForgeTests {
 
     @Test("unique rule throws when the pool is too small")
     func uniqueExhaustion() {
-        let forge = Forge<User> { User() }
+        let forge = Forge<User>("user") { User() }
             .rule(unique: \.plan, attempts: 50) { $0.pick(["a", "b", "c"]) }
 
         #expect(throws: ForgeError.self) {
@@ -124,7 +158,7 @@ struct ForgeTests {
 
     @Test("unique bookkeeping resets between runs")
     func uniqueScopedToRun() {
-        let forge = Forge<User> { User() }
+        let forge = Forge<User>("user") { User() }
             .rule(unique: \.plan, attempts: 50) { $0.pick(["a", "b", "c"]) }
 
         // Three values, three rows — fine. And fine *again*, because uniqueness is
@@ -135,8 +169,8 @@ struct ForgeTests {
 
     @Test("each populates children per parent")
     func childFanOut() {
-        let orders = Forge<Order> { Order() }.rule(\.total) { $0.double(in: 1...100) }
-        let users = Forge<User> { User() }
+        let orders = Forge<Order>("order") { Order() }.rule(\.total) { $0.double(in: 1...100) }
+        let users = Forge<User>("user") { User() }
             .each(\.orders, 2...5, of: orders)
             .generate(20, seed: 1337)
 
@@ -149,15 +183,15 @@ struct ForgeTests {
 
     @Test("each is reproducible")
     func childFanOutDeterministic() {
-        let orders = Forge<Order> { Order() }.rule(\.total) { $0.double(in: 1...100) }
-        let users = Forge<User> { User() }.each(\.orders, 1...4, of: orders)
+        let orders = Forge<Order>("order") { Order() }.rule(\.total) { $0.double(in: 1...100) }
+        let users = Forge<User>("user") { User() }.each(\.orders, 1...4, of: orders)
 
         #expect(users.generate(10, seed: 7) == users.generate(10, seed: 7))
     }
 
     @Test("finish runs after every rule")
     func finishers() {
-        let users = Forge<User> { User() }
+        let users = Forge<User>("user") { User() }
             .rule(\.firstName) { _ in "ada" }
             .finish { _, user in user.firstName = user.firstName.uppercased() }
             .generate(3, seed: 1)
@@ -167,7 +201,7 @@ struct ForgeTests {
 
     @Test("traits override rules without mutating the base recipe")
     func traits() {
-        let base = Forge<User> { User() }.rule(\.plan) { _ in "free" }
+        let base = Forge<User>("user") { User() }.rule(\.plan) { _ in "free" }
         let enterprise = Trait<User>("enterprise") { $0.rule(\.plan) { _ in "enterprise" } }
 
         #expect(base.generate(3, seed: 1, applying: enterprise).allSatisfy { $0.plan == "enterprise" })
@@ -177,7 +211,7 @@ struct ForgeTests {
     /// Value semantics give factory inheritance away for free.
     @Test("extending a forge leaves the original untouched")
     func valueSemanticsComposition() {
-        let base = Forge<User> { User() }.rule(\.plan) { _ in "free" }
+        let base = Forge<User>("user") { User() }.rule(\.plan) { _ in "free" }
         let pro = base.rule(\.plan) { _ in "pro" }
 
         #expect(base.generate(1, seed: 1)[0].plan == "free")
@@ -186,7 +220,7 @@ struct ForgeTests {
 
     @Test("stream matches generate and is lazy")
     func streaming() {
-        let forge = Forge<User> { User() }
+        let forge = Forge<User>("user") { User() }
             .rule(\.id) { $0.index }
             .rule(\.firstName) { $0.person.firstName() }
 
@@ -198,19 +232,19 @@ struct ForgeTests {
 
     @Test("stream is unbounded")
     func streamUnbounded() {
-        let forge = Forge<User> { User() }.rule(\.id) { $0.index }
+        let forge = Forge<User>("user") { User() }.rule(\.id) { $0.index }
         let ids = forge.stream(seed: 1).prefix(10_000).map(\.id)
         #expect(ids.last == 9_999)
     }
 
     @Test("referential integrity via pick")
     func referentialIntegrity() {
-        let users = Forge<User> { User() }
+        let users = Forge<User>("user") { User() }
             .rule(\.id) { $0.index }
             .generate(50, seed: 1337)
 
         let userIds = Set(users.map(\.id))
-        let orders = Forge<Order> { Order() }
+        let orders = Forge<Order>("order") { Order() }
             .rule(\.userId) { f in f.pick(users).id }
             .generate(500, seed: 1337)
 
@@ -219,13 +253,13 @@ struct ForgeTests {
 
     @Test("generating zero rows is not an error")
     func zeroRows() {
-        let forge = Forge<User> { User() }.rule(\.firstName) { $0.person.firstName() }
+        let forge = Forge<User>("user") { User() }.rule(\.firstName) { $0.person.firstName() }
         #expect(forge.generate(0, seed: 1).isEmpty)
     }
 
     @Test("one returns a single value matching generate")
     func single() {
-        let forge = Forge<User> { User() }.rule(\.firstName) { $0.person.firstName() }
+        let forge = Forge<User>("user") { User() }.rule(\.firstName) { $0.person.firstName() }
         #expect(forge.one(seed: 42) == forge.generate(1, seed: 42)[0])
     }
 }
