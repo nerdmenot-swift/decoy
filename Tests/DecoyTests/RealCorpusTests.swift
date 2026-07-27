@@ -80,7 +80,7 @@ struct RealCorpusTests {
 
         var faker = Faker(seed: 1337, locale: locale)
         var produced = Set<String>()
-        for _ in 0..<500 { produced.insert(faker.name.firstName(.female)) }
+        for _ in 0..<500 { produced.insert(faker.person.firstName(.female)) }
 
         #expect(produced.isSubset(of: pool))
         #expect(produced.count > 200, "500 draws from 473 names should be well spread")

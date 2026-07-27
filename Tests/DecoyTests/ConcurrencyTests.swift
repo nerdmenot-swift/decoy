@@ -14,7 +14,7 @@ struct ConcurrencyTests {
     private var forge: Forge<Row> {
         Forge<Row> { Row() }
             .rule(\.index) { $0.index }
-            .rule(\.name) { $0.name.fullName() }
+            .rule(\.name) { $0.person.fullName() }
             .rule(\.score) { $0.double(in: 0...100) }
     }
 

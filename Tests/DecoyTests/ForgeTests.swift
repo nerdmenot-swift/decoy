@@ -32,15 +32,15 @@ struct ForgeTests {
     @Test("same seed produces identical output")
     func deterministic() {
         let forge = Forge<User> { User() }
-            .rule(\.firstName) { $0.name.firstName() }
-            .rule(\.lastName) { $0.name.lastName() }
+            .rule(\.firstName) { $0.person.firstName() }
+            .rule(\.lastName) { $0.person.lastName() }
 
         #expect(forge.generate(50, seed: 1337) == forge.generate(50, seed: 1337))
     }
 
     @Test("different seeds produce different output")
     func seedsMatter() {
-        let forge = Forge<User> { User() }.rule(\.firstName) { $0.name.firstName() }
+        let forge = Forge<User> { User() }.rule(\.firstName) { $0.person.firstName() }
         #expect(forge.generate(50, seed: 1) != forge.generate(50, seed: 2))
     }
 
@@ -48,8 +48,8 @@ struct ForgeTests {
     /// share a bit stream, or unrelated tables come out suspiciously in lockstep.
     @Test("distinct entity types get independent streams from one seed")
     func perTypeSeedDerivation() {
-        let users = Forge<User> { User() }.rule(\.firstName) { $0.name.firstName() }
-        let accounts = Forge<Account> { Account() }.rule(\.firstName) { $0.name.firstName() }
+        let users = Forge<User> { User() }.rule(\.firstName) { $0.person.firstName() }
+        let accounts = Forge<Account> { Account() }.rule(\.firstName) { $0.person.firstName() }
 
         let userNames = users.generate(20, seed: 1337).map(\.firstName)
         let accountNames = accounts.generate(20, seed: 1337).map(\.firstName)
@@ -61,12 +61,12 @@ struct ForgeTests {
     /// from the same seed — otherwise fixtures churn every time a model changes.
     @Test("one entity is stable when another changes")
     func entityIsolation() {
-        let accounts = Forge<Account> { Account() }.rule(\.firstName) { $0.name.firstName() }
+        let accounts = Forge<Account> { Account() }.rule(\.firstName) { $0.person.firstName() }
         let before = accounts.generate(10, seed: 99)
 
         _ = Forge<User> { User() }
-            .rule(\.firstName) { $0.name.firstName() }
-            .rule(\.lastName) { $0.name.lastName() }
+            .rule(\.firstName) { $0.person.firstName() }
+            .rule(\.lastName) { $0.person.lastName() }
             .generate(10, seed: 99)
 
         #expect(accounts.generate(10, seed: 99) == before)
@@ -188,7 +188,7 @@ struct ForgeTests {
     func streaming() {
         let forge = Forge<User> { User() }
             .rule(\.id) { $0.index }
-            .rule(\.firstName) { $0.name.firstName() }
+            .rule(\.firstName) { $0.person.firstName() }
 
         let eager = forge.generate(100, seed: 1337)
         let streamed = Array(forge.stream(seed: 1337).prefix(100))
@@ -219,13 +219,13 @@ struct ForgeTests {
 
     @Test("generating zero rows is not an error")
     func zeroRows() {
-        let forge = Forge<User> { User() }.rule(\.firstName) { $0.name.firstName() }
+        let forge = Forge<User> { User() }.rule(\.firstName) { $0.person.firstName() }
         #expect(forge.generate(0, seed: 1).isEmpty)
     }
 
     @Test("one returns a single value matching generate")
     func single() {
-        let forge = Forge<User> { User() }.rule(\.firstName) { $0.name.firstName() }
+        let forge = Forge<User> { User() }.rule(\.firstName) { $0.person.firstName() }
         #expect(forge.one(seed: 42) == forge.generate(1, seed: 42)[0])
     }
 }
@@ -347,8 +347,8 @@ struct FakerHelperTests {
 
         var f = faker()
         for _ in 0..<200 {
-            #expect(femalePool.contains(f.name.firstName(.female)))
-            #expect(malePool.contains(f.name.firstName(.male)))
+            #expect(femalePool.contains(f.person.firstName(.female)))
+            #expect(malePool.contains(f.person.firstName(.male)))
         }
     }
 }

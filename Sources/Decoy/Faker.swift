@@ -169,7 +169,11 @@ public struct Faker: Sendable {
 
     // MARK: - Patterned strings
 
-    /// Replaces `#` with a random digit.
+    /// Replaces `#` with a digit `0-9` and `!` with a digit `2-9`.
+    ///
+    /// `!` is faker's convention for positions that cannot be `0` or `1` — North
+    /// American area codes and exchange prefixes, for instance, so `!##-!##-####`
+    /// yields a number that is structurally valid rather than merely digit-shaped.
     public mutating func numerify(_ pattern: String) -> String {
         substitute(pattern, digits: "#", letters: nil, either: nil)
     }
@@ -179,7 +183,8 @@ public struct Faker: Sendable {
         substitute(pattern, digits: nil, letters: "?", either: nil)
     }
 
-    /// Replaces `#` with a digit, `?` with an uppercase letter, and `*` with either.
+    /// Replaces `#` with a digit, `!` with a digit `2-9`, `?` with an uppercase
+    /// letter, and `*` with either a digit or a letter.
     ///
     /// The workhorse for postcodes, SKUs, licence plates and phone numbers:
     /// `f.bothify("??-####")` → `"KJ-8813"`.
@@ -198,6 +203,8 @@ public struct Faker: Sendable {
         for character in pattern {
             if let digits, character == digits {
                 out.append(randomDigit())
+            } else if character == "!" {
+                out.append(randomDigit(from: 2))
             } else if let letters, character == letters {
                 out.append(randomLetter())
             } else if let either, character == either {
@@ -209,8 +216,8 @@ public struct Faker: Sendable {
         return out
     }
 
-    private mutating func randomDigit() -> Character {
-        Character(String(rng.draw(below: 10)))
+    private mutating func randomDigit(from lowest: UInt64 = 0) -> Character {
+        Character(String(lowest + rng.draw(below: 10 - lowest)))
     }
 
     private mutating func randomLetter() -> Character {

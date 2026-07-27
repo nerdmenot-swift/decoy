@@ -66,6 +66,9 @@ struct Manifest: Decodable {
 /// depth, so faker's `{ generic, female, male }` structure survives rather than being
 /// flattened into one pool — which is the whole reason Decoy vendors faker-js.
 struct LocaleCompiler {
+    /// Path suffix under which an object node's own keys are stored.
+    static let keysSuffix = "__keys"
+
     let sourceID: UInt32
     private(set) var stats = Stats()
 
@@ -91,12 +94,23 @@ struct LocaleCompiler {
 
         case .object(let members):
             // Sorted so the output is byte-identical across runs.
-            for key in members.keys.sorted() {
+            let keys = members.keys.sorted()
+            for key in keys {
                 emit(
                     path: path.isEmpty ? key : "\(path).\(key)",
                     value: members[key]!,
                     into: &builder
                 )
+            }
+
+            // Some of faker's data is keyed *by* the values you want to draw:
+            // `system.mime_type` is a map from "application/json" to its extensions,
+            // so the MIME types themselves are the object's keys and would otherwise
+            // be unreachable. Emitting a keys table makes every object node drawable.
+            if !path.isEmpty && !keys.isEmpty {
+                let table = builder.addStringTable(keys, source: sourceID)
+                builder.index("\(path).\(LocaleCompiler.keysSuffix)", stringTable: table)
+                stats.stringTables += 1
             }
 
         case .array(let items):
