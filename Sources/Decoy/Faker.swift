@@ -23,10 +23,25 @@ public struct Faker: Sendable {
     /// The locale and its fallback chain, which every generator reads through.
     public let locale: LocaleCorpus
 
-    public init(seed: UInt64, index: Int = 0, locale: LocaleCorpus = .builtIn) {
+    /// The instant that "past" and "future" are relative to.
+    ///
+    /// Deliberately **not** the system clock. Every other faker anchors `past()` to
+    /// now, which quietly means seed 1337 produces different fixtures tomorrow than it
+    /// did today — a reproducibility hole in exactly the libraries that promise
+    /// reproducibility. Anchoring to a fixed instant closes it; override this when you
+    /// want dates to sit near a particular moment.
+    public let reference: Timestamp
+
+    public init(
+        seed: UInt64,
+        index: Int = 0,
+        locale: LocaleCorpus = .builtIn,
+        reference: Timestamp = .decoyReference
+    ) {
         self.rng = Xoshiro256StarStar(seed: seed)
         self.index = index
         self.locale = locale
+        self.reference = reference
     }
 
     // MARK: - Corpus access

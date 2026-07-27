@@ -119,6 +119,24 @@ extension LocaleCorpus {
             ]
         )
         add("internet.domain_suffix", ["com", "net", "org", "io", "dev"])
+        add("internet.example_email", ["example.com", "example.org", "example.net"])
+        add(
+            "date.month.wide",
+            [
+                "January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December",
+            ]
+        )
+        add(
+            "date.month.abbr",
+            ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        )
+        add(
+            "date.weekday.wide",
+            ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        )
+        add("date.weekday.abbr", ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"])
+        add("date.time_zone", ["UTC", "Europe/London", "America/New_York", "Asia/Kolkata"])
 
         // A corpus that cannot be read is a programming error here, not a user error.
         let corpus = try! Corpus(bytes: builder.build())

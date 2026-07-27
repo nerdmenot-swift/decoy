@@ -23,9 +23,16 @@ and it has three problems Decoy exists to fix:
 - **Local seeding only.** The RNG is a value type threaded through as `inout`. No
   global mutable seed — it is fragile under code changes and a `Sendable` violation
   under Swift 6 strict concurrency.
-- **Foundation-free core.** The `Decoy` target imports no Foundation, so behaviour is
-  identical across platforms. Foundation interop (`UUID`, `Date`) sits behind
-  `#if canImport` shims — a convenience, never a requirement.
+- **Foundation-free arithmetic.** Everything that decides a *value* — the RNG, the
+  corpus reader, calendar maths — imports nothing, so results are identical across
+  platforms. Foundation appears only at the edge: the `date` namespace returns
+  `Foundation.Date` behind `#if canImport`, and `Timestamp` provides the same dates
+  without it. On Linux this resolves to the lean `FoundationEssentials` rather than
+  the full corelibs implementation.
+- **Dates are anchored, not "now".** `past()` is relative to a fixed reference
+  instant, because anchoring to the system clock would mean seed 1337 producing
+  different fixtures tomorrow than today — a reproducibility hole every other faker
+  has.
 - **No runtime JSON parsing.** The corpus compiles to a compact binary format (string
   arena + offset table) loaded once and sliced. Notably this avoids `Bundle.module`,
   the most platform-fragile part of SPM and a large share of Fakery's trouble off

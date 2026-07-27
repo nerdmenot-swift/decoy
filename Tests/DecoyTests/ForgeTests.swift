@@ -319,11 +319,15 @@ struct FakerHelperTests {
         #expect(f.pick(0, from: ["a"]).isEmpty)
     }
 
-    @Test("email defaults to the reserved example.com domain")
+    /// RFC 2606 reserves example.com/.net/.org precisely so test data cannot reach a
+    /// real inbox. Any of the three is fine; a non-reserved default would not be.
+    @Test("email defaults to an RFC 2606 reserved domain")
     func emailIsSafe() {
+        let reserved = ["@example.com", "@example.net", "@example.org"]
         var f = faker()
-        for _ in 0..<100 {
-            #expect(f.internet.email().hasSuffix("@example.com"))
+        for _ in 0..<200 {
+            let address = f.internet.email()
+            #expect(reserved.contains { address.hasSuffix($0) }, "unsafe domain: \(address)")
         }
     }
 
@@ -331,7 +335,7 @@ struct FakerHelperTests {
     func emailSanitises() {
         var f = faker()
         let address = f.internet.email(firstName: "Júlia", lastName: "Bergström")
-        #expect(address == "jlia.bergstrm@example.com")
+        #expect(address.hasPrefix("jlia.bergstrm@"), "diacritics must be stripped: \(address)")
     }
 
     /// A row marked `.male` must not be handed a name from the female pool — the

@@ -38,6 +38,9 @@ public struct Forge<T>: Sendable {
     /// The locale every generated row draws from.
     private var localeCorpus: LocaleCorpus = .builtIn
 
+    /// The instant relative date generation is anchored to.
+    private var referenceInstant: Timestamp = .decoyReference
+
     private struct Step: Sendable {
         let apply: @Sendable (inout Faker, inout T, inout [Set<AnyHashable>]) throws -> Void
     }
@@ -176,6 +179,16 @@ public struct Forge<T>: Sendable {
         return copy
     }
 
+    /// Returns a copy whose relative dates are anchored to `instant`.
+    ///
+    /// Defaults to a fixed constant rather than the system clock, so regenerating a
+    /// fixture next year reproduces it exactly. See ``Faker/reference``.
+    public func reference(_ instant: Timestamp) -> Forge {
+        var copy = self
+        copy.referenceInstant = instant
+        return copy
+    }
+
     /// Returns a copy with the given traits applied.
     public func applying(_ traits: Trait<T>...) -> Forge {
         traits.reduce(self) { $1.transform($0) }
@@ -281,6 +294,7 @@ public struct Forge<T>: Sendable {
             uniqueSlots: resolved.uniqueSlots,
             baseSeed: SeedDerivation.derive(seed, for: T.self),
             locale: resolved.localeCorpus,
+            reference: resolved.referenceInstant,
             startingAt: row
         )
     }
@@ -305,6 +319,7 @@ struct ForgeRun<T> {
     private let finishers: [@Sendable (inout Faker, inout T) throws -> Void]
     private let baseSeed: UInt64
     private let locale: LocaleCorpus
+    private let reference: Timestamp
     private var used: [Set<AnyHashable>]
     private var row: Int
 
@@ -315,6 +330,7 @@ struct ForgeRun<T> {
         uniqueSlots: Int,
         baseSeed: UInt64,
         locale: LocaleCorpus,
+        reference: Timestamp,
         startingAt row: Int
     ) {
         self.factory = factory
@@ -322,6 +338,7 @@ struct ForgeRun<T> {
         self.finishers = finishers
         self.baseSeed = baseSeed
         self.locale = locale
+        self.reference = reference
         self.used = Array(repeating: [], count: uniqueSlots)
         self.row = row
     }
@@ -330,7 +347,8 @@ struct ForgeRun<T> {
         var faker = Faker(
             seed: SeedDerivation.rowSeed(baseSeed, row: row),
             index: row,
-            locale: locale
+            locale: locale,
+            reference: reference
         )
         row += 1
 
