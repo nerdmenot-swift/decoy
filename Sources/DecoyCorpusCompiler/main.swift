@@ -152,11 +152,22 @@ struct LocaleCompiler {
 
     private(set) var stats = Stats()
 
+    /// Resolves a path to its source, falling back to the nearest claimed ancestor.
+    ///
+    /// An adapter claims `system.mime_type` and the compiler then emits hundreds of
+    /// paths beneath it — one `extensions` table per media type, plus the `__keys`
+    /// tables. Exact matching would attribute all of them to whichever source happened
+    /// to be registered first, which is how a corpus ends up mislabelled in a way nobody
+    /// notices until a licence audit.
     func sourceID(for path: String) -> UInt32 {
-        guard let id = attribution[path], let resolved = sourceIDs[id] else {
-            return defaultSourceID
+        var candidate = Substring(path)
+        while true {
+            if let id = attribution[String(candidate)], let resolved = sourceIDs[id] {
+                return resolved
+            }
+            guard let dot = candidate.lastIndex(of: ".") else { return defaultSourceID }
+            candidate = candidate[..<dot]
         }
-        return resolved
     }
 
     struct Stats {
