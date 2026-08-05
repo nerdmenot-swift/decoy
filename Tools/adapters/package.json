@@ -1,0 +1,11 @@
+{
+  "name": "decoy-adapters",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Derives Decoy's corpus from pinned, citable primary sources. No runtime dependencies by design.",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "node run.mjs"
+  }
+}

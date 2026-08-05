@@ -73,9 +73,50 @@ struct Manifest: Decodable {
     struct Locale: Decodable {
         let chain: [String]
     }
+
+    /// A pinned upstream the data was derived from.
+    struct SourceRecord: Decodable {
+        let id: String
+        let license: String
+        let url: String
+        let version: String
+        let retrieved: String
+    }
+
     let locales: [String: Locale]
-    let fakerVersion: String
+
+    /// Emitted by `Tools/adapters`. Absent from the legacy faker-js extractor's output.
+    let sources: [SourceRecord]?
+    /// locale -> path -> source id. Also adapters-only.
+    let attribution: [String: [String: String]]?
+    let generatedAt: String?
+
+    // The faker-js extractor's fields. Optional so one compiler serves both producers
+    // while faker is being replaced adapter by adapter, rather than the switchover
+    // needing to happen in a single commit.
+    let fakerVersion: String?
     let extractedAt: String?
+
+    /// The sources to register, however the input described them.
+    var sourceRecords: [SourceRecord] {
+        if let sources, !sources.isEmpty { return sources }
+        return [
+            SourceRecord(
+                id: "faker-js",
+                license: "MIT",
+                url: "https://github.com/faker-js/faker",
+                version: fakerVersion ?? "unknown",
+                retrieved: extractedAt ?? "unknown"
+            )
+        ]
+    }
+
+    /// A one-line provenance summary for generated source headers.
+    var provenance: String {
+        let date = generatedAt ?? extractedAt ?? "unknown"
+        let names = sourceRecords.map { "\($0.id) \($0.version) (\($0.license))" }
+        return "\(names.joined(separator: ", ")), retrieved \(date)"
+    }
 
     /// Expands the requested locales to include every locale their chains reach.
     func closure(over requested: [String]) -> [String] {
@@ -99,8 +140,21 @@ struct LocaleCompiler {
     /// Path suffix under which an object node's own keys are stored.
     static let keysSuffix = "__keys"
 
-    let sourceID: UInt32
+    /// Per-path attribution, so a corpus assembled from several adapters records which
+    /// upstream each field actually came from rather than stamping them all alike.
+    let attribution: [String: String]
+    /// Used for paths no adapter claimed, such as the synthetic `__keys` tables.
+    let defaultSourceID: UInt32
+    let sourceIDs: [String: UInt32]
+
     private(set) var stats = Stats()
+
+    func sourceID(for path: String) -> UInt32 {
+        guard let id = attribution[path], let resolved = sourceIDs[id] else {
+            return defaultSourceID
+        }
+        return resolved
+    }
 
     struct Stats {
         var stringTables = 0
@@ -119,7 +173,7 @@ struct LocaleCompiler {
 
         case .string, .number, .bool:
             guard let string = value.asString else { return }
-            builder.index(path, stringTable: builder.addStringTable([string], source: sourceID))
+            builder.index(path, stringTable: builder.addStringTable([string], source: sourceID(for: path)))
             stats.stringTables += 1
 
         case .object(let members):
@@ -138,7 +192,7 @@ struct LocaleCompiler {
             // so the MIME types themselves are the object's keys and would otherwise
             // be unreachable. Emitting a keys table makes every object node drawable.
             if !path.isEmpty && !keys.isEmpty {
-                let table = builder.addStringTable(keys, source: sourceID)
+                let table = builder.addStringTable(keys, source: sourceID(for: path))
                 builder.index("\(path).\(LocaleCompiler.keysSuffix)", stringTable: table)
                 stats.stringTables += 1
             }
@@ -154,7 +208,7 @@ struct LocaleCompiler {
         into builder: inout CorpusBuilder
     ) {
         guard let first = items.first else {
-            builder.index(path, stringTable: builder.addStringTable([], source: sourceID))
+            builder.index(path, stringTable: builder.addStringTable([], source: sourceID(for: path)))
             stats.stringTables += 1
             return
         }
@@ -166,7 +220,7 @@ struct LocaleCompiler {
                 stats.skipped.append("\(path) (mixed element types)")
                 return
             }
-            builder.index(path, stringTable: builder.addStringTable(strings, source: sourceID))
+            builder.index(path, stringTable: builder.addStringTable(strings, source: sourceID(for: path)))
             stats.stringTables += 1
             return
         }
@@ -212,7 +266,7 @@ struct LocaleCompiler {
 
         builder.index(
             path,
-            stringTable: builder.addStringTable(values, weights: weights, source: sourceID)
+            stringTable: builder.addStringTable(values, weights: weights, source: sourceID(for: path))
         )
         stats.weightedTables += 1
     }
@@ -240,7 +294,7 @@ struct LocaleCompiler {
 
         builder.index(
             path,
-            compositeTable: builder.addCompositeTable(fields: fields, rows: rows, source: sourceID)
+            compositeTable: builder.addCompositeTable(fields: fields, rows: rows, source: sourceID(for: path))
         )
         stats.compositeTables += 1
     }
@@ -277,15 +331,29 @@ for code in codes {
     let root = try JSONDecoder().decode(JSONValue.self, from: data)
 
     var builder = CorpusBuilder(version: options.corpusVersion)
-    let sourceID = builder.addSource(
-        id: "faker-js",
-        license: "MIT",
-        url: "https://github.com/faker-js/faker",
-        version: manifest.fakerVersion,
-        retrieved: manifest.extractedAt ?? "unknown"
-    )
 
-    var compiler = LocaleCompiler(sourceID: sourceID)
+    // Every declared source is registered in every locale, whether or not that locale
+    // draws on it. A few dozen bytes buys a stable source ID across the whole corpus,
+    // which is what makes "show me everything still derived from X" answerable.
+    var sourceIDs: [String: UInt32] = [:]
+    for record in manifest.sourceRecords {
+        sourceIDs[record.id] = builder.addSource(
+            id: record.id,
+            license: record.license,
+            url: record.url,
+            version: record.version,
+            retrieved: record.retrieved
+        )
+    }
+    guard let defaultSourceID = sourceIDs[manifest.sourceRecords[0].id] else {
+        fail("\(code): no sources declared in the manifest")
+    }
+
+    var compiler = LocaleCompiler(
+        attribution: manifest.attribution?[code] ?? [:],
+        defaultSourceID: defaultSourceID,
+        sourceIDs: sourceIDs
+    )
     compiler.emit(path: "", value: root, into: &builder)
 
     let bytes = builder.build()
@@ -330,10 +398,9 @@ func emitSwiftModule(
     let source = """
         // Generated by decoy-compile-corpus. Do not edit.
         //
-        // Corpus for locale `\(code)`, derived from @faker-js/faker \
-        \(manifest.fakerVersion) (MIT), retrieved \(manifest.extractedAt ?? "unknown").
+        // Corpus for locale `\(code)`, derived from \(manifest.provenance).
         // Regenerate with:
-        //   swift run decoy-compile-corpus Tools/extractor/out Corpus/binary \\
+        //   swift run decoy-compile-corpus <intermediate-dir> Corpus/binary \\
         //     --emit-swift Sources --locales <codes>
 
         \(importLines)
@@ -391,8 +458,7 @@ if let swiftDirectory = options.emitSwift {
     print("  embedding     : \(emittedBytes / 1024) KB of corpus")
 }
 
-print("faker version   : \(manifest.fakerVersion)")
-print("extracted       : \(manifest.extractedAt ?? "unknown")")
+print("sources         : \(manifest.provenance)")
 print("corpus version  : \(options.corpusVersion)")
 print("locales compiled: \(codes.count)")
 print("JSON in         : \(totalJSON / 1024) KB")
