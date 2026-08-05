@@ -251,6 +251,52 @@ public struct Corpus: Sendable {
 
     /// The number of distinct strings in the shared arena.
     public var stringCount: Int { arena.count }
+
+    // MARK: - Enumeration
+
+    /// Every path this corpus defines, sorted lexicographically.
+    ///
+    /// Without this a corpus is effectively write-only: ``lookup(_:)`` retrieves a path
+    /// only if the caller already knows it exists, so the set of valid paths lives
+    /// nowhere but in the generators' source, and "which locale covers what" cannot be
+    /// answered at all. Coverage reporting, corpus inspection and validating a `Forge`'s
+    /// rules up front all need the set, not a membership test.
+    ///
+    /// Costs nothing in the format: the index already stores each path's own string —
+    /// interned in the shared arena, and read back to confirm hash matches during
+    /// lookup — so this is a sequential walk of data that was there for other reasons.
+    public var paths: [PathEntry] {
+        get throws {
+            guard let chunk = chunks[ChunkKind.index.rawValue] else { return [] }
+            let entryCount = Int(try reader.u32(at: chunk.offset))
+            let base = chunk.offset + 4
+
+            var result = [PathEntry]()
+            result.reserveCapacity(entryCount)
+            for i in 0..<entryCount {
+                let entryOffset = base + i * 24
+                result.append(
+                    PathEntry(
+                        path: try arena.string(at: try reader.u32(at: entryOffset + 8)),
+                        kind: PathEntry.Kind(raw: try reader.u32(at: entryOffset + 12)),
+                        tableID: try reader.u32(at: entryOffset + 16)
+                    )
+                )
+            }
+
+            // Stored order is by hash, which is arbitrary to anyone reading the output.
+            result.sort { $0.path < $1.path }
+            return result
+        }
+    }
+
+    /// Resolves an enumerated entry without searching the index again.
+    ///
+    /// ``paths`` already carries the kind and table ID, so dumping a whole corpus costs
+    /// one walk rather than a binary search per path.
+    public func entry(for pathEntry: PathEntry) throws -> Entry {
+        try entry(kind: pathEntry.kind.raw, tableID: pathEntry.tableID)
+    }
 }
 
 // MARK: - Supporting types
@@ -288,6 +334,54 @@ public struct Source: Sendable, Equatable {
     public let url: String
     public let version: String
     public let retrieved: String
+}
+
+/// One path in a corpus, as produced by ``Corpus/paths``.
+///
+/// Carries what sits at the path but not the table itself, so listing a corpus does not
+/// construct every table in it.
+public struct PathEntry: Sendable, Equatable {
+    public let path: String
+    public let kind: Kind
+
+    /// Which table the entry points at, for ``Corpus/entry(for:)``.
+    let tableID: UInt32
+
+    /// What kind of thing a path holds.
+    public enum Kind: Sendable, Equatable {
+        /// Defined as deliberately having no value, which blocks locale fallback.
+        case explicitlyEmpty
+        case strings
+        case composite
+        case model
+        /// Written by a newer compiler than this reader understands.
+        ///
+        /// Reported rather than thrown, matching how the chunk directory treats kinds
+        /// it does not know: enumeration must not be the one operation a
+        /// forward-compatible corpus cannot survive, or inspecting a newer blob to
+        /// find out why it fails would itself fail.
+        case unknown(UInt32)
+
+        init(raw: UInt32) {
+            switch raw {
+            case 0: self = .explicitlyEmpty
+            case 1: self = .strings
+            case 2: self = .composite
+            case 3: self = .model
+            default: self = .unknown(raw)
+            }
+        }
+
+        var raw: UInt32 {
+            switch self {
+            case .explicitlyEmpty: 0
+            case .strings: 1
+            case .composite: 2
+            case .model: 3
+            case .unknown(let raw): raw
+            }
+        }
+    }
 }
 
 /// What a path resolves to.

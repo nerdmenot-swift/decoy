@@ -57,6 +57,35 @@ public struct LocaleCorpus: Sendable {
         return table
     }
 
+    /// Every path the chain can resolve, sorted, with the same precedence as
+    /// ``resolve(_:)`` — the most specific locale to mention a path wins.
+    ///
+    /// A path the front of the chain defines as explicitly empty is *included*: it is
+    /// something this locale has an opinion about. Use ``has(_:)`` to distinguish
+    /// "defined" from "yields a value".
+    public var paths: [PathEntry] {
+        get throws {
+            var seen = Set<String>()
+            var result = [PathEntry]()
+            for corpus in chain {
+                for entry in try corpus.paths where seen.insert(entry.path).inserted {
+                    result.append(entry)
+                }
+            }
+            result.sort { $0.path < $1.path }
+            return result
+        }
+    }
+
+    /// The paths `code`'s own corpus defines, ignoring everything it inherits.
+    ///
+    /// This is the coverage signal: a locale resolving `person.first_name` only because
+    /// English sits behind it is exactly the failure that leaves Tamil records named
+    /// "Jennifer Williams", and the chain-wide ``paths`` cannot show it.
+    public var nativePaths: [PathEntry] {
+        get throws { try chain.first?.paths ?? [] }
+    }
+
     /// Whether the chain can supply a non-empty value for `path`.
     ///
     /// Useful for coverage reporting: a locale silently falling back to English for

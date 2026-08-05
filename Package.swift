@@ -44,6 +44,7 @@ let package = Package(
     products: [
         .library(name: "Decoy", targets: ["Decoy"]),
         .executable(name: "decoy-compile-corpus", targets: ["DecoyCorpusCompiler"]),
+        .executable(name: "decoy-inspect", targets: ["DecoyCorpusInspector"]),
     ] + localeProducts,
     targets: [
         .target(
@@ -53,6 +54,12 @@ let package = Package(
         // A host build tool, so unlike the library it may use Foundation freely.
         .executableTarget(
             name: "DecoyCorpusCompiler",
+            dependencies: ["Decoy"],
+            swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
+        // Also host-only, and likewise free to use Foundation.
+        .executableTarget(
+            name: "DecoyCorpusInspector",
             dependencies: ["Decoy"],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
