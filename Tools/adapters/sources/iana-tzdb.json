@@ -1,0 +1,24 @@
+{
+  "id": "iana-tzdb",
+  "name": "IANA Time Zone Database 2026b",
+  "license": "public-domain",
+  "url": "https://www.iana.org/time-zones",
+  "version": "2026b",
+  "retrieved": "2026-08-06",
+  "note": [
+    "The tz database is the authority every operating system, language runtime and",
+    "database resolves time zones against. Its maintainers place it in the public domain",
+    "(see the `LICENSE` file in the distribution), so unlike most reference data there is",
+    "no attribution obligation to track.",
+    "",
+    "Releases are immutable and versioned by year plus a letter, which is what makes a",
+    "pinned integrity hash meaningful: 2026b will always be 2026b."
+  ],
+  "artifacts": [
+    {
+      "name": "tzdata",
+      "url": "https://data.iana.org/time-zones/releases/tzdata2026b.tar.gz",
+      "integrity": "sha512-pEiCJYwKf75Yfotz1rs81b59R4iXbqdCrbvxdus7M+W9fRcUsv/+KXKxpC5zNerDntC9Y+gZu0IVUPjK4d9PLw=="
+    }
+  ]
+}

@@ -82,18 +82,10 @@ async function main() {
     const { descriptor, artifacts } = await loadSource(adapter.source)
     sources.set(descriptor.id, provenanceOf(descriptor))
 
-    // Which locales the source actually ships, so adapters resolve rather than guess.
-    const availableLocales = new Set(
-      artifacts.localenames
-        ? await readdir(join(artifacts.localenames, 'package', 'main'))
-        : [],
-    )
-
     const { contributions, stats } = await adapter.run({
       artifacts,
       locales,
       overrides: roster.cldr ?? {},
-      availableLocales,
     })
 
     for (const [code, paths] of Object.entries(contributions)) {
