@@ -112,10 +112,13 @@ struct Manifest: Decodable {
     }
 
     /// A one-line provenance summary for generated source headers.
+    ///
+    /// Each source carries its own retrieval date, so this reports when the intermediate
+    /// was *generated* — conflating the two would misdate the data itself.
     var provenance: String {
         let date = generatedAt ?? extractedAt ?? "unknown"
         let names = sourceRecords.map { "\($0.id) \($0.version) (\($0.license))" }
-        return "\(names.joined(separator: ", ")), retrieved \(date)"
+        return "\(names.joined(separator: ", ")); generated \(date)"
     }
 
     /// Expands the requested locales to include every locale their chains reach.
