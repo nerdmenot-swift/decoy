@@ -77,10 +77,31 @@ async function main() {
 
   for (const file of adapterFiles) {
     const adapter = await import(join(here, 'adapters', file))
-    process.stderr.write(`adapter ${adapter.id} (source ${adapter.source})\n`)
 
-    const { descriptor, artifacts } = await loadSource(adapter.source)
-    sources.set(descriptor.id, provenanceOf(descriptor))
+    // An adapter may combine sources -- currencies take their names and symbols from
+    // CLDR and their numeric codes from the ISO 4217 registry.
+    const sourceIds = adapter.sources ?? [adapter.source]
+    process.stderr.write(`adapter ${adapter.id} (${sourceIds.join(' + ')})\n`)
+
+    const artifacts = {}
+    for (const sourceId of sourceIds) {
+      const { descriptor, artifacts: loaded } = await loadSource(sourceId)
+      sources.set(descriptor.id, provenanceOf(descriptor))
+      for (const [name, path] of Object.entries(loaded)) {
+        if (name in artifacts) {
+          throw new Error(
+            `${adapter.id}: two of its sources both name an artifact '${name}'`,
+          )
+        }
+        artifacts[name] = path
+      }
+    }
+
+    // The format stores one source per table, so a table merged from several sources is
+    // credited to the one the adapter names as primary. Every source it used is still
+    // registered in the corpus and listed here, so nothing is lost -- the attribution is
+    // just coarser than per-field. Splitting it would be a format change.
+    const attributedTo = adapter.attributeTo ?? sourceIds[0]
 
     const { contributions, stats } = await adapter.run({
       artifacts,
@@ -103,7 +124,7 @@ async function main() {
           )
         }
         merged[code][path] = value
-        attribution[code][path] = descriptor.id
+        attribution[code][path] = attributedTo
       }
     }
 

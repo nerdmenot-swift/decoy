@@ -52,7 +52,8 @@ async function exists(path) {
 async function acquire(sourceId, artifact) {
   const { algorithm, expected } = parseIntegrity(artifact.integrity)
   await mkdir(cacheDir, { recursive: true })
-  const cached = join(cacheDir, `${sourceId}-${artifact.name}.tgz`)
+  const suffix = artifact.format === 'file' ? artifact.filename : `${artifact.name}.tgz`
+  const cached = join(cacheDir, `${sourceId}-${suffix}`)
 
   if (await exists(cached)) {
     const buffer = await readFile(cached)
@@ -111,11 +112,14 @@ export async function loadSource(sourceId) {
 
   const artifacts = {}
   for (const artifact of descriptor.artifacts) {
-    const archive = await acquire(descriptor.id, artifact)
-    artifacts[artifact.name] = await extract(
-      archive,
-      join(cacheDir, `${descriptor.id}-${artifact.name}`),
-    )
+    const path = await acquire(descriptor.id, artifact)
+
+    // A bare file is handed over as-is; anything else is a tarball to unpack. Both
+    // resolve to a path the adapter reads, so adapters do not care which they got.
+    artifacts[artifact.name] =
+      artifact.format === 'file'
+        ? path
+        : await extract(path, join(cacheDir, `${descriptor.id}-${artifact.name}`))
   }
 
   return { descriptor, artifacts }

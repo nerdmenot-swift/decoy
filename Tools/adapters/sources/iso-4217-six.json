@@ -1,0 +1,33 @@
+{
+  "id": "iso-4217-six",
+  "name": "ISO 4217 currency list (SIX Group), published 2026-01-01",
+  "license": "public-facts",
+  "url": "https://www.six-group.com/en/products-services/financial-information/data-standards.html",
+  "version": "2026-01-01",
+  "retrieved": "2026-08-06",
+  "note": [
+    "SIX Group is the ISO 4217 maintenance agency -- this is the registry itself, not a",
+    "redistribution of it. Taken over the LGPL-licensed iso-codes package and over MIT",
+    "npm mirrors because both are copies of this, and a copy adds a licence to comply",
+    "with without adding authority.",
+    "",
+    "Currency code assignments are facts: `AFN` is 971 because the registry says so, and",
+    "there is no authorship in the mapping to license. `public-facts` records that",
+    "reasoning rather than asserting a grant SIX has not made. The list is published free",
+    "of charge for exactly this use.",
+    "",
+    "The URL is unversioned and changes in place, but the document declares its own",
+    "publication date in the `Pblshd` attribute, and the adapter asserts that date",
+    "matches `version` below. A republication therefore fails the integrity check first",
+    "and the date assertion second, rather than silently changing everyone's fixtures."
+  ],
+  "artifacts": [
+    {
+      "name": "list",
+      "format": "file",
+      "filename": "list-one.xml",
+      "url": "https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml",
+      "integrity": "sha512-Qgrj50017JQ/nhvXOFYBozoaLsz4DWckUsg8Xs9I/xZ8taB3cQIO/QYzg7j5qnns2wAnX06ciHUxMucztFN2dg=="
+    }
+  ]
+}
