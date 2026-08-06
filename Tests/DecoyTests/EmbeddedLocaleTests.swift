@@ -17,8 +17,8 @@ struct EmbeddedLocaleTests {
     @Test("an embedded corpus loads with no filesystem access")
     func loadsFromBinary() {
         let corpus = DecoyLocaleEN.corpus
-        #expect(corpus.stringCount > 20_000)
-        #expect(corpus.version == CorpusVersion(major: 2, minor: 0, patch: 0))
+        #expect(corpus.stringCount > 12_000)
+        #expect(corpus.version == CorpusVersion(major: 3, minor: 0, patch: 0))
     }
 
     @Test("generation works straight out of the box")

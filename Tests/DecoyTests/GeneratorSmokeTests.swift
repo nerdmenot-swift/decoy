@@ -185,47 +185,6 @@ struct GeneratorSmokeTests {
         check("vehicle.vin", &f) { $0.vehicle.vin() }
         check("vehicle.registrationPlate", &f) { $0.vehicle.registrationPlate() }
 
-        check("animal.type", &f) { $0.animal.type() }
-        check("animal.dog", &f) { $0.animal.dog() }
-        check("animal.cat", &f) { $0.animal.cat() }
-        check("animal.bird", &f) { $0.animal.bird() }
-        check("animal.fish", &f) { $0.animal.fish() }
-        check("animal.horse", &f) { $0.animal.horse() }
-        check("animal.insect", &f) { $0.animal.insect() }
-        check("animal.lion", &f) { $0.animal.lion() }
-        check("animal.bear", &f) { $0.animal.bear() }
-        check("animal.snake", &f) { $0.animal.snake() }
-        check("animal.rabbit", &f) { $0.animal.rabbit() }
-        check("animal.cow", &f) { $0.animal.cow() }
-        check("animal.rodent", &f) { $0.animal.rodent() }
-        check("animal.cetacean", &f) { $0.animal.cetacean() }
-        check("animal.crocodilia", &f) { $0.animal.crocodilia() }
-        check("animal.any", &f) { $0.animal.any() }
-        check("animal.petName", &f) { $0.animal.petName() }
-
-        check("food.dish", &f) { $0.food.dish() }
-        check("food.ingredient", &f) { $0.food.ingredient() }
-        check("food.fruit", &f) { $0.food.fruit() }
-        check("food.vegetable", &f) { $0.food.vegetable() }
-        check("food.meat", &f) { $0.food.meat() }
-        check("food.spice", &f) { $0.food.spice() }
-        check("food.adjective", &f) { $0.food.adjective() }
-        check("food.ethnicCategory", &f) { $0.food.ethnicCategory() }
-        check("food.description", &f) { $0.food.description() }
-        check("food.dishName", &f) { $0.food.dishName() }
-
-        check("book.title", &f) { $0.book.title() }
-        check("book.author", &f) { $0.book.author() }
-        check("book.genre", &f) { $0.book.genre() }
-        check("book.publisher", &f) { $0.book.publisher() }
-        check("book.series", &f) { $0.book.series() }
-        check("book.format", &f) { $0.book.format() }
-        check("book.isbn", &f) { $0.book.isbn() }
-
-        check("music.genre", &f) { $0.music.genre() }
-        check("music.artist", &f) { $0.music.artist() }
-        check("music.album", &f) { $0.music.album() }
-        check("music.songName", &f) { $0.music.songName() }
     }
 
     @Test("technical generators all resolve")
@@ -241,32 +200,11 @@ struct GeneratorSmokeTests {
         check("system.filePath", &f) { $0.system.filePath() }
         check("system.semver", &f) { $0.system.semver() }
 
-        check("hacker.abbreviation", &f) { $0.hacker.abbreviation() }
-        check("hacker.adjective", &f) { $0.hacker.adjective() }
-        check("hacker.noun", &f) { $0.hacker.noun() }
-        check("hacker.verb", &f) { $0.hacker.verb() }
-        check("hacker.ingverb", &f) { $0.hacker.ingverb() }
-        check("hacker.phrase", &f) { $0.hacker.phrase() }
-
         check("database.column", &f) { $0.database.column() }
         check("database.type", &f) { $0.database.type() }
         check("database.collation", &f) { $0.database.collation() }
         check("database.engine", &f) { $0.database.engine() }
 
-        #expect(!f.airline.airline().isEmpty)
-        #expect(!f.airline.airport().isEmpty)
-        #expect(!f.airline.airplane().isEmpty)
-        check("airline.aircraftType", &f) { $0.airline.aircraftType() }
-        check("airline.flightNumber", &f) { $0.airline.flightNumber() }
-        check("airline.seat", &f) { $0.airline.seat() }
-        check("airline.recordLocator", &f) { $0.airline.recordLocator() }
-
-        check("app.name", &f) { $0.app.name() }
-        check("app.version", &f) { $0.app.version() }
-        check("app.author", &f) { $0.app.author() }
-
-        check("team.creature", &f) { $0.team.creature() }
-        check("team.name", &f) { $0.team.name() }
     }
 
     // MARK: - Correctness beyond non-emptiness
@@ -282,8 +220,6 @@ struct GeneratorSmokeTests {
                 f.location.streetAddress(full: true), f.location.city(),
                 f.location.postalAddress(), f.company.name(),
                 f.commerce.productName(), f.commerce.productDescription(),
-                f.finance.transactionDescription(), f.hacker.phrase(),
-                f.team.name(), f.app.author(), f.internet.userAgent(),
             ] {
                 #expect(!value.contains("{{"), "unexpanded template in: \(value)")
                 #expect(!value.contains("}}"), "unexpanded template in: \(value)")
@@ -307,9 +243,6 @@ struct GeneratorSmokeTests {
                 "invalid IBAN checksum: \(iban)"
             )
 
-            let isbn = f.book.isbn()
-            #expect(isbn.count == 13)
-            #expect(Self.passesEAN(isbn), "invalid ISBN-13 check digit: \(isbn)")
             #expect(Self.passesEAN(f.commerce.ean13()))
         }
     }

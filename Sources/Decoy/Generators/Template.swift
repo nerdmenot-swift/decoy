@@ -110,7 +110,6 @@ extension Faker {
         case "word.verb": return word.verb()
         case "word.adverb": return word.adverb()
         case "color.human": return color.human()
-        case "animal.type": return animal.type()
         case "finance.currencyName": return finance.currencyName()
         default: return nil
         }

@@ -19,23 +19,8 @@ extension Faker {
         set { self = newValue.faker }
     }
 
-    public var animal: AnimalFaker {
-        get { AnimalFaker(faker: self) }
-        set { self = newValue.faker }
-    }
-
-    public var food: FoodFaker {
-        get { FoodFaker(faker: self) }
-        set { self = newValue.faker }
-    }
-
-    public var book: BookFaker {
-        get { BookFaker(faker: self) }
-        set { self = newValue.faker }
-    }
-
-    public var music: MusicFaker {
-        get { MusicFaker(faker: self) }
+    public var system: SystemFaker {
+        get { SystemFaker(faker: self) }
         set { self = newValue.faker }
     }
 
@@ -44,33 +29,8 @@ extension Faker {
         set { self = newValue.faker }
     }
 
-    public var system: SystemFaker {
-        get { SystemFaker(faker: self) }
-        set { self = newValue.faker }
-    }
-
-    public var hacker: HackerFaker {
-        get { HackerFaker(faker: self) }
-        set { self = newValue.faker }
-    }
-
     public var database: DatabaseFaker {
         get { DatabaseFaker(faker: self) }
-        set { self = newValue.faker }
-    }
-
-    public var airline: AirlineFaker {
-        get { AirlineFaker(faker: self) }
-        set { self = newValue.faker }
-    }
-
-    public var app: AppFaker {
-        get { AppFaker(faker: self) }
-        set { self = newValue.faker }
-    }
-
-    public var team: TeamFaker {
-        get { TeamFaker(faker: self) }
         set { self = newValue.faker }
     }
 }
@@ -193,94 +153,13 @@ public struct VehicleFaker {
     }
 }
 
-// MARK: - Animal
-
-public struct AnimalFaker {
-    var faker: Faker
-
-    private static let kinds = [
-        "dog", "cat", "snake", "bear", "lion", "cetacean", "insect", "crocodilia",
-        "cow", "bird", "fish", "rabbit", "horse", "rodent", "type",
-    ]
-
-    public mutating func type() -> String { faker.require("animal.type") }
-    public mutating func dog() -> String { faker.require("animal.dog") }
-    public mutating func cat() -> String { faker.require("animal.cat") }
-    public mutating func bird() -> String { faker.require("animal.bird") }
-    public mutating func fish() -> String { faker.require("animal.fish") }
-    public mutating func horse() -> String { faker.require("animal.horse") }
-    public mutating func insect() -> String { faker.require("animal.insect") }
-    public mutating func lion() -> String { faker.require("animal.lion") }
-    public mutating func bear() -> String { faker.require("animal.bear") }
-    public mutating func snake() -> String { faker.require("animal.snake") }
-    public mutating func rabbit() -> String { faker.require("animal.rabbit") }
-    public mutating func cow() -> String { faker.require("animal.cow") }
-    public mutating func rodent() -> String { faker.require("animal.rodent") }
-    public mutating func cetacean() -> String { faker.require("animal.cetacean") }
-    public mutating func crocodilia() -> String { faker.require("animal.crocodilia") }
-    public mutating func petName() -> String { faker.require("animal.pet_name") }
-
-    /// Any animal, from a randomly chosen family.
-    public mutating func any() -> String {
-        faker.require("animal.\(faker.pick(Self.kinds))")
-    }
-}
-
-// MARK: - Food
-
-public struct FoodFaker {
-    var faker: Faker
-
-    public mutating func dish() -> String { faker.require("food.dish") }
-    public mutating func ingredient() -> String { faker.require("food.ingredient") }
-    public mutating func fruit() -> String { faker.require("food.fruit") }
-    public mutating func vegetable() -> String { faker.require("food.vegetable") }
-    public mutating func meat() -> String { faker.require("food.meat") }
-    public mutating func spice() -> String { faker.require("food.spice") }
-    public mutating func adjective() -> String { faker.require("food.adjective") }
-    public mutating func ethnicCategory() -> String { faker.require("food.ethnic_category") }
-    public mutating func description() -> String {
-        faker.expand(faker.require("food.description_pattern"))
-    }
-
-    /// A composed dish name, e.g. "smoked paprika-crusted lamb".
-    public mutating func dishName() -> String {
-        faker.expand(faker.require("food.dish_pattern"))
-    }
-}
-
-// MARK: - Book
-
-public struct BookFaker {
-    var faker: Faker
-
-    public mutating func title() -> String { faker.require("book.title") }
-    public mutating func author() -> String { faker.require("book.author") }
-    public mutating func genre() -> String { faker.require("book.genre") }
-    public mutating func publisher() -> String { faker.require("book.publisher") }
-    public mutating func series() -> String { faker.require("book.series") }
-    public mutating func format() -> String { faker.require("book.format") }
-
-    /// A 13-digit ISBN with a valid check digit.
-    public mutating func isbn() -> String {
-        let body = "978" + faker.numerify(String(repeating: "#", count: 9))
-        return body + String(CommerceFaker.eanCheckDigit(body))
-    }
-}
-
-// MARK: - Music
-
-public struct MusicFaker {
-    var faker: Faker
-
-    public mutating func genre() -> String { faker.require("music.genre") }
-    public mutating func artist() -> String { faker.require("music.artist") }
-    public mutating func album() -> String { faker.require("music.album") }
-    public mutating func songName() -> String { faker.require("music.song_name") }
-}
-
 // MARK: - Science
 
+/// Chemical elements and units.
+///
+/// Kept in scope where the other small vocabularies were not: elements are IUPAC-published
+/// and SI units are standardised, so this is a fact table with a real registry behind it
+/// rather than a curated word list. It still needs an adapter to stop being faker-derived.
 public struct ScienceFaker {
     var faker: Faker
 
@@ -387,20 +266,6 @@ public struct SystemFaker {
 
 // MARK: - Hacker, database, airline, app, team
 
-public struct HackerFaker {
-    var faker: Faker
-
-    public mutating func abbreviation() -> String { faker.require("hacker.abbreviation") }
-    public mutating func adjective() -> String { faker.require("hacker.adjective") }
-    public mutating func noun() -> String { faker.require("hacker.noun") }
-    public mutating func verb() -> String { faker.require("hacker.verb") }
-    public mutating func ingverb() -> String { faker.require("hacker.ingverb") }
-
-    public mutating func phrase() -> String {
-        faker.expand(faker.require("hacker.phrase"))
-    }
-}
-
 public struct DatabaseFaker {
     var faker: Faker
 
@@ -410,53 +275,3 @@ public struct DatabaseFaker {
     public mutating func engine() -> String { faker.require("database.engine") }
 }
 
-public struct AirlineFaker {
-    var faker: Faker
-
-    /// An airline as a coherent `(name, iataCode)` row.
-    public mutating func airline() -> [String: String] {
-        faker.drawRow("airline.airline") ?? [:]
-    }
-
-    /// An airport as a coherent `(name, iataCode)` row.
-    public mutating func airport() -> [String: String] {
-        faker.drawRow("airline.airport") ?? [:]
-    }
-
-    /// An aircraft as a coherent `(name, iataTypeCode)` row.
-    public mutating func airplane() -> [String: String] {
-        faker.drawRow("airline.airplane") ?? [:]
-    }
-
-    public mutating func aircraftType() -> String { airplane()["name"] ?? "" }
-
-    public mutating func flightNumber(digits: Int = 4) -> String {
-        faker.numerify(String(repeating: "#", count: digits))
-    }
-
-    public mutating func seat() -> String {
-        "\(faker.int(in: 1...60))\(faker.pick(Array("ABCDEF")))"
-    }
-
-    public mutating func recordLocator() -> String {
-        faker.bothify("??????").uppercased()
-    }
-}
-
-public struct AppFaker {
-    var faker: Faker
-
-    public mutating func name() -> String { faker.require("app.name") }
-    public mutating func version() -> String { faker.expand(faker.require("app.version")) }
-    public mutating func author() -> String { faker.expand(faker.require("app.author")) }
-}
-
-public struct TeamFaker {
-    var faker: Faker
-
-    public mutating func creature() -> String { faker.require("team.creature") }
-
-    public mutating func name() -> String {
-        faker.expand(faker.require("team.name"))
-    }
-}

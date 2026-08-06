@@ -135,6 +135,8 @@ func summary(_ url: URL) throws {
     var byNamespace: [String: Int] = [:]
     var values = 0
     var sourceIDs = Set<UInt32>()
+    var pathsBySource: [UInt32: Int] = [:]
+    var valuesBySource: [UInt32: Int] = [:]
 
     for entry in paths {
         byKind[describe(entry.kind), default: 0] += 1
@@ -143,9 +145,13 @@ func summary(_ url: URL) throws {
         case .strings(let table):
             values += table.count
             sourceIDs.insert(table.sourceID)
+            pathsBySource[table.sourceID, default: 0] += 1
+            valuesBySource[table.sourceID, default: 0] += table.count
         case .composite(let table):
             values += table.rowCount
             sourceIDs.insert(table.sourceID)
+            pathsBySource[table.sourceID, default: 0] += 1
+            valuesBySource[table.sourceID, default: 0] += table.rowCount
         case .explicitlyEmpty, .model:
             break
         }
@@ -166,12 +172,22 @@ func summary(_ url: URL) throws {
 
     // Provenance is the point of recording sources at all; showing it here is what
     // makes "is any of this still faker-derived" a question you can answer per file.
-    let sources = sourceIDs.sorted().compactMap { try? corpus.source($0) }.compactMap { $0 }
+    let sources = sourceIDs.sorted().compactMap { id -> (UInt32, Source)? in
+        guard let source = try? corpus.source(id) else { return nil }
+        return (id, source)
+    }
     if !sources.isEmpty {
         print("\nsources (\(sources.count)):")
-        for source in sources {
+        // Sorted by how much each contributes, so "what is this corpus mostly made of"
+        // is the first thing the eye lands on. During a migration that ordering is the
+        // progress bar.
+        for (id, source) in sources.sorted(by: { valuesBySource[$0.0, default: 0] > valuesBySource[$1.0, default: 0] }) {
+            let pathCount = pathsBySource[id, default: 0]
+            let valueCount = valuesBySource[id, default: 0]
+            let share = values == 0 ? 0 : Int((Double(valueCount) / Double(values) * 100).rounded())
             let retrieved = source.retrieved.isEmpty ? "" : ", retrieved \(source.retrieved)"
             print("  \(source.id) — \(source.license), \(source.version)\(retrieved)")
+            print("    \(pathCount) paths, \(valueCount) values (\(share)% of this corpus)")
             if !source.url.isEmpty { print("    \(source.url)") }
         }
     }

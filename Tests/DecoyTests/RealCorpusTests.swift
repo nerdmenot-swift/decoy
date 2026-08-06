@@ -43,8 +43,8 @@ struct RealCorpusTests {
     @Test("the English corpus loads and is substantial")
     func englishLoads() throws {
         let corpus = try RealCorpus.corpus("en")
-        #expect(corpus.stringCount > 20_000, "en should carry over 20k distinct strings")
-        #expect(corpus.version == CorpusVersion(major: 2, minor: 0, patch: 0))
+        #expect(corpus.stringCount > 12_000, "en should carry over 12k distinct strings")
+        #expect(corpus.version == CorpusVersion(major: 3, minor: 0, patch: 0))
     }
 
     @Test("provenance survives compilation")
