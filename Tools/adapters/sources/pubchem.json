@@ -1,0 +1,29 @@
+{
+  "id": "pubchem",
+  "name": "PubChem periodic table (NCBI/NIH)",
+  "license": "public-domain",
+  "url": "https://pubchem.ncbi.nlm.nih.gov/periodic-table/",
+  "version": "2026-08-07",
+  "retrieved": "2026-08-07",
+  "note": [
+    "IUPAC assigns element names and symbols but publishes them as prose and PDF, with",
+    "nothing machine-readable to fetch. PubChem is NIH's chemical database and mirrors",
+    "the IUPAC assignments in a structured form; as a US Government work its content is",
+    "public domain.",
+    "",
+    "Unlike the ISO 4217 and IANA registries this response carries no serial to assert,",
+    "so the integrity hash is the only guard. That is weaker, and it is acceptable here",
+    "for a reason particular to the data: the periodic table changes on a decade scale --",
+    "the last additions were 2016 -- so a hash mismatch means something worth a human",
+    "look, not routine churn."
+  ],
+  "artifacts": [
+    {
+      "name": "table",
+      "format": "file",
+      "filename": "periodic-table.json",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/periodictable/JSON",
+      "integrity": "sha512-gWCcs1r8TnsB9iFTgIFtdWa6+LO2GEloWIudROG9h/StI2ocLjwEJkeyQ3xMy6b7Q9QG1cTtfABeRJib+9U2SA=="
+    }
+  ]
+}

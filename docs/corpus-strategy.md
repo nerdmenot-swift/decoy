@@ -91,7 +91,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — six adapters plus the bootstrap, six sources:
+**Built so far** — nine adapters plus the bootstrap, eight sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -101,6 +101,9 @@ someone else's package should not itself require a package manager.
 | `iana-tzdb` | tzdata 2026b | public domain | `location.time_zone`, `date.time_zone` |
 | `mime-types` | mime-db 1.54.0 | MIT | `system.mime_type` — 1,015 types with extensions |
 | `programming-languages` | Linguist 9.4.0 | MIT | `system.programming_language` — 533 languages |
+| `iana-tld` | IANA root zone 2026080600 | facts | `internet.domain_suffix` — 1,438 TLDs |
+| `periodic-table` | PubChem (NIH) | public domain | `science.chemical_element` (composite) |
+| `si-units` | CLDR 48.2.0 | Unicode-3.0 | `science.unit` (composite) in 74 locales |
 | `faker-js` | @faker-js/faker 10.5.0 | MIT | everything not yet covered, at lowest precedence |
 
 **faker-js is an adapter like any other, and the lowest-precedence one.** It is fetched
@@ -387,8 +390,11 @@ Counts are not the quality bar.
 1. ~~Binary format with all six requirements representable~~ — **done** (format v2)
 2. ~~Core generators against the faker-derived corpus~~ — **done** (208 methods, 22 namespaces)
 3. ~~Corpus discoverability and coverage measurement~~ — **done** (`Corpus.paths`, `decoy-inspect`)
-4. Authoritative reference adapters replacing factual fields — **substantially done**;
-   ISO 3166/639/4217, IANA tzdb and media types are migrated. GeoNames and NHTSA are not.
+4. Authoritative reference adapters replacing factual fields — **done for everything
+   with a pinnable registry**. ISO 3166/639/4217, IANA tzdb, IANA root zone, media types,
+   Linguist, the periodic table and CLDR units are migrated. What remains has no
+   pinnable source: NHTSA publishes vehicles only as a live unversioned API, CLDR ships
+   no subdivisions package for states, and postcodes have no single publisher.
 5. Frequency data (Census, SSA) populating the weight column — **not started**
 6. Generative models for names, with the safety filters above — **not started**
 7. Coverage gate in CI, and `decoy-validate` for contributions — **not started**
