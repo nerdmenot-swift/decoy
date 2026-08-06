@@ -91,7 +91,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — eleven adapters plus the bootstrap, eight sources:
+**Built so far** — twelve adapters plus the bootstrap, nine sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -106,6 +106,7 @@ someone else's package should not itself require a package manager.
 | `si-units` | CLDR 48.2.0 | Unicode-3.0 | `science.unit` (composite) in 74 locales |
 | `iso-3166-2` | CLDR 48.2.0 | Unicode-3.0 | `location.state` (composite) — 5,395 subdivisions, 200 countries |
 | `cldr-dates` | CLDR 48.2.0 | Unicode-3.0 | `date.month.*`, `date.weekday.*` in 74 locales |
+| `cities` | cities.json 1.1.61 (GeoNames) | CC BY 4.0 | `location.city_name`, `location.place` (composite) in 74 locales |
 | `faker-js` | @faker-js/faker 10.5.0 | MIT | everything not yet covered, at lowest precedence |
 
 **faker-js is an adapter like any other, and the lowest-precedence one.** It is fetched
@@ -428,6 +429,7 @@ Every corpus carries its own source records, so the authoritative answer is
 | [Unicode CLDR](https://github.com/unicode-org/cldr-json) | Unicode-3.0 | Retain notice. |
 | [mime-db](https://github.com/jshttp/mime-db) | MIT | Retain notice. |
 | [IANA tzdb](https://www.iana.org/time-zones) | public domain | None. |
+| [GeoNames](https://www.geonames.org/), via cities.json | CC BY 4.0 | **Attribution required wherever the corpus is distributed.** |
 | ISO 4217 registry (SIX Group) | facts | None asserted; see Decisions. |
 
 The faker-js obligation is the only temporary one, and it ends only when the adapter is
