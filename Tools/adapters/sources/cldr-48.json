@@ -34,6 +34,11 @@
       "name": "units",
       "url": "https://registry.npmjs.org/cldr-units-full/-/cldr-units-full-48.2.0.tgz",
       "integrity": "sha512-BjDC7V46eeXzgalnIumrJ1XQDk8wJaOxNLME4hmkBT9Q0hnzxn3XgtavigPUwnljk7FxlNQW9Wx+hbFrARPrQg=="
+    },
+    {
+      "name": "subdivisions",
+      "url": "https://registry.npmjs.org/cldr-subdivisions-full/-/cldr-subdivisions-full-48.2.0.tgz",
+      "integrity": "sha512-UPGETKyPhuWAGZDNwN38KZA+mDrp7TDIyLoNqAdoZ9LUQxqChFx9AAsA4mZfeWdO5ev1hcRO4NIoBGzRwk6wHA=="
     }
   ]
 }

@@ -51,8 +51,27 @@ public struct LocationFaker {
     public mutating func cityPrefix() -> String { faker.require("location.city_prefix") }
     public mutating func citySuffix() -> String { faker.require("location.city_suffix") }
     public mutating func county() -> String { faker.require("location.county") }
-    public mutating func state() -> String { faker.require("location.state") }
-    public mutating func stateAbbreviation() -> String { faker.require("location.state_abbr") }
+    /// A subdivision as a coherent `(name, abbr)` row.
+    ///
+    /// Drawn together so the parts agree. `state()` and `stateAbbreviation()` are
+    /// independent draws by design — they fill separate columns — but a row that must
+    /// hold both needs them from the same subdivision, and `Bavaria` paired with `HH`
+    /// passes most validators while being nonsense.
+    public mutating func stateRow() -> [String: String] {
+        faker.drawRow("location.state") ?? [:]
+    }
+
+    public mutating func state() -> String {
+        // Composite where an adapter supplied one, a plain list where the bootstrap
+        // corpus still does. Both shapes are live during the migration.
+        if let row = faker.drawRow("location.state"), let name = row["name"] { return name }
+        return faker.require("location.state")
+    }
+
+    public mutating func stateAbbreviation() -> String {
+        if let row = faker.drawRow("location.state"), let abbr = row["abbr"] { return abbr }
+        return faker.require("location.state_abbr")
+    }
     public mutating func country() -> String { faker.require("location.country") }
     public mutating func continent() -> String { faker.require("location.continent") }
     public mutating func timeZone() -> String { faker.require("location.time_zone") }
