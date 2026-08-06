@@ -56,6 +56,66 @@ function nest(flat) {
   return root
 }
 
+/**
+ * Merges `incoming` into `base`, letting `incoming` win at every node it supplies.
+ *
+ * How a real adapter's contribution lands. Intermediate objects are descended into, so
+ * two adapters writing `system.mime_type` and `system.programming_language` both land
+ * without either clobbering the other's branch.
+ */
+function mergeOver(base, incoming) {
+  for (const [key, value] of Object.entries(incoming)) {
+    const existing = base[key]
+    const bothPlainObjects =
+      existing !== null &&
+      value !== null &&
+      typeof existing === 'object' &&
+      typeof value === 'object' &&
+      !Array.isArray(existing) &&
+      !Array.isArray(value)
+
+    if (bothPlainObjects) mergeOver(existing, value)
+    else base[key] = value
+  }
+  return base
+}
+
+/**
+ * Merges `incoming` into `base` without overwriting anything already there.
+ *
+ * How the bootstrap corpus is laid underneath the adapters: it fills the gaps and never
+ * displaces. Arrays are values, not containers -- merging two string tables element-wise
+ * would produce a list that neither source ever contained.
+ */
+function mergeBeneath(base, incoming, prefix, isClaimed) {
+  for (const [key, value] of Object.entries(incoming)) {
+    const path = prefix ? `${prefix}.${key}` : key
+
+    // Stop at any subtree a real adapter claimed. Descending would let stragglers the
+    // adapter does not carry survive inside its table -- mime-db has 1,015 media types
+    // and faker has 2 it lacks, and merging them yields a 1,017-row table stamped
+    // entirely MIT/mime-db. That is the licence mislabelling this pipeline exists to
+    // prevent, in miniature.
+    if (isClaimed(path)) continue
+
+    if (!(key in base)) {
+      base[key] = value
+      continue
+    }
+    const existing = base[key]
+    const bothPlainObjects =
+      existing !== null &&
+      value !== null &&
+      typeof existing === 'object' &&
+      typeof value === 'object' &&
+      !Array.isArray(existing) &&
+      !Array.isArray(value)
+
+    if (bothPlainObjects) mergeBeneath(existing, value, path, isClaimed)
+  }
+  return base
+}
+
 function countStrings(value) {
   if (typeof value === 'string') return 1
   if (value === null || typeof value !== 'object') return 0
@@ -71,12 +131,20 @@ async function main() {
     .filter((f) => f.endsWith('.mjs'))
     .sort()
 
-  const merged = {}       // code -> { path -> value }
-  const attribution = {}  // code -> { path -> sourceId }
-  const sources = new Map()
-
+  // Load every adapter before running any, so fallbacks can be ordered last regardless
+  // of filename. `faker-js.mjs` sorts near the front alphabetically and must not.
+  const adapters = []
   for (const file of adapterFiles) {
-    const adapter = await import(join(here, 'adapters', file))
+    adapters.push(await import(join(here, 'adapters', file)))
+  }
+  adapters.sort((a, b) => (a.fallback ? 1 : 0) - (b.fallback ? 1 : 0))
+
+  const merged = {}       // code -> nested definitions
+  const attribution = {}  // code -> { claimed path -> sourceId }
+  const sources = new Map()
+  const claims = new Set()  // "<code>.<path>" claimed by a non-fallback adapter
+
+  for (const adapter of adapters) {
 
     // An adapter may combine sources -- currencies take their names and symbols from
     // CLDR and their numeric codes from the ISO 4217 registry.
@@ -115,15 +183,31 @@ async function main() {
       }
       merged[code] ??= {}
       attribution[code] ??= {}
+
       for (const [path, value] of Object.entries(paths)) {
-        // Two adapters claiming one path is a decision about which source wins, and it
-        // must be made deliberately rather than by filename order.
-        if (path in merged[code]) {
+        const fragment = nest({ [path]: value })
+
+        if (adapter.fallback) {
+          // Laid underneath: contributes only where nothing has been supplied yet.
+          // Losing to a real adapter is not a conflict, it is the migration working,
+          // and it happens hundreds of times per run.
+          mergeBeneath(merged[code], fragment, '', (p) => claims.has(`${code}.${p}`))
+          attribution[code][path] ??= attributedTo
+          continue
+        }
+
+        // Two *equal-precedence* adapters claiming one path is a decision about which
+        // source wins, and it has to be made deliberately rather than by filename order.
+        const claim = `${code}.${path}`
+        if (claims.has(claim)) {
           throw new Error(
-            `${adapter.id} and ${attribution[code][path]} both define ${code}.${path}`,
+            `${adapter.id} and ${attribution[code][path]} both define ${claim}`,
           )
         }
-        merged[code][path] = value
+        claims.add(claim)
+
+        // A real adapter's node replaces whatever sits there, whole.
+        mergeOver(merged[code], fragment)
         attribution[code][path] = attributedTo
       }
     }

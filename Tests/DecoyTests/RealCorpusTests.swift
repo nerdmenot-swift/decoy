@@ -3,11 +3,11 @@ import Testing
 
 @testable import Decoy
 
-/// Tests against the actual compiled faker-js corpus rather than the built-in stub.
+/// Tests against the actual compiled corpus rather than the built-in stub.
 ///
 /// The blobs are build artifacts, not committed, so these are skipped when absent
-/// rather than failing. `Tools/extractor && npm run extract`, then
-/// `swift run decoy-compile-corpus Tools/extractor/out Corpus/binary`.
+/// rather than failing. `cd Tools/adapters && node run.mjs`, then
+/// `swift run decoy-compile-corpus Tools/adapters/out Corpus/binary --corpus-version 2.0.0`.
 ///
 /// Loading from disk is a stopgap: there is no mechanism yet for embedding a corpus
 /// into a built binary without `Bundle.module`.
@@ -35,7 +35,7 @@ enum RealCorpus {
 }
 
 @Suite(
-    "Compiled faker-js corpus",
+    "Compiled corpus",
     .enabled(if: RealCorpus.isAvailable, "compiled corpus not present — see RealCorpus")
 )
 struct RealCorpusTests {
@@ -44,7 +44,7 @@ struct RealCorpusTests {
     func englishLoads() throws {
         let corpus = try RealCorpus.corpus("en")
         #expect(corpus.stringCount > 20_000, "en should carry over 20k distinct strings")
-        #expect(corpus.version == CorpusVersion(major: 1, minor: 0, patch: 0))
+        #expect(corpus.version == CorpusVersion(major: 2, minor: 0, patch: 0))
     }
 
     @Test("provenance survives compilation")
@@ -93,7 +93,7 @@ struct RealCorpusTests {
         let deAT = try RealCorpus.locale("de_AT", chain: ["de_AT", "de", "en", "base"])
         // `country_code` lives only in `base`, three hops down the chain.
         let countries = try #require(deAT.composite("location.country_code"))
-        #expect(countries.rowCount == 249, "ISO 3166-1 officially assigned count")
+        #expect(countries.rowCount == 260, "ISO 3166-1 officially assigned count")
         #expect(try countries.fieldName(0) == "alpha2")
 
         // And a whole row stays internally consistent.

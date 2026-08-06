@@ -1,0 +1,22 @@
+{
+  "id": "faker-js",
+  "name": "@faker-js/faker (bootstrap)",
+  "license": "MIT",
+  "url": "https://github.com/faker-js/faker",
+  "version": "10.5.0",
+  "retrieved": "2026-07-26",
+  "note": [
+    "The bootstrap source, and the only one with no pinned artifact. It reads whatever",
+    "`Tools/extractor` last wrote, because it is being deleted rather than maintained --",
+    "pinning a hash to data on its way out would be ceremony without benefit.",
+    "",
+    "This is the lowest-precedence adapter. Every other adapter overrides it wherever",
+    "they overlap, so a field stops being faker-derived the moment something else covers",
+    "it, with no coordinating change anywhere. When coverage is complete the migration is",
+    "`rm adapters/faker-js.mjs` and this file.",
+    "",
+    "Its provenance is unaudited by construction: nothing in faker-js records where any",
+    "string came from. That is the reason for all of this, not an oversight to fix here."
+  ],
+  "artifacts": []
+}

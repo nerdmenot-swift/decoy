@@ -18,7 +18,7 @@ struct EmbeddedLocaleTests {
     func loadsFromBinary() {
         let corpus = DecoyLocaleEN.corpus
         #expect(corpus.stringCount > 20_000)
-        #expect(corpus.version == CorpusVersion(major: 1, minor: 0, patch: 0))
+        #expect(corpus.version == CorpusVersion(major: 2, minor: 0, patch: 0))
     }
 
     @Test("generation works straight out of the box")
@@ -48,7 +48,7 @@ struct EmbeddedLocaleTests {
 
         // Country codes live only in `base`, two hops away.
         let countries = try #require(locale.composite("location.country_code"))
-        #expect(countries.rowCount == 249)
+        #expect(countries.rowCount == 260, "every officially assigned ISO 3166-1 code")
     }
 
     @Test("locales produce locale-appropriate data")
