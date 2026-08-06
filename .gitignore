@@ -7,16 +7,12 @@ DerivedData/
 .swiftpm/
 Package.resolved
 
-# Extractor workspace
-node_modules/
-/Tools/extractor/out/
-
 # Adapter workspace. `out/` is regenerable from the adapters; `.cache/` holds verified
 # upstream tarballs, which are reproducible from the pinned integrity hashes.
 /Tools/adapters/out/
 /Tools/adapters/.cache/
 
-# Compiled corpus — a build artifact, reproducible from the extractor output.
+# Compiled corpus — a build artifact, reproducible from the adapters.
 # Revisit when per-locale targets need blobs committed for distribution.
 /Corpus/binary/
 

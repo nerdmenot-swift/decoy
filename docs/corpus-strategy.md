@@ -86,11 +86,12 @@ that built it and nowhere else. A hash mismatch aborts with the expected and act
 digests and instructions to verify and re-pin.
 
 `node run.mjs` produces the intermediate JSON; `decoy-compile-corpus` produces the
-binary. Nothing else writes data. `Tools/adapters` has **no npm dependencies**,
-deliberately: the mechanism for removing a dependency on someone else's package should
-not accumulate its own.
+binary. Nothing else writes data. There is **no package manifest and no dependency
+install** anywhere in the toolchain — every source, faker-js included, is a pinned
+tarball fetched into the gitignored cache. The mechanism for removing a dependency on
+someone else's package should not itself require a package manager.
 
-**Built so far** — five adapters, four sources, ~104k strings:
+**Built so far** — six adapters plus the bootstrap, six sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -99,13 +100,24 @@ not accumulate its own.
 | `iso-4217` | CLDR + SIX Group | Unicode-3.0 / facts | `finance.currency` (composite) in 72 locales |
 | `iana-tzdb` | tzdata 2026b | public domain | `location.time_zone`, `date.time_zone` |
 | `mime-types` | mime-db 1.54.0 | MIT | `system.mime_type` — 1,015 types with extensions |
+| `programming-languages` | Linguist 9.4.0 | MIT | `system.programming_language` — 533 languages |
+| `faker-js` | @faker-js/faker 10.5.0 | MIT | everything not yet covered, at lowest precedence |
 
-**faker-js is one producer among two, not yet an adapter.** `Tools/extractor` still
-writes the same intermediate shape, and the compiler reads either — manifest fields for
-the extractor are optional, with a synthesised faker-js source record as fallback. That
-is what lets faker be replaced one field at a time rather than in a single commit. It
-has not been converted into an adapter proper because there is no point: it is being
-deleted, not maintained.
+**faker-js is an adapter like any other, and the lowest-precedence one.** It is fetched
+as a pinned npm tarball into the gitignored cache and read by importing its ESM entry
+point directly — faker-js has zero runtime dependencies, so there is nothing to resolve.
+Nothing about faker-js is committed here, and no package manager is involved: the whole
+toolchain is plain `.mjs` files run by `node run.mjs`, with no package manifest at all.
+
+Because it declares `fallback`, every other adapter overrides it wherever they overlap.
+A field stops being faker-derived the moment something else covers it, with no
+coordinating change anywhere. The migration ends as `rm adapters/faker-js.mjs
+sources/faker-js.json`, and the adapter already handles its own absence.
+
+It also carries the one check that cannot outlive it: Decoy derives fallback chains from
+the locale roster rather than storing them, and the faker adapter asserts those derived
+chains against faker's own resolution for all 76 locales. When faker goes, the chain rule
+is asserted by nothing but its own tests. That is a real, and easily forgotten, cost.
 
 ### Provenance is per path — **Built**
 
@@ -380,7 +392,7 @@ Counts are not the quality bar.
 5. Frequency data (Census, SSA) populating the weight column — **not started**
 6. Generative models for names, with the safety filters above — **not started**
 7. Coverage gate in CI, and `decoy-validate` for contributions — **not started**
-8. Coverage gates reach threshold → delete `Tools/extractor`
+8. Coverage gates reach threshold → `rm adapters/faker-js.mjs sources/faker-js.json`
 
 Steps 4–6 are independent and can proceed in any order. Step 8 is a consequence, not a
 task.
@@ -401,13 +413,12 @@ Every corpus carries its own source records, so the authoritative answer is
 
 | Source | Licence | Obligation |
 |---|---|---|
-| [@faker-js/faker](https://github.com/faker-js/faker) | MIT | Retain notice. Ends when `Tools/extractor` is deleted. |
+| [@faker-js/faker](https://github.com/faker-js/faker) | MIT | Retain notice. Ends when the faker-js adapter is deleted. |
 | [Unicode CLDR](https://github.com/unicode-org/cldr-json) | Unicode-3.0 | Retain notice. |
 | [mime-db](https://github.com/jshttp/mime-db) | MIT | Retain notice. |
 | [IANA tzdb](https://www.iana.org/time-zones) | public domain | None. |
 | ISO 4217 registry (SIX Group) | facts | None asserted; see Decisions. |
 
-The faker-js obligation is the only temporary one, and it ends only when `Tools/extractor`
-is deleted *and* no derived data remains — the second condition being the one that is
-easy to forget. The upstream copyright notice is retained alongside the extracted data
-until then.
+The faker-js obligation is the only temporary one, and it ends only when the adapter is
+deleted *and* no derived data remains — the second condition being the one that is easy
+to forget.

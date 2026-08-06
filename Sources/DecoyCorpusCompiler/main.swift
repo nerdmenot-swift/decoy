@@ -1,9 +1,9 @@
 import Decoy
 import Foundation
 
-/// Compiles the extractor's JSON into one binary corpus per locale.
+/// Compiles the adapter pipeline's JSON into one binary corpus per locale.
 ///
-/// Usage: `decoy-compile-corpus <extractor-out-dir> <output-dir> [--corpus-version X.Y.Z]`
+/// Usage: `decoy-compile-corpus <adapters-out-dir> <output-dir> [--corpus-version X.Y.Z]`
 
 // MARK: - Arguments
 
@@ -50,7 +50,7 @@ func parseArguments() -> Options {
     }
 
     guard positional.count == 2 else {
-        fail("usage: decoy-compile-corpus <extractor-out-dir> <output-dir> [--corpus-version X.Y.Z]")
+        fail("usage: decoy-compile-corpus <adapters-out-dir> <output-dir> [--corpus-version X.Y.Z]")
     }
     var options = Options(
         input: URL(fileURLWithPath: positional[0]),
@@ -85,15 +85,13 @@ struct Manifest: Decodable {
 
     let locales: [String: Locale]
 
-    /// Emitted by `Tools/adapters`. Absent from the legacy faker-js extractor's output.
     let sources: [SourceRecord]?
-    /// locale -> path -> source id. Also adapters-only.
+    /// locale -> path -> source id.
     let attribution: [String: [String: String]]?
     let generatedAt: String?
 
-    // The faker-js extractor's fields. Optional so one compiler serves both producers
-    // while faker is being replaced adapter by adapter, rather than the switchover
-    // needing to happen in a single commit.
+    // Retained so a manifest written before faker-js became an adapter still compiles.
+    // Costs two optional fields and removes a reason to keep an old blob around.
     let fakerVersion: String?
     let extractedAt: String?
 
@@ -137,8 +135,8 @@ struct Manifest: Decodable {
 /// Walks a locale's JSON tree, emitting one index entry per leaf.
 ///
 /// Paths are dotted (`person.first_name.female`) and nesting is followed to any
-/// depth, so faker's `{ generic, female, male }` structure survives rather than being
-/// flattened into one pool — which is the whole reason Decoy vendors faker-js.
+/// depth, so the `{ generic, female, male }` shape survives rather than being flattened
+/// into one pool — which is what lets a name agree with the gender drawn beside it.
 struct LocaleCompiler {
     /// Path suffix under which an object node's own keys are stored.
     static let keysSuffix = "__keys"
@@ -321,7 +319,7 @@ let fileManager = FileManager.default
 
 let manifestURL = options.input.appendingPathComponent("manifest.json")
 guard let manifestData = try? Data(contentsOf: manifestURL) else {
-    fail("cannot read \(manifestURL.path) — run `npm run extract` in Tools/extractor first")
+    fail("cannot read \(manifestURL.path) — run `node run.mjs` in Tools/adapters first")
 }
 let manifest = try JSONDecoder().decode(Manifest.self, from: manifestData)
 

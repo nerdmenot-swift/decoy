@@ -1,11 +1,16 @@
 /**
  * Builds the intermediate corpus JSON from adapters.
  *
- * This is the replacement for Tools/extractor: the extractor dumps somebody else's
- * corpus, whereas this runs programs that derive data from pinned, citable primary
- * sources and records where every path came from. Both write the same shape, so the
- * Swift compiler downstream does not care which produced its input -- which is what lets
- * faker-js be deleted one field at a time rather than in one frightening commit.
+ * Every source, including the faker-js bootstrap, is a pinned artifact fetched by URL
+ * and verified against an integrity hash. Nothing is installed, nothing is vendored, and
+ * there is no package manifest -- these are plain `.mjs` files node runs directly, which
+ * is the whole toolchain.
+ *
+ * faker-js is one adapter among several and the lowest-precedence one, so it is deleted
+ * a field at a time as other adapters cover its ground rather than in one frightening
+ * commit.
+ *
+ * Run with `node run.mjs`.
  *
  * Output (regenerable, none of it committed):
  *   out/locales/<code>.json  nested definitions for one locale
@@ -139,6 +144,11 @@ async function main() {
   }
   adapters.sort((a, b) => (a.fallback ? 1 : 0) - (b.fallback ? 1 : 0))
 
+  // Chains are derived once and handed to adapters: the faker adapter checks them
+  // against faker's own resolution, which is the only independent confirmation the rule
+  // has while faker-js is still a source.
+  const chains = Object.fromEntries(locales.map((c) => [c, fallbackChain(c, rosterSet)]))
+
   const merged = {}       // code -> nested definitions
   const attribution = {}  // code -> { claimed path -> sourceId }
   const sources = new Map()
@@ -174,6 +184,7 @@ async function main() {
     const { contributions, stats } = await adapter.run({
       artifacts,
       locales,
+      chains,
       overrides: roster.cldr ?? {},
     })
 
@@ -243,7 +254,7 @@ async function main() {
     const ownStrings = countStrings(definitions)
     totalStrings += ownStrings
     manifest.locales[code] = {
-      chain: fallbackChain(code, rosterSet),
+      chain: chains[code],
       categories: Object.keys(definitions).sort(),
       ownStrings,
       paths: Object.keys(flat).sort(),
