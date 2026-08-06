@@ -50,6 +50,38 @@ public struct PersonFaker {
         faker.require("person.suffix")
     }
 
+    /// An ABO/Rh blood group.
+    ///
+    /// Uniform across the eight groups. Real frequencies vary widely by population — O+
+    /// is about 37% in the US and Rh-negative is rare across East Asia — so weighting
+    /// this correctly is per-locale data rather than a constant, and belongs with the
+    /// rest of the frequency work rather than baked in here.
+    public mutating func bloodType() -> String {
+        faker.pick(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"])
+    }
+
+    /// A US Social Security Number, `AAA-GG-SSSS`.
+    ///
+    /// US-specific, and named without a country prefix only because every other faker
+    /// does the same. The excluded ranges are real: area `000`, `666` and `900`-`999`
+    /// are never issued, nor is a `00` group or a `0000` serial, so a validator that
+    /// checks them accepts these.
+    ///
+    /// National identifiers for other countries are a per-country format problem and
+    /// are not built; see `docs/corpus-strategy.md`.
+    public mutating func ssn() -> String {
+        var area = faker.int(in: 1...899)
+        if area == 666 { area = 665 }
+        let group = faker.int(in: 1...99)
+        let serial = faker.int(in: 1...9999)
+
+        func pad(_ value: Int, _ width: Int) -> String {
+            let digits = String(value)
+            return String(repeating: "0", count: Swift.max(0, width - digits.count)) + digits
+        }
+        return "\(pad(area, 3))-\(pad(group, 2))-\(pad(serial, 4))"
+    }
+
     /// A full name assembled from the locale's own name pattern.
     ///
     /// Order and components are data, not code: `hu` puts the family name first, and
