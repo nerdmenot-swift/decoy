@@ -53,7 +53,7 @@ import DecoyLocaleDE
 
 let users = Forge<User>("user") { User() }
     .locale(DecoyLocaleDE.locale)
-    .rule(\.id)        { _ in UUID() }
+    .rule(\.id)        { $0.uuidV7Value() }                      // seeded, and sorts by row
     .rule(\.gender)    { $0.pick(Gender.allCases) }
     .rule(\.firstName) { f, u in f.person.firstName(u.gender) }  // agrees with gender
     .rule(unique: \.email) { $0.internet.email() }               // unique-constraint safe
@@ -96,7 +96,7 @@ cross-compiling against the Swift Static Linux SDK. Windows is best-effort.
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
 - [x] Node extractor: `@faker-js/faker` → JSON, with verified fallback chains
 - [x] JSON → binary corpus format + Swift reader
-- [x] 204 generators across 22 namespaces, including dates
+- [x] 210 generators across 24 namespaces, including dates and seeded UUIDs
 - [x] `base`, `en`, `de`, `ja` compiled in as per-locale modules
 - [ ] CI actually run (the workflow exists but has never executed)
 
