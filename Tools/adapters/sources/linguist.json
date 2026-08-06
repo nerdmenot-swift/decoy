@@ -1,0 +1,27 @@
+{
+  "id": "linguist",
+  "name": "linguist-languages 9.4.0",
+  "license": "MIT",
+  "url": "https://github.com/github-linguist/linguist",
+  "version": "9.4.0",
+  "retrieved": "2026-08-07",
+  "note": [
+    "GitHub Linguist is the language classifier behind syntax highlighting and language",
+    "statistics on every repository on GitHub, so its list is the closest thing to a",
+    "registry that programming languages have. There is no ISO body here -- the set is a",
+    "curated judgement -- but it is a *published, versioned, reviewed* judgement rather",
+    "than one made in this repository, which is the property that matters.",
+    "",
+    "Taken via the npm redistribution rather than linguist's own languages.yml, for two",
+    "reasons: GitHub's source tarballs are not byte-stable across regeneration, so there",
+    "is nothing durable to pin a hash to, and languages.yml would need a YAML parser",
+    "where this ships plain ES modules node imports natively."
+  ],
+  "artifacts": [
+    {
+      "name": "languages",
+      "url": "https://registry.npmjs.org/linguist-languages/-/linguist-languages-9.4.0.tgz",
+      "integrity": "sha512-mYnFVrsWg5Bex0Kl5EDcXhrjXZ5DqMlBDXo7EUWLMTLDpxbuHvgBb2aOvGWC5ZmMJ2HXEKJiuFie9NEs8NUMXg=="
+    }
+  ]
+}

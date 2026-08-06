@@ -96,7 +96,7 @@ cross-compiling against the Swift Static Linux SDK. Windows is best-effort.
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
 - [x] Node extractor: `@faker-js/faker` → JSON, with verified fallback chains
 - [x] JSON → binary corpus format + Swift reader
-- [x] 240 generators across 25 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
+- [x] 243 generators across 25 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
 - [x] `base`, `en`, `de`, `ja` compiled in as per-locale modules
 - [ ] CI actually run (the workflow exists but has never executed)
 

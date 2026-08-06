@@ -309,6 +309,58 @@ public struct SystemFaker {
         faker.require("system.mime_type.__keys")
     }
 
+    /// A programming language as a coherent `(name, extension, color)` row.
+    ///
+    /// Drawn as one row so the parts agree — independently you get Haskell with a `.rs`
+    /// extension in Go's blue. `color` is Linguist's assigned hex and is empty for the
+    /// languages it has not assigned one.
+    public mutating func programmingLanguage() -> [String: String] {
+        faker.drawRow("system.programming_language") ?? [:]
+    }
+
+    /// Just the name, for the common case.
+    public mutating func programmingLanguageName() -> String {
+        programmingLanguage()["name"] ?? ""
+    }
+
+    /// An identifier in the shape source code actually uses.
+    ///
+    /// Built from the locale's own words, so a German locale yields a German-looking
+    /// identifier — which is what code written by German speakers often contains, and
+    /// what makes a fixture exercise your Unicode handling rather than dodge it.
+    public mutating func variableName(_ style: NamingStyle = .camelCase) -> String {
+        let words = [faker.require("word.adjective"), faker.require("word.noun")]
+            .map { $0.filter(\.isLetter).lowercased() }
+            .filter { !$0.isEmpty }
+        guard !words.isEmpty else { return "value" }
+
+        func capitalized(_ value: String) -> String {
+            guard let first = value.first else { return value }
+            return first.uppercased() + value.dropFirst()
+        }
+
+        switch style {
+        case .camelCase:
+            return words[0] + words.dropFirst().map(capitalized).joined()
+        case .pascalCase:
+            return words.map(capitalized).joined()
+        case .snakeCase:
+            return words.joined(separator: "_")
+        case .kebabCase:
+            return words.joined(separator: "-")
+        case .screamingSnakeCase:
+            return words.joined(separator: "_").uppercased()
+        }
+    }
+
+    public enum NamingStyle: Sendable, CaseIterable {
+        case camelCase
+        case pascalCase
+        case snakeCase
+        case kebabCase
+        case screamingSnakeCase
+    }
+
     /// A file extension consistent with a randomly chosen MIME type.
     ///
     /// Drawn *through* the MIME type rather than from a flat list, so `.json` never
