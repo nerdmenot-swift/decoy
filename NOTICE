@@ -66,6 +66,8 @@ Unicode-3.0
 -----------
   cldr-48 — version 48.2.0, retrieved 2026-08-06
     https://github.com/unicode-org/cldr-json
+  unicode-emoji — version 16.0, retrieved 2026-08-08
+    https://www.unicode.org/Public/emoji/16.0/
     Licence: https://www.unicode.org/license.txt
 
 Unlicense

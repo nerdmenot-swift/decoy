@@ -1,0 +1,27 @@
+{
+  "id": "unicode-emoji",
+  "name": "Unicode Emoji 16.0 (emoji-test.txt)",
+  "license": "Unicode-3.0",
+  "url": "https://www.unicode.org/Public/emoji/16.0/",
+  "version": "16.0",
+  "retrieved": "2026-08-08",
+  "note": [
+    "The emoji standard itself, and one of the few authoritative sources that is properly",
+    "versioned: `Public/emoji/16.0/` is immutable, because Unicode publishes a new",
+    "directory per release rather than editing the last one in place. No mirror needed and",
+    "no serial to ignore -- the contrast with IANA's daily-regenerated root zone file is",
+    "the whole reason that one needed `ignoreLinesMatching`.",
+    "",
+    "`emoji-test.txt` carries the group and subgroup taxonomy alongside each sequence,",
+    "which is what makes the per-category paths reproducible rather than hand-assigned."
+  ],
+  "artifacts": [
+    {
+      "name": "emoji",
+      "format": "file",
+      "filename": "emoji-test.txt",
+      "url": "https://www.unicode.org/Public/emoji/16.0/emoji-test.txt",
+      "integrity": "sha512-91XUCjWgBbrRO91KGp6oAXJMSIy09W1/24szs1zXxlJ9FPII70tNVFNDpioSuu7UgMrRiZXrsS43ES8HIYRDXQ=="
+    }
+  ]
+}
