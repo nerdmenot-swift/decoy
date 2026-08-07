@@ -8,7 +8,7 @@ import Testing
 /// Exercises corpora compiled *into* the binary.
 ///
 /// Unlike `RealCorpusTests` these need no files on disk and no gate — which is the
-/// entire point. A published library cannot ask its users to run a Node extractor,
+/// entire point. A published library cannot ask its users to run the corpus pipeline,
 /// and `Bundle.module` is the platform-fragile mechanism this design set out to
 /// avoid.
 @Suite("Embedded locales")
@@ -18,7 +18,7 @@ struct EmbeddedLocaleTests {
     func loadsFromBinary() {
         let corpus = DecoyLocaleEN.corpus
         #expect(corpus.stringCount > 12_000)
-        #expect(corpus.version == CorpusVersion(major: 11, minor: 0, patch: 0))
+        #expect(corpus.version == DeclaredCorpusVersion.value)
     }
 
     @Test("generation works straight out of the box")

@@ -6,8 +6,14 @@ import Testing
 /// Tests against the actual compiled corpus rather than the built-in stub.
 ///
 /// The blobs are build artifacts, not committed, so these are skipped when absent
-/// rather than failing. `cd Tools/adapters && node run.mjs`, then
-/// `swift run decoy-compile-corpus Tools/adapters/out Corpus/binary --corpus-version 2.0.0`.
+/// rather than failing:
+///
+///     cd Tools/adapters && node run.mjs
+///     swift run decoy-compile-corpus Tools/adapters/out Corpus/binary
+///
+/// The version comes from `Tools/adapters/corpus-version.json`, so there is no flag to
+/// get wrong — an earlier revision of this comment documented a version that produced a
+/// corpus failing the assertion twenty lines below it.
 ///
 /// Loading from disk is a stopgap: there is no mechanism yet for embedding a corpus
 /// into a built binary without `Bundle.module`.
@@ -27,8 +33,8 @@ enum RealCorpus {
         return try Corpus(bytes: [UInt8](try Data(contentsOf: url)))
     }
 
-    /// Builds a locale with its fallback chain, mirroring what the extractor verified
-    /// against faker's own resolution.
+    /// Builds a locale with its fallback chain, mirroring what the faker-js adapter
+    /// verifies against faker's own resolution on every run.
     static func locale(_ code: String, chain: [String]) throws -> LocaleCorpus {
         LocaleCorpus(code: code, chain: try chain.map { try corpus($0) })
     }
@@ -44,7 +50,7 @@ struct RealCorpusTests {
     func englishLoads() throws {
         let corpus = try RealCorpus.corpus("en")
         #expect(corpus.stringCount > 12_000, "en should carry over 12k distinct strings")
-        #expect(corpus.version == CorpusVersion(major: 11, minor: 0, patch: 0))
+        #expect(corpus.version == DeclaredCorpusVersion.value)
     }
 
     @Test("provenance survives compilation")

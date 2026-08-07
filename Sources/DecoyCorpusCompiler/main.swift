@@ -4,13 +4,19 @@ import Foundation
 /// Compiles the adapter pipeline's JSON into one binary corpus per locale.
 ///
 /// Usage: `decoy-compile-corpus <adapters-out-dir> <output-dir> [--corpus-version X.Y.Z]`
+///
+/// The version comes from the manifest, which the pipeline fills from
+/// `Tools/adapters/corpus-version.json`. The flag is an override for one-off builds.
 
 // MARK: - Arguments
 
 struct Options {
     var input: URL
     var output: URL
-    var corpusVersion = CorpusVersion(major: 1, minor: 0, patch: 0)
+    /// Set from the manifest, which carries the version the pipeline declared.
+    /// `--corpus-version` overrides it; there is deliberately no default, because a
+    /// default is what let CI silently build 1.0.0 while the tests asserted 11.0.0.
+    var corpusVersion: CorpusVersion?
     /// Where to write generated Swift locale modules, if anywhere.
     var emitSwift: URL?
     /// Which locales to generate modules for. Their fallback chains are pulled in
@@ -56,7 +62,7 @@ func parseArguments() -> Options {
         input: URL(fileURLWithPath: positional[0]),
         output: URL(fileURLWithPath: positional[1])
     )
-    if let version { options.corpusVersion = version }
+    options.corpusVersion = version
     options.emitSwift = emitSwift
     options.swiftLocales = swiftLocales
     return options
@@ -85,6 +91,9 @@ struct Manifest: Decodable {
 
     let locales: [String: Locale]
 
+    /// Declared by the pipeline in `Tools/adapters/corpus-version.json`.
+    let corpusVersion: String?
+
     let sources: [SourceRecord]?
     /// locale -> path -> source id.
     let attribution: [String: [String: String]]?
@@ -107,6 +116,14 @@ struct Manifest: Decodable {
                 retrieved: extractedAt ?? "unknown"
             )
         ]
+    }
+
+    /// The version the pipeline declared, parsed.
+    var declaredCorpusVersion: CorpusVersion? {
+        guard let parts = corpusVersion?.split(separator: ".").compactMap({ UInt16($0) }),
+            parts.count == 3
+        else { return nil }
+        return CorpusVersion(major: parts[0], minor: parts[1], patch: parts[2])
     }
 
     /// A one-line provenance summary for generated source headers.
@@ -323,6 +340,18 @@ guard let manifestData = try? Data(contentsOf: manifestURL) else {
 }
 let manifest = try JSONDecoder().decode(Manifest.self, from: manifestData)
 
+/// The flag wins if given, otherwise the version the pipeline declared.
+///
+/// Refusing to guess is the point. A default here is exactly what let CI build a 1.0.0
+/// corpus while the tests asserted 11.0.0 — the mismatch surfaced as two failing
+/// assertions rather than as the missing input it actually was.
+guard let corpusVersion = options.corpusVersion ?? manifest.declaredCorpusVersion else {
+    fail(
+        "no corpus version: \(manifestURL.lastPathComponent) declares none and "
+            + "--corpus-version was not given. Set it in Tools/adapters/corpus-version.json."
+    )
+}
+
 try fileManager.createDirectory(at: options.output, withIntermediateDirectories: true)
 
 var totalBytes = 0
@@ -342,7 +371,7 @@ for code in codes {
 
     let root = try JSONDecoder().decode(JSONValue.self, from: data)
 
-    var builder = CorpusBuilder(version: options.corpusVersion)
+    var builder = CorpusBuilder(version: corpusVersion)
 
     // Every declared source is registered in every locale, whether or not that locale
     // draws on it. A few dozen bytes buys a stable source ID across the whole corpus,
@@ -373,7 +402,7 @@ for code in codes {
     // Every blob is read back before being written. A corpus that cannot be loaded
     // is worse than a build failure, because it surfaces at a user's first call.
     let verified = try Corpus(bytes: bytes)
-    guard verified.version == options.corpusVersion else {
+    guard verified.version == corpusVersion else {
         fail("\(code): verification read-back produced the wrong corpus version")
     }
 
@@ -471,7 +500,7 @@ if let swiftDirectory = options.emitSwift {
 }
 
 print("sources         : \(manifest.provenance)")
-print("corpus version  : \(options.corpusVersion)")
+print("corpus version  : \(corpusVersion)")
 print("locales compiled: \(codes.count)")
 print("JSON in         : \(totalJSON / 1024) KB")
 print("binary out      : \(totalBytes / 1024) KB")

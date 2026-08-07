@@ -128,6 +128,14 @@ function countStrings(value) {
 }
 
 async function main() {
+  // Declared in one file so the compiler, the tests and CI cannot disagree about it.
+  const corpusVersion = JSON.parse(
+    await readFile(join(here, 'corpus-version.json'), 'utf8'),
+  ).version
+  if (!/^\d+\.\d+\.\d+$/.test(corpusVersion)) {
+    throw new Error(`corpus-version.json holds '${corpusVersion}', which is not X.Y.Z`)
+  }
+
   const roster = JSON.parse(await readFile(join(here, 'locales.json'), 'utf8'))
   const locales = roster.locales
   const rosterSet = new Set(locales)
@@ -236,6 +244,7 @@ async function main() {
 
   const manifest = {
     generator: 'decoy adapters',
+    corpusVersion,
     generatedAt: new Date().toISOString().slice(0, 10),
     sources: [...sources.values()],
     locales: {},
@@ -265,6 +274,7 @@ async function main() {
   await writeFile(join(outDir, 'manifest.json'), JSON.stringify(manifest, null, 2))
 
   const covered = locales.filter((c) => (manifest.locales[c].ownStrings ?? 0) > 0)
+  console.log(`corpus version  : ${corpusVersion}`)
   console.log(`adapters run    : ${adapterFiles.length}`)
   console.log(`sources         : ${[...sources.keys()].join(', ')}`)
   console.log(`locales in out  : ${locales.length}`)
