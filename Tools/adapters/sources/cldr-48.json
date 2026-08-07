@@ -1,0 +1,49 @@
+{
+  "id": "cldr-48",
+  "name": "Unicode CLDR 48.2.0",
+  "license": "Unicode-3.0",
+  "url": "https://github.com/unicode-org/cldr-json",
+  "version": "48.2.0",
+  "retrieved": "2026-08-06",
+  "note": [
+    "CLDR is the reference data behind ICU, every major operating system's locale",
+    "handling, and ISO 3166-1's most widely deployed name translations. It is versioned,",
+    "permissively licensed, and published as immutable npm tarballs -- which is what",
+    "makes it pinnable by integrity hash rather than by hope.",
+    "",
+    "Two packages at the same CLDR version: cldr-core carries the ISO 3166-1 code",
+    "mappings, cldr-localenames-full carries territory names in every CLDR locale."
+  ],
+  "artifacts": [
+    {
+      "name": "core",
+      "url": "https://registry.npmjs.org/cldr-core/-/cldr-core-48.2.0.tgz",
+      "integrity": "sha512-zfmLothncSwfv2jlevoSrgI2VGgH8SDGHXst6jUEotHA8nq9Igeg9jzdJDFtBso9pgJuG89DK16TzrmZDdo2Bg=="
+    },
+    {
+      "name": "localenames",
+      "url": "https://registry.npmjs.org/cldr-localenames-full/-/cldr-localenames-full-48.2.0.tgz",
+      "integrity": "sha512-4o0paYDz0UXhfhChAVFkmVl2CP0YTSEqE6WrC0fNafaSC5u5DAXphxH3SZ1Ujczarikr8DToKZfiok6EqWLdNQ=="
+    },
+    {
+      "name": "numbers",
+      "url": "https://registry.npmjs.org/cldr-numbers-full/-/cldr-numbers-full-48.2.0.tgz",
+      "integrity": "sha512-0EQ+UkVDsyXOlxnWnL1RIENVZFqCnb04D1Yrku0obnOyttbuZz8tHmUd5c5AEvhGS/Gg2zI4fTaCm51LSGITog=="
+    },
+    {
+      "name": "units",
+      "url": "https://registry.npmjs.org/cldr-units-full/-/cldr-units-full-48.2.0.tgz",
+      "integrity": "sha512-BjDC7V46eeXzgalnIumrJ1XQDk8wJaOxNLME4hmkBT9Q0hnzxn3XgtavigPUwnljk7FxlNQW9Wx+hbFrARPrQg=="
+    },
+    {
+      "name": "subdivisions",
+      "url": "https://registry.npmjs.org/cldr-subdivisions-full/-/cldr-subdivisions-full-48.2.0.tgz",
+      "integrity": "sha512-UPGETKyPhuWAGZDNwN38KZA+mDrp7TDIyLoNqAdoZ9LUQxqChFx9AAsA4mZfeWdO5ev1hcRO4NIoBGzRwk6wHA=="
+    },
+    {
+      "name": "dates",
+      "url": "https://registry.npmjs.org/cldr-dates-full/-/cldr-dates-full-48.2.0.tgz",
+      "integrity": "sha512-zMrKvjMO414HDftLr6vKH1fNQHakFNe+F1h4S0eg+zmL4WRi9pI41fxB3UrTJDY42MEM87jCuAw/qlqCgYKcAQ=="
+    }
+  ]
+}

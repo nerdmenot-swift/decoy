@@ -131,8 +131,10 @@ cost more than one index per entry.
 
 Weights are stored as raw integers exactly as the source provides them; the reader
 normalises. faker-js already ships non-uniform weights (95, 99, 50, 49, 25, …) across
-136 arrays, so this column is populated from day one, and it is the same column that
-real frequency data (Census, SSA) will later fill.
+136 arrays, so this column is populated from day one, and it is the same column real
+frequency data fills: `person.last_name.generic` in `en` carries US Census surname
+counts, so a weighted draw reproduces the real Zipf distribution rather than a uniform
+one.
 
 ## Chunk 3 — Composite tables
 

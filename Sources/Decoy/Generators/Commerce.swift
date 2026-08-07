@@ -191,8 +191,30 @@ public struct FinanceFaker {
         return remainder
     }
 
+    /// A Bitcoin address.
+    ///
+    /// Delegates to ``CryptoFaker/bitcoinAddress()``. The former implementation built
+    /// `"1" + bothify(…)`, which emitted `0`, `O` and `I` — characters Base58 excludes —
+    /// and carried no checksum, so nothing that validated an address would accept one.
     public mutating func bitcoinAddress() -> String {
-        "1" + faker.bothify(String(repeating: "*", count: faker.int(in: 25...33)))
+        faker.crypto.bitcoinAddress()
+    }
+
+    /// An Employer Identification Number, `NN-NNNNNNN`.
+    ///
+    /// US-specific, like the IRS that issues it. The prefix is drawn from the campus
+    /// codes actually in use, so the result matches the validation most systems apply.
+    public mutating func ein() -> String {
+        let prefixes = [
+            "01", "02", "03", "04", "05", "06", "10", "11", "12", "13", "14", "15", "16",
+            "20", "21", "22", "23", "24", "25", "26", "27", "30", "31", "32", "33", "34",
+            "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47",
+            "48", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61",
+            "62", "63", "64", "65", "66", "67", "68", "71", "72", "73", "74", "75", "76",
+            "77", "80", "81", "82", "83", "84", "85", "86", "87", "88", "90", "91", "92",
+            "93", "94", "95", "98", "99",
+        ]
+        return faker.pick(prefixes) + "-" + faker.numerify("#######")
     }
 }
 

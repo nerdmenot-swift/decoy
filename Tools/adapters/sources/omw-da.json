@@ -1,0 +1,30 @@
+{
+  "id": "omw-da",
+  "name": "DanNet (OMW 2.0)",
+  "license": "WordNet-3.0",
+  "url": "https://omwn.org/",
+  "version": "2.0",
+  "retrieved": "2026-08-07",
+  "note": [
+    "One of the Open Multilingual Wordnet 2.0 release members, pinned individually because",
+    "licences differ per language and the corpus records one source per table. `decoy-inspect`",
+    "therefore reports the exact licence covering this language's word lists rather than an",
+    "umbrella that would be wrong for most of them.",
+    "",
+    "Only permissively licensed members are used. German (OdeNet), French (WOLF), Dutch,",
+    "Portuguese, Romanian, Slovak, Slovenian, Lithuanian and Arabic are all CC BY-SA or",
+    "CeCILL, and share-alike does not compose with Apache-2.0, so those locales fall through",
+    "to English rather than shipping data Decoy cannot license.",
+    "",
+    "GitHub *release assets* are immutable, unlike GitHub source tarballs, which is what",
+    "makes these pinnable at all."
+  ],
+  "artifacts": [
+    {
+      "name": "wn_da",
+      "format": "tar.xz",
+      "url": "https://github.com/omwn/omw-data/releases/download/v2.0/omw-da-2.0.tar.xz",
+      "integrity": "sha512-N63xVfdFTpXC7UOOIGpYQfTTCybHco+ODbc2RB3Z0asBmQYre3gdUZsnlkOWBKgGwFoyrFjcHei2YwLYeJFpFg=="
+    }
+  ]
+}

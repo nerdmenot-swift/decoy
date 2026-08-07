@@ -48,11 +48,44 @@ public struct LocationFaker {
         return faker.require("location.city_name")
     }
 
+    /// A city and the subdivision it is actually in, as one row.
+    ///
+    /// `city: "Boston", state: "CA"` passes most validators and is nonsense, and it is
+    /// what every faker produces, because the two are drawn independently. Drawing the
+    /// pair together is the only way they cannot disagree — and for a library aimed at
+    /// database seeding, `corpus-strategy.md` argues that matters more than referential
+    /// integrity does.
+    ///
+    /// `city()` and `state()` stay independent draws, because most rows want one or the
+    /// other and pairing them would halve the variety for no benefit.
+    public mutating func place() -> [String: String] {
+        faker.drawRow("location.place") ?? [:]
+    }
+
     public mutating func cityPrefix() -> String { faker.require("location.city_prefix") }
     public mutating func citySuffix() -> String { faker.require("location.city_suffix") }
     public mutating func county() -> String { faker.require("location.county") }
-    public mutating func state() -> String { faker.require("location.state") }
-    public mutating func stateAbbreviation() -> String { faker.require("location.state_abbr") }
+    /// A subdivision as a coherent `(name, abbr)` row.
+    ///
+    /// Drawn together so the parts agree. `state()` and `stateAbbreviation()` are
+    /// independent draws by design — they fill separate columns — but a row that must
+    /// hold both needs them from the same subdivision, and `Bavaria` paired with `HH`
+    /// passes most validators while being nonsense.
+    public mutating func stateRow() -> [String: String] {
+        faker.drawRow("location.state") ?? [:]
+    }
+
+    public mutating func state() -> String {
+        // Composite where an adapter supplied one, a plain list where the bootstrap
+        // corpus still does. Both shapes are live during the migration.
+        if let row = faker.drawRow("location.state"), let name = row["name"] { return name }
+        return faker.require("location.state")
+    }
+
+    public mutating func stateAbbreviation() -> String {
+        if let row = faker.drawRow("location.state"), let abbr = row["abbr"] { return abbr }
+        return faker.require("location.state_abbr")
+    }
     public mutating func country() -> String { faker.require("location.country") }
     public mutating func continent() -> String { faker.require("location.continent") }
     public mutating func timeZone() -> String { faker.require("location.time_zone") }

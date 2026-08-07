@@ -1,0 +1,27 @@
+{
+  "id": "airport-data",
+  "name": "airport-data 1.0.1 (OpenFlights-derived)",
+  "license": "Unlicense",
+  "url": "https://github.com/jbrooksuk/JSON-Airports",
+  "version": "1.0.1",
+  "retrieved": "2026-08-07",
+  "note": [
+    "IATA and ICAO airport codes are published identifiers, not a curated word list, which",
+    "is why `airline.airport` is sourced while airline and aircraft names are left to the",
+    "bootstrap: those are trademarks and no permissive registry publishes them.",
+    "",
+    "OurAirports is the fuller community database and is public domain, but it publishes a",
+    "continuously-updated CSV at an unversioned URL with no releases -- the same problem as",
+    "GeoNames dumps and the NHTSA API. This is a versioned, dependency-free npm release of",
+    "the OpenFlights data, pinnable by integrity hash. One layer removed, and verifiable.",
+    "",
+    "Unlicense is a public-domain dedication, so there is no attribution obligation."
+  ],
+  "artifacts": [
+    {
+      "name": "airports",
+      "url": "https://registry.npmjs.org/airport-data/-/airport-data-1.0.1.tgz",
+      "integrity": "sha512-Y3k2q5I/CwLKW1mul7ECRQQSEQpBm5jebmgutjO/DLbnBp6CG7jaKD58uu8O8HS0oip23TurO6czXBh5Cet9zg=="
+    }
+  ]
+}

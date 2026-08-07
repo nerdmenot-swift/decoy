@@ -3,9 +3,14 @@
 How Decoy's data is sourced, built, and improved — and how it stops depending on
 `@faker-js/faker`.
 
-> **Status:** design record, not yet implemented. The extractor exists; everything
-> from "Adapters" onward is planned. Written down so the reasoning survives outside
-> the conversation that produced it.
+> **Status:** partly implemented, and this document says which parts. The adapter
+> pipeline, provenance, coverage reporting and the coverage gate exist, and frequency
+> weighting is done for English surnames. The generative layer does not exist. Written
+> down so the reasoning survives outside the conversations that produced it — and kept
+> current, because a design record that has quietly stopped being true is worse than
+> none.
+>
+> Sections are marked **Built**, **Partly built**, or **Planned**.
 
 ---
 
@@ -63,33 +68,115 @@ Every faker's data model is *humans type lists into files*. Decoy's is different
 
 This is the whole strategy. Everything below follows from it.
 
-### Adapters, not data files
+### Adapters, not data files — **Built**
 
-The repository holds *programs*, not strings. Each adapter:
+`Tools/adapters/` holds *programs*, not strings:
 
-1. Pins a source URL and version
-2. Verifies a checksum, so a silently-changed upstream fails the build
-3. Transforms to the canonical intermediate form
-4. Emits provenance: source ID, license, retrieval date, transformation applied
+```
+sources/<id>.json      pinned descriptor: URL, integrity hash, licence, version
+adapters/<id>.mjs      the transform
+lib/sources.mjs        fetch, verify, cache, extract
+locales.json           the locale roster Decoy targets
+run.mjs                orchestrator → out/locales/*.json + manifest.json
+```
 
-`make corpus` produces the binary blob from adapters. Nothing else writes data.
+Each adapter declares one or more sources; each source pins every artifact to an SRI
+integrity hash. A cached artifact is **re-verified rather than trusted**, because a
+tampered cache would otherwise produce a corpus that passes every check on the machine
+that built it and nowhere else. A hash mismatch aborts with the expected and actual
+digests and instructions to verify and re-pin.
 
-**faker-js becomes one adapter among many** — the bootstrap one. It is not ripped out
-at release; it is deleted once other adapters cover the same fields. A frightening
-migration becomes `rm adapters/faker-js.js`.
+`node run.mjs` produces the intermediate JSON; `decoy-compile-corpus` produces the
+binary. Nothing else writes data. There is **no package manifest and no dependency
+install** anywhere in the toolchain — every source, faker-js included, is a pinned
+tarball fetched into the gitignored cache. The mechanism for removing a dependency on
+someone else's package should not itself require a package manager.
 
-### Coverage gates decide when that deletion is safe
+**Built so far** — sixteen adapters plus the bootstrap, twenty-six sources:
 
-A coverage matrix of locale × category × field, with CI that fails if dropping the
-faker-js adapter would take any locale below a declared threshold. "Can we drop
-faker-js yet?" stops being a judgement call and becomes a green check.
+| Adapter | Source | Licence | Fills |
+|---|---|---|---|
+| `iso-3166` | CLDR 48.2.0 | Unicode-3.0 | `location.country_code` (composite), `location.country` in 73 locales |
+| `iso-639` | CLDR 48.2.0 | Unicode-3.0 | `location.language` (composite) in 73 locales |
+| `iso-4217` | CLDR + SIX Group | Unicode-3.0 / facts | `finance.currency` (composite) in 72 locales |
+| `iana-tzdb` | tzdata 2026b | public domain | `location.time_zone`, `date.time_zone` |
+| `mime-types` | mime-db 1.54.0 | MIT | `system.mime_type` — 1,015 types with extensions |
+| `programming-languages` | Linguist 9.4.0 | MIT | `system.programming_language` — 533 languages |
+| `iana-tld` | IANA root zone 2026080600 | facts | `internet.domain_suffix` — 1,438 TLDs |
+| `periodic-table` | PubChem (NIH) | public domain | `science.chemical_element` (composite) |
+| `si-units` | CLDR 48.2.0 | Unicode-3.0 | `science.unit` (composite) in 74 locales |
+| `iso-3166-2` | CLDR 48.2.0 | Unicode-3.0 | `location.state` (composite) — 5,395 subdivisions, 200 countries |
+| `cldr-dates` | CLDR 48.2.0 | Unicode-3.0 | `date.month.*`, `date.weekday.*` in 74 locales |
+| `cities` | cities.json 1.1.61 (GeoNames) | CC BY 4.0 | `location.city_name`, `location.place` (composite) in 74 locales |
+| `us-surnames` | US Census 2010 | public domain | `person.last_name.generic` in `en` — 24,889 names, **weighted** |
+| `wordnet` | Open Multilingual Wordnet 2.0 | per language (see below) | `word.noun/verb/adjective/adverb` in 15 locales |
+| `persian-words` | Lilak 3.3 | Apache-2.0 | `lorem.word` in `fa` |
+| `airports` | airport-data 1.0.1 (OpenFlights) | Unlicense | `airline.airport` (composite) — 5,614 IATA-coded airports |
+| `faker-js` | @faker-js/faker 10.5.0 | MIT | everything not yet covered, at lowest precedence |
 
-The same matrix tells contributors exactly where the holes are, and lets Decoy warn
-users when a locale silently falls back to English for most fields.
+**faker-js is an adapter like any other, and the lowest-precedence one.** It is fetched
+as a pinned npm tarball into the gitignored cache and read by importing its ESM entry
+point directly — faker-js has zero runtime dependencies, so there is nothing to resolve.
+Nothing about faker-js is committed here, and no package manager is involved: the whole
+toolchain is plain `.mjs` files run by `node run.mjs`, with no package manifest at all.
+
+Because it declares `fallback`, every other adapter overrides it wherever they overlap.
+A field stops being faker-derived the moment something else covers it, with no
+coordinating change anywhere. The migration ends as `rm adapters/faker-js.mjs
+sources/faker-js.json`, and the adapter already handles its own absence.
+
+It also carries the one check that cannot outlive it: Decoy derives fallback chains from
+the locale roster rather than storing them, and the faker adapter asserts those derived
+chains against faker's own resolution for all 76 locales. When faker goes, the chain rule
+is asserted by nothing but its own tests. That is a real, and easily forgotten, cost.
+
+### Provenance is per path — **Built**
+
+The compiler registers every source the manifest declares and attributes each table to
+the source that supplied it, resolving by **nearest claimed ancestor**. That rule is not
+cosmetic: an adapter claims `system.mime_type` and the compiler then emits thousands of
+paths beneath it, none matching exactly. Exact matching credited all of them to
+whichever source happened to be registered first, silently mislabelling 2,036 paths in
+`base` — the kind of error nobody notices until a licence audit.
+
+**Known limitation.** The binary format stores one source ID per table, so a table merged
+from several sources is credited to the one its adapter names as primary. `iso-4217`
+takes names and symbols from CLDR and numeric codes from the ISO 4217 registry, and is
+attributed to CLDR. Every source is still registered in the corpus and listed in the
+manifest, so nothing is lost — the attribution is coarser than per-field. Making it
+exact is a format change and has not been judged worth one.
+
+### Coverage gates decide when deletion is safe — **Partly built**
+
+`decoy-inspect --coverage <dir>` reports **native** coverage per locale: what a locale
+defines itself, not what it resolves through the chain. The distinction is the whole
+point — a locale that resolves `person.first_name` only because English sits behind it
+would report as fully covered otherwise.
+
+Measured against the faker-derived corpus, this gave the first real size of the problem:
+
+| | |
+|---|---|
+| Median native coverage | 26% |
+| Locales under 30% native | 48 of 76 |
+| `ta_IN` | 7% (15 paths against `en`'s 190) |
+| `yo_NG` | 8% (17 paths) |
+
+**Roughly three quarters of what a non-English locale produces is English falling
+through the chain.** This is the "Tamil records named Jennifer Williams" failure, and it
+is much larger than the locale count suggests.
+
+Caveat on the denominator: 36 of `en`'s 190 paths are synthetic `__keys` tables the
+compiler emits so object keys are drawable, so the real denominator is ~154 and the
+percentages are slightly pessimistic. The ranking is unaffected.
+
+Still **planned**: CI that fails when a locale drops below a declared threshold, and a
+runtime warning when a locale falls back to English for most fields. The measurement
+exists; the gate does not.
 
 ---
 
-## The generative layer
+## The generative layer — **Planned**
 
 Strings are the wrong primitive for most categories. This is where Decoy stops needing
 anyone else's corpus at all.
@@ -118,12 +205,14 @@ that turns out to be real PII is a serious failure for a library like this.
 The split, therefore:
 
 - **Curated lists for what must be true** — ISO 3166/4217/639, IANA timezones and MIME
-  types, currencies. These are facts; generating them is wrong.
+  types, currencies. These are facts; generating them is wrong. *All of these are now
+  built; see the adapter table above.*
 - **Generative models for what need only be plausible** — people, streets, companies.
+  *None of these are built. This is the whole remaining cost of a faker-free v1.*
 
 ---
 
-## Statistical fidelity is the quality bar
+## Statistical fidelity is the quality bar — **Partly built**
 
 Replace "how many strings do we have" with "does our output match the real
 distribution".
@@ -138,6 +227,18 @@ it have suspiciously flat histograms.
 Public-domain frequency data exists (US Census surname files, SSA given names). Feeding
 real frequencies into the weight column the format already needs turns a uniform draw
 into a realistic one with **no API change** — `Faker.weighted(_:)` already exists.
+
+**Done for English surnames.** `person.last_name.generic` in `en` is 24,889 Census names
+carrying their real counts, against faker's 473 drawn uniformly. Measured over 100,000
+draws: Smith 1.11%, Johnson 0.83%, Williams 0.68%, and 17,178 distinct surnames in the
+tail. That is the first field in the corpus whose output distribution matches reality.
+
+**Not done for given names**, and blocked rather than unscheduled: ssa.gov returns 403 to
+every non-interactive request regardless of user agent, so the SSA baby-name data — which
+would supply first names with frequencies *and* by birth year, giving
+`firstName(bornIn: 1950)` — cannot be fetched by an adapter. It needs a fetchable mirror
+that is versioned enough to pin; a manual download would not do, because then the corpus
+could only be rebuilt on one machine.
 
 SSA data is also per birth year, which yields something no other library has:
 `firstName(bornIn: 1950)` returns an era-appropriate name rather than a contemporary one.
@@ -179,19 +280,73 @@ implementation detail.
 
 ---
 
-## Keeping it current
+## Adding to the corpus
 
-- **Automated upstream sync.** The extractor is re-runnable and verifies faker's
-  fallback chains against faker's own resolution. A scheduled CI job can diff a fresh
-  extract against the committed corpus and open a PR — inheriting upstream
-  contributions for free, for as long as the faker-js adapter exists.
-- **Contributions must cite a source.** A contribution is an adapter or a sourced
-  dataset, never a raw list pasted into a file. This is the single rule that prevents
+Three different questions hide inside "how do I add data", and they have different
+answers.
+
+**1. Data for your own project — Built.** Build a corpus at runtime and put it in front
+of the chain. No fork, no PR, no rebuild:
+
+```swift
+var b = CorpusBuilder(version: CorpusVersion(major: 1, minor: 0, patch: 0))
+let src = b.addSource(id: "my-skus", license: "proprietary", url: "",
+                      version: "1", retrieved: "2026-08-06")
+b.index("commerce.sku", stringTable: b.addStringTable(["A-100", "B-200"], source: src))
+let locale = DecoyLocaleEN.locale.overlaid(by: try Corpus(bytes: b.build()))
+```
+
+`overlaid(by:)` pushes it to the front, so it wins for the paths it defines and falls
+through for everything else. `CorpusBuilder` lives in the Foundation-free module rather
+than in the compiler precisely so this needs no Node and no fork.
+
+**2. A locale Decoy does not ship — Built.** Add the code to `Tools/adapters/locales.json`,
+run the adapters, then add a `Package.swift` entry. Chains are derived from the roster,
+not stored, so they cannot drift.
+
+**3. Contributing data back — Planned, and nothing exists yet.** There is no contribution
+format, no validation, and no documented path. While faker is still a producer this is
+survivable, because the corpus is regenerated wholesale. It stops being survivable the
+moment faker is deleted, because contribution then becomes the *only* way the corpus
+grows — with 48 locales under 30% native coverage.
+
+The intended shape, unchanged from the original design:
+
+- **Contributions must cite a source.** A contribution is an adapter plus a source
+  descriptor, never a raw list pasted into a file. This is the single rule that prevents
   Decoy's corpus from decaying into the thing it replaced.
-- **Automated plausibility checks** on contributions: script matches the locale, no
-  ASCII-only entries in a Cyrillic locale, no duplicates against existing data.
-- **User-supplied corpora** through the same binary format, registered at runtime, so
-  domain-specific data (medical codes, tickers, SKUs) needs no fork.
+- **Automated plausibility checks** — script matches the locale, no ASCII-only entries in
+  a Cyrillic locale, no duplicates against existing data, descriptor complete, checksum
+  verifies. A `decoy-validate` running in CI on every PR.
+
+`decoy-inspect` already provides the front half of that workflow: `--coverage` to find
+the holes, `--paths` to learn the naming convention, `--path` to see what shape existing
+data takes.
+
+### Discoverability — **Built**
+
+`Corpus.paths` enumerates every path a corpus defines, and `LocaleCorpus.nativePaths`
+distinguishes what a locale defines from what it inherits. Before this, `lookup(_:)`
+could retrieve a path only if the caller already knew it existed — the set of valid
+paths lived nowhere but in the generators' source, and coverage was unanswerable.
+
+It cost no format change: the index already interns each path string to confirm hash
+matches during lookup, so enumeration is a sequential walk of data that was there for
+other reasons.
+
+### Keeping upstream current
+
+Every source is pinned by integrity hash, so refreshing one is deliberate rather than
+automatic: bump the version in the descriptor, re-pin, and read the diff. That is the
+intended workflow, not a limitation — an upstream that changed under a pinned hash is
+exactly the event worth a human look.
+
+The faker-js adapter additionally verifies Decoy's derived fallback chains against
+faker's own resolution on every run, across all 76 locales. **That check does not
+outlive faker-js.** Chains are derived from the locale roster rather than stored, and
+faker is the only source that can independently confirm the rule; once its adapter is
+deleted the rule is asserted by nothing but its own tests. Easy to forget, and worth
+replacing before that day rather than after.
 
 ---
 
@@ -201,35 +356,115 @@ These are format requirements rather than later additions. The format need not
 *implement* the generative layer now, but if it cannot represent a model chunk, adding
 one later means re-cutting every blob and breaking every pinned corpus version.
 
-| Requirement | Consequence |
-|---|---|
-| Weights | A weight column alongside string tables |
-| Composite records | Heterogeneous field tuples, not parallel lists |
-| Provenance | A source/license table, referenced by ID |
-| Generative models | A model chunk type, not only string tables |
-| Corpus version + compatibility | Header fields, checked on load |
-| Cross-locale dedup | A shared string arena (21.2% redundancy measured) |
+All six are representable in format v2. Four are in use.
+
+| Requirement | Consequence | State |
+|---|---|---|
+| Weights | A weight column alongside string tables | **In use** — faker-derived patterns, and real Census frequencies for English surnames |
+| Composite records | Heterogeneous field tuples, not parallel lists | **In use** — countries, languages, currencies |
+| Provenance | A source/license table, referenced by ID | **In use** — 27 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
+| Generative models | A model chunk type, not only string tables | Chunk kind reserved; nothing emits one |
+| Corpus version + compatibility | Header fields, checked on load | **In use** |
+| Cross-locale dedup | A shared string arena (21.2% redundancy measured) | **In use** |
+
+---
+
+## Decisions on record
+
+Kept here because each was reasoned through once and would otherwise be re-litigated.
+
+**gofakeit is not a data source.** Its ~339 functions across 38 categories look like
+breadth, but the addressable surface is ~237: roughly 40 functions are trademark-exposed
+fandom (18 Minecraft, plus Celebrity/Movie/Book/Song/Beer), 57 are English grammar
+taxonomy that does not localize (`NounCollectivePeople`, `AdverbFrequencyIndefinite`),
+and 5 are reflection-based generation that Decoy rejects by design. Its localization is
+thin, so it adds nothing where Decoy's coverage is actually weak. **It is useful as a
+breadth spec** — read its function list to decide which namespaces to cover, then source
+each from a citable primary. Vendoring its data would just create a second corpus to
+delete.
+
+**Prefer the registry over a package, even when the package is easier to pin.** ISO 4217
+numeric codes were available from Debian `iso-codes` (LGPL-2.1) and from MIT npm mirrors.
+Both are copies of the SIX Group registry, and a copy adds a licence to comply with
+without adding authority. The registry publishes at an unversioned URL, which was the
+argument for a package — handled instead by pinning the integrity hash *and* asserting
+the document's self-declared `Pblshd` date, so a republication fails twice over.
+
+*Corollary:* extracting data from a copyleft source and omitting the reference is not a
+workaround. Obligations follow the distributed copy, not the build script, and it would
+defeat the provenance chunk's entire purpose. Where the underlying values are pure facts
+the right move is a source that grants permission openly, not a concealed one. Note the
+EU database right is a separate and more protective regime than US copyright.
+
+**One layer removed is acceptable when the primary cannot be verified.** `mime-db` was
+taken over IANA's media types registry because IANA publishes at unversioned URLs that
+change in place — an adapter reading it directly could not distinguish a legitimate
+update from a compromised response. One intermediary, in exchange for a supply chain that
+can actually be verified. Revisit if IANA ever publishes versioned snapshots.
+
+**`airline` was cut and then restored.** It went out with the domain vocabularies on the
+trademark argument — airline and aircraft names are real marks. But airports carry IATA
+and ICAO codes, which are published identifiers rather than a curated word list, so the
+"no registry, can never be re-sourced" test that killed `animal` and `food` did not apply.
+It is back with airports sourced from the registry and the trademark-bearing halves left
+to the bootstrap. The lesson is that the scope test has two independent clauses — *is it
+schema material* and *is it re-sourceable* — and a namespace can fail one while passing
+the other.
+
+**Emit fewer values when the extra ones are wrong.** Time zones went from 419 to 312 by
+reading `zone1970.tab` and ignoring `backward`: the surplus were deprecated aliases like
+`US/Eastern`, fine to parse but wrong to generate. Currencies are restricted to current
+legal tender, or fixtures would contain Deutsche Marks. MIME types without a file
+extension are dropped, since a drawn type with no extension falls through to `"bin"`.
+Counts are not the quality bar.
 
 ---
 
 ## Sequencing
 
-1. Binary format with all six requirements representable — **next**
-2. Core generators against the faker-js-derived corpus
-3. Authoritative reference adapters (ISO, IANA, GeoNames, NHTSA) replacing curated
-   fields where the data is factual
-4. Frequency data (Census, SSA) populating the weight column
-5. Generative models for names, with the safety filters above
-6. Coverage gates reach threshold → delete the faker-js adapter
+1. ~~Binary format with all six requirements representable~~ — **done** (format v2)
+2. ~~Core generators against the faker-derived corpus~~ — **done** (191 methods, 18 namespaces)
+3. ~~Corpus discoverability and coverage measurement~~ — **done** (`Corpus.paths`, `decoy-inspect`)
+4. Authoritative reference adapters replacing factual fields — **done for everything
+   with a pinnable registry**. Migrated: ISO 3166-1 and 3166-2, ISO 639, ISO 4217, IANA
+   tzdb, the IANA root zone, media types, Linguist, the periodic table, CLDR units and
+   CLDR date names.
 
-Steps 3–5 are independent and can proceed in any order. Step 6 is a consequence, not a
+   What remains has no pinnable source and needs a different mechanism rather than
+   another adapter: NHTSA publishes vehicle makes only as a live unversioned API, and
+   postcodes have ~200 national publishers rather than one.
+5. Frequency data (Census, SSA) populating the weight column — **not started**
+6. Generative models for names, with the safety filters above — **not started**
+7. Coverage gate in CI, and `decoy-validate` for contributions — **not started**
+8. Coverage gates reach threshold → `rm adapters/faker-js.mjs sources/faker-js.json`
+
+Steps 4–6 are independent and can proceed in any order. Step 8 is a consequence, not a
 task.
+
+**The honest remaining cost.** Everything migrated so far is from the factual bucket,
+where a published registry settles the answer. What is left — names, streets, cities,
+companies — is the expensive bucket, and it is most of the corpus by volume. Sixteen
+adapters now cover `base` almost entirely and roughly a third of `en`. A faker-free
+v1 means re-sourcing the rest, which is why steps 5 and 6 matter more than another
+registry adapter would.
 
 ---
 
-## Attribution while the bootstrap lasts
+## Attribution
 
-The corpus is currently derived from [@faker-js/faker](https://github.com/faker-js/faker),
-MIT licensed. The upstream copyright notice is retained alongside the extracted data.
-That obligation ends only when the faker-js adapter is deleted and no derived data
-remains.
+Every corpus carries its own source records, so the authoritative answer is
+`decoy-inspect <locale>.decoy` rather than this list. As shipped today:
+
+| Source | Licence | Obligation |
+|---|---|---|
+| [@faker-js/faker](https://github.com/faker-js/faker) | MIT | Retain notice. Ends when the faker-js adapter is deleted. |
+| [Unicode CLDR](https://github.com/unicode-org/cldr-json) | Unicode-3.0 | Retain notice. |
+| [mime-db](https://github.com/jshttp/mime-db) | MIT | Retain notice. |
+| [IANA tzdb](https://www.iana.org/time-zones) | public domain | None. |
+| [GeoNames](https://www.geonames.org/), via cities.json | CC BY 4.0 | **Attribution required wherever the corpus is distributed.** |
+| [Open Multilingual Wordnet](https://omwn.org/) — 15 members | Apache-2.0, MIT, CC BY 3.0, WordNet | Attribution required. Each language pinned separately; `decoy-inspect` reports the exact licence per locale. |
+| ISO 4217 registry (SIX Group) | facts | None asserted; see Decisions. |
+
+The faker-js obligation is the only temporary one, and it ends only when the adapter is
+deleted *and* no derived data remains — the second condition being the one that is easy
+to forget.

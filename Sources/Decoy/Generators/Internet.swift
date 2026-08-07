@@ -89,6 +89,25 @@ public struct InternetFaker {
         faker.pick(["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"])
     }
 
+    /// A gamertag, in the `AdjectiveNoun42` shape handles actually take.
+    ///
+    /// Built from the locale's own adjectives and nouns, so a German locale yields a
+    /// German-looking handle rather than an English one wearing a number.
+    public mutating func gamertag() -> String {
+        let adjective = faker.require("word.adjective")
+        let noun = faker.require("word.noun")
+
+        func capitalized(_ value: String) -> String {
+            guard let first = value.first else { return value }
+            return first.uppercased() + value.dropFirst()
+        }
+
+        let tag = capitalized(adjective) + capitalized(noun)
+        // Not every handle carries digits, and one that always did would be as obviously
+        // synthetic as one that never did.
+        return faker.bool(chance: 0.7) ? tag + String(faker.int(in: 1...9999)) : tag
+    }
+
     /// An HTTP status code, optionally restricted to a class.
     public mutating func httpStatusCode(_ category: HTTPStatusCategory? = nil) -> Int {
         let key = (category ?? faker.pick(HTTPStatusCategory.allCases)).corpusKey

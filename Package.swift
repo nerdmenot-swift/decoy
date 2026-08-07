@@ -7,7 +7,8 @@ import PackageDescription
 /// app needing German pays for `de`, `en` and `base`, not for all 76. Regenerate the
 /// sources with:
 ///
-///     swift run decoy-compile-corpus Tools/extractor/out Corpus/binary \
+///     node Tools/adapters/run.mjs
+///     swift run decoy-compile-corpus Tools/adapters/out Corpus/binary \
 ///       --emit-swift Sources --locales de,ja
 let locales: [(name: String, chain: [String])] = [
     ("Base", []),
@@ -44,21 +45,38 @@ let package = Package(
     products: [
         .library(name: "Decoy", targets: ["Decoy"]),
         .executable(name: "decoy-compile-corpus", targets: ["DecoyCorpusCompiler"]),
+        .executable(name: "decoy-inspect", targets: ["DecoyCorpusInspector"]),
     ] + localeProducts,
     targets: [
         .target(
             name: "Decoy",
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
+        // The build tools' testable core. Split out of the executables because a target
+        // with top-level code cannot be imported by tests, which left the attribution
+        // rule and the coverage gate -- the two things that must be right -- untestable.
+        .target(
+            name: "DecoyCorpusKit",
+            dependencies: ["Decoy"],
+            swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
         // A host build tool, so unlike the library it may use Foundation freely.
         .executableTarget(
             name: "DecoyCorpusCompiler",
-            dependencies: ["Decoy"],
+            dependencies: ["Decoy", "DecoyCorpusKit"],
+            swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
+        // Also host-only, and likewise free to use Foundation.
+        .executableTarget(
+            name: "DecoyCorpusInspector",
+            dependencies: ["Decoy", "DecoyCorpusKit"],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .testTarget(
             name: "DecoyTests",
-            dependencies: ["Decoy", "DecoyLocaleEN", "DecoyLocaleDE", "DecoyLocaleJA"],
+            dependencies: [
+                "Decoy", "DecoyCorpusKit", "DecoyLocaleEN", "DecoyLocaleDE", "DecoyLocaleJA",
+            ],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
     ] + localeTargets

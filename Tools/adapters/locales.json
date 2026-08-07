@@ -1,0 +1,35 @@
+{
+  "_comment": [
+    "The locales Decoy targets. This roster is Decoy's own decision and is not derived",
+    "from any upstream corpus -- it was seeded from the set faker-js happened to carry,",
+    "but adding or dropping a locale is now an edit here rather than a consequence of",
+    "somebody else's release. Fallback chains are derived from these codes by the rule",
+    "documented in run.mjs, not stored, so they cannot drift out of sync with the roster.",
+    "",
+    "`cldr` maps a Decoy code to its CLDR equivalent where the automatic rule (underscores",
+    "to hyphens, then strip trailing segments) gets it wrong. `null` means the locale has",
+    "no CLDR equivalent at all and adapters sourcing from CLDR should skip it."
+  ],
+  "locales": [
+    "af_ZA", "ar", "az", "base", "bn_BD", "cs_CZ", "cy", "da", "de", "de_AT",
+    "de_CH", "dv", "el", "en", "en_AU", "en_AU_ocker", "en_BORK", "en_CA", "en_GB",
+    "en_GH", "en_HK", "en_IE", "en_IN", "en_NG", "en_US", "en_ZA", "eo", "es",
+    "es_MX", "fa", "fi", "fr", "fr_BE", "fr_CA", "fr_CH", "fr_LU", "fr_SN", "he",
+    "hr", "hu", "hy", "id_ID", "it", "ja", "ka_GE", "ko", "ku_ckb", "ku_kmr_latin",
+    "lv", "mk", "mn_MN_cyrl", "nb_NO", "ne", "nl", "nl_BE", "pl", "pt_BR", "pt_PT",
+    "ro", "ro_MD", "ru", "sk", "sl_SI", "sr_RS_latin", "sv", "ta_IN", "th", "tr",
+    "uk", "ur", "uz_UZ_latin", "vi", "yo_NG", "zh_CN", "zh_TW", "zu_ZA"
+  ],
+  "cldr": {
+    "base": null,
+    "en_BORK": null,
+    "en_AU_ocker": "en-AU",
+    "ku_ckb": "ckb",
+    "ku_kmr_latin": "ku",
+    "mn_MN_cyrl": "mn",
+    "sr_RS_latin": "sr-Latn",
+    "uz_UZ_latin": "uz-Latn",
+    "zh_CN": "zh-Hans",
+    "zh_TW": "zh-Hant"
+  }
+}

@@ -100,6 +100,72 @@ public struct InstantFaker {
     public mutating func timeZone() -> String {
         faker.require("date.time_zone")
     }
+
+    // MARK: - Components
+    //
+    // Independent draws, not parts of one instant. `month()` and `dayOfMonth()` can
+    // return 2 and 31 in the same row, because nothing correlates them — they exist to
+    // fill a standalone integer column. When a row needs a real date, draw an instant
+    // with ``past(years:)`` or ``between(_:_:)`` and read `.civil` from it.
+
+    /// A year, by default within the century ending at the reference.
+    public mutating func year(in range: ClosedRange<Int>? = nil) -> Int {
+        let resolved = range ?? ((faker.reference.civil.year - 100)...faker.reference.civil.year)
+        return faker.int(in: resolved)
+    }
+
+    /// A month number, 1 through 12.
+    public mutating func month() -> Int { faker.int(in: 1...12) }
+
+    /// A day of the month, 1 through 31.
+    public mutating func dayOfMonth() -> Int { faker.int(in: 1...31) }
+
+    /// A day of the week, 0 for Sunday through 6 for Saturday.
+    ///
+    /// Matches ``Timestamp/weekday`` so the two can be compared without a conversion.
+    public mutating func dayOfWeek() -> Int { faker.int(in: 0...6) }
+
+    /// An hour on a 24-hour clock, 0 through 23.
+    public mutating func hour() -> Int { faker.int(in: 0...23) }
+
+    /// A minute or second, 0 through 59.
+    public mutating func minute() -> Int { faker.int(in: 0...59) }
+
+    /// `"AM"` or `"PM"`.
+    ///
+    /// Deliberately not localized: these are the C-locale designators that appear in log
+    /// formats and APIs. A localized form belongs with the rest of the date names in the
+    /// corpus, which does not carry day periods yet.
+    public mutating func amPm() -> String { faker.bool() ? "AM" : "PM" }
+
+    /// Unix time in seconds, for an instant within `years` of the reference.
+    public mutating func unix(years: Double = 30) -> Int64 {
+        let span = Int64(years * 365.25 * 86_400)
+        return offset(by: faker.rng.draw(in: -Int(span)...Int(span))).secondsSinceEpoch
+    }
+
+    /// A century as a Roman numeral, e.g. `"XXI"`.
+    public mutating func century() -> String {
+        // 1 through 21, so the range ends at the century the reference sits in rather
+        // than inventing future ones.
+        Self.roman(faker.int(in: 1...((faker.reference.civil.year - 1) / 100 + 1)))
+    }
+
+    private static func roman(_ value: Int) -> String {
+        let table: [(Int, String)] = [
+            (1000, "M"), (900, "CM"), (500, "D"), (400, "CD"), (100, "C"), (90, "XC"),
+            (50, "L"), (40, "XL"), (10, "X"), (9, "IX"), (5, "V"), (4, "IV"), (1, "I"),
+        ]
+        var remaining = value
+        var out = ""
+        for (magnitude, numeral) in table {
+            while remaining >= magnitude {
+                out += numeral
+                remaining -= magnitude
+            }
+        }
+        return out
+    }
 }
 
 // MARK: - Foundation-facing namespace
@@ -150,6 +216,22 @@ public struct InstantFaker {
         }
 
         public mutating func timeZone() -> String { faker.instant.timeZone() }
+
+        // Components return integers and plain strings rather than dates, so these are
+        // straight forwards. They exist here anyway: a caller working in the `date`
+        // namespace should not have to know that `instant` is where they live.
+
+        public mutating func year(in range: ClosedRange<Int>? = nil) -> Int {
+            faker.instant.year(in: range)
+        }
+        public mutating func month() -> Int { faker.instant.month() }
+        public mutating func dayOfMonth() -> Int { faker.instant.dayOfMonth() }
+        public mutating func dayOfWeek() -> Int { faker.instant.dayOfWeek() }
+        public mutating func hour() -> Int { faker.instant.hour() }
+        public mutating func minute() -> Int { faker.instant.minute() }
+        public mutating func amPm() -> String { faker.instant.amPm() }
+        public mutating func unix(years: Double = 30) -> Int64 { faker.instant.unix(years: years) }
+        public mutating func century() -> String { faker.instant.century() }
     }
 
 #endif

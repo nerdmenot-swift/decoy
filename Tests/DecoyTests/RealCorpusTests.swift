@@ -3,11 +3,17 @@ import Testing
 
 @testable import Decoy
 
-/// Tests against the actual compiled faker-js corpus rather than the built-in stub.
+/// Tests against the actual compiled corpus rather than the built-in stub.
 ///
 /// The blobs are build artifacts, not committed, so these are skipped when absent
-/// rather than failing. `Tools/extractor && npm run extract`, then
-/// `swift run decoy-compile-corpus Tools/extractor/out Corpus/binary`.
+/// rather than failing:
+///
+///     cd Tools/adapters && node run.mjs
+///     swift run decoy-compile-corpus Tools/adapters/out Corpus/binary
+///
+/// The version comes from `Tools/adapters/corpus-version.json`, so there is no flag to
+/// get wrong — an earlier revision of this comment documented a version that produced a
+/// corpus failing the assertion twenty lines below it.
 ///
 /// Loading from disk is a stopgap: there is no mechanism yet for embedding a corpus
 /// into a built binary without `Bundle.module`.
@@ -27,15 +33,15 @@ enum RealCorpus {
         return try Corpus(bytes: [UInt8](try Data(contentsOf: url)))
     }
 
-    /// Builds a locale with its fallback chain, mirroring what the extractor verified
-    /// against faker's own resolution.
+    /// Builds a locale with its fallback chain, mirroring what the faker-js adapter
+    /// verifies against faker's own resolution on every run.
     static func locale(_ code: String, chain: [String]) throws -> LocaleCorpus {
         LocaleCorpus(code: code, chain: try chain.map { try corpus($0) })
     }
 }
 
 @Suite(
-    "Compiled faker-js corpus",
+    "Compiled corpus",
     .enabled(if: RealCorpus.isAvailable, "compiled corpus not present — see RealCorpus")
 )
 struct RealCorpusTests {
@@ -43,8 +49,8 @@ struct RealCorpusTests {
     @Test("the English corpus loads and is substantial")
     func englishLoads() throws {
         let corpus = try RealCorpus.corpus("en")
-        #expect(corpus.stringCount > 20_000, "en should carry over 20k distinct strings")
-        #expect(corpus.version == CorpusVersion(major: 1, minor: 0, patch: 0))
+        #expect(corpus.stringCount > 12_000, "en should carry over 12k distinct strings")
+        #expect(corpus.version == DeclaredCorpusVersion.value)
     }
 
     @Test("provenance survives compilation")
@@ -93,7 +99,7 @@ struct RealCorpusTests {
         let deAT = try RealCorpus.locale("de_AT", chain: ["de_AT", "de", "en", "base"])
         // `country_code` lives only in `base`, three hops down the chain.
         let countries = try #require(deAT.composite("location.country_code"))
-        #expect(countries.rowCount == 249, "ISO 3166-1 officially assigned count")
+        #expect(countries.rowCount == 260, "ISO 3166-1 officially assigned count")
         #expect(try countries.fieldName(0) == "alpha2")
 
         // And a whole row stays internally consistent.

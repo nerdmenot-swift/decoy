@@ -5,7 +5,9 @@ fixtures.
 
 Reproducible by construction, portable across macOS, Linux, and Windows.
 
-> **Status: pre-alpha.** Nothing here is usable yet. See the v1 scope below.
+> **Status: pre-alpha.** The API and the corpus are both still moving, and the corpus
+> version will keep bumping — which changes the data a given seed produces. Usable, but
+> do not pin fixtures you cannot regenerate. See the v1 scope below.
 
 ## Why
 
@@ -37,6 +39,10 @@ and it has three problems Decoy exists to fix:
   arena + offset table) loaded once and sliced. Notably this avoids `Bundle.module`,
   the most platform-fragile part of SPM and a large share of Fakery's trouble off
   macOS.
+- **Every string carries its origin.** The corpus records which source and licence each
+  path came from, so `decoy-inspect` can answer "where did this come from" and generate
+  attribution from what actually shipped. No other faker records this, which is why none
+  of them can be audited or licensed with confidence.
 - **Typed key paths, no reflection anywhere.** Rules are `WritableKeyPath`s, so the
   value type of every rule is checked at compile time. Nothing in the library reflects
   on a type — which is why a `Forge` is named explicitly: deriving the seed from
@@ -53,7 +59,7 @@ import DecoyLocaleDE
 
 let users = Forge<User>("user") { User() }
     .locale(DecoyLocaleDE.locale)
-    .rule(\.id)        { _ in UUID() }
+    .rule(\.id)        { $0.uuidV7Value() }                      // seeded, and sorts by row
     .rule(\.gender)    { $0.pick(Gender.allCases) }
     .rule(\.firstName) { f, u in f.person.firstName(u.gender) }  // agrees with gender
     .rule(unique: \.email) { $0.internet.email() }               // unique-constraint safe
@@ -89,29 +95,81 @@ macOS, Linux, and Windows are all first-class targets; iOS/tvOS/watchOS/visionOS
 supported for app developers. Linux is verified both natively in CI and by
 cross-compiling against the Swift Static Linux SDK. Windows is best-effort.
 
+## The corpus is a build artifact
+
+No data is hand-edited, and none is committed. `Tools/adapters/` holds *programs* that
+derive the corpus from twenty-seven pinned upstreams — each fetched by URL, verified
+against an integrity hash, and recorded in the corpus with its licence:
+
+```
+Tools/adapters/
+  sources/<id>.json     pinned descriptor: URL, integrity hash, licence, version
+  adapters/<id>.mjs     the transform
+  locales.json          the locale roster
+  corpus-version.json   the corpus version, declared once
+  run.mjs               orchestrator
+```
+
+Rebuild it with `node Tools/adapters/run.mjs`, then `swift run decoy-compile-corpus`.
+There is no package manifest and nothing to install: they are plain `.mjs` files, and a
+toolchain built to remove a dependency should not need a package manager of its own.
+
+Countries, languages, currencies, time zones, media types, subdivisions, cities,
+programming languages, elements, units and English surnames come from registries — CLDR,
+IANA, the ISO 4217 registry, GeoNames, Linguist, PubChem, the US Census. Person names,
+streets and most vocabulary are still inherited from `@faker-js/faker`, which is the
+lowest-precedence adapter and is deleted a field at a time as others cover its ground.
+
+`decoy-inspect` audits any of it — every path, what a locale defines itself, and which
+source and licence covers each field:
+
+```
+swift run decoy-inspect Corpus/binary/en.decoy            # summary and provenance
+swift run decoy-inspect Corpus/binary/en.decoy --paths    # every path
+swift run decoy-inspect --coverage Corpus/binary          # native coverage per locale
+swift run decoy-inspect --notice Corpus/binary            # attribution, generated
+```
+
+See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
+[docs/corpus-format.md](docs/corpus-format.md) for the binary layout.
+
 ## v1 scope
 
 - [x] Multi-platform package skeleton, verified cross-compiling to Linux
 - [x] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
-- [x] Node extractor: `@faker-js/faker` → JSON, with verified fallback chains
+- [x] Adapter pipeline: 27 pinned sources, integrity-verified, provenance per path
 - [x] JSON → binary corpus format + Swift reader
-- [x] 204 generators across 22 namespaces, including dates
-- [x] `base`, `en`, `de`, `ja` compiled in as per-locale modules
-- [ ] CI actually run (the workflow exists but has never executed)
+- [x] 191 generators across 18 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
+- [x] All 76 locales compile; `base`, `en`, `de`, `ja` ship as Swift modules
+- [x] `decoy-inspect`: enumeration, coverage, generated attribution
+- [ ] CI actually run — the workflow is correct but this repository has no remote
 
 Deferred: strict-mode rule checking (needs a macro, and macro plugins are
-host-executed and historically awkward under cross-compilation), rule sets, the other
-70+ locales.
+host-executed and historically awkward under cross-compilation), rule sets, and Swift
+modules for the other 72 locales — all 76 compile to `.decoy`, but only four are
+embedded.
+
+Known gaps, blocked rather than unscheduled: given-name frequencies (ssa.gov refuses
+non-interactive requests), Dutch vocabulary (OpenTaal publishes no immutable artifact),
+postcodes and vehicle makes (no pinnable source), and streets and non-English person
+names, which need the generative layer described in the strategy doc.
 
 ## Attribution
 
-The data corpus is derived from [@faker-js/faker](https://github.com/faker-js/faker),
-MIT licensed, and the upstream copyright notice is retained in the vendored data
-directory. faker-js was chosen for the depth of its non-English data and because it
-models names as `{ generic, female, male }` rather than flat lists, which lets Decoy
-generate a coherent `(firstName, gender)` pair instead of contradicting itself.
+The corpus embeds data under CC BY 4.0, CC BY 3.0, the Princeton WordNet licence, MIT,
+Apache-2.0, the Unicode licence and the Unlicense. Several of those require attribution
+wherever the work is distributed.
+
+**[NOTICE](NOTICE) carries it**, and is generated from the provenance records embedded in
+the compiled corpus rather than maintained by hand — so it describes exactly what ships
+and cannot drift:
+
+```
+swift run decoy-inspect --notice Corpus/binary > NOTICE
+```
 
 ## License
 
-Apache 2.0. © NerdMeNot.
+Apache 2.0. © NerdMeNot. The corpus data is under the licences listed in
+[NOTICE](NOTICE).

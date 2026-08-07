@@ -18,16 +18,54 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 26
+
+      # Keyed on the source descriptors, so adding or re-pinning a source misses the
+      # cache and re-fetches. A hit still re-verifies every artifact against its
+      # integrity hash in lib/sources.mjs, so this costs nothing in safety.
+      - name: Cache pinned upstreams
+        uses: actions/cache@v4
+        with:
+          path: Tools/adapters/.cache
+          key: corpus-sources-${{ runner.os }}-${{ hashFiles('Tools/adapters/sources/*.json') }}
+
       - run: swift --version
       - run: swift build
-      # Without this the corpus integration tests skip rather than fail, so a
-      # regression in the extractor or compiler would go unnoticed.
+
+      # Without a compiled corpus the integration suites skip rather than fail, so a
+      # regression in an adapter or in the compiler would go unnoticed. No npm here by
+      # design: Tools/adapters has no manifest and no dependencies.
       - name: Build corpus
         run: |
-          npm ci --prefix Tools/extractor
-          node Tools/extractor/extract.js
-          swift run -c release decoy-compile-corpus Tools/extractor/out Corpus/binary
+          node Tools/adapters/run.mjs
+          swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary
+
       - run: swift test
+
+      # The four locale modules are committed Swift source generated from the corpus.
+      # Nothing ties them to the adapters that produce them, so an adapter change without
+      # a regeneration is invisible until someone's fixtures quietly differ.
+      - name: Locale modules are current
+        run: |
+          swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary \
+            --emit-swift Sources --locales de,ja
+          git diff --exit-code -- Sources/DecoyLocale* \
+            || { echo "::error::Locale modules are stale. Re-run with --emit-swift and commit."; exit 1; }
+
+      # Attribution is generated from the provenance records embedded in the blobs, so it
+      # cannot drift from what actually ships -- but only if it is regenerated.
+      - name: NOTICE is current
+        run: |
+          swift run -c release decoy-inspect --notice Corpus/binary > NOTICE
+          git diff --exit-code -- NOTICE \
+            || { echo "::error::NOTICE is stale. Regenerate with decoy-inspect --notice and commit."; exit 1; }
+
+      # A regression gate, not a quality bar. Fails when a locale carries less of its own
+      # data than the committed baseline, which is what an adapter silently dropping
+      # coverage looks like.
+      - name: Coverage has not regressed
+        run: |
+          swift run -c release decoy-inspect --coverage Corpus/binary \
+            --gate Corpus/coverage-baseline.json
 
   linux:
     name: Linux
@@ -38,17 +76,25 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 26
+
+      - name: Cache pinned upstreams
+        uses: actions/cache@v4
+        with:
+          path: Tools/adapters/.cache
+          key: corpus-sources-${{ runner.os }}-${{ hashFiles('Tools/adapters/sources/*.json') }}
+
       - run: swift --version
       - run: swift build
+
       - name: Build corpus
         run: |
-          npm ci --prefix Tools/extractor
-          node Tools/extractor/extract.js
-          swift run -c release decoy-compile-corpus Tools/extractor/out Corpus/binary
+          node Tools/adapters/run.mjs
+          swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary
+
       - run: swift test
 
-  # Best-effort. Swift on Windows is the least mature of the three toolchains;
-  # a failure here should prompt a portability fix, not block a release.
+  # Best-effort. Swift on Windows is the least mature of the three toolchains; a failure
+  # here should prompt a portability fix, not block a release.
   windows:
     name: Windows (best-effort)
     runs-on: windows-latest
@@ -59,6 +105,19 @@ jobs:
         with:
           branch: swift-6.3.3-release
           tag: 6.3.3-RELEASE
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+
       - run: swift --version
       - run: swift build
+
+      # This job used to run `swift test` with no corpus, so every suite gated on
+      # Corpus/binary skipped and Windows was only ever testing the built-in stub --
+      # which is exactly the platform where a byte-order or path assumption would show up.
+      - name: Build corpus
+        run: |
+          node Tools/adapters/run.mjs
+          swift run decoy-compile-corpus Tools/adapters/out Corpus/binary
+
       - run: swift test

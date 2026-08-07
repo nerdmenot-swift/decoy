@@ -1,0 +1,26 @@
+{
+  "id": "mime-db",
+  "name": "mime-db 1.54.0",
+  "license": "MIT",
+  "url": "https://github.com/jshttp/mime-db",
+  "version": "1.54.0",
+  "retrieved": "2026-08-06",
+  "note": [
+    "One layer removed from the primary source, and knowingly so. IANA's media types",
+    "registry is the authority, but it is published at unversioned URLs that change in",
+    "place -- there is nothing to pin an integrity hash to, so an adapter reading it",
+    "directly could not tell a legitimate registry update from a compromised response.",
+    "",
+    "mime-db is the reconciliation of the IANA registry with Apache's and nginx's mapping",
+    "files, published as immutable npm releases. Taking it means trusting one",
+    "intermediary in exchange for a supply chain that can actually be verified. Revisit",
+    "if IANA ever publishes versioned snapshots."
+  ],
+  "artifacts": [
+    {
+      "name": "db",
+      "url": "https://registry.npmjs.org/mime-db/-/mime-db-1.54.0.tgz",
+      "integrity": "sha512-aU5EJuIN2WDemCcAp2vFBfp/m4EAhWJnUNSSw0ixs7/kXbd6Pg64EmwJkNdFhB8aWt1sH2CTXrLxo/iAGV3oPQ=="
+    }
+  ]
+}
