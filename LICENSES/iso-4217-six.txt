@@ -1,0 +1,12 @@
+No licence text exists for this source, and that is a recorded conclusion rather
+than an omission.
+
+SIX Group is the ISO 4217 maintenance agency and publishes the currency code list
+free of charge. Decoy takes only the alphabetic-to-numeric code assignments —
+AFN is 971 because the registry says so. A code assignment is a fact with a
+single correct answer and no authorship subsists in it.
+
+This reasoning is weaker in the European Union, where the sui generis database
+right can subsist in a compilation independently of authorship. It is recorded
+here rather than buried so that anyone distributing Decoy in the EU can make
+their own assessment.

@@ -2,6 +2,7 @@
   "id": "cities-json",
   "name": "cities.json 1.1.61 (GeoNames-derived)",
   "license": "CC-BY-4.0",
+  "copyright": "Copyright GeoNames contributors",
   "url": "https://github.com/lutangar/cities.json",
   "version": "1.1.61",
   "retrieved": "2026-08-07",

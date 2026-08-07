@@ -1,0 +1,10 @@
+No licence text exists for this source, and that is a recorded conclusion rather
+than an omission.
+
+IANA operates the DNS root zone and publishes the list of delegated top-level
+domains as a matter of record. Which strings are delegated is a fact, not an
+authored work: there is no creative expression in the mapping and therefore
+nothing to license.
+
+Decoy takes only the delegated labels. It records IANA as the source, with the
+root zone serial seen when the content was last verified.

@@ -23,7 +23,7 @@ enum Command {
     case paths(URL, filter: String?)
     case values(URL, path: String)
     case coverage(URL, against: String, gate: URL?, writeGate: URL?)
-    case notice(URL)
+    case notice(URL, licenses: URL?)
 }
 
 func fail(_ message: String) -> Never {
@@ -39,7 +39,8 @@ let usage = """
       decoy-inspect --coverage <dir> [--against en]   native coverage per locale
       decoy-inspect --coverage <dir> --gate <file>    fail if coverage regressed
       decoy-inspect --coverage <dir> --write-gate <f>  record the current state as baseline
-      decoy-inspect --notice <dir>                    attribution for every source shipped
+      decoy-inspect --notice <dir> [--licenses LICENSES]
+                                                      attribution for every source shipped
     """
 
 func parse() -> Command {
@@ -48,6 +49,7 @@ func parse() -> Command {
     var singlePath: String?
     var coverageDirectory: URL?
     var noticeDirectory: URL?
+    var licensesDirectory: URL?
     var gate: URL?
     var writeGate: URL?
     var against = "en"
@@ -77,6 +79,10 @@ func parse() -> Command {
             guard i + 1 < args.count else { fail("--notice needs a directory") }
             noticeDirectory = URL(fileURLWithPath: args[i + 1])
             i += 2
+        case "--licenses":
+            guard i + 1 < args.count else { fail("--licenses needs a directory") }
+            licensesDirectory = URL(fileURLWithPath: args[i + 1])
+            i += 2
         case "--gate":
             guard i + 1 < args.count else { fail("--gate needs a baseline file") }
             gate = URL(fileURLWithPath: args[i + 1])
@@ -98,7 +104,7 @@ func parse() -> Command {
         }
     }
 
-    if let directory = noticeDirectory { return .notice(directory) }
+    if let directory = noticeDirectory { return .notice(directory, licenses: licensesDirectory) }
     if let directory = coverageDirectory {
         return .coverage(directory, against: against, gate: gate, writeGate: writeGate)
     }
@@ -421,7 +427,19 @@ func writeBaseline(_ baselineURL: URL, over files: [URL]) throws {
 /// licence, **and an indication that the material was modified**. Decoy's corpus is
 /// unambiguously modified — filtered, re-encoded into a binary format and deduplicated
 /// across locales — so that statement is stated once, prominently, rather than implied.
-func notice(_ directory: URL) throws {
+func notice(_ directory: URL, licenses licensesDirectory: URL?) throws {
+    // Which sources have their full text committed. MIT, the WordNet family and Unicode
+    // all require the text itself to travel with the distribution, so a link is not
+    // enough — but the text is per *source*, not per licence family: `omw-da` and
+    // `omw-nb` carry bespoke licences and `omw-fi` is dual, so a shared WordNet-3.0 file
+    // would be wrong for three of the eight sources filed under it.
+    let licenseTexts: Set<String> = {
+        guard let directory = licensesDirectory,
+            let names = try? FileManager.default.contentsOfDirectory(atPath: directory.path)
+        else { return [] }
+        return Set(names.filter { $0.hasSuffix(".txt") }.map { String($0.dropLast(4)) })
+    }()
+
     let files = (try? FileManager.default.contentsOfDirectory(
         at: directory, includingPropertiesForKeys: nil))?
         .filter { $0.pathExtension == "decoy" }
@@ -438,14 +456,34 @@ func notice(_ directory: URL) throws {
     var sources: [String: Source] = [:]
     for file in files {
         for source in try load(file).sources where sources[source.id] == nil {
+            // `CorpusBuilder` reserves source 0 so every table can reference something
+            // when provenance is unknown. Nothing is ever attributed to it, but printing
+            // it produced an empty licence heading over `unattributed — version ` in the
+            // one document whose whole job is saying where the data came from.
+            guard !source.license.isEmpty else { continue }
             sources[source.id] = source
+        }
+    }
+
+    // A source named here without its text is the failure this whole file exists to
+    // prevent: MIT, the WordNet family and Unicode all require the notice itself to
+    // travel with the distribution, and the four public-domain sources need a recorded
+    // reason rather than silence. Both live in `LICENSES/<id>.txt`, so one check covers
+    // them, and it fails the build rather than printing an incomplete NOTICE.
+    if licensesDirectory != nil {
+        let uncovered = sources.keys.filter { !licenseTexts.contains($0) }.sorted()
+        if !uncovered.isEmpty {
+            fail(
+                "no licence text or recorded reason for: \(uncovered.joined(separator: ", ")). "
+                    + "Add LICENSES/<id>.txt for each."
+            )
         }
     }
 
     print(
         """
         Decoy
-        Copyright NerdMeNot
+        Copyright 2026 Srinivas Iyer
 
         This product includes software developed at NerdMeNot, licensed under the Apache
         License, Version 2.0.
@@ -462,7 +500,11 @@ func notice(_ directory: URL) throws {
         This file is generated from the provenance records embedded in the compiled
         corpus, so it describes exactly what ships:
 
-            swift run decoy-inspect --notice Corpus/binary > NOTICE
+            swift run decoy-inspect --notice Corpus/binary --licenses LICENSES > NOTICE
+
+        Each source's full licence text is committed at `LICENSES/<source-id>.txt`. Where
+        a source carries no grant at all — a registry of facts, or a work of the US
+        government — that file records why, rather than leaving the absence unexplained.
 
         """
     )
@@ -476,7 +518,11 @@ func notice(_ directory: URL) throws {
         for source in grouped[license]!.sorted(by: { $0.id < $1.id }) {
             let retrieved = source.retrieved.isEmpty ? "" : ", retrieved \(source.retrieved)"
             print("  \(source.id) — version \(source.version)\(retrieved)")
+            // The holder is most of what MIT and CC BY actually ask for, and naming a
+            // licence without saying whose work it covers satisfies neither.
+            if !source.copyright.isEmpty { print("    \(source.copyright)") }
             if !source.url.isEmpty { print("    \(source.url)") }
+            if licenseTexts.contains(source.id) { print("    Full licence: LICENSES/\(source.id).txt") }
         }
         if let uri = licenseURI(license) { print("    Licence: \(uri)") }
         print("")
@@ -498,6 +544,14 @@ func licenseURI(_ license: String) -> String? {
     case "Unicode-3.0": "https://www.unicode.org/license.txt"
     case "WordNet-3.0": "https://wordnet.princeton.edu/license-and-commercial-use"
     case "Unlicense": "https://unlicense.org/"
+    // Two members are dual-licensed, so the expression gets its own entry rather than
+    // being filed under either half. The six `LicenseRef-` members deliberately get
+    // none: a bespoke licence has no canonical URI, and pointing at a project homepage
+    // would suggest terms live there that do not. `LICENSES/<id>.txt` is their pointer.
+    case "WordNet-3.0 AND CC-BY-3.0": "https://wordnet.princeton.edu/license-and-commercial-use"
+    // WordNet-SALDO's only rights statement reads `CC-BY attribution` with no version,
+    // so the reader is sent to the licence family rather than to a version nobody chose.
+    case "CC-BY": "https://creativecommons.org/licenses/"
     default: nil
     }
 }
@@ -510,5 +564,5 @@ case .paths(let url, let filter): try list(url, filter: filter)
 case .values(let url, let path): try values(url, path: path)
 case .coverage(let directory, let reference, let gate, let writeGate):
     try coverage(directory, against: reference, gate: gate, writeGate: writeGate)
-case .notice(let directory): try notice(directory)
+case .notice(let directory, let licenses): try notice(directory, licenses: licenses)
 }

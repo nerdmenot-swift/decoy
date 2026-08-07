@@ -1,5 +1,5 @@
 Decoy
-Copyright NerdMeNot
+Copyright 2026 Srinivas Iyer
 
 This product includes software developed at NerdMeNot, licensed under the Apache
 License, Version 2.0.
@@ -16,99 +16,175 @@ use of their material.
 This file is generated from the provenance records embedded in the compiled
 corpus, so it describes exactly what ships:
 
-    swift run decoy-inspect --notice Corpus/binary > NOTICE
+    swift run decoy-inspect --notice Corpus/binary --licenses LICENSES > NOTICE
 
-
-
-  unattributed — version 
+Each source's full licence text is committed at `LICENSES/<source-id>.txt`. Where
+a source carries no grant at all — a registry of facts, or a work of the US
+government — that file records why, rather than leaving the absence unexplained.
 
 Apache-2.0
 ----------
   lilak — version 3.3, retrieved 2026-08-07
+    Copyright 2015 Lilak contributors
     https://github.com/b00f/lilak
+    Full licence: LICENSES/lilak.txt
   omw-el — version 2.0, retrieved 2026-08-07
+    Copyright Greek Wordnet contributors
     https://omwn.org/
+    Full licence: LICENSES/omw-el.txt
     Licence: https://www.apache.org/licenses/LICENSE-2.0
+
+CC-BY
+-----
+  omw-sv — version 2.0, retrieved 2026-08-07
+    Copyright Språkbanken, University of Gothenburg
+    https://omwn.org/
+    Full licence: LICENSES/omw-sv.txt
+    Licence: https://creativecommons.org/licenses/
 
 CC-BY-3.0
 ---------
-  omw-es — version 2.0, retrieved 2026-08-07
-    https://omwn.org/
-  omw-fi — version 2.0, retrieved 2026-08-07
-    https://omwn.org/
   omw-hr — version 2.0, retrieved 2026-08-07
+    Copyright Croatian Wordnet contributors
     https://omwn.org/
+    Full licence: LICENSES/omw-hr.txt
   omw-it — version 2.0, retrieved 2026-08-07
+    Copyright MultiWordNet, Fondazione Bruno Kessler
     https://omwn.org/
-  omw-sv — version 2.0, retrieved 2026-08-07
-    https://omwn.org/
+    Full licence: LICENSES/omw-it.txt
     Licence: https://creativecommons.org/licenses/by/3.0/
 
 CC-BY-4.0
 ---------
   cities-json — version 1.1.61, retrieved 2026-08-07
+    Copyright GeoNames contributors
     https://github.com/lutangar/cities.json
+    Full licence: LICENSES/cities-json.txt
     Licence: https://creativecommons.org/licenses/by/4.0/
+
+LicenseRef-ChineseOpenWordNet
+-----------------------------
+  omw-cmn — version 2.0, retrieved 2026-08-07
+    Copyright 2013, 2014 Francis Bond, Shan Wang
+    https://omwn.org/
+    Full licence: LICENSES/omw-cmn.txt
+
+LicenseRef-DanNet-1.0
+---------------------
+  omw-da — version 2.0, retrieved 2026-08-07
+    Copyright 2009-12 by University of Copenhagen and Society for Danish Language and Literature
+    https://omwn.org/
+    Full licence: LICENSES/omw-da.txt
+
+LicenseRef-HebrewWordNet
+------------------------
+  omw-he — version 2.0, retrieved 2026-08-07
+    Copyright 2007 by Noam Ordan and Shuly Wintner
+    https://omwn.org/
+    Full licence: LICENSES/omw-he.txt
+
+LicenseRef-JapaneseWordNet
+--------------------------
+  omw-ja — version 2.0, retrieved 2026-08-07
+    Copyright 2009 by the National Institute of Information and Communications Technology
+    https://omwn.org/
+    Full licence: LICENSES/omw-ja.txt
+
+LicenseRef-NWN
+--------------
+  omw-nb — version 2.0, retrieved 2026-08-07
+    Copyright 2011-12 by The Norwegian Language Bank, The University of Copenhagen and The Society for Danish Language and Literature
+    https://omwn.org/
+    Full licence: LICENSES/omw-nb.txt
+
+LicenseRef-ThaiWordNet
+----------------------
+  omw-th — version 2.0, retrieved 2026-08-07
+    Copyright 2011 by the National Institute of Information and Communications Technology
+    https://omwn.org/
+    Full licence: LICENSES/omw-th.txt
 
 MIT
 ---
   faker-js — version 10.5.0, retrieved 2026-08-07
+    Copyright (c) 2022-2025 Faker contributors
     https://github.com/faker-js/faker
+    Full licence: LICENSES/faker-js.txt
   linguist — version 9.4.0, retrieved 2026-08-07
+    Copyright (c) Ika <ikatyang@gmail.com>; language data from GitHub Linguist contributors
     https://github.com/github-linguist/linguist
+    Full licence: LICENSES/linguist.txt
   mime-db — version 1.54.0, retrieved 2026-08-06
+    Copyright (c) 2014 Jonathan Ong; Copyright (c) 2015-2022 Douglas Christopher Wilson
     https://github.com/jshttp/mime-db
+    Full licence: LICENSES/mime-db.txt
   omw-id — version 2.0, retrieved 2026-08-07
+    Copyright (c) 2014-2015 Francis Bond, David Moeljadi and contributors
     https://omwn.org/
+    Full licence: LICENSES/omw-id.txt
     Licence: https://opensource.org/licenses/MIT
 
 Unicode-3.0
 -----------
   cldr-48 — version 48.2.0, retrieved 2026-08-06
+    Copyright © 2004-2026 Unicode, Inc.
     https://github.com/unicode-org/cldr-json
+    Full licence: LICENSES/cldr-48.txt
   unicode-emoji — version 16.0, retrieved 2026-08-08
+    Copyright © 1991-2024 Unicode, Inc.
     https://www.unicode.org/Public/emoji/16.0/
+    Full licence: LICENSES/unicode-emoji.txt
     Licence: https://www.unicode.org/license.txt
 
 Unlicense
 ---------
   airport-data — version 1.0.1, retrieved 2026-08-07
     https://github.com/jbrooksuk/JSON-Airports
+    Full licence: LICENSES/airport-data.txt
     Licence: https://unlicense.org/
 
 WordNet-3.0
 -----------
-  omw-cmn — version 2.0, retrieved 2026-08-07
-    https://omwn.org/
-  omw-da — version 2.0, retrieved 2026-08-07
-    https://omwn.org/
   omw-en — version 2.0, retrieved 2026-08-07
+    Copyright 2006 by Princeton University
     https://omwn.org/
-  omw-he — version 2.0, retrieved 2026-08-07
-    https://omwn.org/
-  omw-ja — version 2.0, retrieved 2026-08-07
-    https://omwn.org/
-  omw-nb — version 2.0, retrieved 2026-08-07
-    https://omwn.org/
+    Full licence: LICENSES/omw-en.txt
   omw-pl — version 2.0, retrieved 2026-08-07
+    Copyright 2006 by Princeton University; plWordNet by Wrocław University of Science and Technology
     https://omwn.org/
-  omw-th — version 2.0, retrieved 2026-08-07
+    Full licence: LICENSES/omw-pl.txt
+    Licence: https://wordnet.princeton.edu/license-and-commercial-use
+
+WordNet-3.0 AND CC-BY-3.0
+-------------------------
+  omw-es — version 2.0, retrieved 2026-08-07
+    Copyright Multilingual Central Repository, Universitat Politècnica de Catalunya
     https://omwn.org/
+    Full licence: LICENSES/omw-es.txt
+  omw-fi — version 2.0, retrieved 2026-08-07
+    Copyright 2006 by Princeton University; translations copyright University of Helsinki
+    https://omwn.org/
+    Full licence: LICENSES/omw-fi.txt
     Licence: https://wordnet.princeton.edu/license-and-commercial-use
 
 public-domain
 -------------
   iana-tzdb — version 2026b, retrieved 2026-08-06
     https://www.iana.org/time-zones
+    Full licence: LICENSES/iana-tzdb.txt
   pubchem — version 2026-08-07, retrieved 2026-08-07
     https://pubchem.ncbi.nlm.nih.gov/periodic-table/
+    Full licence: LICENSES/pubchem.txt
   us-census-surnames — version 2010, retrieved 2026-08-07
     https://www.census.gov/topics/population/genealogy/data/2010_surnames.html
+    Full licence: LICENSES/us-census-surnames.txt
 
 public-facts
 ------------
   iana-tld — version 2026080700, retrieved 2026-08-08
     https://www.iana.org/domains/root/db
+    Full licence: LICENSES/iana-tld.txt
   iso-4217-six — version 2026-01-01, retrieved 2026-08-06
     https://www.six-group.com/en/products-services/financial-information/data-standards.html
+    Full licence: LICENSES/iso-4217-six.txt
 

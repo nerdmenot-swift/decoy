@@ -2,6 +2,7 @@
   "id": "mime-db",
   "name": "mime-db 1.54.0",
   "license": "MIT",
+  "copyright": "Copyright (c) 2014 Jonathan Ong; Copyright (c) 2015-2022 Douglas Christopher Wilson",
   "url": "https://github.com/jshttp/mime-db",
   "version": "1.54.0",
   "retrieved": "2026-08-06",

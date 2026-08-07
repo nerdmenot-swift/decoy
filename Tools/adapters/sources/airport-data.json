@@ -2,6 +2,7 @@
   "id": "airport-data",
   "name": "airport-data 1.0.1 (OpenFlights-derived)",
   "license": "Unlicense",
+  "copyright": "",
   "url": "https://github.com/jbrooksuk/JSON-Airports",
   "version": "1.0.1",
   "retrieved": "2026-08-07",

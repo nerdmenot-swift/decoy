@@ -170,6 +170,10 @@ export function provenanceOf(descriptor) {
   return {
     id: descriptor.id,
     license: descriptor.license,
+    // Transcribed from the upstream's own licence file. Without it no MIT copyright
+    // line, CC BY creator attribution or WordNet-style notice can be emitted at all,
+    // because this is the only place a holder is ever recorded.
+    copyright: descriptor.copyright ?? '',
     url: descriptor.url,
     version: descriptor.version,
     retrieved: descriptor.retrieved,

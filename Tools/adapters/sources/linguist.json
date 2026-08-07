@@ -2,6 +2,7 @@
   "id": "linguist",
   "name": "linguist-languages 9.4.0",
   "license": "MIT",
+  "copyright": "Copyright (c) Ika <ikatyang@gmail.com>; language data from GitHub Linguist contributors",
   "url": "https://github.com/github-linguist/linguist",
   "version": "9.4.0",
   "retrieved": "2026-08-07",

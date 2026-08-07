@@ -2,6 +2,7 @@
   "id": "us-census-surnames",
   "name": "US Census 2010 surname file",
   "license": "public-domain",
+  "copyright": "",
   "url": "https://www.census.gov/topics/population/genealogy/data/2010_surnames.html",
   "version": "2010",
   "retrieved": "2026-08-07",

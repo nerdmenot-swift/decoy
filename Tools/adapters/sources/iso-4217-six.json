@@ -2,6 +2,7 @@
   "id": "iso-4217-six",
   "name": "ISO 4217 currency list (SIX Group), published 2026-01-01",
   "license": "public-facts",
+  "copyright": "",
   "url": "https://www.six-group.com/en/products-services/financial-information/data-standards.html",
   "version": "2026-01-01",
   "retrieved": "2026-08-06",

@@ -2,6 +2,7 @@
   "id": "iana-tld",
   "name": "IANA Root Zone Database",
   "license": "public-facts",
+  "copyright": "",
   "url": "https://www.iana.org/domains/root/db",
   "version": "2026080700",
   "retrieved": "2026-08-08",

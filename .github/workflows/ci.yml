@@ -55,9 +55,9 @@ jobs:
       # cannot drift from what actually ships -- but only if it is regenerated.
       - name: NOTICE is current
         run: |
-          swift run -c release decoy-inspect --notice Corpus/binary > NOTICE
+          swift run -c release decoy-inspect --notice Corpus/binary --licenses LICENSES > NOTICE
           git diff --exit-code -- NOTICE \
-            || { echo "::error::NOTICE is stale. Regenerate with decoy-inspect --notice and commit."; exit 1; }
+            || { echo "::error::NOTICE is stale. Regenerate with decoy-inspect --notice --licenses LICENSES and commit."; exit 1; }
 
       # A regression gate, not a quality bar. Fails when a locale carries less of its own
       # data than the committed baseline, which is what an adapter silently dropping

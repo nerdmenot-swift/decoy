@@ -17,13 +17,19 @@ public struct Manifest: Decodable {
     public struct SourceRecord: Decodable {
         public let id: String
         public let license: String
+        /// The upstream's own copyright line, verbatim. Empty where it states none.
+        public let copyright: String?
         public let url: String
         public let version: String
         public let retrieved: String
 
-        public init(id: String, license: String, url: String, version: String, retrieved: String) {
+        public init(
+            id: String, license: String, copyright: String? = nil,
+            url: String, version: String, retrieved: String
+        ) {
             self.id = id
             self.license = license
+            self.copyright = copyright
             self.url = url
             self.version = version
             self.retrieved = retrieved
@@ -130,6 +136,15 @@ public struct LocaleCompiler {
 
     public private(set) var stats = Stats()
 
+    /// The sources this locale's own tables were actually attributed to.
+    ///
+    /// Every locale's provenance chunk registers all twenty-eight sources, because the
+    /// blob records what the corpus was built from. That is right for the blob and wrong
+    /// for a module header: `DecoyLocaleJA` credited Lilak, a Persian spellchecker
+    /// dictionary that contributes nothing to Japanese, alongside twenty-six others it
+    /// never touches.
+    public private(set) var usedSourceIDs: Set<UInt32> = []
+
     /// Resolves a path to its source, falling back to the nearest claimed ancestor.
     ///
     /// An adapter claims `system.mime_type` and the compiler then emits hundreds of
@@ -157,6 +172,11 @@ public struct LocaleCompiler {
     }
 
     public mutating func emit(path: String, value: JSONValue, into builder: inout CorpusBuilder) {
+        // Recorded here rather than at each `addStringTable` call: every emission —
+        // scalar, array, weighted, composite and the recursive object walk — passes
+        // through this one method, so one line cannot fall out of step with five.
+        usedSourceIDs.insert(sourceID(for: path))
+
         switch value {
         case .null:
             // Recorded rather than omitted: an explicit null blocks locale fallback.

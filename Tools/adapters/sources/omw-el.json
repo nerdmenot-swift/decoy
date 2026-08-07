@@ -2,6 +2,7 @@
   "id": "omw-el",
   "name": "Greek Wordnet (OMW 2.0)",
   "license": "Apache-2.0",
+  "copyright": "Copyright Greek Wordnet contributors",
   "url": "https://omwn.org/",
   "version": "2.0",
   "retrieved": "2026-08-07",

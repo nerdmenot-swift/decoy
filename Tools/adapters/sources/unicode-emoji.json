@@ -2,6 +2,7 @@
   "id": "unicode-emoji",
   "name": "Unicode Emoji 16.0 (emoji-test.txt)",
   "license": "Unicode-3.0",
+  "copyright": "Copyright © 1991-2024 Unicode, Inc.",
   "url": "https://www.unicode.org/Public/emoji/16.0/",
   "version": "16.0",
   "retrieved": "2026-08-08",

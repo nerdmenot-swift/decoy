@@ -1,7 +1,8 @@
 {
   "id": "omw-sv",
   "name": "WordNet-SALDO (OMW 2.0)",
-  "license": "CC-BY-3.0",
+  "license": "CC-BY",
+  "copyright": "Copyright Språkbanken, University of Gothenburg",
   "url": "https://omwn.org/",
   "version": "2.0",
   "retrieved": "2026-08-07",

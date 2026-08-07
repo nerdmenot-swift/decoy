@@ -1,0 +1,27 @@
+WordNet-SALDO ships no licence file. Its only rights statement is the `dc:rights`
+field of the OLAC metadata record reproduced below, which reads `CC-BY attribution`
+-- naming neither a version nor a holder.
+
+That is why this source is recorded as bare `CC-BY` rather than `CC-BY-3.0` or
+`CC-BY-4.0`: pinning a version would assert terms the distributor never stated. The
+attribution obligation is discharged by naming Sprakbanken in the provenance record
+either way, since it is common to every CC BY version.
+
+<olac:olac>
+  <dc:title>WordNet-SALDO </dc:title>
+  <dcterms:alternative>wordnet-saldo</dcterms:alternative>
+  <dc:identifier>hdl:10794/4fc635e47910f6.64094218</dc:identifier>
+  <dc:description>A linking between SALDO senses and Core WordNet</dc:description>
+  <dc:type xsi:type="olac:linguistic-type" olac:code="lexicon"/>
+  <dc:language xsi:type="olac:language" olac:code="swe">Swedish</dc:language>
+  <dc:language xsi:type="olac:language" olac:code="eng">English</dc:language>
+  <dc:rights>CC-BY attribution</dc:rights>
+  <dc:references xsi:type="File">https://svn.spraakdata.gu.se/sb-arkiv/pub/lmf/wordnet-saldo/wordnet-saldo.xml</dc:references>
+  <dc:rights>CC-BY attribution</dc:rights>
+  <dc:references xsi:type="dcterms:URI">http://spraakbanken.gu.se/karp/</dc:references>
+  <dc:rights>CC-BY attribution</dc:rights>
+  <dc:references xsi:type="File">http://spraakbanken.gu.se/swe/resurs/wordnet-saldo</dc:references>
+  <dc:rights>CC-BY attribution</dc:rights>
+  <dc:references xsi:type="File">http://spraakbanken.gu.se/eng/resource/wordnet-saldo</dc:references>
+  <dc:extent>6989 entries</dc:extent>
+</olac:olac>

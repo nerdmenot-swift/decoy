@@ -1,7 +1,8 @@
 {
   "id": "omw-da",
   "name": "DanNet (OMW 2.0)",
-  "license": "WordNet-3.0",
+  "license": "LicenseRef-DanNet-1.0",
+  "copyright": "Copyright 2009-12 by University of Copenhagen and Society for Danish Language and Literature",
   "url": "https://omwn.org/",
   "version": "2.0",
   "retrieved": "2026-08-07",

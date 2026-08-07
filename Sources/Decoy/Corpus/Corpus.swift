@@ -245,7 +245,8 @@ public struct Corpus: Sendable {
             license: try arena.string(at: try reader.u32(at: base + 4)),
             url: try arena.string(at: try reader.u32(at: base + 8)),
             version: try arena.string(at: try reader.u32(at: base + 12)),
-            retrieved: try arena.string(at: try reader.u32(at: base + 16))
+            retrieved: try arena.string(at: try reader.u32(at: base + 16)),
+            copyright: try arena.string(at: try reader.u32(at: base + 20))
         )
     }
 
@@ -353,6 +354,13 @@ public struct Source: Sendable, Equatable {
     public let url: String
     public let version: String
     public let retrieved: String
+
+    /// The upstream's own copyright line, verbatim, or empty where it states none.
+    ///
+    /// Stored in the field the provenance chunk reserved from the start. Without it a
+    /// notice can name a licence but not whose work it covers, which is most of what MIT
+    /// and CC BY actually ask for.
+    public let copyright: String
 }
 
 /// One path in a corpus, as produced by ``Corpus/paths``.

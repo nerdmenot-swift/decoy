@@ -1,7 +1,8 @@
 {
   "id": "omw-nb",
   "name": "Norwegian Wordnet (Bokmal) (OMW 2.0)",
-  "license": "WordNet-3.0",
+  "license": "LicenseRef-NWN",
+  "copyright": "Copyright 2011-12 by The Norwegian Language Bank, The University of Copenhagen and The Society for Danish Language and Literature",
   "url": "https://omwn.org/",
   "version": "2.0",
   "retrieved": "2026-08-07",

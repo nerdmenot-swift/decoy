@@ -1,0 +1,9 @@
+The Croatian wordnet ships no separate licence file. What follows is the entire
+rights statement in the upstream distribution, reproduced verbatim -- it is short
+because upstream is short, not because anything was omitted here.
+
+Antoni Oliver Gonzalez  2015-05-19
+
+The Croation wordnet is licensed under CC BY 3
+
+The CC BY 3.0 terms it names are at https://creativecommons.org/licenses/by/3.0/.

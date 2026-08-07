@@ -1,0 +1,12 @@
+No licence text exists for this source, and that is a recorded conclusion rather
+than an omission.
+
+The 2010 Census surname file is a work of the United States Government, prepared
+by officers or employees of the US Census Bureau as part of their official
+duties. Under 17 U.S.C. 105 such works are not subject to copyright protection in
+the United States, so there is no grant to reproduce and no attribution
+obligation to discharge.
+
+Decoy nonetheless records the source, its version and its retrieval date in the
+corpus provenance, because being able to say where a value came from is useful
+independently of whether anyone requires it.

@@ -2,6 +2,7 @@
   "id": "faker-js",
   "name": "@faker-js/faker 10.5.0 (bootstrap)",
   "license": "MIT",
+  "copyright": "Copyright (c) 2022-2025 Faker contributors",
   "url": "https://github.com/faker-js/faker",
   "version": "10.5.0",
   "retrieved": "2026-08-07",

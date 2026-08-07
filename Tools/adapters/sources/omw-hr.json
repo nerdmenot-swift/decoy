@@ -2,6 +2,7 @@
   "id": "omw-hr",
   "name": "Croatian Wordnet (OMW 2.0)",
   "license": "CC-BY-3.0",
+  "copyright": "Copyright Croatian Wordnet contributors",
   "url": "https://omwn.org/",
   "version": "2.0",
   "retrieved": "2026-08-07",

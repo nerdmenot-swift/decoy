@@ -1,7 +1,8 @@
 {
   "id": "omw-ja",
   "name": "Japanese Wordnet (OMW 2.0)",
-  "license": "WordNet-3.0",
+  "license": "LicenseRef-JapaneseWordNet",
+  "copyright": "Copyright 2009 by the National Institute of Information and Communications Technology",
   "url": "https://omwn.org/",
   "version": "2.0",
   "retrieved": "2026-08-07",

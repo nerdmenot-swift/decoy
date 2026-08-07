@@ -2,6 +2,7 @@
   "id": "omw-en",
   "name": "Princeton WordNet (via OMW) (OMW 2.0)",
   "license": "WordNet-3.0",
+  "copyright": "Copyright 2006 by Princeton University",
   "url": "https://omwn.org/",
   "version": "2.0",
   "retrieved": "2026-08-07",

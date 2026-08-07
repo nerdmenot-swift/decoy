@@ -2,6 +2,7 @@
   "id": "iana-tzdb",
   "name": "IANA Time Zone Database 2026b",
   "license": "public-domain",
+  "copyright": "",
   "url": "https://www.iana.org/time-zones",
   "version": "2026b",
   "retrieved": "2026-08-06",

@@ -1,0 +1,14 @@
+No licence text exists for this source, and that is a recorded conclusion rather
+than an omission.
+
+PubChem is produced by the National Center for Biotechnology Information at the
+US National Library of Medicine. As a work of the United States Government it is
+not subject to copyright protection in the United States under 17 U.S.C. 105.
+
+Only the element name, symbol and atomic number are taken. Those are IUPAC
+assignments — facts with a single correct answer — and PubChem is used because
+IUPAC publishes them as prose and PDF with nothing machine-readable to fetch.
+
+Note that PubChem aggregates data deposited by third parties, which can carry
+their own terms. That does not reach the periodic table, which is why this source
+is scoped to it.

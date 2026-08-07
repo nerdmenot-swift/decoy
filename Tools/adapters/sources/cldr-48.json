@@ -2,6 +2,7 @@
   "id": "cldr-48",
   "name": "Unicode CLDR 48.2.0",
   "license": "Unicode-3.0",
+  "copyright": "Copyright © 2004-2026 Unicode, Inc.",
   "url": "https://github.com/unicode-org/cldr-json",
   "version": "48.2.0",
   "retrieved": "2026-08-06",

@@ -2,6 +2,7 @@
   "id": "omw-id",
   "name": "Wordnet Bahasa (Indonesian) (OMW 2.0)",
   "license": "MIT",
+  "copyright": "Copyright (c) 2014-2015 Francis Bond, David Moeljadi and contributors",
   "url": "https://omwn.org/",
   "version": "2.0",
   "retrieved": "2026-08-07",

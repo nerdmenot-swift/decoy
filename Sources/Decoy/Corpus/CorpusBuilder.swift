@@ -36,6 +36,7 @@ public struct CorpusBuilder {
         var url: UInt32
         var version: UInt32
         var retrieved: UInt32
+        var copyright: UInt32
     }
 
     private struct IndexEntry {
@@ -56,7 +57,8 @@ public struct CorpusBuilder {
                 license: intern(""),
                 url: intern(""),
                 version: intern(""),
-                retrieved: intern("")
+                retrieved: intern(""),
+                copyright: intern("")
             )
         )
     }
@@ -83,7 +85,8 @@ public struct CorpusBuilder {
         license: String,
         url: String,
         version: String,
-        retrieved: String
+        retrieved: String,
+        copyright: String = ""
     ) -> UInt32 {
         sources.append(
             SourceSpec(
@@ -91,7 +94,8 @@ public struct CorpusBuilder {
                 license: intern(license),
                 url: intern(url),
                 version: intern(version),
-                retrieved: intern(retrieved)
+                retrieved: intern(retrieved),
+                copyright: intern(copyright)
             )
         )
         return UInt32(sources.count - 1)
@@ -369,7 +373,10 @@ public struct CorpusBuilder {
             out.appendLE(source.url)
             out.appendLE(source.version)
             out.appendLE(source.retrieved)
-            out.appendLE(UInt32(0))  // reserved
+            // The slot the format reserved from the start. A copyright holder is what a
+            // licence notice actually needs, and it fits here without a version bump or
+            // a change to the 24-byte stride.
+            out.appendLE(source.copyright)
         }
         return out
     }

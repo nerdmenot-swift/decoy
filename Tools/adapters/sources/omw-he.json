@@ -1,7 +1,8 @@
 {
   "id": "omw-he",
   "name": "Hebrew Wordnet (OMW 2.0)",
-  "license": "WordNet-3.0",
+  "license": "LicenseRef-HebrewWordNet",
+  "copyright": "Copyright 2007 by Noam Ordan and Shuly Wintner",
   "url": "https://omwn.org/",
   "version": "2.0",
   "retrieved": "2026-08-07",

@@ -2,6 +2,7 @@
   "id": "pubchem",
   "name": "PubChem periodic table (NCBI/NIH)",
   "license": "public-domain",
+  "copyright": "",
   "url": "https://pubchem.ncbi.nlm.nih.gov/periodic-table/",
   "version": "2026-08-07",
   "retrieved": "2026-08-07",

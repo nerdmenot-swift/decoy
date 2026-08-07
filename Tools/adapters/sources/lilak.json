@@ -2,6 +2,7 @@
   "id": "lilak",
   "name": "Lilak Persian spell-checking dictionary 3.3",
   "license": "Apache-2.0",
+  "copyright": "Copyright 2015 Lilak contributors",
   "url": "https://github.com/b00f/lilak",
   "version": "3.3",
   "retrieved": "2026-08-07",
