@@ -91,7 +91,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — thirteen adapters plus the bootstrap, ten sources:
+**Built so far** — fourteen adapters plus the bootstrap, twenty-four sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -108,6 +108,7 @@ someone else's package should not itself require a package manager.
 | `cldr-dates` | CLDR 48.2.0 | Unicode-3.0 | `date.month.*`, `date.weekday.*` in 74 locales |
 | `cities` | cities.json 1.1.61 (GeoNames) | CC BY 4.0 | `location.city_name`, `location.place` (composite) in 74 locales |
 | `us-surnames` | US Census 2010 | public domain | `person.last_name.generic` in `en` — 24,889 names, **weighted** |
+| `wordnet` | Open Multilingual Wordnet 2.0 | per language (see below) | `word.noun/verb/adjective/adverb` in 15 locales |
 | `faker-js` | @faker-js/faker 10.5.0 | MIT | everything not yet covered, at lowest precedence |
 
 **faker-js is an adapter like any other, and the lowest-precedence one.** It is fetched
@@ -443,6 +444,7 @@ Every corpus carries its own source records, so the authoritative answer is
 | [mime-db](https://github.com/jshttp/mime-db) | MIT | Retain notice. |
 | [IANA tzdb](https://www.iana.org/time-zones) | public domain | None. |
 | [GeoNames](https://www.geonames.org/), via cities.json | CC BY 4.0 | **Attribution required wherever the corpus is distributed.** |
+| [Open Multilingual Wordnet](https://omwn.org/) — 15 members | Apache-2.0, MIT, CC BY 3.0, WordNet | Attribution required. Each language pinned separately; `decoy-inspect` reports the exact licence per locale. |
 | ISO 4217 registry (SIX Group) | facts | None asserted; see Decisions. |
 
 The faker-js obligation is the only temporary one, and it ends only when the adapter is

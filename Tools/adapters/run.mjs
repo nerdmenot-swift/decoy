@@ -181,7 +181,7 @@ async function main() {
     // just coarser than per-field. Splitting it would be a format change.
     const attributedTo = adapter.attributeTo ?? sourceIds[0]
 
-    const { contributions, stats } = await adapter.run({
+    const { contributions, stats, sourceByLocale } = await adapter.run({
       artifacts,
       locales,
       chains,
@@ -219,7 +219,7 @@ async function main() {
 
         // A real adapter's node replaces whatever sits there, whole.
         mergeOver(merged[code], fragment)
-        attribution[code][path] = attributedTo
+        attribution[code][path] = sourceByLocale?.[code] ?? attributedTo
       }
     }
 

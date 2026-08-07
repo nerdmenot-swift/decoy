@@ -55,7 +55,7 @@ async function acquire(sourceId, artifact) {
   const suffix =
     artifact.format === 'file'
       ? artifact.filename
-      : `${artifact.name}.${artifact.format === 'zip' ? 'zip' : 'tgz'}`
+      : `${artifact.name}.${{ zip: 'zip', 'tar.xz': 'tar.xz' }[artifact.format] ?? 'tgz'}`
   const cached = join(cacheDir, `${sourceId}-${suffix}`)
 
   if (await exists(cached)) {
@@ -99,6 +99,7 @@ async function extract(archive, destination, format) {
   // `tar` handles zip on macOS via libarchive but not with GNU tar on Linux, so zips go
   // through `unzip` explicitly rather than relying on which tar the host happens to have.
   if (format === 'zip') await run('unzip', ['-q', '-o', archive, '-d', destination])
+  else if (format === 'tar.xz') await run('tar', ['xJf', archive, '-C', destination])
   else await run('tar', ['xzf', archive, '-C', destination])
   return destination
 }
