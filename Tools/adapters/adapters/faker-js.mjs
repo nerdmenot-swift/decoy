@@ -121,6 +121,43 @@ function verifyChains(faker, chains, locales) {
   return mismatches
 }
 
+/**
+ * Tokens no generator can ever resolve, because the data behind them was cut from scope.
+ *
+ * The scope cut removed `animal`, `food` and the rest but left faker's patterns that
+ * reference them, so `commerce.product_description` shipped with holes in it and
+ * `company.name_pattern` in Japanese lost a component. `company.category` is worse: no
+ * locale defines it at all, in faker or here.
+ *
+ * A pattern is data, and a pattern referencing data that does not exist is broken data.
+ * Dropping it here is better than expanding it to a hole at runtime.
+ */
+const UNRESOLVABLE_TOKEN = /\{\{\s*(animal|food)\.|\{\{\s*company\.category\s*\}\}/
+
+/** Recursively drops pattern strings whose tokens cannot be satisfied. */
+function withoutBrokenPatterns(value, dropped) {
+  if (typeof value === 'string') {
+    return UNRESOLVABLE_TOKEN.test(value) ? undefined : value
+  }
+  if (Array.isArray(value)) {
+    const kept = value
+      .map((item) => withoutBrokenPatterns(item, dropped))
+      .filter((item) => item !== undefined)
+    dropped.count += value.length - kept.length
+    // An emptied list is worse than an absent one: `require` would trap on it.
+    return kept.length > 0 ? kept : undefined
+  }
+  if (value !== null && typeof value === 'object') {
+    const out = {}
+    for (const [key, inner] of Object.entries(value)) {
+      const next = withoutBrokenPatterns(inner, dropped)
+      if (next !== undefined) out[key] = next
+    }
+    return Object.keys(out).length > 0 ? out : undefined
+  }
+  return value
+}
+
 export async function run({ artifacts, locales, chains }) {
   const entry = pathToFileURL(join(artifacts.faker, 'package', 'dist', 'index.js'))
   const faker = await import(entry.href)
@@ -135,8 +172,9 @@ export async function run({ artifacts, locales, chains }) {
   }
 
   const contributions = {}
+  const dropped = { count: 0 }
   let categories = 0
-  let dropped = 0
+  let outOfScope = 0
 
   for (const code of locales) {
     const definitions = faker.allLocales[code]
@@ -148,11 +186,13 @@ export async function run({ artifacts, locales, chains }) {
       // compiling it would put paths like `metadata.title` in the corpus.
       if (category === 'metadata') continue
       if (OUT_OF_SCOPE.has(category)) {
-        dropped += 1
+        outOfScope += 1
         continue
       }
       if (value === null || typeof value !== 'object') continue
-      perLocale[category] = value
+      const cleaned = withoutBrokenPatterns(value, dropped)
+      if (cleaned === undefined) continue
+      perLocale[category] = cleaned
       categories += 1
     }
 
@@ -164,7 +204,8 @@ export async function run({ artifacts, locales, chains }) {
     stats: {
       locales: Object.keys(contributions).length,
       categories,
-      outOfScopeDropped: dropped,
+      outOfScopeDropped: outOfScope,
+      brokenPatternsDropped: dropped.count,
       chainsVerified: locales.length,
     },
   }

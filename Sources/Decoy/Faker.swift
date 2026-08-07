@@ -14,6 +14,23 @@ public struct Faker: Sendable {
     /// outside Decoy can participate in the same deterministic stream.
     public var rng: Xoshiro256StarStar
 
+    /// How many template expansions are currently on the stack.
+    ///
+    /// Internal because it is a recursion guard, not a knob. It has to live here rather
+    /// than as a parameter because a template token can resolve to a generator, and that
+    /// generator expands its own pattern from the top — so the depth has to survive
+    /// leaving and re-entering `expand`.
+    var expansionDepth = 0
+
+    /// Tokens still allowed in the current top-level expansion.
+    ///
+    /// Depth alone does not bound the *work*: a cyclic pattern re-expands its own result
+    /// at every level, so the retries multiply even though none of them recurses past the
+    /// cap. A self-referential pattern took 84 seconds under a depth-only guard. Real
+    /// corpora never come close to this budget — the deepest shipped pattern expands
+    /// about a dozen tokens.
+    var expansionBudget = 0
+
     /// The zero-based index of the row currently being generated.
     ///
     /// Useful for monotonic primary keys and collision-free derived values:

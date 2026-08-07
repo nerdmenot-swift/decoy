@@ -6,7 +6,10 @@ extension Faker {
     /// `location.street_address` expands `street_pattern`, which expands
     /// `person.firstName`. A cycle in contributed data would otherwise hang
     /// generation, so expansion is bounded rather than trusted.
-    private static let maxTemplateDepth = 8
+    static let maxTemplateDepth = 8
+
+    /// Tokens expandable in one top-level call, before expansion gives up.
+    static let maxTemplateTokens = 256
 
     /// Expands `{{token}}` placeholders, then applies `#`/`!`/`?` substitution.
     ///
@@ -15,6 +18,21 @@ extension Faker {
     /// {{location.street_suffix}}"`. Resolving them here is what makes that data
     /// usable rather than something every generator has to reimplement.
     public mutating func expand(_ template: String) -> String {
+        // Depth is carried on the Faker rather than only down the recursion, because a
+        // token can resolve to a *generator*, and that generator starts a fresh
+        // expansion of its own pattern. `de`'s street pattern is literally
+        // `{{location.street_name}}`, so a token mapping that name back to
+        // `streetName()` re-enters here forever — a stack overflow rather than a hang,
+        // which the local-only depth counter could never see.
+        expansionDepth += 1
+        defer { expansionDepth -= 1 }
+        guard expansionDepth <= Self.maxTemplateDepth else { return template }
+
+        // The budget spans the whole top-level expansion, including everything the
+        // generators it calls expand in turn, so cyclic data cannot multiply its way
+        // around the depth cap.
+        if expansionDepth == 1 { expansionBudget = Self.maxTemplateTokens }
+
         let expanded = expand(template, depth: 0)
         return numerify(expanded)
     }
@@ -55,6 +73,15 @@ extension Faker {
             }
 
             let token = String(characters[(i + 2)..<close]).trimmedASCIIWhitespace
+
+            guard expansionBudget > 0 else {
+                // Out of budget: emit the rest verbatim so a cycle is visible as leaked
+                // braces rather than silently truncated output.
+                out.append(contentsOf: characters[i...])
+                return out
+            }
+            expansionBudget -= 1
+
             out += expand(resolve(token) ?? "", depth: depth + 1)
             i = close + 2
         }
@@ -71,6 +98,10 @@ extension Faker {
     public mutating func resolve(_ token: some StringProtocol) -> String? {
         let name = String(token)
 
+        // `string.numeric(4)` and friends carry arguments. Tried first because the
+        // parenthesised form never matches a corpus path or a bare generator name.
+        if name.hasSuffix(")"), let value = resolveCall(name) { return value }
+
         if let value = resolveGenerator(name) { return value }
         if let value = draw(name) { return value }
 
@@ -86,7 +117,14 @@ extension Faker {
     }
 
     /// Tokens backed by a generator rather than by a single table.
+    ///
+    /// Refuses to re-enter once expansion is already at the depth cap. Returning the
+    /// unexpanded template at the cap is the right *output* — a cycle leaks visible braces
+    /// rather than vanishing — but letting a generator start a fresh expansion at every
+    /// level makes the retries exponential: a self-referential pattern took 56 seconds
+    /// before this guard, where the cap alone had only stopped it from crashing.
     private mutating func resolveGenerator(_ token: String) -> String? {
+        guard expansionDepth < Self.maxTemplateDepth else { return nil }
         switch token {
         case "person.firstName": return person.firstName()
         case "person.lastName": return person.lastName()
@@ -96,8 +134,12 @@ extension Faker {
         case "person.name": return person.fullName()
         case "person.jobTitle": return person.jobTitle()
         case "company.name": return company.name()
-        case "location.street_name", "location.streetName": return location.streetName()
-        case "location.city_name", "location.cityName": return location.city()
+        // Only the camelCase spellings map to generators. The snake_case forms are real
+        // corpus paths and must fall through to `draw`, or a pattern whose whole body is
+        // `{{location.street_name}}` resolves to the generator that expands that very
+        // pattern.
+        case "location.streetName": return location.streetName()
+        case "location.cityName": return location.city()
         case "location.buildingNumber": return location.buildingNumber()
         case "location.secondaryAddress": return location.secondaryAddress()
         case "location.streetAddress": return location.streetAddress()
@@ -111,8 +153,99 @@ extension Faker {
         case "word.adverb": return word.adverb()
         case "color.human": return color.human()
         case "finance.currencyName": return finance.currencyName()
+
+        // Aliases faker uses in its patterns that do not match a corpus path. Without
+        // these the token resolved to nil and `expand` substituted an empty string, so
+        // `location.streetAddress()` returned "791 " in English and "" in Japanese.
+        case "location.street": return location.streetName()
+        case "location.city": return location.city()
+        case "location.zipCode": return location.postcode()
+        // A composite, so `draw` cannot reach it; the row's `name` is what a pattern wants.
+        case "location.state": return location.stateRow()["name"] ?? ""
+        case "location.country": return location.country()
+        // The composite field is `code`, which snake-casing to `currency_code` misses.
+        case "finance.currencyCode": return finance.currencyCode()
+        // No corpus path at all: a transaction description wants a money figure.
+        case "finance.amount": return commerce.price()
+        case "company.catchPhrase": return company.catchPhrase()
+        case "system.semver": return system.semver()
+        // A group node rather than a table, so `draw` returns nil for the bare path.
+        case "internet.emoji": return internet.emoji()
         default: return nil
         }
+    }
+
+    /// Resolves faker's parenthesised helper tokens.
+    ///
+    /// faker's patterns call a handful of helpers inline — `{{string.numeric(4)}}`,
+    /// `{{number.int({"min":1,"max":9})}}`, `{{helpers.arrayElement(["5.1","5.2"])}}`.
+    /// They are 90 of the tokens in the shipped corpus, and every one of them used to
+    /// expand to nothing: user agents came out as `AppleWebKit/..` and transaction
+    /// descriptions as `a deposit for  at`.
+    ///
+    /// Deliberately a small fixed grammar rather than a general expression evaluator.
+    /// These three shapes are all faker emits, and anything more would be a scripting
+    /// language embedded in a data file.
+    private mutating func resolveCall(_ token: String) -> String? {
+        guard let open = token.firstIndex(of: "("), token.hasSuffix(")") else { return nil }
+        let name = String(token[token.startIndex..<open])
+        let arguments = String(token[token.index(after: open)..<token.index(before: token.endIndex)])
+            .trimmedASCIIWhitespace
+
+        switch name {
+        case "string.numeric":
+            let count = Int(arguments) ?? 1
+            return numerify(String(repeating: "#", count: Swift.max(0, count)))
+
+        case "number.int":
+            // `{"min": 1, "max": 9}` — read by scanning for the two keys rather than by
+            // parsing JSON, because the corpus reader imports nothing and a brace-object
+            // parser here would be a second, worse JSON implementation.
+            let low = Self.jsonNumber(named: "min", in: arguments) ?? 0
+            let high = Self.jsonNumber(named: "max", in: arguments) ?? low
+            return String(int(in: Swift.min(low, high)...Swift.max(low, high)))
+
+        case "helpers.arrayElement":
+            let items = Self.quotedStrings(in: arguments)
+            guard !items.isEmpty else { return nil }
+            return pick(items)
+
+        default:
+            return nil
+        }
+    }
+
+    /// Reads `"key": 123` out of a brace object without parsing it.
+    static func jsonNumber(named key: String, in text: String) -> Int? {
+        guard let range = text.range(of: "\"\(key)\"") else { return nil }
+        var digits = ""
+        var seenColon = false
+        for character in text[range.upperBound...] {
+            if character == ":" { seenColon = true; continue }
+            guard seenColon else { continue }
+            if character == "-" && digits.isEmpty { digits.append(character); continue }
+            if character.isNumber { digits.append(character); continue }
+            if !digits.isEmpty { break }
+            if character == " " { continue }
+            break
+        }
+        return Int(digits)
+    }
+
+    /// Every double-quoted item in a bracket list.
+    static func quotedStrings(in text: String) -> [String] {
+        var items: [String] = []
+        var current = ""
+        var inside = false
+        for character in text {
+            if character == "\"" {
+                if inside { items.append(current); current = "" }
+                inside.toggle()
+                continue
+            }
+            if inside { current.append(character) }
+        }
+        return items
     }
 
     /// Whether the string contains `{{`.
