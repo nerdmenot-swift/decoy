@@ -45,6 +45,25 @@ public struct LocaleCorpus: Sendable {
         return nil
     }
 
+    /// Whether the chain declares `path` deliberately empty.
+    ///
+    /// ``resolve(_:)`` flattens "this locale says there is nothing here" and "nobody has
+    /// this at all" into the same `nil`, which is right for drawing a value and wrong for
+    /// deciding what to do about it. The first is a fact about the language and should
+    /// yield an empty string; the second is a build error and should fail loudly.
+    ///
+    /// Six locales declare `person.suffix` empty and four declare the city affixes empty,
+    /// so without this distinction `person.suffix()` traps on ordinary Russian or Italian
+    /// records.
+    public func declaresEmpty(_ path: String) -> Bool {
+        for corpus in chain {
+            guard let entry = try? corpus.lookup(path) else { continue }
+            if case .explicitlyEmpty = entry { return true }
+            return false
+        }
+        return false
+    }
+
     /// The string table at `path`, if the chain has one.
     public func strings(_ path: String) -> StringTable? {
         guard case .strings(let table)? = resolve(path) else { return nil }

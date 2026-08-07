@@ -124,6 +124,14 @@ public struct PersonFaker {
     /// Draws from `<path>.<gender>`, falling back to `<path>.generic` and then to the
     /// bare path, which is the shape locales without a gender split use.
     private mutating func gendered(_ path: String, _ gender: Gender?) -> String {
+        // Asked before the children, not after. A locale declaring `person.prefix` empty
+        // is saying it has no honorifics at all, but the children are asked first and
+        // `az` defines none of them, so the walk used to continue into English and put
+        // "Dr." on an Azeri record — the exact failure `explicitlyEmpty` exists to
+        // prevent, cited as its reason for being in four separate files. The declaration
+        // lives on the parent path, so the parent has to be consulted first.
+        if faker.locale.declaresEmpty(path) { return "" }
+
         switch gender {
         case .female:
             if let value = faker.draw("\(path).female") { return value }

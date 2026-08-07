@@ -78,14 +78,20 @@ public struct Faker: Sendable {
     /// locale, or a corpus that was never compiled — so it fails loudly rather than
     /// silently substituting English and leaving the problem to be noticed by a native
     /// speaker looking at production-shaped fixtures.
+    ///
+    /// A locale that *declares* the field empty is a different thing entirely, and yields
+    /// `""`. Azerbaijani has no name prefixes and Russian no name suffixes; that is a fact
+    /// about the language, not a build error, and there is nothing the caller could fix.
+    /// A full name assembled from parts simply gets nothing appended, which is the correct
+    /// rendering.
     public mutating func require(_ path: String) -> String {
-        guard let value = draw(path) else {
-            preconditionFailure(
-                "Decoy: locale '\(locale.code)' has no data for '\(path)'. "
-                    + "Either the locale lacks this field or its corpus was not compiled."
-            )
-        }
-        return value
+        if let value = draw(path) { return value }
+        if locale.declaresEmpty(path) { return "" }
+
+        preconditionFailure(
+            "Decoy: locale '\(locale.code)' has no data for '\(path)'. "
+                + "Either the locale lacks this field or its corpus was not compiled."
+        )
     }
 
     /// Draws a whole row from the composite table at `path`, keeping correlated
