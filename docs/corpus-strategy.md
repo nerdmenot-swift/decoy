@@ -91,7 +91,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — twelve adapters plus the bootstrap, nine sources:
+**Built so far** — thirteen adapters plus the bootstrap, ten sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -107,6 +107,7 @@ someone else's package should not itself require a package manager.
 | `iso-3166-2` | CLDR 48.2.0 | Unicode-3.0 | `location.state` (composite) — 5,395 subdivisions, 200 countries |
 | `cldr-dates` | CLDR 48.2.0 | Unicode-3.0 | `date.month.*`, `date.weekday.*` in 74 locales |
 | `cities` | cities.json 1.1.61 (GeoNames) | CC BY 4.0 | `location.city_name`, `location.place` (composite) in 74 locales |
+| `us-surnames` | US Census 2010 | public domain | `person.last_name.generic` in `en` — 24,889 names, **weighted** |
 | `faker-js` | @faker-js/faker 10.5.0 | MIT | everything not yet covered, at lowest precedence |
 
 **faker-js is an adapter like any other, and the lowest-precedence one.** It is fetched
@@ -207,7 +208,7 @@ The split, therefore:
 
 ---
 
-## Statistical fidelity is the quality bar — **Planned**
+## Statistical fidelity is the quality bar — **Partly built**
 
 Replace "how many strings do we have" with "does our output match the real
 distribution".
@@ -222,6 +223,18 @@ it have suspiciously flat histograms.
 Public-domain frequency data exists (US Census surname files, SSA given names). Feeding
 real frequencies into the weight column the format already needs turns a uniform draw
 into a realistic one with **no API change** — `Faker.weighted(_:)` already exists.
+
+**Done for English surnames.** `person.last_name.generic` in `en` is 24,889 Census names
+carrying their real counts, against faker's 473 drawn uniformly. Measured over 100,000
+draws: Smith 1.11%, Johnson 0.83%, Williams 0.68%, and 17,178 distinct surnames in the
+tail. That is the first field in the corpus whose output distribution matches reality.
+
+**Not done for given names**, and blocked rather than unscheduled: ssa.gov returns 403 to
+every non-interactive request regardless of user agent, so the SSA baby-name data — which
+would supply first names with frequencies *and* by birth year, giving
+`firstName(bornIn: 1950)` — cannot be fetched by an adapter. It needs a fetchable mirror
+that is versioned enough to pin; a manual download would not do, because then the corpus
+could only be rebuilt on one machine.
 
 SSA data is also per birth year, which yields something no other library has:
 `firstName(bornIn: 1950)` returns an era-appropriate name rather than a contemporary one.

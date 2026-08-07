@@ -52,7 +52,10 @@ async function exists(path) {
 async function acquire(sourceId, artifact) {
   const { algorithm, expected } = parseIntegrity(artifact.integrity)
   await mkdir(cacheDir, { recursive: true })
-  const suffix = artifact.format === 'file' ? artifact.filename : `${artifact.name}.tgz`
+  const suffix =
+    artifact.format === 'file'
+      ? artifact.filename
+      : `${artifact.name}.${artifact.format === 'zip' ? 'zip' : 'tgz'}`
   const cached = join(cacheDir, `${sourceId}-${suffix}`)
 
   if (await exists(cached)) {
@@ -90,10 +93,13 @@ async function acquire(sourceId, artifact) {
  * Decoy's reliance on somebody else's package, so the toolchain that builds the corpus
  * should not itself accumulate a dependency tree.
  */
-async function extract(archive, destination) {
+async function extract(archive, destination, format) {
   await rm(destination, { recursive: true, force: true })
   await mkdir(destination, { recursive: true })
-  await run('tar', ['xzf', archive, '-C', destination])
+  // `tar` handles zip on macOS via libarchive but not with GNU tar on Linux, so zips go
+  // through `unzip` explicitly rather than relying on which tar the host happens to have.
+  if (format === 'zip') await run('unzip', ['-q', '-o', archive, '-d', destination])
+  else await run('tar', ['xzf', archive, '-C', destination])
   return destination
 }
 
@@ -119,7 +125,11 @@ export async function loadSource(sourceId) {
     artifacts[artifact.name] =
       artifact.format === 'file'
         ? path
-        : await extract(path, join(cacheDir, `${descriptor.id}-${artifact.name}`))
+        : await extract(
+            path,
+            join(cacheDir, `${descriptor.id}-${artifact.name}`),
+            artifact.format,
+          )
   }
 
   return { descriptor, artifacts }

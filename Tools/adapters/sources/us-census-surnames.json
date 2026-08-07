@@ -1,0 +1,32 @@
+{
+  "id": "us-census-surnames",
+  "name": "US Census 2010 surname file",
+  "license": "public-domain",
+  "url": "https://www.census.gov/topics/population/genealogy/data/2010_surnames.html",
+  "version": "2010",
+  "retrieved": "2026-08-07",
+  "note": [
+    "The first source in the corpus that carries *frequencies* rather than a bare list.",
+    "That is the point of it: every faker draws names uniformly, and real surnames are",
+    "Zipf-distributed -- Smith is 70 times more common than the thousandth name. Uniform",
+    "sampling makes deduplication and fuzzy-matching logic look flawless because real",
+    "collision rates never occur.",
+    "",
+    "A US Government work, so public domain with no attribution obligation. The URL is",
+    "unversioned but path-versioned: `2010surnames` is a decennial publication and the",
+    "2020 file will appear under its own path rather than replacing this one.",
+    "",
+    "The companion SSA given-name data, which would supply first names with the same",
+    "frequencies and additionally by birth year, is NOT here: ssa.gov returns 403 to",
+    "every non-interactive request regardless of user agent. Given names therefore remain",
+    "faker-derived and uniform."
+  ],
+  "artifacts": [
+    {
+      "name": "surnames",
+      "format": "zip",
+      "url": "https://www2.census.gov/topics/genealogy/2010surnames/names.zip",
+      "integrity": "sha512-nWhlW6Odw/ImFv5JgVdrPtPRs7HkP7CLgt5FqemQFlhZzLlxE9NMlJlozP7beSVg5tuHqAnp1/TE0Ck5U+Y3wg=="
+    }
+  ]
+}
