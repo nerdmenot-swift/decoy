@@ -7,7 +7,8 @@ import PackageDescription
 /// app needing German pays for `de`, `en` and `base`, not for all 76. Regenerate the
 /// sources with:
 ///
-///     swift run decoy-compile-corpus Tools/extractor/out Corpus/binary \
+///     node Tools/adapters/run.mjs
+///     swift run decoy-compile-corpus Tools/adapters/out Corpus/binary \
 ///       --emit-swift Sources --locales de,ja
 let locales: [(name: String, chain: [String])] = [
     ("Base", []),
