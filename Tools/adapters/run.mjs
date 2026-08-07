@@ -92,7 +92,7 @@ function mergeOver(base, incoming) {
  * displaces. Arrays are values, not containers -- merging two string tables element-wise
  * would produce a list that neither source ever contained.
  */
-function mergeBeneath(base, incoming, prefix, isClaimed) {
+function mergeBeneath(base, incoming, prefix, isClaimed, hasClaimBelow) {
   for (const [key, value] of Object.entries(incoming)) {
     const path = prefix ? `${prefix}.${key}` : key
 
@@ -103,9 +103,20 @@ function mergeBeneath(base, incoming, prefix, isClaimed) {
     // prevent, in miniature.
     if (isClaimed(path)) continue
 
+    const isPlainObject =
+      value !== null && typeof value === 'object' && !Array.isArray(value)
+
     if (!(key in base)) {
-      base[key] = value
-      continue
+      // Copying an absent subtree wholesale would smuggle in paths a real adapter
+      // claimed further down. `internet` as a whole is unclaimed, but
+      // `internet.domain_suffix` is claimed in `base` — copying faker's entire
+      // `internet` category into `en` therefore reinstated the six TLDs that shadowed
+      // the registry's 1,438. Descend instead whenever a claim lies beneath.
+      if (!(isPlainObject && hasClaimBelow(path))) {
+        base[key] = value
+        continue
+      }
+      base[key] = {}
     }
     const existing = base[key]
     const bothPlainObjects =
@@ -116,7 +127,7 @@ function mergeBeneath(base, incoming, prefix, isClaimed) {
       !Array.isArray(existing) &&
       !Array.isArray(value)
 
-    if (bothPlainObjects) mergeBeneath(existing, value, path, isClaimed)
+    if (bothPlainObjects) mergeBeneath(existing, value, path, isClaimed, hasClaimBelow)
   }
   return base
 }
@@ -161,6 +172,9 @@ async function main() {
   const attribution = {}  // code -> { claimed path -> sourceId }
   const sources = new Map()
   const claims = new Set()  // "<code>.<path>" claimed by a non-fallback adapter
+  // Every proper ancestor of a claim, so the fallback can tell "nothing here is claimed"
+  // from "something below this is" before deciding to copy a subtree wholesale.
+  const claimAncestors = new Set()
 
   for (const adapter of adapters) {
 
@@ -210,7 +224,26 @@ async function main() {
           // Laid underneath: contributes only where nothing has been supplied yet.
           // Losing to a real adapter is not a conflict, it is the migration working,
           // and it happens hundreds of times per run.
-          mergeBeneath(merged[code], fragment, '', (p) => claims.has(`${code}.${p}`))
+          //
+          // A claim blocks the bootstrap in this locale, and a claim in `base` blocks it
+          // everywhere. `base` is the only locale whose data is language-neutral, so a
+          // claim there is a claim on the concept for every locale: top-level domains and
+          // chemical elements are the same in German as in English. Without this, faker's
+          // `en` copies shadowed `base` for every locale that falls through English --
+          // which is all of them -- leaving the IANA adapter's 1,438 TLDs unreachable
+          // behind faker's six.
+          //
+          // Claims in a *language* locale deliberately do not propagate down the chain.
+          // Census surnames claimed in `en` must not suppress Japanese surnames in `ja`,
+          // and an adapter claiming `de` must not silence `de_AT`: those are different
+          // data, not the same data seen twice.
+          mergeBeneath(
+            merged[code],
+            fragment,
+            '',
+            (p) => claims.has(`${code}.${p}`) || claims.has(`base.${p}`),
+            (p) => claimAncestors.has(`${code}.${p}`) || claimAncestors.has(`base.${p}`),
+          )
           attribution[code][path] ??= attributedTo
           continue
         }
@@ -224,6 +257,9 @@ async function main() {
           )
         }
         claims.add(claim)
+        for (let cut = path.lastIndexOf('.'); cut > 0; cut = path.lastIndexOf('.', cut - 1)) {
+          claimAncestors.add(`${code}.${path.slice(0, cut)}`)
+        }
 
         // A real adapter's node replaces whatever sits there, whole.
         mergeOver(merged[code], fragment)
