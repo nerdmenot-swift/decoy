@@ -73,8 +73,23 @@ public struct Manifest: Decodable {
     /// was *generated* — conflating the two would misdate the data itself.
     public var provenance: String {
         let date = generatedAt ?? extractedAt ?? "unknown"
-        let names = sourceRecords.map { "\($0.id) \($0.version) (\($0.license))" }
-        return "\(names.joined(separator: ", ")); generated \(date)"
+        return "\(sourceSummary); generated \(date)"
+    }
+
+    /// The same summary without the generation date, for text that gets committed.
+    ///
+    /// The date belongs in a build log, not in a generated source file. It was
+    /// interpolated into every locale module header, which made emission
+    /// non-deterministic: CI re-emits the modules and diffs them, so the build failed on
+    /// any day but the one the modules were committed. Committing again bought exactly
+    /// one more day.
+    ///
+    /// Nothing is lost by dropping it — every source carries its own `retrieved` date,
+    /// which is the date that says something about the data rather than about the machine
+    /// that happened to run the compiler.
+    public var sourceSummary: String {
+        sourceRecords.map { "\($0.id) \($0.version) (\($0.license))" }
+            .joined(separator: ", ")
     }
 
     /// Expands the requested locales to include every locale their chains reach.
