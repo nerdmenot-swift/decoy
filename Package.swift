@@ -52,21 +52,31 @@ let package = Package(
             name: "Decoy",
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
+        // The build tools' testable core. Split out of the executables because a target
+        // with top-level code cannot be imported by tests, which left the attribution
+        // rule and the coverage gate -- the two things that must be right -- untestable.
+        .target(
+            name: "DecoyCorpusKit",
+            dependencies: ["Decoy"],
+            swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
         // A host build tool, so unlike the library it may use Foundation freely.
         .executableTarget(
             name: "DecoyCorpusCompiler",
-            dependencies: ["Decoy"],
+            dependencies: ["Decoy", "DecoyCorpusKit"],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         // Also host-only, and likewise free to use Foundation.
         .executableTarget(
             name: "DecoyCorpusInspector",
-            dependencies: ["Decoy"],
+            dependencies: ["Decoy", "DecoyCorpusKit"],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .testTarget(
             name: "DecoyTests",
-            dependencies: ["Decoy", "DecoyLocaleEN", "DecoyLocaleDE", "DecoyLocaleJA"],
+            dependencies: [
+                "Decoy", "DecoyCorpusKit", "DecoyLocaleEN", "DecoyLocaleDE", "DecoyLocaleJA",
+            ],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
     ] + localeTargets

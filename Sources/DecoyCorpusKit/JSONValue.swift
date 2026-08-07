@@ -7,7 +7,7 @@ import Foundation
 /// Darwin and swift-corelibs-foundation — and telling an integer from a double
 /// through that bridge is exactly the kind of thing that works on a Mac and
 /// misbehaves on the Linux CI runner.
-indirect enum JSONValue: Decodable {
+indirect public enum JSONValue: Decodable {
     case null
     case bool(Bool)
     case number(Double)
@@ -15,7 +15,7 @@ indirect enum JSONValue: Decodable {
     case array([JSONValue])
     case object([String: JSONValue])
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if container.decodeNil() {
             self = .null
@@ -37,7 +37,7 @@ indirect enum JSONValue: Decodable {
         }
     }
 
-    var asString: String? {
+    public var asString: String? {
         switch self {
         case .string(let s): return s
         case .number(let n): return Self.format(n)
@@ -46,7 +46,7 @@ indirect enum JSONValue: Decodable {
         }
     }
 
-    var asObject: [String: JSONValue]? {
+    public var asObject: [String: JSONValue]? {
         if case .object(let o) = self { return o }
         return nil
     }

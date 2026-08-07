@@ -190,6 +190,65 @@ struct GeneratorSmokeTests {
         check("airline.recordLocator", &f) { $0.airline.recordLocator() }
         check("airline.aircraftType", &f) { $0.airline.aircraftType() }
 
+        check("person.ssn", &f) { $0.person.ssn() }
+        check("person.bloodType", &f) { $0.person.bloodType() }
+        check("company.buzzAdjective", &f) { $0.company.buzzAdjective() }
+        check("company.buzzNoun", &f) { $0.company.buzzNoun() }
+        check("company.buzzVerb", &f) { $0.company.buzzVerb() }
+        check("internet.gamertag", &f) { $0.internet.gamertag() }
+        check("finance.ein", &f) { $0.finance.ein() }
+        check("finance.currencyName", &f) { $0.finance.currencyName() }
+        check("finance.currencySymbol", &f) { $0.finance.currencySymbol() }
+        check("color.cssRGB", &f) { $0.color.cssRGB() }
+        check("system.programmingLanguageName", &f) { $0.system.programmingLanguageName() }
+        check("system.variableName", &f) { $0.system.variableName() }
+
+        // Date components. These return numbers and short strings rather than dates, and
+        // were added after TimestampTests was written, so nothing covered them.
+        check("date.amPm", &f) { $0.date.amPm() }
+        check("date.century", &f) { $0.date.century() }
+        check("date.year", &f) { String($0.date.year()) }
+        check("date.month", &f) { String($0.date.month()) }
+        check("date.dayOfMonth", &f) { String($0.date.dayOfMonth()) }
+        check("date.dayOfWeek", &f) { String($0.date.dayOfWeek()) }
+        check("date.hour", &f) { String($0.date.hour()) }
+        check("date.minute", &f) { String($0.date.minute()) }
+        check("date.unix", &f) { String($0.date.unix()) }
+    }
+
+    /// Row-returning generators, which the string smoke test cannot reach.
+    ///
+    /// These exist to keep correlated fields agreeing, so an empty row is the failure
+    /// that matters: it means the composite is missing and every field drawn from it is
+    /// silently blank.
+    @Test("composite generators return populated rows")
+    func compositeRows() throws {
+        var f = try english()
+
+        func row(_ label: String, _ body: (inout Faker) -> [String: String], _ fields: [String]) {
+            let value = body(&f)
+            #expect(!value.isEmpty, "\(label) returned an empty row")
+            for field in fields {
+                #expect(
+                    !(value[field] ?? "").isEmpty,
+                    "\(label) has no value for '\(field)'"
+                )
+            }
+        }
+
+        row("location.countryCode", { $0.location.countryCode() }, ["alpha2", "alpha3"])
+        row("location.language", { $0.location.language() }, ["alpha2", "alpha3", "name"])
+        row("location.place", { $0.location.place() }, ["city", "state"])
+        row("location.stateRow", { $0.location.stateRow() }, ["name", "abbr"])
+        row("finance.currency", { $0.finance.currency() }, ["code", "name", "numericCode"])
+        row("airline.airport", { $0.airline.airport() }, ["name", "iataCode"])
+        row("airline.airline", { $0.airline.airline() }, ["name"])
+        row("science.chemicalElement", { $0.science.chemicalElement() },
+            ["name", "symbol", "atomicNumber"])
+        row("science.unit", { $0.science.unit() }, ["name", "symbol"])
+        row("system.programmingLanguage", { $0.system.programmingLanguage() },
+            ["name", "extension"])
+
     }
 
     @Test("technical generators all resolve")

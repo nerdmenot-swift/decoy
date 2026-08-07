@@ -1,4 +1,5 @@
 import Decoy
+import DecoyCorpusKit
 import Foundation
 
 /// Inspects compiled corpora: what is in one, what a path holds, and which locales
@@ -288,16 +289,6 @@ func values(_ url: URL, path: String) throws {
 /// Native coverage rather than resolved coverage: a locale resolving `person.first_name`
 /// only because English sits behind it in the chain is the failure this is meant to
 /// surface, and resolved coverage would report it as 100%.
-/// A locale's own path count, as recorded in the gate baseline.
-///
-/// Native path count rather than a percentage: the percentage moves whenever the
-/// *reference* locale gains paths, so a baseline in percentages would fail every locale
-/// the moment `en` grew — punishing an improvement. The count only moves when the locale
-/// itself does.
-struct CoverageBaseline: Codable {
-    var locales: [String: Int]
-}
-
 func coverage(_ directory: URL, against reference: String, gate: URL?, writeGate: URL?) throws {
     let files = (try? FileManager.default.contentsOfDirectory(at: directory,
                                                               includingPropertiesForKeys: nil))?
@@ -376,43 +367,31 @@ func enforce(_ baselineURL: URL, over files: [URL]) throws {
     }
     let baseline = try JSONDecoder().decode(CoverageBaseline.self, from: data)
 
-    var regressions: [(String, Int, Int)] = []
-    var improvements = 0
-    var unlisted: [String] = []
-
+    var measured: [String: Int] = [:]
     for file in files {
-        let code = file.deletingPathExtension().lastPathComponent
-        let count = try load(file).paths.count
-        guard let expected = baseline.locales[code] else {
-            unlisted.append(code)
-            continue
-        }
-        if count < expected { regressions.append((code, expected, count)) }
-        if count > expected { improvements += 1 }
+        measured[file.deletingPathExtension().lastPathComponent] = try load(file).paths.count
     }
 
-    let missing = baseline.locales.keys.filter { code in
-        !files.contains { $0.deletingPathExtension().lastPathComponent == code }
-    }.sorted()
+    let result = compareCoverage(measured: measured, against: baseline)
 
-    for (code, expected, actual) in regressions {
-        FileHandle.standardError.write(
-            Data("regression: \(code) has \(actual) paths, baseline expects \(expected)\n".utf8))
+    for regression in result.regressions {
+        let message = "regression: \(regression.locale) has \(regression.actual) paths, "
+            + "baseline expects \(regression.expected)\n"
+        FileHandle.standardError.write(Data(message.utf8))
     }
-    for code in missing {
-        FileHandle.standardError.write(
-            Data("missing: \(code) is in the baseline but not in the corpus\n".utf8))
+    for locale in result.missing {
+        FileHandle.standardError.write(Data(
+            "missing: \(locale) is in the baseline but not in the corpus\n".utf8))
     }
-
-    if !unlisted.isEmpty {
-        print("new locales, not yet in the baseline: \(unlisted.sorted().joined(separator: ", "))")
+    if !result.unlisted.isEmpty {
+        print("new locales, not yet in the baseline: \(result.unlisted.joined(separator: ", "))")
     }
-    if improvements > 0 {
-        print("\(improvements) locale(s) gained paths — refresh the baseline to lock that in")
+    if !result.improved.isEmpty {
+        print("\(result.improved.count) locale(s) gained paths — refresh the baseline to lock that in")
     }
 
-    guard regressions.isEmpty && missing.isEmpty else {
-        fail("coverage regressed in \(regressions.count + missing.count) locale(s)")
+    guard result.passes else {
+        fail("coverage regressed in \(result.regressions.count + result.missing.count) locale(s)")
     }
     print("coverage gate: \(files.count) locales, none below baseline")
 }
