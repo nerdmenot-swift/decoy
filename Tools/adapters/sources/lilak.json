@@ -1,0 +1,31 @@
+{
+  "id": "lilak",
+  "name": "Lilak Persian spell-checking dictionary 3.3",
+  "license": "Apache-2.0",
+  "url": "https://github.com/b00f/lilak",
+  "version": "3.3",
+  "retrieved": "2026-08-07",
+  "note": [
+    "Apache-2.0 outright, which makes it the cleanest licence of any source in the corpus",
+    "— nothing to reconcile, no attribution table entry needed beyond the notice.",
+    "",
+    "Persian was blocked twice over: the Open Multilingual Wordnet has no Persian member,",
+    "and the alternatives are research-only. This closes it.",
+    "",
+    "A hunspell spell-checking dictionary, so it is a flat word list with affix flags and",
+    "carries no part-of-speech tags. It therefore fills `lorem.word` and cannot fill",
+    "`word.noun` or `word.verb` — labelling unclassified words as nouns would be a quiet",
+    "untruth of exactly the kind this pipeline exists to prevent.",
+    "",
+    "Pinned to a GitHub *release asset*, which is immutable, unlike the auto-generated",
+    "source tarballs that made OpenTaal's Dutch dictionary unusable here."
+  ],
+  "artifacts": [
+    {
+      "name": "lilak",
+      "format": "zip",
+      "url": "https://github.com/b00f/lilak/releases/download/v3.3/fa-IR.zip",
+      "integrity": "sha512-codBuGN6IYLkhwfs/GpFiiEuIA4B/iYmKPvQSECEtJyxraxWA2o/atvkaoOfgRTypvqZown7PfToIFCnH0nqOA=="
+    }
+  ]
+}

@@ -91,7 +91,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — fourteen adapters plus the bootstrap, twenty-four sources:
+**Built so far** — fifteen adapters plus the bootstrap, twenty-five sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -109,6 +109,7 @@ someone else's package should not itself require a package manager.
 | `cities` | cities.json 1.1.61 (GeoNames) | CC BY 4.0 | `location.city_name`, `location.place` (composite) in 74 locales |
 | `us-surnames` | US Census 2010 | public domain | `person.last_name.generic` in `en` — 24,889 names, **weighted** |
 | `wordnet` | Open Multilingual Wordnet 2.0 | per language (see below) | `word.noun/verb/adjective/adverb` in 15 locales |
+| `persian-words` | Lilak 3.3 | Apache-2.0 | `lorem.word` in `fa` |
 | `faker-js` | @faker-js/faker 10.5.0 | MIT | everything not yet covered, at lowest precedence |
 
 **faker-js is an adapter like any other, and the lowest-precedence one.** It is fetched
