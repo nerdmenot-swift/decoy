@@ -308,6 +308,12 @@ struct GeneratorSmokeTests {
             )
 
             #expect(Self.passesEAN(f.commerce.ean13()))
+
+            // IMEI is Luhn, not EAN-13. It shipped with an EAN check digit, so every
+            // generated value failed the validation any real system applies.
+            let imei = f.phone.imei()
+            #expect(imei.count == 15, "IMEI is 15 digits, got \(imei.count)")
+            #expect(Self.passesLuhn(imei), "invalid IMEI Luhn check digit: \(imei)")
         }
     }
 

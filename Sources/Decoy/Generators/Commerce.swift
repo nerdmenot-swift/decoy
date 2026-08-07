@@ -143,16 +143,20 @@ public struct FinanceFaker {
         let issuers = ["visa", "mastercard", "american_express", "discover", "diners_club", "jcb"]
         let chosen = issuer ?? faker.pick(issuers)
         guard let pattern = faker.draw("finance.credit_card.\(chosen)") else {
-            return luhnComplete(faker.numerify("################"))
+            return Self.luhnComplete(faker.numerify("################"))
         }
         // Corpus patterns may carry a trailing `L` marking "append a Luhn digit".
         let cleaned = pattern.hasSuffix("L") ? String(pattern.dropLast()) : pattern
         let body = faker.bothify(cleaned.replacingOccurrencesOfSlash())
-        return luhnComplete(body)
+        return Self.luhnComplete(body)
     }
 
     /// Appends the digit that makes `body` satisfy the Luhn checksum.
-    func luhnComplete(_ body: String) -> String {
+    ///
+    /// `static` and shared: IMEI needs the same algorithm, and reaching for the
+    /// nearest-looking check-digit function instead is how `phone.imei()` shipped with an
+    /// EAN-13 check digit on a number the world validates with Luhn.
+    static func luhnComplete(_ body: String) -> String {
         let digits = body.compactMap(\.wholeNumberValue)
         var sum = 0
         // The check digit will sit at the end, so positions double from the right of

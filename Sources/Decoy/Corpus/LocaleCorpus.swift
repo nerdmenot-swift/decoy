@@ -125,10 +125,19 @@ extension LocaleCorpus {
 
     /// A deliberately tiny English corpus, compiled in memory at first use.
     ///
-    /// Exists so `Forge` works with no setup and so the library has no hard dependency
-    /// on a blob being present. It is **not** the real corpus — a few dozen names
-    /// against `en`'s 21,629 strings — and it uses the same paths as the compiled
-    /// locales, so swapping in a real one changes nothing but the data.
+    /// **This is a smoke-test stub, not a working corpus.** It defines ten paths — first
+    /// and last names, a few domain suffixes, month and weekday names, time zones — and
+    /// nothing else. Every other generator traps against it, so `company.name()`,
+    /// `lorem.word()`, `location.city()` and most of the API need a real locale:
+    ///
+    /// ```swift
+    /// import DecoyLocaleEN
+    /// Forge<User>("user") { User() }.locale(DecoyLocaleEN.locale)
+    /// ```
+    ///
+    /// It exists so the library has no hard dependency on a blob being present, and it
+    /// uses the same paths as the compiled locales, so swapping in a real one changes
+    /// nothing but the data.
     public static let builtIn: LocaleCorpus = {
         var builder = CorpusBuilder(version: CorpusVersion(major: 0, minor: 0, patch: 1))
         let source = builder.addSource(

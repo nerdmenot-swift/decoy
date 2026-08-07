@@ -76,6 +76,10 @@ Locales are compiled into the binary as ordinary Swift source, so there is no re
 loading at runtime and nothing to ship alongside your executable. One module per
 locale means importing `DecoyLocaleDE` costs you `de`, `en` and `base` — not all 76.
 
+**Always import a locale.** `Faker`'s default corpus is a ten-path smoke-test stub, so
+most generators trap against it; `base` is language-neutral data every chain ends at and
+is not importable on its own for the same reason.
+
 Referential integrity falls out of closures capturing already-generated arrays. No
 "World" abstraction, no inheritance gymnastics.
 
@@ -141,7 +145,7 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
 - [x] Adapter pipeline: 27 pinned sources, integrity-verified, provenance per path
 - [x] JSON → binary corpus format + Swift reader
 - [x] 191 generators across 18 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
-- [x] All 76 locales compile; `base`, `en`, `de`, `ja` ship as Swift modules
+- [x] All 76 locales compile; `en`, `de`, `ja` ship as importable Swift modules
 - [x] `decoy-inspect`: enumeration, coverage, generated attribution
 - [ ] CI actually run — the workflow is correct but this repository has no remote
 

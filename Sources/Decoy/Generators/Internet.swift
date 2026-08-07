@@ -179,9 +179,15 @@ public struct PhoneFaker {
         }
     }
 
+    /// A 15-digit IMEI whose Luhn check digit is correct.
+    ///
+    /// IMEI is Luhn, not EAN-13. This used to append `eanCheckDigit`, whose 1/3 weighting
+    /// from the left produces a digit that no IMEI validator accepts — every generated
+    /// value was rejected by exactly the code most worth testing, which is the same
+    /// standard `creditCardNumber` has always held itself to.
     public mutating func imei() -> String {
         let body = faker.numerify("##############")
-        return body + String(CommerceFaker.eanCheckDigit(body))
+        return FinanceFaker.luhnComplete(body)
     }
 }
 

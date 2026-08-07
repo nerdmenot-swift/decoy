@@ -25,7 +25,12 @@ let localeTargets: [Target] = locales.map { locale in
     )
 }
 
-let localeProducts: [Product] = locales.map {
+// `Base` is deliberately not a product. It carries the language-neutral data every chain
+// ends at — countries, time zones, media types, emoji — and nothing to build a person from,
+// so roughly 45 of the 70 corpus-backed generators trap against it. A product named after a
+// locale invites exactly that mistake. It stays a *target*, because every other locale
+// module imports it.
+let localeProducts: [Product] = locales.filter { $0.name != "Base" }.map {
     .library(name: "DecoyLocale\($0.name)", targets: ["DecoyLocale\($0.name)"])
 }
 
