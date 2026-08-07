@@ -25,17 +25,10 @@ export async function run({ artifacts }) {
   const text = await readFile(artifacts.tlds, 'utf8')
 
   const lines = text.split('\n')
-  const serial = lines[0]?.match(/^# Version (\d+)/)?.[1]
-
-  const descriptor = JSON.parse(
-    await readFile(new URL('../sources/iana-tld.json', import.meta.url), 'utf8'),
-  )
-  if (serial !== descriptor.version) {
-    throw new Error(
-      `IANA root zone declares version ${serial} but the source descriptor pins ` +
-        `${descriptor.version}. The root zone was re-issued; verify and re-pin.`,
-    )
-  }
+  // Reported, not asserted. IANA bumps this serial on every regeneration whether or not
+  // a TLD changed, so failing on it would fail the build daily; the descriptor's digest
+  // ignores the serial line and covers the delegations instead, which is the real check.
+  const serial = lines[0]?.match(/^# Version (\d+)/)?.[1] ?? 'unknown'
 
   const suffixes = []
   let internationalised = 0

@@ -1,22 +1,25 @@
 {
   "id": "iana-tld",
-  "name": "IANA Root Zone Database, version 2026080600",
+  "name": "IANA Root Zone Database",
   "license": "public-facts",
   "url": "https://www.iana.org/domains/root/db",
-  "version": "2026080600",
-  "retrieved": "2026-08-07",
+  "version": "2026080700",
+  "retrieved": "2026-08-08",
   "note": [
     "IANA operates the root zone, so this is the authoritative list of top-level domains",
-    "rather than anyone's copy of it. Which strings are delegated is a matter of fact,",
-    "not authorship, so `public-facts` records the reasoning rather than asserting a",
-    "grant IANA has not made.",
+    "rather than anyone's copy of it. Which strings are delegated is a matter of fact, not",
+    "authorship, so `public-facts` records that reasoning rather than asserting a grant",
+    "IANA has not made.",
     "",
-    "The URL is unversioned and updated in place, but the file's first line carries a",
-    "serial (`# Version 2026080600`) which the adapter asserts against `version` above.",
-    "A re-issue therefore fails the integrity check first and the version assertion",
-    "second. This is the same handling as the ISO 4217 registry, and the reason mime-db",
-    "was taken via npm instead: IANA's media types registry carries no such serial, so",
-    "there was nothing to assert."
+    "The digest deliberately ignores the leading `# Version` serial. IANA republishes this",
+    "file with a fresh serial whenever the zone is regenerated, whether or not a TLD",
+    "changed -- it moved from 2026080600 to 2026080700 with all 1,438 entries identical.",
+    "Pinning the raw bytes failed the build daily for no reason, and a check that cries",
+    "wolf every morning is one everybody learns to bypass. Every line that becomes corpus",
+    "data is still covered, so a TLD appearing, disappearing or being injected still fails.",
+    "",
+    "`version` records the serial seen when the content was last verified. The adapter no",
+    "longer asserts it, because it is the one part of the file that changes meaninglessly."
   ],
   "artifacts": [
     {
@@ -24,7 +27,8 @@
       "format": "file",
       "filename": "tlds-alpha-by-domain.txt",
       "url": "https://data.iana.org/TLD/tlds-alpha-by-domain.txt",
-      "integrity": "sha512-R7a5hl9AWbUE0lfenzVc01gF5VBGPJTOQXJDC+8xGnowbaw+fUIIymbL+ZUqeaTH43MejiDj/8TuDGVi1xzxCA=="
+      "integrity": "sha512-aCqPvOus1kgTV2ngAF5HtR4D2foe80rqUCqR9fIwj+svOxPjgDrPORVtnDgvtQsMwKHFjgTUQGF8CJTcn+tq8A==",
+      "ignoreLinesMatching": "^# Version"
     }
   ]
 }

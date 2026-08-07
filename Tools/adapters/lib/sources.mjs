@@ -33,6 +33,29 @@ function digest(buffer, algorithm) {
   return createHash(algorithm).update(buffer).digest('base64')
 }
 
+/**
+ * Removes lines an upstream re-issues without meaning, so the digest covers the data.
+ *
+ * IANA regenerates the root zone file with a fresh serial comment whenever the zone is
+ * republished, whether or not any TLD changed -- the file went from serial 2026080600 to
+ * 2026080700 with all 1,438 entries byte-identical. Pinning the raw bytes would fail the
+ * build daily for no reason, and a check that cries wolf every morning is one everybody
+ * learns to bypass.
+ *
+ * Only the ignored lines go unverified, and they are metadata by construction. Every
+ * line that becomes corpus data is still covered, so a TLD appearing or disappearing --
+ * or being injected -- still fails.
+ */
+function normalise(buffer, ignorePattern) {
+  if (!ignorePattern) return buffer
+  const pattern = new RegExp(ignorePattern)
+  const kept = buffer
+    .toString('utf8')
+    .split('\n')
+    .filter((line) => !pattern.test(line))
+  return Buffer.from(kept.join('\n'), 'utf8')
+}
+
 async function exists(path) {
   try {
     await stat(path)
@@ -51,6 +74,8 @@ async function exists(path) {
  */
 async function acquire(sourceId, artifact) {
   const { algorithm, expected } = parseIntegrity(artifact.integrity)
+  const contentDigest = (buffer) =>
+    digest(normalise(buffer, artifact.ignoreLinesMatching), algorithm)
   await mkdir(cacheDir, { recursive: true })
   const suffix =
     artifact.format === 'file'
@@ -60,7 +85,7 @@ async function acquire(sourceId, artifact) {
 
   if (await exists(cached)) {
     const buffer = await readFile(cached)
-    if (digest(buffer, algorithm) === expected) return cached
+    if (contentDigest(buffer) === expected) return cached
     await rm(cached, { force: true })
   }
 
@@ -71,14 +96,18 @@ async function acquire(sourceId, artifact) {
   }
   const buffer = Buffer.from(await response.arrayBuffer())
 
-  const actual = digest(buffer, algorithm)
+  const actual = contentDigest(buffer)
   if (actual !== expected) {
     throw new Error(
       `integrity mismatch for ${artifact.url}\n` +
         `  expected ${algorithm}-${expected}\n` +
         `  actual   ${algorithm}-${actual}\n` +
         `Upstream changed under a pinned version. Verify the change is legitimate, then ` +
-        `update the integrity hash in sources/${sourceId}.json.`,
+        `update the integrity hash in sources/${sourceId}.json.` +
+        (artifact.ignoreLinesMatching
+          ? `\n(The digest ignores lines matching /${artifact.ignoreLinesMatching}/, so this ` +
+            `is a real content change, not a re-issue.)`
+          : ''),
     )
   }
 
