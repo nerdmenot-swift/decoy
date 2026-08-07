@@ -4,10 +4,11 @@ How Decoy's data is sourced, built, and improved — and how it stops depending 
 `@faker-js/faker`.
 
 > **Status:** partly implemented, and this document says which parts. The adapter
-> pipeline, provenance, and coverage reporting exist. The generative layer and
-> frequency weighting do not. Written down so the reasoning survives outside the
-> conversations that produced it — and kept current, because a design record that has
-> quietly stopped being true is worse than none.
+> pipeline, provenance, coverage reporting and the coverage gate exist, and frequency
+> weighting is done for English surnames. The generative layer does not exist. Written
+> down so the reasoning survives outside the conversations that produced it — and kept
+> current, because a design record that has quietly stopped being true is worse than
+> none.
 >
 > Sections are marked **Built**, **Partly built**, or **Planned**.
 
@@ -157,7 +158,7 @@ Measured against the faker-derived corpus, this gave the first real size of the 
 | | |
 |---|---|
 | Median native coverage | 26% |
-| Locales under 30% native | 48 of 77 |
+| Locales under 30% native | 48 of 76 |
 | `ta_IN` | 7% (15 paths against `en`'s 190) |
 | `yo_NG` | 8% (17 paths) |
 
@@ -335,11 +336,17 @@ other reasons.
 
 ### Keeping upstream current
 
-The extractor is re-runnable and verifies faker's fallback chains against faker's own
-resolution, so a scheduled job could diff a fresh extract and open a PR — inheriting
-upstream contributions free, for as long as faker remains a producer. Adapter sources
-are pinned by integrity hash, so their equivalent is deliberate: bump the version in the
-descriptor, re-pin, and read the diff.
+Every source is pinned by integrity hash, so refreshing one is deliberate rather than
+automatic: bump the version in the descriptor, re-pin, and read the diff. That is the
+intended workflow, not a limitation — an upstream that changed under a pinned hash is
+exactly the event worth a human look.
+
+The faker-js adapter additionally verifies Decoy's derived fallback chains against
+faker's own resolution on every run, across all 76 locales. **That check does not
+outlive faker-js.** Chains are derived from the locale roster rather than stored, and
+faker is the only source that can independently confirm the rule; once its adapter is
+deleted the rule is asserted by nothing but its own tests. Easy to forget, and worth
+replacing before that day rather than after.
 
 ---
 
@@ -353,9 +360,9 @@ All six are representable in format v2. Four are in use.
 
 | Requirement | Consequence | State |
 |---|---|---|
-| Weights | A weight column alongside string tables | Representable; used by faker-derived patterns, not yet by frequency data |
+| Weights | A weight column alongside string tables | **In use** — faker-derived patterns, and real Census frequencies for English surnames |
 | Composite records | Heterogeneous field tuples, not parallel lists | **In use** — countries, languages, currencies |
-| Provenance | A source/license table, referenced by ID | **In use** — four sources, attributed by nearest claimed ancestor |
+| Provenance | A source/license table, referenced by ID | **In use** — 27 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
 | Generative models | A model chunk type, not only string tables | Chunk kind reserved; nothing emits one |
 | Corpus version + compatibility | Header fields, checked on load | **In use** |
 | Cross-locale dedup | A shared string arena (21.2% redundancy measured) | **In use** |
@@ -416,7 +423,7 @@ Counts are not the quality bar.
 ## Sequencing
 
 1. ~~Binary format with all six requirements representable~~ — **done** (format v2)
-2. ~~Core generators against the faker-derived corpus~~ — **done** (208 methods, 22 namespaces)
+2. ~~Core generators against the faker-derived corpus~~ — **done** (191 methods, 18 namespaces)
 3. ~~Corpus discoverability and coverage measurement~~ — **done** (`Corpus.paths`, `decoy-inspect`)
 4. Authoritative reference adapters replacing factual fields — **done for everything
    with a pinnable registry**. Migrated: ISO 3166-1 and 3166-2, ISO 639, ISO 4217, IANA
@@ -436,8 +443,8 @@ task.
 
 **The honest remaining cost.** Everything migrated so far is from the factual bucket,
 where a published registry settles the answer. What is left — names, streets, cities,
-companies — is the expensive bucket, and it is most of the corpus by volume. Five
-adapters replaced roughly 2,000 of `base`'s paths and four of `en`'s 190. A faker-free
+companies — is the expensive bucket, and it is most of the corpus by volume. Sixteen
+adapters now cover `base` almost entirely and roughly a third of `en`. A faker-free
 v1 means re-sourcing the rest, which is why steps 5 and 6 matter more than another
 registry adapter would.
 
