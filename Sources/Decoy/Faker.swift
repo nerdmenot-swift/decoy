@@ -217,6 +217,8 @@ public struct Faker: Sendable {
     }
 
     /// Replaces `?` with a random uppercase letter.
+    ///
+    /// `#` and `*` are left alone — use ``bothify(_:)`` for a pattern mixing them.
     public mutating func letterify(_ pattern: String) -> String {
         substitute(pattern, digits: nil, letters: "?", either: nil)
     }

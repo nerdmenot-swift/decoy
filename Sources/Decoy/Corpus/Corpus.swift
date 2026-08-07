@@ -57,6 +57,17 @@ public struct Corpus: Sendable {
             )
         }
 
+        // Documented as "reserved, must be 0" at three offsets, and never read until
+        // now. A reserved field nobody checks is not reserved — it is a field a future
+        // writer can start using while every existing reader silently ignores it, which
+        // is the failure the reservation was meant to prevent.
+        let reserved =
+            UInt64(try reader.u16(at: 10)) | UInt64(try reader.u16(at: 18))
+            | (try reader.u64(at: 24))
+        guard reserved == 0 else {
+            throw CorpusError.malformed("a reserved header field is non-zero")
+        }
+
         self.version = CorpusVersion(
             major: try reader.u16(at: 12),
             minor: try reader.u16(at: 14),
@@ -84,8 +95,26 @@ public struct Corpus: Sendable {
         }
         self.arena = try Arena(reader: reader, chunk: arenaChunk)
 
-        guard chunks[ChunkKind.index.rawValue] != nil else {
+        guard let indexChunk = chunks[ChunkKind.index.rawValue] else {
             throw CorpusError.missingChunk("index")
+        }
+
+        // `lookup` binary-searches this, so an unsorted index does not fail — it returns
+        // "no such path" for data that is right there, and the locale falls through to
+        // its parent. That is a wrong *value*, silently, which is the one failure mode
+        // this format cannot tolerate. Documented as a load-time check since v1 and
+        // never actually performed.
+        //
+        // O(n) over 24-byte entries: 2,072 of them in the largest blob, so under a
+        // microsecond against the 0.2 ms the base64 decode already costs.
+        let indexCount = Int(try reader.u32(at: indexChunk.offset))
+        var previous: UInt64 = 0
+        for i in 0..<indexCount {
+            let hash = try reader.u64(at: indexChunk.offset + 4 + i * 24)
+            guard hash >= previous else {
+                throw CorpusError.malformed("index is not sorted by key hash")
+            }
+            previous = hash
         }
     }
 

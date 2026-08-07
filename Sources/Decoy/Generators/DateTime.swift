@@ -128,7 +128,11 @@ public struct InstantFaker {
     /// An hour on a 24-hour clock, 0 through 23.
     public mutating func hour() -> Int { faker.int(in: 0...23) }
 
-    /// A minute or second, 0 through 59.
+    /// A minute, 0 through 59.
+    ///
+    /// There is no `second()`: it would draw from the same range with the same
+    /// distribution, so `minute()` covers both and a second method would only make the
+    /// namespace look larger.
     public mutating func minute() -> Int { faker.int(in: 0...59) }
 
     /// `"AM"` or `"PM"`.

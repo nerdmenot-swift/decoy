@@ -15,8 +15,10 @@ import Testing
 /// get wrong — an earlier revision of this comment documented a version that produced a
 /// corpus failing the assertion twenty lines below it.
 ///
-/// Loading from disk is a stopgap: there is no mechanism yet for embedding a corpus
-/// into a built binary without `Bundle.module`.
+/// Loading from disk is what makes these tests span all seventy-six locales. Shipping
+/// code does not do this — `DecoyLocaleEN` and its siblings embed their corpus as a
+/// base64 `StaticString`, so a built binary carries no files. Only four locales have
+/// modules, and reading the blobs directly is how the other seventy-two get tested.
 enum RealCorpus {
     static let directory = URL(fileURLWithPath: #filePath)
         .deletingLastPathComponent()  // DecoyTests

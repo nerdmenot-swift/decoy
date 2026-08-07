@@ -11,7 +11,8 @@ import Foundation
 ///
 /// Usage:
 ///   decoy-inspect <file.decoy>                 summary
-///   decoy-inspect <file.decoy> --paths [glob]  every path, with kind and size
+///   decoy-inspect <file.decoy> --paths [substr] every path, with kind and size
+///                                              (a plain substring match, not a glob)
 ///   decoy-inspect <file.decoy> --path <path>   the values at one path
 ///   decoy-inspect --coverage <dir> [--against <code>]
 ///                                              native coverage across a directory

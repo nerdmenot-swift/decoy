@@ -83,26 +83,39 @@ is not importable on its own for the same reason.
 Referential integrity falls out of closures capturing already-generated arrays. No
 "World" abstraction, no inheritance gymnastics.
 
-Large seed jobs split across tasks and reassemble into exactly the sequential result:
+Large seed jobs split across tasks and reassemble into exactly the sequential result,
+because each row's values are derived from `(seed, rowIndex)` alone:
 
 ```swift
-await withTaskGroup { group in
+let events = Forge<Event>("event") { Event() }
+    .rule(\.id)   { $0.uuidV7Value() }
+    .rule(\.kind) { $0.pick(["click", "view", "purchase"]) }
+
+let chunks = await withTaskGroup(of: (Int, [Event]).self) { group in
     for start in stride(from: 0, to: 1_000_000, by: 50_000) {
-        group.addTask { users.generate(rows: start..<start + 50_000, seed: 1337) }
+        group.addTask { (start, events.generate(rows: start..<start + 50_000, seed: 1337)) }
     }
+    return await group.reduce(into: [Int: [Event]]()) { $0[$1.0] = $1.1 }
 }
+let all = chunks.keys.sorted().flatMap { chunks[$0]! }
 ```
+
+Note the forge here has no `unique` rule. Chunks cannot see each other's values, so
+`generate(rows:seed:)` refuses a forge that has one rather than emitting duplicates —
+uniqueness and independent chunks cannot both hold.
 
 ## Platforms
 
 macOS, Linux, and Windows are all first-class targets; iOS/tvOS/watchOS/visionOS are
-supported for app developers. Linux is verified both natively in CI and by
-cross-compiling against the Swift Static Linux SDK. Windows is best-effort.
+supported for app developers. Each of the three builds, compiles a corpus and runs the
+full suite in its own CI job — Linux natively in a `swift:6.3` container rather than by
+cross-compiling. Windows is best-effort: a failure there should prompt a portability fix
+rather than block a release.
 
 ## The corpus is a build artifact
 
 No data is hand-edited, and none is committed. `Tools/adapters/` holds *programs* that
-derive the corpus from twenty-seven pinned upstreams — each fetched by URL, verified
+derive the corpus from twenty-eight pinned upstreams — each fetched by URL, verified
 against an integrity hash, and recorded in the corpus with its licence:
 
 ```
@@ -131,7 +144,8 @@ source and licence covers each field:
 swift run decoy-inspect Corpus/binary/en.decoy            # summary and provenance
 swift run decoy-inspect Corpus/binary/en.decoy --paths    # every path
 swift run decoy-inspect --coverage Corpus/binary          # native coverage per locale
-swift run decoy-inspect --notice Corpus/binary            # attribution, generated
+swift run decoy-inspect --notice Corpus/binary \
+  --licenses LICENSES                                     # attribution, generated
 ```
 
 See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
@@ -139,15 +153,16 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
 
 ## v1 scope
 
-- [x] Multi-platform package skeleton, verified cross-compiling to Linux
+- [x] Multi-platform package skeleton, Foundation-free core, `swiftLanguageMode(.v6)`
 - [x] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
-- [x] Adapter pipeline: 27 pinned sources, integrity-verified, provenance per path
+- [x] Adapter pipeline: 28 pinned sources, integrity-verified, provenance per path
 - [x] JSON → binary corpus format + Swift reader
-- [x] 191 generators across 18 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
+- [x] 192 generators across 18 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
 - [x] All 76 locales compile; `en`, `de`, `ja` ship as importable Swift modules
 - [x] `decoy-inspect`: enumeration, coverage, generated attribution
-- [ ] CI actually run — the workflow is correct but this repository has no remote
+- [ ] CI actually run — this repository has no remote, so every step in `ci.yml`
+      has been executed locally instead, and none of it on Windows
 
 Deferred: strict-mode rule checking (needs a macro, and macro plugins are
 host-executed and historically awkward under cross-compilation), rule sets, and Swift

@@ -92,7 +92,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — sixteen adapters plus the bootstrap, twenty-six sources:
+**Built so far** — seventeen adapters plus the faker-js bootstrap, twenty-eight sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -102,15 +102,16 @@ someone else's package should not itself require a package manager.
 | `iana-tzdb` | tzdata 2026b | public domain | `location.time_zone`, `date.time_zone` |
 | `mime-types` | mime-db 1.54.0 | MIT | `system.mime_type` — 1,015 types with extensions |
 | `programming-languages` | Linguist 9.4.0 | MIT | `system.programming_language` — 533 languages |
-| `iana-tld` | IANA root zone 2026080600 | facts | `internet.domain_suffix` — 1,438 TLDs |
+| `iana-tld` | IANA root zone 2026080700 | facts | `internet.domain_suffix` — 1,438 TLDs |
 | `periodic-table` | PubChem (NIH) | public domain | `science.chemical_element` (composite) |
 | `si-units` | CLDR 48.2.0 | Unicode-3.0 | `science.unit` (composite) in 74 locales |
-| `iso-3166-2` | CLDR 48.2.0 | Unicode-3.0 | `location.state` (composite) — 5,395 subdivisions, 200 countries |
+| `iso-3166-2` | CLDR 48.2.0 | Unicode-3.0 | `location.state` (composite) — 3,341 subdivisions across 73 locales, each getting its own country's (upstream carries 5,395 across 200) |
 | `cldr-dates` | CLDR 48.2.0 | Unicode-3.0 | `date.month.*`, `date.weekday.*` in 74 locales |
 | `cities` | cities.json 1.1.61 (GeoNames) | CC BY 4.0 | `location.city_name`, `location.place` (composite) in 74 locales |
 | `us-surnames` | US Census 2010 | public domain | `person.last_name.generic` in `en` — 24,889 names, **weighted** |
 | `wordnet` | Open Multilingual Wordnet 2.0 | per language (see below) | `word.noun/verb/adjective/adverb` in 15 locales |
 | `persian-words` | Lilak 3.3 | Apache-2.0 | `lorem.word` in `fa` |
+| `emoji` | Unicode Emoji 16.0 | Unicode-3.0 | `internet.emoji.*` — 3,780 sequences across 10 categories |
 | `airports` | airport-data 1.0.1 (OpenFlights) | Unlicense | `airline.airport` (composite) — 5,614 IATA-coded airports |
 | `faker-js` | @faker-js/faker 10.5.0 | MIT | everything not yet covered, at lowest precedence |
 
@@ -153,26 +154,37 @@ defines itself, not what it resolves through the chain. The distinction is the w
 point — a locale that resolves `person.first_name` only because English sits behind it
 would report as fully covered otherwise.
 
-Measured against the faker-derived corpus, this gave the first real size of the problem:
+Measured against the current corpus, over the 74 locales that are neither `en` nor the
+language-neutral `base`:
 
 | | |
 |---|---|
-| Median native coverage | 26% |
-| Locales under 30% native | 48 of 76 |
-| `ta_IN` | 7% (15 paths against `en`'s 190) |
-| `yo_NG` | 8% (17 paths) |
+| Median native coverage | 40% |
+| Locales under 30% native | 18 of 74 |
+| `ta_IN` | 13% (17 paths against `en`'s 126) |
+| `yo_NG` | 21% (26 paths) |
 
-**Roughly three quarters of what a non-English locale produces is English falling
-through the chain.** This is the "Tamil records named Jennifer Williams" failure, and it
-is much larger than the locale count suggests.
+**Around three fifths of what the median non-English locale produces is its own**, and
+the rest is English falling through the chain. That is the "Tamil records named Jennifer
+Williams" failure, and at the bottom of the table it is still most of the output.
 
-Caveat on the denominator: 36 of `en`'s 190 paths are synthetic `__keys` tables the
-compiler emits so object keys are drawable, so the real denominator is ~154 and the
+These numbers moved a long way and the reason is worth recording: the first measurement
+put the median at 26% with 48 locales under 30%. Most of that gap was not new data but a
+shadowing bug — a source claiming a path in `en` suppressed every other locale's data
+beneath it, so locales were credited with nothing for fields they defined perfectly
+well. The registry adapters account for the rest.
+
+Caveat on the denominator: 27 of `en`'s 126 paths are synthetic `__keys` tables the
+compiler emits so object keys are drawable, so the real denominator is ~99 and the
 percentages are slightly pessimistic. The ranking is unaffected.
 
-Still **planned**: CI that fails when a locale drops below a declared threshold, and a
-runtime warning when a locale falls back to English for most fields. The measurement
-exists; the gate does not.
+**Built**: `decoy-inspect --coverage --gate Corpus/coverage-baseline.json` fails when a
+locale carries less of its own data than the committed baseline, and CI runs it on every
+build. It is a regression gate rather than a quality bar — it catches an adapter silently
+dropping coverage, which is what the failure actually looks like, rather than asserting a
+threshold nobody has justified.
+
+Still **planned**: a runtime warning when a locale falls back to English for most fields.
 
 ---
 
@@ -362,7 +374,7 @@ All six are representable in format v2. Four are in use.
 |---|---|---|
 | Weights | A weight column alongside string tables | **In use** — faker-derived patterns, and real Census frequencies for English surnames |
 | Composite records | Heterogeneous field tuples, not parallel lists | **In use** — countries, languages, currencies |
-| Provenance | A source/license table, referenced by ID | **In use** — 27 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
+| Provenance | A source/license table, referenced by ID | **In use** — 28 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
 | Generative models | A model chunk type, not only string tables | Chunk kind reserved; nothing emits one |
 | Corpus version + compatibility | Header fields, checked on load | **In use** |
 | Cross-locale dedup | A shared string arena (21.2% redundancy measured) | **In use** |
@@ -423,7 +435,8 @@ Counts are not the quality bar.
 ## Sequencing
 
 1. ~~Binary format with all six requirements representable~~ — **done** (format v2)
-2. ~~Core generators against the faker-derived corpus~~ — **done** (191 methods, 18 namespaces)
+2. ~~Core generators against the faker-derived corpus~~ — **done** (192 methods across 18
+   namespaces; 174 across 17 without Foundation, which gates the `date` namespace)
 3. ~~Corpus discoverability and coverage measurement~~ — **done** (`Corpus.paths`, `decoy-inspect`)
 4. Authoritative reference adapters replacing factual fields — **done for everything
    with a pinnable registry**. Migrated: ISO 3166-1 and 3166-2, ISO 639, ISO 4217, IANA
@@ -433,9 +446,12 @@ Counts are not the quality bar.
    What remains has no pinnable source and needs a different mechanism rather than
    another adapter: NHTSA publishes vehicle makes only as a live unversioned API, and
    postcodes have ~200 national publishers rather than one.
-5. Frequency data (Census, SSA) populating the weight column — **not started**
+5. Frequency data (Census, SSA) populating the weight column — **done for English
+   surnames** (24,889 Census names with real counts), blocked for given names: ssa.gov
+   returns 403 to every non-interactive request. See "Frequency" above.
 6. Generative models for names, with the safety filters above — **not started**
-7. Coverage gate in CI, and `decoy-validate` for contributions — **not started**
+7. ~~Coverage gate in CI~~ — **done** (`decoy-inspect --gate`, run against a committed
+   baseline on every build). `decoy-validate` for contributions — **not started**
 8. Coverage gates reach threshold → `rm adapters/faker-js.mjs sources/faker-js.json`
 
 Steps 4–6 are independent and can proceed in any order. Step 8 is a consequence, not a
@@ -455,15 +471,38 @@ registry adapter would.
 Every corpus carries its own source records, so the authoritative answer is
 `decoy-inspect <locale>.decoy` rather than this list. As shipped today:
 
+All twenty-eight, because a table that omits seven of them is the same failure as a
+NOTICE that does:
+
 | Source | Licence | Obligation |
 |---|---|---|
 | [@faker-js/faker](https://github.com/faker-js/faker) | MIT | Retain notice. Ends when the faker-js adapter is deleted. |
 | [Unicode CLDR](https://github.com/unicode-org/cldr-json) | Unicode-3.0 | Retain notice. |
+| [Unicode Emoji](https://www.unicode.org/Public/emoji/16.0/) | Unicode-3.0 | Retain notice. |
 | [mime-db](https://github.com/jshttp/mime-db) | MIT | Retain notice. |
+| [Linguist](https://github.com/github-linguist/linguist) | MIT | Retain notice. |
+| [Lilak](https://github.com/b00f/lilak) | Apache-2.0 | Retain notice; state changes. |
+| [airport-data](https://www.npmjs.com/package/airport-data) (OpenFlights) | Unlicense | None. |
 | [IANA tzdb](https://www.iana.org/time-zones) | public domain | None. |
+| [IANA root zone](https://data.iana.org/TLD/) | facts | None asserted; see Decisions. |
+| [US Census 2010 surnames](https://www.census.gov/topics/population/genealogy/data/2010_surnames.html) | public domain (17 U.S.C. 105) | None. |
+| [PubChem](https://pubchem.ncbi.nlm.nih.gov/) (NIH) | public domain (17 U.S.C. 105) | None. |
 | [GeoNames](https://www.geonames.org/), via cities.json | CC BY 4.0 | **Attribution required wherever the corpus is distributed.** |
-| [Open Multilingual Wordnet](https://omwn.org/) — 15 members | Apache-2.0, MIT, CC BY 3.0, WordNet | Attribution required. Each language pinned separately; `decoy-inspect` reports the exact licence per locale. |
+| [Open Multilingual Wordnet](https://omwn.org/) — 15 members | eight distinct licences, listed below | Attribution required. Each language pinned separately. |
 | ISO 4217 registry (SIX Group) | facts | None asserted; see Decisions. |
+
+The OMW members do not share a licence, and treating them as one family was wrong for
+six of the fifteen. `omw-el` is Apache-2.0, `omw-id` is MIT, `omw-hr` and `omw-it` are
+CC BY 3.0, `omw-sv` is CC BY with no version stated, `omw-en` and `omw-pl` are
+Princeton's WordNet 3.0, and `omw-es` and `omw-fi` are dual `WordNet-3.0 AND CC-BY-3.0`.
+The remaining six — `omw-cmn`, `omw-da`, `omw-he`, `omw-ja`, `omw-nb` and `omw-th` —
+carry bespoke licences from NICT, the University of Haifa, the University of Copenhagen,
+the Norwegian Language Bank and Francis Bond. Several are Princeton's licence *text*
+re-issued by a different licensor, which is a different licence with the same wording.
+
+Every one of these ships its full text at `LICENSES/<source-id>.txt`, copied verbatim
+from the upstream artifact. Where a source carries no grant at all, that file records
+why rather than leaving the absence to be read as an oversight.
 
 The faker-js obligation is the only temporary one, and it ends only when the adapter is
 deleted *and* no derived data remains — the second condition being the one that is easy

@@ -10,8 +10,10 @@ reader; written by `decoy-compile-corpus`.
 - **No `Bundle.module` in the hot path.** Resource-bundle lookup is the most
   platform-fragile part of SPM and a large share of Fakery's trouble off macOS.
 - **Byte-identical across platforms.** All integers are little-endian and read
-  byte-wise, so there are no alignment or endianness assumptions. A blob built on an
-  arm64 Mac is valid on a big-endian Linux target.
+  byte-wise, so there are no alignment or endianness assumptions to get wrong. Verified
+  on arm64 macOS, x86-64 Linux and x86-64 Windows, which CI covers. A big-endian host
+  should follow from the byte-wise reads, but no such target has ever run this — that is
+  a property of the design rather than a tested result.
 - **Extensible without re-cutting.** Unknown chunk kinds are skipped, so a reader
   built today tolerates a corpus containing chunks it does not understand.
 
@@ -26,13 +28,13 @@ otherwise. All integers are unsigned little-endian.
 |---|---|---|---|
 | 0 | 8 | `magic` | ASCII `DECOYBIN` |
 | 8 | 2 | `formatVersion` | Bumped only for reader-incompatible changes |
-| 10 | 2 | `flags` | Reserved, must be 0 |
+| 10 | 2 | `flags` | Reserved, must be 0 — rejected on load if not |
 | 12 | 2 | `corpusMajor` | Changing an existing value bumps this |
 | 14 | 2 | `corpusMinor` | Adding data bumps this |
 | 16 | 2 | `corpusPatch` | |
-| 18 | 2 | — | Reserved, must be 0 |
+| 18 | 2 | — | Reserved, must be 0 — rejected on load if not |
 | 20 | 4 | `chunkCount` | |
-| 24 | 8 | — | Reserved, must be 0 |
+| 24 | 8 | — | Reserved, must be 0 — rejected on load if not |
 
 The corpus version is separate from the library version on purpose: `generate(seed:)`
 is only reproducible with respect to a specific corpus, so users must be able to pin
@@ -220,7 +222,9 @@ The reader checks, once, on construction:
 - the arena's `checkpointCount` agrees with `count` and `checkpointInterval`, and the
   checkpoints strictly increase — a non-increasing checkpoint could send a lookup
   scanning backwards indefinitely
-- the index is sorted by `keyHash`
+- the index is sorted by `keyHash`, which `lookup` binary-searches: an unsorted index
+  does not fail, it reports "no such path" for data that is present and lets the locale
+  fall through to its parent, which is a silently wrong *value*
 
 Anything else — an arena index out of range, a malformed table — is caught at access
 time by bounds-checked reads rather than by a full upfront scan, so start-up cost stays
