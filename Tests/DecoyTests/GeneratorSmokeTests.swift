@@ -185,6 +185,11 @@ struct GeneratorSmokeTests {
         check("vehicle.vin", &f) { $0.vehicle.vin() }
         check("vehicle.registrationPlate", &f) { $0.vehicle.registrationPlate() }
 
+        check("airline.flightNumber", &f) { $0.airline.flightNumber() }
+        check("airline.seat", &f) { $0.airline.seat() }
+        check("airline.recordLocator", &f) { $0.airline.recordLocator() }
+        check("airline.aircraftType", &f) { $0.airline.aircraftType() }
+
     }
 
     @Test("technical generators all resolve")

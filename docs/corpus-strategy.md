@@ -91,7 +91,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — fifteen adapters plus the bootstrap, twenty-five sources:
+**Built so far** — sixteen adapters plus the bootstrap, twenty-six sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -110,6 +110,7 @@ someone else's package should not itself require a package manager.
 | `us-surnames` | US Census 2010 | public domain | `person.last_name.generic` in `en` — 24,889 names, **weighted** |
 | `wordnet` | Open Multilingual Wordnet 2.0 | per language (see below) | `word.noun/verb/adjective/adverb` in 15 locales |
 | `persian-words` | Lilak 3.3 | Apache-2.0 | `lorem.word` in `fa` |
+| `airports` | airport-data 1.0.1 (OpenFlights) | Unlicense | `airline.airport` (composite) — 5,614 IATA-coded airports |
 | `faker-js` | @faker-js/faker 10.5.0 | MIT | everything not yet covered, at lowest precedence |
 
 **faker-js is an adapter like any other, and the lowest-precedence one.** It is fetched
@@ -393,6 +394,15 @@ taken over IANA's media types registry because IANA publishes at unversioned URL
 change in place — an adapter reading it directly could not distinguish a legitimate
 update from a compromised response. One intermediary, in exchange for a supply chain that
 can actually be verified. Revisit if IANA ever publishes versioned snapshots.
+
+**`airline` was cut and then restored.** It went out with the domain vocabularies on the
+trademark argument — airline and aircraft names are real marks. But airports carry IATA
+and ICAO codes, which are published identifiers rather than a curated word list, so the
+"no registry, can never be re-sourced" test that killed `animal` and `food` did not apply.
+It is back with airports sourced from the registry and the trademark-bearing halves left
+to the bootstrap. The lesson is that the scope test has two independent clauses — *is it
+schema material* and *is it re-sourceable* — and a namespace can fail one while passing
+the other.
 
 **Emit fewer values when the extra ones are wrong.** Time zones went from 419 to 312 by
 reading `zone1970.tab` and ignoring `backward`: the surplus were deprecated aliases like

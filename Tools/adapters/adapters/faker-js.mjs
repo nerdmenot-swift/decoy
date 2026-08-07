@@ -42,6 +42,11 @@ export const fallback = true
  * artists, airlines and book titles -- which is exposure taken on for data nobody asked
  * for.
  *
+ * `airline` was here and is not any more. Airports carry IATA and ICAO codes -- real
+ * published identifiers rather than a curated word list -- so the namespace is back, with
+ * airports sourced from the registry and airline and aircraft names left to this adapter,
+ * since those are trademarks nobody publishes permissively.
+ *
  * `cell_phone` is here for a different reason: no generator has ever read it.
  *
  * `science` is deliberately NOT here despite being small and obscure. Chemical elements
@@ -49,7 +54,6 @@ export const fallback = true
  * registry -- exactly what corpus-strategy.md says to keep and source rather than drop.
  */
 const OUT_OF_SCOPE = new Set([
-  'airline',
   'animal',
   'app',
   'book',

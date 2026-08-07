@@ -29,6 +29,11 @@ extension Faker {
         set { self = newValue.faker }
     }
 
+    public var airline: AirlineFaker {
+        get { AirlineFaker(faker: self) }
+        set { self = newValue.faker }
+    }
+
     public var database: DatabaseFaker {
         get { DatabaseFaker(faker: self) }
         set { self = newValue.faker }
@@ -150,6 +155,48 @@ public struct VehicleFaker {
 
     public mutating func registrationPlate() -> String {
         faker.bothify("??-###-??")
+    }
+}
+
+// MARK: - Airline
+
+/// Air travel.
+///
+/// Restored after the v1 scope cut, unlike the other domain vocabularies dropped with it.
+/// Airports carry IATA and ICAO codes, which are real published identifiers rather than a
+/// curated word list, so `airline.airport` is sourced from the registry. Airline and
+/// aircraft names remain faker-derived: those are trademarks, and no permissive registry
+/// publishes them.
+public struct AirlineFaker {
+    var faker: Faker
+
+    /// An airline as a coherent `(name, iataCode)` row.
+    public mutating func airline() -> [String: String] {
+        faker.drawRow("airline.airline") ?? [:]
+    }
+
+    /// An airport as a coherent `(name, iataCode)` row.
+    public mutating func airport() -> [String: String] {
+        faker.drawRow("airline.airport") ?? [:]
+    }
+
+    /// An aircraft as a coherent `(name, iataTypeCode)` row.
+    public mutating func airplane() -> [String: String] {
+        faker.drawRow("airline.airplane") ?? [:]
+    }
+
+    public mutating func aircraftType() -> String { airplane()["name"] ?? "" }
+
+    public mutating func flightNumber(digits: Int = 4) -> String {
+        faker.numerify(String(repeating: "#", count: digits))
+    }
+
+    public mutating func seat() -> String {
+        "\(faker.int(in: 1...60))\(faker.pick(Array("ABCDEF")))"
+    }
+
+    public mutating func recordLocator() -> String {
+        faker.bothify("??????").uppercased()
     }
 }
 
