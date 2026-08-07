@@ -354,7 +354,26 @@ func coverage(_ directory: URL, against reference: String, gate: URL?, writeGate
     }
 }
 
-/// Fails when any locale carries fewer of its own paths than the baseline records.
+/// Counts what a locale carries: its own paths, and the values reachable through them.
+///
+/// Values are counted rather than inferred from path count because the two fail
+/// independently. `us-surnames` supplies one path and 24,889 values; an adapter silently
+/// returning three would keep the path and lose the data, which is precisely the
+/// regression the gate is described as catching and could not.
+func coverage(of corpus: Corpus) throws -> LocaleCoverage {
+    var values = 0
+    let entries = try corpus.paths
+    for entry in entries {
+        switch try corpus.entry(for: entry) {
+        case .strings(let table): values += table.count
+        case .composite(let table): values += table.rowCount
+        case .explicitlyEmpty, .model: break
+        }
+    }
+    return LocaleCoverage(paths: entries.count, values: values)
+}
+
+/// Fails when any locale carries less of its own data than the baseline records.
 ///
 /// A regression gate, not a quality bar. Median native coverage is 26% and most locales
 /// sit under 30%, so an absolute threshold would fail everything on the first run and be
@@ -374,16 +393,17 @@ func enforce(_ baselineURL: URL, over files: [URL]) throws {
     }
     let baseline = try JSONDecoder().decode(CoverageBaseline.self, from: data)
 
-    var measured: [String: Int] = [:]
+    var measured: [String: LocaleCoverage] = [:]
     for file in files {
-        measured[file.deletingPathExtension().lastPathComponent] = try load(file).paths.count
+        measured[file.deletingPathExtension().lastPathComponent] = try coverage(of: try load(file))
     }
 
     let result = compareCoverage(measured: measured, against: baseline)
 
     for regression in result.regressions {
-        let message = "regression: \(regression.locale) has \(regression.actual) paths, "
-            + "baseline expects \(regression.expected)\n"
+        let message =
+            "regression: \(regression.locale) has \(regression.actual) "
+            + "\(regression.dimension.rawValue), baseline expects \(regression.expected)\n"
         FileHandle.standardError.write(Data(message.utf8))
     }
     for locale in result.missing {
@@ -394,7 +414,9 @@ func enforce(_ baselineURL: URL, over files: [URL]) throws {
         print("new locales, not yet in the baseline: \(result.unlisted.joined(separator: ", "))")
     }
     if !result.improved.isEmpty {
-        print("\(result.improved.count) locale(s) gained paths — refresh the baseline to lock that in")
+        print(
+            "\(result.improved.count) locale(s) gained paths or values "
+                + "— refresh the baseline to lock that in")
     }
 
     guard result.passes else {
@@ -405,9 +427,9 @@ func enforce(_ baselineURL: URL, over files: [URL]) throws {
 
 /// Writes the current state as the new baseline.
 func writeBaseline(_ baselineURL: URL, over files: [URL]) throws {
-    var locales: [String: Int] = [:]
+    var locales: [String: LocaleCoverage] = [:]
     for file in files {
-        locales[file.deletingPathExtension().lastPathComponent] = try load(file).paths.count
+        locales[file.deletingPathExtension().lastPathComponent] = try coverage(of: try load(file))
     }
     let encoder = JSONEncoder()
     encoder.outputFormatting = [.prettyPrinted, .sortedKeys]

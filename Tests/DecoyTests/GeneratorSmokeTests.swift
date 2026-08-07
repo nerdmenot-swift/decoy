@@ -300,6 +300,12 @@ struct GeneratorSmokeTests {
         for _ in 0..<200 {
             let card = f.finance.creditCardNumber()
             #expect(Self.passesLuhn(card), "invalid Luhn: \(card)")
+            // Luhn alone could not catch this: `passesLuhn` reads the digits and
+            // ignores everything else, so `30[0-5]8-118222-9415` passed while carrying
+            // a regex character class in the middle of it. Three of faker's issuer
+            // patterns encode an IIN range that way.
+            let shape = card.allSatisfy { $0.isNumber || $0 == "-" }
+            #expect(shape, "card number contains something that is not a digit: \(card)")
 
             let iban = f.finance.iban()
             #expect(
@@ -314,6 +320,24 @@ struct GeneratorSmokeTests {
             let imei = f.phone.imei()
             #expect(imei.count == 15, "IMEI is 15 digits, got \(imei.count)")
             #expect(Self.passesLuhn(imei), "invalid IMEI Luhn check digit: \(imei)")
+        }
+    }
+
+    /// Every issuer, not just whichever one a uniform draw happened to pick.
+    ///
+    /// `creditCardNumber()` chooses among six issuers, so a bug in one of them shows up
+    /// in roughly a sixth of draws — enough to survive a small loop and to look like
+    /// flakiness rather than a bug when it does fail.
+    @Test("every card issuer produces a well-formed number", arguments: [
+        "visa", "mastercard", "american_express", "discover", "diners_club", "jcb",
+    ])
+    func cardIssuers(_ issuer: String) throws {
+        var f = try english()
+        for _ in 0..<50 {
+            let card = f.finance.creditCardNumber(issuer: issuer)
+            let shape = card.allSatisfy { $0.isNumber || $0 == "-" }
+            #expect(shape, "\(issuer) produced \(card)")
+            #expect(Self.passesLuhn(card), "\(issuer) produced an invalid Luhn: \(card)")
         }
     }
 

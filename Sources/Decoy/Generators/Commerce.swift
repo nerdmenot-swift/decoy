@@ -147,8 +147,47 @@ public struct FinanceFaker {
         }
         // Corpus patterns may carry a trailing `L` marking "append a Luhn digit".
         let cleaned = pattern.hasSuffix("L") ? String(pattern.dropLast()) : pattern
-        let body = faker.bothify(cleaned.replacingOccurrencesOfSlash())
+        let body = faker.bothify(expandRanges(cleaned.replacingOccurrencesOfSlash()))
         return Self.luhnComplete(body)
+    }
+
+    /// Expands `[a-b]` in a card pattern to a number drawn from that range.
+    ///
+    /// The corpus carries faker's issuer patterns verbatim, and three of them use a
+    /// bracket range to encode a real IIN constraint: Diners Club is `30[0-5]#`, JCB is
+    /// `35[3-8]#`, Mastercard is `2[221-720]`. `bothify` has never known what a bracket
+    /// is, so it left them alone and a Diners Club number came out as
+    /// `30[0-5]8-118222-9415` — a string that is not a card number at all, and one that
+    /// `checksums` could not catch because the Luhn digit was computed over the digits
+    /// that were there.
+    ///
+    /// The bounds are read as whole numbers rather than as characters, because
+    /// `[221-720]` means "a number from 221 to 720" and not "a digit from 2 to 0". Both
+    /// bounds are the same width in every pattern faker ships, so the substitution
+    /// preserves the field width the IIN depends on.
+    private mutating func expandRanges(_ pattern: String) -> String {
+        guard pattern.contains("[") else { return pattern }
+
+        var out = String()
+        var rest = Substring(pattern)
+        while let open = rest.firstIndex(of: "[") {
+            out += rest[..<open]
+            guard let close = rest[open...].firstIndex(of: "]") else {
+                // Unbalanced: emit the remainder verbatim rather than dropping it, so
+                // malformed corpus data stays visible instead of being eaten.
+                out += rest[open...]
+                return out
+            }
+            let body = rest[rest.index(after: open)..<close]
+            let bounds = body.split(separator: "-", maxSplits: 1)
+            if bounds.count == 2, let low = Int(bounds[0]), let high = Int(bounds[1]), low <= high {
+                out += String(faker.int(in: low...high))
+            } else {
+                out += rest[open...close]
+            }
+            rest = rest[rest.index(after: close)...]
+        }
+        return out + rest
     }
 
     /// Appends the digit that makes `body` satisfy the Luhn checksum.

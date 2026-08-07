@@ -30,6 +30,14 @@ enum RealCorpus {
         FileManager.default.fileExists(atPath: directory.appendingPathComponent("en.decoy").path)
     }
 
+    /// Every locale with a compiled blob on disk.
+    static func availableCodes() throws -> [String] {
+        try FileManager.default.contentsOfDirectory(atPath: directory.path)
+            .filter { $0.hasSuffix(".decoy") }
+            .map { String($0.dropLast(6)) }
+            .sorted()
+    }
+
     static func corpus(_ code: String) throws -> Corpus {
         let url = directory.appendingPathComponent("\(code).decoy")
         return try Corpus(bytes: [UInt8](try Data(contentsOf: url)))

@@ -699,3 +699,20 @@ public struct CompositeTable: Sendable {
         return try row(Int(rng.draw(below: UInt64(rowCount))))
     }
 }
+
+extension Corpus {
+    /// The address of the backing byte buffer, for tests that need to tell one decode
+    /// from two.
+    ///
+    /// `Corpus` is a value type, so identity is not observable at the struct level and
+    /// "was this decoded once?" cannot be asked directly. The `[UInt8]` inside is
+    /// copy-on-write, though, so every copy of a single decode shares one buffer and
+    /// reports one address, while a second decode allocates its own.
+    ///
+    /// Not `public`: this is an implementation detail that happens to be observable, and
+    /// exposing it would invite someone to build on an address that is only stable for
+    /// as long as the corpus is alive.
+    var byteBufferAddress: UInt {
+        reader.bytes.withUnsafeBufferPointer { UInt(bitPattern: $0.baseAddress) }
+    }
+}

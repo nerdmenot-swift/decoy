@@ -1,80 +1,308 @@
 {
   "locales" : {
-    "af_ZA" : 36,
-    "ar" : 57,
-    "az" : 64,
-    "base" : 2072,
-    "bn_BD" : 20,
-    "cs_CZ" : 55,
-    "cy" : 44,
-    "da" : 79,
-    "de" : 69,
-    "de_AT" : 54,
-    "de_CH" : 44,
-    "dv" : 49,
-    "el" : 84,
-    "en" : 126,
-    "en_AU" : 38,
-    "en_AU_ocker" : 37,
-    "en_BORK" : 9,
-    "en_CA" : 45,
-    "en_GB" : 39,
-    "en_GH" : 44,
-    "en_HK" : 41,
-    "en_IE" : 31,
-    "en_IN" : 38,
-    "en_NG" : 36,
-    "en_US" : 81,
-    "en_ZA" : 40,
-    "eo" : 60,
-    "es" : 76,
-    "es_MX" : 71,
-    "fa" : 100,
-    "fi" : 45,
-    "fr" : 90,
-    "fr_BE" : 54,
-    "fr_CA" : 31,
-    "fr_CH" : 59,
-    "fr_LU" : 28,
-    "fr_SN" : 39,
-    "he" : 80,
-    "hr" : 58,
-    "hu" : 73,
-    "hy" : 50,
-    "id_ID" : 71,
-    "it" : 62,
-    "ja" : 74,
-    "ka_GE" : 55,
-    "ko" : 54,
-    "ku_ckb" : 35,
-    "ku_kmr_latin" : 34,
-    "lv" : 72,
-    "mk" : 57,
-    "mn_MN_cyrl" : 19,
-    "nb_NO" : 73,
-    "ne" : 37,
-    "nl" : 65,
-    "nl_BE" : 50,
-    "pl" : 66,
-    "pt_BR" : 69,
-    "pt_PT" : 70,
-    "ro" : 51,
-    "ro_MD" : 52,
-    "ru" : 72,
-    "sk" : 56,
-    "sl_SI" : 57,
-    "sr_RS_latin" : 39,
-    "sv" : 68,
-    "ta_IN" : 17,
-    "th" : 49,
-    "tr" : 58,
-    "uk" : 63,
-    "ur" : 70,
-    "uz_UZ_latin" : 58,
-    "vi" : 42,
-    "yo_NG" : 26,
-    "zh_CN" : 96,
-    "zh_TW" : 46,
-    "zu_ZA" : 37
+    "af_ZA" : {
+      "paths" : 36,
+      "values" : 3240
+    },
+    "ar" : {
+      "paths" : 57,
+      "values" : 2990
+    },
+    "az" : {
+      "paths" : 64,
+      "values" : 1912
+    },
+    "base" : {
+      "paths" : 2072,
+      "values" : 16109
+    },
+    "bn_BD" : {
+      "paths" : 20,
+      "values" : 1321
+    },
+    "cs_CZ" : {
+      "paths" : 55,
+      "values" : 15203
+    },
+    "cy" : {
+      "paths" : 44,
+      "values" : 10398
+    },
+    "da" : {
+      "paths" : 79,
+      "values" : 4005
+    },
+    "de" : {
+      "paths" : 69,
+      "values" : 23591
+    },
+    "de_AT" : {
+      "paths" : 54,
+      "values" : 8681
+    },
+    "de_CH" : {
+      "paths" : 44,
+      "values" : 4375
+    },
+    "dv" : {
+      "paths" : 49,
+      "values" : 1044
+    },
+    "el" : {
+      "paths" : 84,
+      "values" : 7328
+    },
+    "en" : {
+      "paths" : 126,
+      "values" : 84237
+    },
+    "en_AU" : {
+      "paths" : 38,
+      "values" : 8933
+    },
+    "en_AU_ocker" : {
+      "paths" : 37,
+      "values" : 8563
+    },
+    "en_BORK" : {
+      "paths" : 9,
+      "values" : 29850
+    },
+    "en_CA" : {
+      "paths" : 45,
+      "values" : 6477
+    },
+    "en_GB" : {
+      "paths" : 39,
+      "values" : 11067
+    },
+    "en_GH" : {
+      "paths" : 44,
+      "values" : 1596
+    },
+    "en_HK" : {
+      "paths" : 41,
+      "values" : 1806
+    },
+    "en_IE" : {
+      "paths" : 31,
+      "values" : 1839
+    },
+    "en_IN" : {
+      "paths" : 38,
+      "values" : 15663
+    },
+    "en_NG" : {
+      "paths" : 36,
+      "values" : 3033
+    },
+    "en_US" : {
+      "paths" : 81,
+      "values" : 31736
+    },
+    "en_ZA" : {
+      "paths" : 40,
+      "values" : 3980
+    },
+    "eo" : {
+      "paths" : 60,
+      "values" : 1508
+    },
+    "es" : {
+      "paths" : 76,
+      "values" : 34983
+    },
+    "es_MX" : {
+      "paths" : 71,
+      "values" : 19458
+    },
+    "fa" : {
+      "paths" : 100,
+      "values" : 16893
+    },
+    "fi" : {
+      "paths" : 45,
+      "values" : 21398
+    },
+    "fr" : {
+      "paths" : 90,
+      "values" : 22170
+    },
+    "fr_BE" : {
+      "paths" : 54,
+      "values" : 8310
+    },
+    "fr_CA" : {
+      "paths" : 31,
+      "values" : 6433
+    },
+    "fr_CH" : {
+      "paths" : 59,
+      "values" : 5693
+    },
+    "fr_LU" : {
+      "paths" : 28,
+      "values" : 1255
+    },
+    "fr_SN" : {
+      "paths" : 39,
+      "values" : 1579
+    },
+    "he" : {
+      "paths" : 80,
+      "values" : 6822
+    },
+    "hr" : {
+      "paths" : 58,
+      "values" : 11522
+    },
+    "hu" : {
+      "paths" : 73,
+      "values" : 8833
+    },
+    "hy" : {
+      "paths" : 50,
+      "values" : 2160
+    },
+    "id_ID" : {
+      "paths" : 71,
+      "values" : 18484
+    },
+    "it" : {
+      "paths" : 62,
+      "values" : 34685
+    },
+    "ja" : {
+      "paths" : 74,
+      "values" : 37148
+    },
+    "ka_GE" : {
+      "paths" : 55,
+      "values" : 2473
+    },
+    "ko" : {
+      "paths" : 54,
+      "values" : 2806
+    },
+    "ku_ckb" : {
+      "paths" : 35,
+      "values" : 8025
+    },
+    "ku_kmr_latin" : {
+      "paths" : 34,
+      "values" : 6127
+    },
+    "lv" : {
+      "paths" : 72,
+      "values" : 3482
+    },
+    "mk" : {
+      "paths" : 57,
+      "values" : 3611
+    },
+    "mn_MN_cyrl" : {
+      "paths" : 19,
+      "values" : 1506
+    },
+    "nb_NO" : {
+      "paths" : 73,
+      "values" : 3694
+    },
+    "ne" : {
+      "paths" : 37,
+      "values" : 1166
+    },
+    "nl" : {
+      "paths" : 65,
+      "values" : 8128
+    },
+    "nl_BE" : {
+      "paths" : 50,
+      "values" : 5746
+    },
+    "pl" : {
+      "paths" : 66,
+      "values" : 13180
+    },
+    "pt_BR" : {
+      "paths" : 69,
+      "values" : 13710
+    },
+    "pt_PT" : {
+      "paths" : 70,
+      "values" : 4158
+    },
+    "ro" : {
+      "paths" : 51,
+      "values" : 10883
+    },
+    "ro_MD" : {
+      "paths" : 52,
+      "values" : 2263
+    },
+    "ru" : {
+      "paths" : 72,
+      "values" : 12264
+    },
+    "sk" : {
+      "paths" : 56,
+      "values" : 4186
+    },
+    "sl_SI" : {
+      "paths" : 57,
+      "values" : 2357
+    },
+    "sr_RS_latin" : {
+      "paths" : 39,
+      "values" : 3699
+    },
+    "sv" : {
+      "paths" : 68,
+      "values" : 4293
+    },
+    "ta_IN" : {
+      "paths" : 17,
+      "values" : 14740
+    },
+    "th" : {
+      "paths" : 49,
+      "values" : 11370
+    },
+    "tr" : {
+      "paths" : 58,
+      "values" : 8582
+    },
+    "uk" : {
+      "paths" : 63,
+      "values" : 9211
+    },
+    "ur" : {
+      "paths" : 70,
+      "values" : 2327
+    },
+    "uz_UZ_latin" : {
+      "paths" : 58,
+      "values" : 3902
+    },
+    "vi" : {
+      "paths" : 42,
+      "values" : 5372
+    },
+    "yo_NG" : {
+      "paths" : 26,
+      "values" : 3063
+    },
+    "zh_CN" : {
+      "paths" : 96,
+      "values" : 21783
+    },
+    "zh_TW" : {
+      "paths" : 46,
+      "values" : 1394
+    },
+    "zu_ZA" : {
+      "paths" : 37,
+      "values" : 3053
+    }
   }
 }

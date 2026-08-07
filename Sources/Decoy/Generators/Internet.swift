@@ -40,8 +40,8 @@ public struct InternetFaker {
         lastName: String? = nil,
         domain: String? = nil
     ) -> String {
-        let first = (firstName ?? faker.person.firstName()).asSlug
-        let last = (lastName ?? faker.person.lastName()).asSlug
+        let first = localPart(from: firstName ?? faker.person.firstName())
+        let last = localPart(from: lastName ?? faker.person.lastName())
         let host = domain ?? faker.draw("internet.example_email") ?? "example.com"
         return "\(first).\(last)@\(host)"
     }
@@ -54,7 +54,24 @@ public struct InternetFaker {
     }
 
     public mutating func username() -> String {
-        "\(faker.person.firstName().asSlug)\(faker.int(in: 1...9_999))"
+        "\(localPart(from: faker.person.firstName()))\(faker.int(in: 1...9_999))"
+    }
+
+    /// A name reduced to something usable left of an `@`.
+    ///
+    /// A name in a non-Latin script has no ASCII to keep, so ``asSlug`` returns its
+    /// `"user"` placeholder and every Japanese address came out as exactly
+    /// `user.user@example.com` — the same string for every row, which collides under a
+    /// `unique` rule and is useless as test data.
+    ///
+    /// The suffix does not pretend to romanize anything: transliterating 葵 to `aoi`
+    /// needs per-script data Decoy does not carry, and guessing would produce confident
+    /// nonsense. It makes the degradation visible and the values distinct, which is what
+    /// a fixture actually needs from it.
+    private mutating func localPart(from name: String) -> String {
+        let slug = name.asciiSlug
+        guard slug.isEmpty else { return slug }
+        return "user\(faker.int(in: 100...999))"
     }
 
     public mutating func password(length: Int = 16) -> String {
@@ -202,6 +219,16 @@ extension String {
     /// Japanese or Arabic name reduces to the empty string, and an address beginning
     /// with `.` is malformed.
     var asSlug: String {
+        let slug = asciiSlug
+        return slug.isEmpty ? "user" : slug
+    }
+
+    /// The same reduction, empty when nothing survives.
+    ///
+    /// Split out because "nothing survived" and "the name really was `user`" are
+    /// different facts, and the placeholder erases the difference. An email local part
+    /// needs to know which it is; a URL slug does not.
+    var asciiSlug: String {
         var out = String()
         out.reserveCapacity(count)
         for scalar in lowercased().unicodeScalars {
@@ -210,6 +237,6 @@ extension String {
             default: break
             }
         }
-        return out.isEmpty ? "user" : out
+        return out
     }
 }

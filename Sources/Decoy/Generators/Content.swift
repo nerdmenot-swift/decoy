@@ -92,8 +92,20 @@ public struct LoremFaker {
         (0..<count).map { _ in paragraph() }.joined(separator: separator)
     }
 
+    /// A URL-safe slug of `count` words.
+    ///
+    /// Words that reduce to nothing in ASCII are replaced with a numbered placeholder
+    /// rather than a bare `user`: every Japanese filename was `user-user.<ext>`, which
+    /// is one string repeated for every row. A real romanization needs per-script data
+    /// Decoy does not carry, so the placeholder stays visible — but it is at least
+    /// distinct per draw, which is what a filename or a URL is for.
     public mutating func slug(words count: Int = 3) -> String {
-        (0..<count).map { _ in word().asSlug }.joined(separator: "-")
+        (0..<count)
+            .map { _ in
+                let slug = word().asciiSlug
+                return slug.isEmpty ? "word\(faker.int(in: 100...999))" : slug
+            }
+            .joined(separator: "-")
     }
 
     public mutating func text(maxLength: Int = 200) -> String {

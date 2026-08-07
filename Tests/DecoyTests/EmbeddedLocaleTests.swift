@@ -103,11 +103,19 @@ struct EmbeddedLocaleTests {
     /// the work, or every draw would pay for a 296 KB base64 decode.
     @Test("the decoded corpus is shared, not rebuilt per access")
     func decodedOnce() {
-        let first = DecoyLocaleEN.corpus
-        let second = DecoyLocaleEN.corpus
-        #expect(first.stringCount == second.stringCount)
-        // A `static let` is initialised once; this is a guard against someone
-        // converting it to a computed property.
-        #expect(DecoyLocaleEN.locale.chain.count == 2)
+        // Comparing `stringCount` across two accesses proved nothing: a computed
+        // property that re-decoded 296 KB on every call would return the same count and
+        // pass, which is exactly the regression this test is named for.
+        //
+        // The byte buffer's address is the evidence. `Corpus` is a struct, so two
+        // accesses of a `static let` are copies — but the `[UInt8]` inside is
+        // copy-on-write, so both copies share one buffer and report one address.
+        // Re-decoding allocates a fresh array, and the addresses diverge.
+        let first = DecoyLocaleEN.corpus.byteBufferAddress
+        let second = DecoyLocaleEN.corpus.byteBufferAddress
+        #expect(
+            first == second,
+            "the payload is being decoded per access — make `corpus` a `static let`"
+        )
     }
 }
