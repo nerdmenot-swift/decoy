@@ -21,7 +21,8 @@ enum Command {
     case summary(URL)
     case paths(URL, filter: String?)
     case values(URL, path: String)
-    case coverage(URL, against: String)
+    case coverage(URL, against: String, gate: URL?, writeGate: URL?)
+    case notice(URL)
 }
 
 func fail(_ message: String) -> Never {
@@ -35,6 +36,9 @@ let usage = """
       decoy-inspect <file.decoy> --paths [substring]  list paths
       decoy-inspect <file.decoy> --path <path>        show values at one path
       decoy-inspect --coverage <dir> [--against en]   native coverage per locale
+      decoy-inspect --coverage <dir> --gate <file>    fail if coverage regressed
+      decoy-inspect --coverage <dir> --write-gate <f>  record the current state as baseline
+      decoy-inspect --notice <dir>                    attribution for every source shipped
     """
 
 func parse() -> Command {
@@ -42,6 +46,9 @@ func parse() -> Command {
     var pathsFilter: String??
     var singlePath: String?
     var coverageDirectory: URL?
+    var noticeDirectory: URL?
+    var gate: URL?
+    var writeGate: URL?
     var against = "en"
 
     var i = 1
@@ -65,6 +72,18 @@ func parse() -> Command {
             guard i + 1 < args.count else { fail("--coverage needs a directory") }
             coverageDirectory = URL(fileURLWithPath: args[i + 1])
             i += 2
+        case "--notice":
+            guard i + 1 < args.count else { fail("--notice needs a directory") }
+            noticeDirectory = URL(fileURLWithPath: args[i + 1])
+            i += 2
+        case "--gate":
+            guard i + 1 < args.count else { fail("--gate needs a baseline file") }
+            gate = URL(fileURLWithPath: args[i + 1])
+            i += 2
+        case "--write-gate":
+            guard i + 1 < args.count else { fail("--write-gate needs a file") }
+            writeGate = URL(fileURLWithPath: args[i + 1])
+            i += 2
         case "--against":
             guard i + 1 < args.count else { fail("--against needs a locale code") }
             against = args[i + 1]
@@ -78,7 +97,10 @@ func parse() -> Command {
         }
     }
 
-    if let directory = coverageDirectory { return .coverage(directory, against: against) }
+    if let directory = noticeDirectory { return .notice(directory) }
+    if let directory = coverageDirectory {
+        return .coverage(directory, against: against, gate: gate, writeGate: writeGate)
+    }
     guard positional.count == 1 else { fail(usage) }
     let file = URL(fileURLWithPath: positional[0])
 
@@ -266,12 +288,31 @@ func values(_ url: URL, path: String) throws {
 /// Native coverage rather than resolved coverage: a locale resolving `person.first_name`
 /// only because English sits behind it in the chain is the failure this is meant to
 /// surface, and resolved coverage would report it as 100%.
-func coverage(_ directory: URL, against reference: String) throws {
+/// A locale's own path count, as recorded in the gate baseline.
+///
+/// Native path count rather than a percentage: the percentage moves whenever the
+/// *reference* locale gains paths, so a baseline in percentages would fail every locale
+/// the moment `en` grew — punishing an improvement. The count only moves when the locale
+/// itself does.
+struct CoverageBaseline: Codable {
+    var locales: [String: Int]
+}
+
+func coverage(_ directory: URL, against reference: String, gate: URL?, writeGate: URL?) throws {
     let files = (try? FileManager.default.contentsOfDirectory(at: directory,
                                                               includingPropertiesForKeys: nil))?
         .filter { $0.pathExtension == "decoy" }
         .sorted { $0.lastPathComponent < $1.lastPathComponent } ?? []
     guard !files.isEmpty else { fail("no .decoy files in \(directory.path)") }
+
+    if let baselineURL = writeGate {
+        try writeBaseline(baselineURL, over: files)
+        return
+    }
+    if let gate {
+        try enforce(gate, over: files)
+        return
+    }
 
     let referenceURL = directory.appendingPathComponent("\(reference).decoy")
     guard FileManager.default.fileExists(atPath: referenceURL.path) else {
@@ -315,11 +356,180 @@ func coverage(_ directory: URL, against reference: String) throws {
     }
 }
 
+/// Fails when any locale carries fewer of its own paths than the baseline records.
+///
+/// A regression gate, not a quality bar. Median native coverage is 26% and most locales
+/// sit under 30%, so an absolute threshold would fail everything on the first run and be
+/// switched off within a week. What is actually worth catching is a locale going
+/// *backwards* — an adapter that stops emitting, a source that silently returns less
+/// after a re-pin — which is invisible in a passing test suite because the corpus is a
+/// build artifact nobody diffs.
+///
+/// Growth is not a failure and does not require a baseline update to pass; the message
+/// says when the file is worth refreshing.
+func enforce(_ baselineURL: URL, over files: [URL]) throws {
+    guard let data = try? Data(contentsOf: baselineURL) else {
+        fail(
+            "cannot read \(baselineURL.path) — regenerate it with:\n"
+                + "  decoy-inspect --coverage <dir> --write-gate \(baselineURL.path)"
+        )
+    }
+    let baseline = try JSONDecoder().decode(CoverageBaseline.self, from: data)
+
+    var regressions: [(String, Int, Int)] = []
+    var improvements = 0
+    var unlisted: [String] = []
+
+    for file in files {
+        let code = file.deletingPathExtension().lastPathComponent
+        let count = try load(file).paths.count
+        guard let expected = baseline.locales[code] else {
+            unlisted.append(code)
+            continue
+        }
+        if count < expected { regressions.append((code, expected, count)) }
+        if count > expected { improvements += 1 }
+    }
+
+    let missing = baseline.locales.keys.filter { code in
+        !files.contains { $0.deletingPathExtension().lastPathComponent == code }
+    }.sorted()
+
+    for (code, expected, actual) in regressions {
+        FileHandle.standardError.write(
+            Data("regression: \(code) has \(actual) paths, baseline expects \(expected)\n".utf8))
+    }
+    for code in missing {
+        FileHandle.standardError.write(
+            Data("missing: \(code) is in the baseline but not in the corpus\n".utf8))
+    }
+
+    if !unlisted.isEmpty {
+        print("new locales, not yet in the baseline: \(unlisted.sorted().joined(separator: ", "))")
+    }
+    if improvements > 0 {
+        print("\(improvements) locale(s) gained paths — refresh the baseline to lock that in")
+    }
+
+    guard regressions.isEmpty && missing.isEmpty else {
+        fail("coverage regressed in \(regressions.count + missing.count) locale(s)")
+    }
+    print("coverage gate: \(files.count) locales, none below baseline")
+}
+
+/// Writes the current state as the new baseline.
+func writeBaseline(_ baselineURL: URL, over files: [URL]) throws {
+    var locales: [String: Int] = [:]
+    for file in files {
+        locales[file.deletingPathExtension().lastPathComponent] = try load(file).paths.count
+    }
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+    try encoder.encode(CoverageBaseline(locales: locales)).write(to: baselineURL)
+    print("wrote \(locales.count) locales to \(baselineURL.lastPathComponent)")
+}
+
+// MARK: - Attribution
+
+/// Emits the NOTICE text for every source represented in a compiled corpus.
+///
+/// Derived from the provenance records embedded in the blobs rather than maintained by
+/// hand, so attribution cannot drift from what actually shipped. That is not a
+/// convenience: several of these licences are conditions of distribution, and a
+/// hand-written list silently stops being true the next time an adapter changes.
+///
+/// CC BY 4.0 §3(a)(1) wants the title, the creator, a copyright notice, a link to the
+/// licence, **and an indication that the material was modified**. Decoy's corpus is
+/// unambiguously modified — filtered, re-encoded into a binary format and deduplicated
+/// across locales — so that statement is stated once, prominently, rather than implied.
+func notice(_ directory: URL) throws {
+    let files = (try? FileManager.default.contentsOfDirectory(
+        at: directory, includingPropertiesForKeys: nil))?
+        .filter { $0.pathExtension == "decoy" }
+        .sorted { $0.lastPathComponent < $1.lastPathComponent } ?? []
+    guard !files.isEmpty else { fail("no .decoy files in \(directory.path)") }
+
+    // Read from each corpus's provenance chunk rather than by walking its tables.
+    // A table merged from several upstreams is credited to one of them, so walking
+    // tables omits the others: the ISO 4217 registry supplies every numeric currency
+    // code and would have been missing from this file entirely.
+    //
+    // Deduplicated by id, because the same source appears in all seventy-six locales and
+    // a NOTICE that repeated CLDR seventy-six times would be complete and unreadable.
+    var sources: [String: Source] = [:]
+    for file in files {
+        for source in try load(file).sources where sources[source.id] == nil {
+            sources[source.id] = source
+        }
+    }
+
+    print(
+        """
+        Decoy
+        Copyright NerdMeNot
+
+        This product includes software developed at NerdMeNot, licensed under the Apache
+        License, Version 2.0.
+
+        ------------------------------------------------------------------------------
+        Corpus data
+        ------------------------------------------------------------------------------
+
+        Decoy's data corpus is derived from the sources below. The data has been MODIFIED:
+        entries were filtered and selected, re-encoded into Decoy's binary corpus format,
+        and deduplicated across locales. None of the sources listed endorse Decoy or its
+        use of their material.
+
+        This file is generated from the provenance records embedded in the compiled
+        corpus, so it describes exactly what ships:
+
+            swift run decoy-inspect --notice Corpus/binary > NOTICE
+
+        """
+    )
+
+    // Grouped by licence rather than by source, because the reader of a NOTICE is
+    // usually answering "what obligations does this impose on me", not "what is in it".
+    let grouped = Dictionary(grouping: sources.values, by: \.license)
+    for license in grouped.keys.sorted() {
+        print("\(license)")
+        print(String(repeating: "-", count: license.count))
+        for source in grouped[license]!.sorted(by: { $0.id < $1.id }) {
+            let retrieved = source.retrieved.isEmpty ? "" : ", retrieved \(source.retrieved)"
+            print("  \(source.id) — version \(source.version)\(retrieved)")
+            if !source.url.isEmpty { print("    \(source.url)") }
+        }
+        if let uri = licenseURI(license) { print("    Licence: \(uri)") }
+        print("")
+    }
+}
+
+/// The canonical URI for a licence, which CC BY requires be conveyed alongside the work.
+///
+/// Kept as a table rather than derived from the identifier: several of these are not
+/// SPDX identifiers at all — `public-facts` and `public-domain` record *reasoning* about
+/// data that carries no grant, and inventing a URL for them would assert a licence that
+/// does not exist.
+func licenseURI(_ license: String) -> String? {
+    switch license {
+    case "CC-BY-4.0": "https://creativecommons.org/licenses/by/4.0/"
+    case "CC-BY-3.0": "https://creativecommons.org/licenses/by/3.0/"
+    case "Apache-2.0": "https://www.apache.org/licenses/LICENSE-2.0"
+    case "MIT": "https://opensource.org/licenses/MIT"
+    case "Unicode-3.0": "https://www.unicode.org/license.txt"
+    case "WordNet-3.0": "https://wordnet.princeton.edu/license-and-commercial-use"
+    case "Unlicense": "https://unlicense.org/"
+    default: nil
+    }
+}
+
 // MARK: - Driver
 
 switch parse() {
 case .summary(let url): try summary(url)
 case .paths(let url, let filter): try list(url, filter: filter)
 case .values(let url, let path): try values(url, path: path)
-case .coverage(let directory, let reference): try coverage(directory, against: reference)
+case .coverage(let directory, let reference, let gate, let writeGate):
+    try coverage(directory, against: reference, gate: gate, writeGate: writeGate)
+case .notice(let directory): try notice(directory)
 }

@@ -1,0 +1,112 @@
+Decoy
+Copyright NerdMeNot
+
+This product includes software developed at NerdMeNot, licensed under the Apache
+License, Version 2.0.
+
+------------------------------------------------------------------------------
+Corpus data
+------------------------------------------------------------------------------
+
+Decoy's data corpus is derived from the sources below. The data has been MODIFIED:
+entries were filtered and selected, re-encoded into Decoy's binary corpus format,
+and deduplicated across locales. None of the sources listed endorse Decoy or its
+use of their material.
+
+This file is generated from the provenance records embedded in the compiled
+corpus, so it describes exactly what ships:
+
+    swift run decoy-inspect --notice Corpus/binary > NOTICE
+
+
+
+  unattributed — version 
+
+Apache-2.0
+----------
+  lilak — version 3.3, retrieved 2026-08-07
+    https://github.com/b00f/lilak
+  omw-el — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+    Licence: https://www.apache.org/licenses/LICENSE-2.0
+
+CC-BY-3.0
+---------
+  omw-es — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+  omw-fi — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+  omw-hr — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+  omw-it — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+  omw-sv — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+    Licence: https://creativecommons.org/licenses/by/3.0/
+
+CC-BY-4.0
+---------
+  cities-json — version 1.1.61, retrieved 2026-08-07
+    https://github.com/lutangar/cities.json
+    Licence: https://creativecommons.org/licenses/by/4.0/
+
+MIT
+---
+  faker-js — version 10.5.0, retrieved 2026-08-07
+    https://github.com/faker-js/faker
+  linguist — version 9.4.0, retrieved 2026-08-07
+    https://github.com/github-linguist/linguist
+  mime-db — version 1.54.0, retrieved 2026-08-06
+    https://github.com/jshttp/mime-db
+  omw-id — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+    Licence: https://opensource.org/licenses/MIT
+
+Unicode-3.0
+-----------
+  cldr-48 — version 48.2.0, retrieved 2026-08-06
+    https://github.com/unicode-org/cldr-json
+    Licence: https://www.unicode.org/license.txt
+
+Unlicense
+---------
+  airport-data — version 1.0.1, retrieved 2026-08-07
+    https://github.com/jbrooksuk/JSON-Airports
+    Licence: https://unlicense.org/
+
+WordNet-3.0
+-----------
+  omw-cmn — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+  omw-da — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+  omw-en — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+  omw-he — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+  omw-ja — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+  omw-nb — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+  omw-pl — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+  omw-th — version 2.0, retrieved 2026-08-07
+    https://omwn.org/
+    Licence: https://wordnet.princeton.edu/license-and-commercial-use
+
+public-domain
+-------------
+  iana-tzdb — version 2026b, retrieved 2026-08-06
+    https://www.iana.org/time-zones
+  pubchem — version 2026-08-07, retrieved 2026-08-07
+    https://pubchem.ncbi.nlm.nih.gov/periodic-table/
+  us-census-surnames — version 2010, retrieved 2026-08-07
+    https://www.census.gov/topics/population/genealogy/data/2010_surnames.html
+
+public-facts
+------------
+  iana-tld — version 2026080600, retrieved 2026-08-07
+    https://www.iana.org/domains/root/db
+  iso-4217-six — version 2026-01-01, retrieved 2026-08-06
+    https://www.six-group.com/en/products-services/financial-information/data-standards.html
+

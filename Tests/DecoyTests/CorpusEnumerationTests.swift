@@ -103,6 +103,34 @@ struct CorpusEnumerationTests {
         #expect(PathEntry.Kind(raw: 2) == .composite)
     }
 
+    @Test("every registered source is enumerable, not only the attributed ones")
+    func sourcesEnumerate() throws {
+        // The distinction this protects: a source registered but never referenced by a
+        // table still has to appear, because NOTICE is generated from this. Attribution
+        // by table would have silently dropped the ISO 4217 registry from the real corpus.
+        var builder = CorpusBuilder(version: CorpusVersion(major: 1, minor: 0, patch: 0))
+        let used = builder.addSource(
+            id: "used", license: "MIT", url: "https://example.org/used",
+            version: "1", retrieved: "2026-08-08"
+        )
+        _ = builder.addSource(
+            id: "registered-but-unreferenced", license: "CC-BY-4.0",
+            url: "https://example.org/other", version: "2", retrieved: "2026-08-08"
+        )
+        builder.index("a.b", stringTable: builder.addStringTable(["x"], source: used))
+
+        let corpus = try Corpus(bytes: builder.build())
+        let ids = try corpus.sources.map(\.id)
+
+        #expect(ids.contains("used"))
+        #expect(
+            ids.contains("registered-but-unreferenced"),
+            "a source no table points at is still part of what the corpus was built from"
+        )
+        #expect(try corpus.sources.first { $0.id == "registered-but-unreferenced" }?.license
+            == "CC-BY-4.0")
+    }
+
     @Test("a chain lists the union of its locales, most specific winning")
     func chainUnion() throws {
         var front = CorpusBuilder(version: CorpusVersion(major: 1, minor: 0, patch: 0))

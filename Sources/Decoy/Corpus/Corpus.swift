@@ -249,6 +249,25 @@ public struct Corpus: Sendable {
         )
     }
 
+    /// Every source registered in this corpus, in id order.
+    ///
+    /// The compiler registers all of them in every locale, whether or not a table draws
+    /// on one, so this is the record of what the corpus was *built from* — where
+    /// ``source(_:)`` answers what a particular table was *attributed to*. The two differ
+    /// whenever a table merges several upstreams and is credited to the primary: the
+    /// currency tables take their numeric codes from the ISO 4217 registry but are
+    /// attributed to CLDR, so walking tables alone would omit the registry entirely.
+    ///
+    /// Generating attribution from tables rather than from this is how a NOTICE ends up
+    /// silently short of a source that was genuinely used.
+    public var sources: [Source] {
+        get throws {
+            guard let chunk = chunks[ChunkKind.provenance.rawValue] else { return [] }
+            let count = Int(try reader.u32(at: chunk.offset))
+            return try (0..<count).compactMap { try source(UInt32($0)) }
+        }
+    }
+
     /// The number of distinct strings in the shared arena.
     public var stringCount: Int { arena.count }
 
