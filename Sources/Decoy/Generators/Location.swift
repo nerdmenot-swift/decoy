@@ -89,6 +89,12 @@ public struct LocationFaker {
         )
     }
 
+    /// A continent in the locale's own language.
+    ///
+    /// Six, not seven: CLDR follows UN M49 and models the Americas as one region, and a
+    /// library that split them would be asserting a schoolroom convention that much of
+    /// the world does not use.
+
     public mutating func cityPrefix() -> String { faker.require("location.city_prefix") }
     public mutating func citySuffix() -> String { faker.require("location.city_suffix") }
     public mutating func county() -> String { faker.require("location.county") }

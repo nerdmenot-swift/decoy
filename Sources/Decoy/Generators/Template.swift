@@ -173,6 +173,8 @@ extension Faker {
         // No corpus path at all: a transaction description wants a money figure.
         case "finance.amount": return commerce.price()
         case "company.catchPhrase": return company.catchPhrase()
+        case "company.category": return company.category()
+        case "location.continent": return location.continent()
         case "system.semver": return system.semver()
         // A group node rather than a table, so `draw` returns nil for the bare path.
         case "internet.emoji": return internet.emoji()

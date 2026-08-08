@@ -183,6 +183,22 @@ public struct PhoneFaker {
         return faker.numerify(format)
     }
 
+    /// A real area code, where the locale lists them.
+    ///
+    /// `en_US` carries all 283 assigned NANP area codes, `en_ZA` and `tr` their own, and
+    /// none of them was reachable — so `number()` produced a structurally valid code that
+    /// is frequently one nobody has ever been assigned. Returns `nil` rather than a
+    /// digit-shaped guess when the locale has no list, because "I do not know" and "here
+    /// is a plausible fiction" are different answers.
+    public mutating func areaCode() -> String? {
+        faker.draw("phone_number.area_code")
+    }
+
+    /// The three digits after the area code, where the locale lists them.
+    public mutating func exchangeCode() -> String? {
+        faker.draw("phone_number.exchange_code")
+    }
+
     public enum Style: Sendable, CaseIterable {
         case human, international, national, mobile
 

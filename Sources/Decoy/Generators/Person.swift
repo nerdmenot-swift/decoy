@@ -137,10 +137,16 @@ public struct PersonFaker {
         faker.require("person.gender")
     }
 
+    /// A job title, composed from the locale's parts or taken whole.
+    ///
+    /// Two locales — `sl_SI` and `uz_UZ_latin` — carry a flat list of eighteen titles
+    /// instead of the descriptor/area/type breakdown, and it was unreachable, so both
+    /// composed Slovenian and Uzbek titles out of English parts.
     public mutating func jobTitle() -> String {
         if let pattern = faker.draw("person.job_title_pattern") {
             return faker.expand(pattern)
         }
+        if let whole = faker.draw("person.job_title") { return whole }
         return "\(jobDescriptor()) \(jobArea()) \(jobType())"
     }
 
@@ -151,9 +157,22 @@ public struct PersonFaker {
 
     public mutating func bio() -> String {
         guard let pattern = faker.draw("person.bio_pattern") else {
-            return faker.require("person.bio_part")
+            // `uz_UZ_latin` spells it `bio_parts`. One locale out of seventy-six using the
+            // plural is not worth a rule about naming; it is worth reading both.
+            if let part = faker.draw("person.bio_part") { return part }
+            return faker.require("person.bio_parts")
         }
         return faker.expand(pattern)
+    }
+
+    /// The other spelling a locale may use for a gendered honorific.
+    ///
+    /// `id_ID` carries `person.female_title` and `person.male_title` rather than
+    /// `person.prefix.female` and `person.prefix.male`. Same concept, different name, and
+    /// ten honorifics were unreachable because of it — Indonesian records got English
+    /// ones instead.
+    private static func alternateSpelling(_ path: String, _ gender: String) -> String {
+        path == "person.prefix" ? "person.\(gender)_title" : "\(path).\(gender)"
     }
 
     /// Draws from `<path>.<gender>`, falling back to `<path>.generic` and then to the
@@ -170,8 +189,10 @@ public struct PersonFaker {
         switch gender {
         case .female:
             if let value = faker.draw("\(path).female") { return value }
+            if let value = faker.draw(Self.alternateSpelling(path, "female")) { return value }
         case .male:
             if let value = faker.draw("\(path).male") { return value }
+            if let value = faker.draw(Self.alternateSpelling(path, "male")) { return value }
         case nil:
             if let value = faker.draw("\(path).generic") { return value }
             // No generic pool: choose a gender, then a name from that pool, rather

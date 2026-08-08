@@ -8,7 +8,7 @@
  *
  * Fills:
  *   base    location.country_code   composite (alpha2, alpha3, numeric)
- *   <each>  location.country        names in that locale's own language
+ *   <each>  location.country, location.continent        names in that locale's own language
  */
 
 import { readFile } from 'node:fs/promises'
@@ -58,6 +58,9 @@ async function loadTerritories(cldrCode, root) {
   }
   return null
 }
+
+/** UN M49 macro-region codes: Africa, Americas, Asia, Europe, Oceania, Antarctica. */
+const CONTINENT_CODES = ['002', '019', '142', '150', '009', 'AQ']
 
 export async function run({ artifacts, locales, overrides }) {
   const codeMappings = JSON.parse(
@@ -112,8 +115,21 @@ export async function run({ artifacts, locales, overrides }) {
       .sort(([a], [b]) => (a < b ? -1 : 1))
       .map(([, name]) => name)
 
-    if (names.length > 0) {
-      contributions[code] = { 'location.country': names }
+    // Continents come from the same file, under the UN M49 codes CLDR uses for macro
+    // regions. Worth taking because they are otherwise a one-locale curiosity: faker
+    // carries `location.continents` for Welsh and nothing else, so a continent generator
+    // built on it would work in one locale out of seventy-six. From CLDR it works
+    // wherever territory names do.
+    //
+    // Six rather than seven: CLDR models the Americas as one region (019), because M49
+    // does. A library that split it would be asserting a schoolroom convention that a
+    // good half the world does not use.
+    const continents = CONTINENT_CODES.map((m49) => territories[m49]).filter(Boolean)
+
+    if (names.length > 0 || continents.length > 0) {
+      contributions[code] = {}
+      if (names.length > 0) contributions[code]['location.country'] = names
+      if (continents.length > 0) contributions[code]['location.continent'] = continents
     }
   }
 

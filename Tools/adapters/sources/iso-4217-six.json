@@ -2,6 +2,17 @@
   "id": "iso-4217-six",
   "name": "ISO 4217 currency list (SIX Group), published 2026-01-01",
   "license": "public-facts",
+  "mergedInto": "cldr-48",
+  "mergedIntoNote": [
+    "The binary format stores one source id per table, so a table built from several",
+    "upstreams is credited to its primary. `finance.currency` takes names and symbols from",
+    "CLDR and every numeric code from this registry, and is attributed to CLDR.",
+    "",
+    "Declared rather than left to be rediscovered: `decoy-validate` reports a source that",
+    "claims no path, because that is normally a dependency paying for nothing. Here it is",
+    "the known attribution limitation instead, and a check whose one permanent warning is",
+    "explained in a document nobody opens is a check people stop reading."
+  ],
   "copyright": "",
   "url": "https://www.six-group.com/en/products-services/financial-information/data-standards.html",
   "version": "2026-01-01",

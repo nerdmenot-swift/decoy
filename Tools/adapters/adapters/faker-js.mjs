@@ -125,14 +125,18 @@ function verifyChains(faker, chains, locales) {
  * Tokens no generator can ever resolve, because the data behind them was cut from scope.
  *
  * The scope cut removed `animal`, `food` and the rest but left faker's patterns that
- * reference them, so `commerce.product_description` shipped with holes in it and
- * `company.name_pattern` in Japanese lost a component. `company.category` is worse: no
- * locale defines it at all, in faker or here.
+ * reference them, so `commerce.product_description` shipped with holes in it.
  *
  * A pattern is data, and a pattern referencing data that does not exist is broken data.
  * Dropping it here is better than expanding it to a hole at runtime.
+ *
+ * `company.category` used to be listed here on the grounds that "no locale defines it at
+ * all, in faker or here". That was simply wrong — `ja`, `ko`, `uk` and `zh_CN` all define
+ * it, and all four use it in their company name patterns. Dropping those patterns left
+ * the data orphaned and the names missing the industry that identifies them. Found by
+ * `decoy-validate`, which reported the data as unreachable.
  */
-const UNRESOLVABLE_TOKEN = /\{\{\s*(animal|food)\.|\{\{\s*company\.category\s*\}\}/
+const UNRESOLVABLE_TOKEN = /\{\{\s*(animal|food)\./
 
 /**
  * Paths another adapter has superseded, dropped as whole `category.key` pairs.
@@ -143,7 +147,16 @@ const UNRESOLVABLE_TOKEN = /\{\{\s*(animal|food)\.|\{\{\s*company\.category\s*\}
  * `date.timeZone()` now reads the one canonical path -- which left faker's own 419-entry
  * `date.time_zone` unclaimed and free to fill a path nothing reads.
  */
-const SUPERSEDED = new Set(['date.time_zone'])
+const SUPERSEDED = new Set([
+  'date.time_zone',
+  // Nobiliary particles — "von", "zu". Carried by `de` and `de_AT`, referenced by no
+  // pattern in faker either, so it is dead upstream as well as here. A generator for a
+  // fragment of a surname in two locales is not worth writing to make a warning go away.
+  'person.nobility_title_prefix',
+  // Welsh-only, and CLDR supplies continents for every locale that has territory names.
+  // Keeping faker's would mean `continent()` working in one locale out of seventy-six.
+  'location.continents',
+])
 
 /** Removes superseded keys from one category's tree. */
 function withoutSuperseded(category, value) {

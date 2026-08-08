@@ -41,6 +41,14 @@ public struct CompanyFaker {
     public mutating func catchPhrase() -> String {
         "\(adjective()) \(descriptor()) \(noun())"
     }
+
+    /// The industry a company is in — 情報, 保険, 建設 — where the locale lists them.
+    ///
+    /// Four locales carry these and all four use them in their name patterns, which the
+    /// pipeline was dropping as unresolvable because nothing here answered the token. The
+    /// data and the patterns were both present; only this was missing, so Japanese,
+    /// Korean, Ukrainian and Chinese company names lost the industry that identifies them.
+    public mutating func category() -> String { faker.require("company.category") }
 }
 
 // MARK: - Commerce

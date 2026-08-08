@@ -59,11 +59,13 @@ jobs:
           git diff --exit-code -- NOTICE \
             || { echo "::error::NOTICE is stale. Regenerate with decoy-inspect --notice --licenses LICENSES and commit."; exit 1; }
 
-      # Errors only. The warnings are judgements — data nobody draws *yet* is how a
-      # generator gets written — so failing on them would mean either fixing every one
-      # before merging anything, or switching the check off.
+      # --strict, because the report is clean. A check that always prints ten warnings
+      # has no signal in it — the eleventh, the one somebody just introduced, is
+      # invisible in the noise, which is the exact failure this whole tool exists to
+      # catch. Everything it found is either fixed or declared in a descriptor, so any
+      # warning here is new.
       - name: Contribution is well-formed
-        run: swift run -c release decoy-validate
+        run: swift run -c release decoy-validate --strict
 
       # A regression gate, not a quality bar. Fails when a locale carries less of its own
       # data than the committed baseline, which is what an adapter silently dropping

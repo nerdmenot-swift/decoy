@@ -169,6 +169,8 @@ struct Descriptor {
     let version: String
     let retrieved: String
     let integrities: [String]
+    /// Set when this source's data is merged into another's table and credited there.
+    let mergedInto: String?
 }
 
 var descriptors: [String: Descriptor] = [:]
@@ -198,7 +200,8 @@ for file in directoryContents(options.sources, suffix: ".json") {
         url: object["url"] as? String ?? "",
         version: object["version"] as? String ?? "",
         retrieved: object["retrieved"] as? String ?? "",
-        integrities: artifacts.compactMap { $0["integrity"] as? String }
+        integrities: artifacts.compactMap { $0["integrity"] as? String },
+        mergedInto: object["mergedInto"] as? String
     )
 
     for (field, value) in [
@@ -319,10 +322,27 @@ if let data = try? Data(contentsOf: options.manifest),
 {
     let contributing = Set(attribution.values.flatMap(\.values))
     for id in descriptors.keys.sorted() where !contributing.contains(id) {
+        // A source can legitimately claim nothing: the format stores one source id per
+        // table, so an upstream merged into another's table is credited there. That is a
+        // fact about the corpus and belongs in the descriptor, where `mergedInto` records
+        // it — not in a warning that fires on every run and teaches people to skim.
+        if let target = descriptors[id]?.mergedInto {
+            if descriptors[target] == nil {
+                report(
+                    .error, "adapter",
+                    "\(id) declares mergedInto '\(target)', which has no descriptor")
+            } else if !contributing.contains(target) {
+                report(
+                    .error, "adapter",
+                    "\(id) declares mergedInto '\(target)', which claims no path either")
+            }
+            continue
+        }
         report(
             .warning, "adapter",
             "\(id) is fetched, pinned and attributed, but claims no path in the compiled "
-                + "corpus — it is a dependency paying for nothing")
+                + "corpus — it is a dependency paying for nothing. If its data is merged "
+                + "into another source's table, say so with `mergedInto`.")
     }
     for id in contributing.sorted() where descriptors[id] == nil {
         report(
@@ -474,6 +494,67 @@ func reachable(_ path: String) -> Bool {
         }
     }
     return false
+}
+
+// MARK: - Check: a generator asking for data nobody has
+
+/// Paths named inside a `require(`, `draw(` or `drawRow(` call.
+///
+/// Narrower than the reachability scan on purpose. That one wants a wide net, because a
+/// missed literal produces a false orphan warning; this one wants certainty, because it
+/// reports a *generator* as broken. A string inside one of these calls is a corpus path
+/// and nothing else.
+@MainActor
+func requestedPaths() -> [(path: String, required: Bool)] {
+    var found: [(String, Bool)] = []
+    let enumerator = fileManager.enumerator(atPath: options.generators.path)
+
+    while let relative = enumerator?.nextObject() as? String {
+        guard relative.hasSuffix(".swift"),
+            let text = try? String(
+                contentsOf: options.generators.appendingPathComponent(relative), encoding: .utf8)
+        else { continue }
+
+        for call in ["require(\"", "draw(\"", "drawRow(\""] {
+            var rest = Substring(text)
+            while let start = rest.range(of: call) {
+                let after = start.upperBound
+                guard let close = rest[after...].firstIndex(of: "\"") else { break }
+                let literal = rest[after..<close]
+                rest = rest[close...]
+                // An interpolated path keeps its stable prefix; the subtree is what
+                // matters, and a prefix that matches nothing is still a broken generator.
+                // An interpolated path keeps its stable prefix and a trailing dot —
+                // `date.month.\(abbreviated ? ...)`. Trimming it makes the prefix a real
+                // node, which is what the corpus indexes.
+                let stable = literal.prefix { $0 != "\\" }
+                    .drop(while: { _ in false })
+                let trimmed = String(stable).trimmingCharacters(in: CharacterSet(charactersIn: "."))
+                guard trimmed.contains(".") else { continue }
+                found.append((trimmed, call.hasPrefix("require")))
+            }
+        }
+    }
+    return found
+}
+
+var everyPath = Set<String>()
+for corpus in corpora.values {
+    for entry in (try? corpus.paths) ?? [] { everyPath.insert(entry.path) }
+}
+
+for (path, required) in requestedPaths() {
+    let supplied = everyPath.contains(path)
+        || everyPath.contains(where: { $0.hasPrefix(path + ".") })
+    guard !supplied else { continue }
+    report(
+        required ? .error : .warning,
+        "missing",
+        required
+            ? "a generator calls require(\"\(path)\") and no locale supplies it — that traps "
+                + "at the call site rather than failing the build"
+            : "a generator calls draw(\"\(path)\") and no locale supplies it — the call is "
+                + "dead, or the path is misspelled")
 }
 
 var orphans: [String: [String]] = [:]

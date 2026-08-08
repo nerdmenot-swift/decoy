@@ -159,10 +159,10 @@ language-neutral `base`:
 
 | | |
 |---|---|
-| Median native coverage | 35% |
-| Locales under 30% native | 26 of 74 |
-| `ta_IN` | 11% (11 paths against `en`'s 99) |
-| `yo_NG` | 16% (16 paths) |
+| Median native coverage | 36% |
+| Locales under 30% native | 25 of 74 |
+| `ta_IN` | 12% (12 paths against `en`'s 99) |
+| `yo_NG` | 17% (17 paths) |
 
 **Around a third of what the median non-English locale produces is its own**, and the
 rest is English falling through the chain. That is the "Tamil records named Jennifer
@@ -480,8 +480,8 @@ Counts are not the quality bar.
 ## Sequencing
 
 1. ~~Binary format with all six requirements representable~~ — **done** (format v2)
-2. ~~Core generators against the faker-derived corpus~~ — **done** (195 methods across 18
-   namespaces; 177 across 17 without Foundation, which gates the `date` namespace)
+2. ~~Core generators against the faker-derived corpus~~ — **done** (198 methods across 18
+   namespaces; 180 across 17 without Foundation, which gates the `date` namespace)
 3. ~~Corpus discoverability and coverage measurement~~ — **done** (`Corpus.paths`, `decoy-inspect`)
 4. Authoritative reference adapters replacing factual fields — **done for everything
    with a pinnable registry**. Migrated: ISO 3166-1 and 3166-2, ISO 639, ISO 4217, IANA
@@ -528,9 +528,22 @@ you *wrote* is read:
 | A descriptor and the corpus disagreeing | Data attributed to a source with no descriptor ships with no licence, version or URL recorded. |
 | A source that claims no path | Fetched, pinned and attributed, but paying for nothing. |
 
-Errors fail; warnings do not unless `--strict`. That split is deliberate: data nobody
-draws *yet* is how a generator gets written, and a check that fails on it would be
-switched off within a week. CI runs the error half.
+| A generator asking for data nobody has | The mirror of the above, and it found `continent()` reading `location.continent`, which five locales had. The other seventy-one got English continents through the chain and nothing noticed. |
+
+**CI runs it with `--strict`, and the report is clean.** That is the whole point of the
+tool. The first version left ten warnings standing on the grounds that each was a
+judgement call, which sounds reasonable and is wrong: a check that always prints ten
+warnings has no signal in it, because the eleventh — the one somebody just introduced —
+is invisible in the noise. That is the exact failure mode the tool exists to catch.
+
+So every warning was resolved one way or the other. Five were cheap generator fixes
+(`person.job_title` as a flat list, `bio_parts` as a plural spelling, `person.female_title`
+as a gendered honorific, `company.category`, and real NANP area codes). One was a source
+worth taking properly: continents now come from CLDR in 73 locales instead of from faker
+in one. Two were data no generator should exist for and are no longer emitted. And one is
+a permanent fact — `iso-4217-six`'s numeric codes are merged into CLDR's currency table
+and credited there — which is now declared in the descriptor with `mergedInto`, because a
+permanent warning explained in a document nobody opens is a warning people learn to skim.
 
 The reachability scan reads the generator sources for string literals shaped like corpus
 paths, and counts a path as reachable if a literal equals it, sits above it, or sits
