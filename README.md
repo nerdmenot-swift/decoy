@@ -144,6 +144,7 @@ source and licence covers each field:
 swift run decoy-inspect Corpus/binary/en.decoy            # summary and provenance
 swift run decoy-inspect Corpus/binary/en.decoy --paths    # every path
 swift run decoy-inspect --coverage Corpus/binary          # native coverage per locale
+swift run decoy-validate                                 # check a contribution
 swift run decoy-inspect --notice Corpus/binary \
   --licenses LICENSES                                     # attribution, generated
 ```
@@ -158,7 +159,7 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
 - [x] Adapter pipeline: 28 pinned sources, integrity-verified, provenance per path
 - [x] JSON → binary corpus format + Swift reader
-- [x] 192 generators across 18 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
+- [x] 194 generators across 18 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
 - [x] All 76 locales compile; `en`, `de`, `ja` ship as importable Swift modules
 - [x] `decoy-inspect`: enumeration, coverage, generated attribution
 - [ ] CI actually run — this repository has no remote, so every step in `ci.yml`

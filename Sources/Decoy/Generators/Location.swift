@@ -96,6 +96,37 @@ public struct LocationFaker {
         faker.bothify(faker.require("location.postcode"))
     }
 
+    /// A postcode that belongs to `state`, where the locale knows the difference.
+    ///
+    /// `postcode()` draws from a national mask, so a US address could pair Alaska with a
+    /// Florida ZIP. Three locales carry real per-subdivision ranges — `en_US` has 52,
+    /// `en_CA` 13 — and all of them were compiled and unreachable, which is why this
+    /// exists: a hundred paths of correct data that nothing could draw.
+    ///
+    /// The key is the subdivision's abbreviation, matching ``stateRow()``'s `abbr`, so a
+    /// coherent address is `let s = stateRow(); postcode(state: s["abbr"])`.
+    ///
+    /// Returns `nil` when the locale has no ranges or does not know that subdivision —
+    /// `nil` rather than a national postcode, because silently ignoring the constraint is
+    /// how you get an Alaskan address in Florida and never find out.
+    public mutating func postcode(state abbreviation: String?) -> String? {
+        guard let abbreviation,
+            let pattern = faker.draw("location.postcode_by_state.\(abbreviation)")
+        else { return nil }
+        return faker.bothify(faker.expand(pattern))
+    }
+
+    /// A subdivision and a postcode drawn from inside it.
+    ///
+    /// The correlated form, for the same reason ``countryCode()`` returns a triple: two
+    /// independent draws produce a pairing that does not exist.
+    public mutating func stateAndPostcode() -> (state: String, abbr: String, postcode: String) {
+        let row = stateRow()
+        let name = row["name"] ?? ""
+        let abbr = row["abbr"] ?? ""
+        return (name, abbr, postcode(state: abbr) ?? postcode())
+    }
+
     /// A full postal address in the locale's own layout.
     public mutating func postalAddress() -> String {
         faker.expand(faker.require("location.postal_address"))

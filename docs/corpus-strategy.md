@@ -462,8 +462,8 @@ Counts are not the quality bar.
 ## Sequencing
 
 1. ~~Binary format with all six requirements representable~~ — **done** (format v2)
-2. ~~Core generators against the faker-derived corpus~~ — **done** (192 methods across 18
-   namespaces; 174 across 17 without Foundation, which gates the `date` namespace)
+2. ~~Core generators against the faker-derived corpus~~ — **done** (194 methods across 18
+   namespaces; 176 across 17 without Foundation, which gates the `date` namespace)
 3. ~~Corpus discoverability and coverage measurement~~ — **done** (`Corpus.paths`, `decoy-inspect`)
 4. Authoritative reference adapters replacing factual fields — **done for everything
    with a pinnable registry**. Migrated: ISO 3166-1 and 3166-2, ISO 639, ISO 4217, IANA
@@ -477,8 +477,9 @@ Counts are not the quality bar.
    surnames** (24,889 Census names with real counts), blocked for given names: ssa.gov
    returns 403 to every non-interactive request. See "Frequency" above.
 6. Generative models for names, with the safety filters above — **not started**
-7. ~~Coverage gate in CI~~ — **done** (`decoy-inspect --gate`, run against a committed
-   baseline on every build). `decoy-validate` for contributions — **not started**
+7. ~~Coverage gate in CI, and `decoy-validate` for contributions~~ — **done**. The gate
+   runs against a committed baseline on every build; `decoy-validate` checks a change
+   before it lands and runs in CI on errors only.
 8. Coverage gates reach threshold → `rm adapters/faker-js.mjs sources/faker-js.json`
 
 Steps 4–6 are independent and can proceed in any order. Step 8 is a consequence, not a
@@ -490,6 +491,42 @@ companies — is the expensive bucket, and it is most of the corpus by volume. S
 adapters now cover `base` almost entirely and roughly a third of `en`. A faker-free
 v1 means re-sourcing the rest, which is why steps 5 and 6 matter more than another
 registry adapter would.
+
+---
+
+## Checking a contribution — **Built**
+
+`swift run decoy-validate`, from the repository root. It asks the questions the test
+suite cannot, because a test asks whether what you *read* is right and never whether what
+you *wrote* is read:
+
+| Check | Why it exists |
+|---|---|
+| A path nothing can draw | `person.last_name_pattern` was compiled into thirteen locales and read by nothing, so the double-barrelled surnames it encodes never appeared. `location.postcode_by_state` was a hundred paths of real US and Canadian data in the same state. |
+| A template token that expands to nothing | Thirteen shipped once. The test that covers this runs against three locales; there are seventy-six. Its first run found twelve more in `en_CA` — every Canadian postcode was empty — plus `{{location.state}}` in `en_HK` and a call form in `en_US`. |
+| Licence metadata contradicting its own text | Nine descriptors did. |
+| A descriptor and the corpus disagreeing | Data attributed to a source with no descriptor ships with no licence, version or URL recorded. |
+| A source that claims no path | Fetched, pinned and attributed, but paying for nothing. |
+
+Errors fail; warnings do not unless `--strict`. That split is deliberate: data nobody
+draws *yet* is how a generator gets written, and a check that fails on it would be
+switched off within a week. CI runs the error half.
+
+The reachability scan reads the generator sources for string literals shaped like corpus
+paths, and counts a path as reachable if a literal equals it, sits above it, or sits
+below it — `person.first_name` is drawn as `person.first_name.female`, and
+`system.mime_type` is a node whose children are reached by interpolation. Tokens
+referenced from corpus patterns count too, so `person.bio_supporter` is composition
+working rather than an orphan. A net slightly too wide produces a missed warning rather
+than a false one, which is the right way round for a check whose warnings are advisory.
+
+**Ten warnings remain, deliberately.** `company.category`, `phone_number.area_code`,
+`phone_number.exchange_code`, `person.job_title`, `person.nobility_title_prefix`,
+`person.female_title`, `person.male_title`, `person.bio_parts` and `location.continents`
+are each carried by one to four locales, and a generator for a field that exists in three
+of seventy-six is a worse trade than leaving the data visible in the report.
+`iso-4217-six` claims no path because its numeric codes are merged into CLDR's currency
+table and attributed to CLDR, which is the known limitation recorded above.
 
 ---
 

@@ -34,8 +34,15 @@ public struct PersonFaker {
         gendered("person.first_name", gender)
     }
 
+    /// Returns a middle name, optionally constrained to a gender.
+    ///
+    /// Honours a locale's middle-name pattern where it has one, the same way
+    /// ``lastName(_:)`` does — `ku_ckb` carries one and it was unreachable.
     public mutating func middleName(_ gender: Gender? = nil) -> String {
-        gendered("person.middle_name", gender)
+        if gender == nil, let pattern = faker.draw("person.middle_name_pattern.generic") {
+            return faker.expand(pattern)
+        }
+        return gendered("person.middle_name", gender)
     }
 
     /// Returns a surname, optionally constrained to a gender.
@@ -45,12 +52,27 @@ public struct PersonFaker {
     /// produced, because the pattern was compiled into three locales and read by none.
     /// Locales without one draw the table directly, which is every locale but three.
     public mutating func lastName(_ gender: Gender? = nil) -> String {
-        // Only when no gender was asked for. The pattern's tokens point at
+        // Ten locales inflect surnames and carry a pattern per gender; three carry only
+        // a generic one. Reading `.generic` alone left twenty gendered patterns compiled
+        // and unreachable, which `decoy-validate` reports as exactly that.
+        //
+        // The gendered pattern is preferred when a gender was asked for, and the generic
+        // one is used only when none was — its tokens point at
         // `person.last_name.generic`, so honouring it under a gender request would
-        // quietly discard the constraint — which matters for the locales that inflect
-        // surnames, even though none of the three carrying a pattern today do.
-        if gender == nil, let pattern = faker.draw("person.last_name_pattern.generic") {
-            return faker.expand(pattern)
+        // quietly discard the constraint.
+        switch gender {
+        case .female:
+            if let pattern = faker.draw("person.last_name_pattern.female") {
+                return faker.expand(pattern)
+            }
+        case .male:
+            if let pattern = faker.draw("person.last_name_pattern.male") {
+                return faker.expand(pattern)
+            }
+        case nil:
+            if let pattern = faker.draw("person.last_name_pattern.generic") {
+                return faker.expand(pattern)
+            }
         }
         return gendered("person.last_name", gender)
     }

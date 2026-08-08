@@ -52,6 +52,7 @@ let package = Package(
         .library(name: "Decoy", targets: ["Decoy"]),
         .executable(name: "decoy-compile-corpus", targets: ["DecoyCorpusCompiler"]),
         .executable(name: "decoy-inspect", targets: ["DecoyCorpusInspector"]),
+        .executable(name: "decoy-validate", targets: ["DecoyCorpusValidator"]),
     ] + localeProducts,
     targets: [
         .target(
@@ -76,6 +77,13 @@ let package = Package(
         .executableTarget(
             name: "DecoyCorpusInspector",
             dependencies: ["Decoy", "DecoyCorpusKit"],
+            swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
+        // Checks a contribution before it lands: paths nothing draws, template tokens
+        // that expand to nothing, licence metadata contradicting the text beside it.
+        .executableTarget(
+            name: "DecoyCorpusValidator",
+            dependencies: ["Decoy"],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .testTarget(

@@ -160,8 +160,13 @@ extension Faker {
         case "location.street": return location.streetName()
         case "location.city": return location.city()
         case "location.zipCode": return location.postcode()
-        // A composite, so `draw` cannot reach it; the row's `name` is what a pattern wants.
-        case "location.state": return location.stateRow()["name"] ?? ""
+        // Usually a composite, so `draw` cannot reach it and the row's `name` is what a
+        // pattern wants — but not everywhere. `en_HK` carries a plain list of three
+        // districts, and reading `["name"]` off a string table yielded nothing, so Hong
+        // Kong addresses shipped with the district missing.
+        case "location.state":
+            if let name = location.stateRow()["name"], !name.isEmpty { return name }
+            return draw("location.state")
         case "location.country": return location.country()
         // The composite field is `code`, which snake-casing to `currency_code` misses.
         case "finance.currencyCode": return finance.currencyCode()
@@ -205,6 +210,24 @@ extension Faker {
             let high = Self.jsonNumber(named: "max", in: arguments) ?? low
             return String(int(in: Swift.min(low, high)...Swift.max(low, high)))
 
+        // `location.state({"abbreviated":true})`. The bare token is a generator case; the
+        // parenthesised form carries the one option faker's patterns pass, and `en_US`'s
+        // address pattern is the only thing that uses it.
+        case "location.state":
+            let field = arguments.contains("\"abbreviated\":true")
+                || arguments.contains("\"abbreviated\": true") ? "abbr" : "name"
+            let row = location.stateRow()
+            if let value = row[field], !value.isEmpty { return value }
+            return row["name"] ?? draw("location.state")
+
+        // faker generates a handful of postcodes from a regular expression rather than
+        // from a `#`/`?` mask, because Canadian postcodes exclude letters that look like
+        // digits: `A[0-9][ABCEGHJ-NPRSTVW-Z] [0-9][ABCEGHJ-NPRSTVW-Z][0-9]` has no D, F,
+        // I, O, Q or U in it. Twelve patterns, one per province, and all twelve expanded
+        // to nothing — every `en_CA` postcode was an empty string.
+        case "helpers.fromRegExp":
+            return expandRegExp(arguments)
+
         case "helpers.arrayElement":
             let items = Self.quotedStrings(in: arguments)
             guard !items.isEmpty else { return nil }
@@ -213,6 +236,52 @@ extension Faker {
         default:
             return nil
         }
+    }
+
+    /// Expands the subset of regular expression syntax faker's postcode data uses.
+    ///
+    /// Literal characters and `[...]` classes, where a class holds single characters,
+    /// `a-z` ranges, or both. That is all twelve shipped patterns need, and stopping
+    /// there is the point: anchors, alternation, groups and quantifiers would make this a
+    /// regex engine living inside a data file, and the corpus is meant to hold data.
+    ///
+    /// An unbalanced class is emitted verbatim rather than dropped, matching how `expand`
+    /// treats unbalanced braces — malformed data should stay visible.
+    private mutating func expandRegExp(_ pattern: String) -> String {
+        var out = String()
+        var rest = Substring(pattern)
+
+        while let next = rest.first {
+            guard next == "[" else {
+                out.append(next)
+                rest = rest.dropFirst()
+                continue
+            }
+            guard let close = rest.firstIndex(of: "]") else {
+                out += rest
+                return out
+            }
+            let body = Array(rest[rest.index(after: rest.startIndex)..<close])
+            rest = rest[rest.index(after: close)...]
+
+            var alphabet: [Character] = []
+            var i = 0
+            while i < body.count {
+                // `A-Z` is three characters and means the range; a trailing `-` is itself.
+                if i + 2 < body.count, body[i + 1] == "-",
+                    let low = body[i].asciiValue, let high = body[i + 2].asciiValue, low <= high
+                {
+                    alphabet.append(contentsOf: (low...high).map { Character(UnicodeScalar($0)) })
+                    i += 3
+                } else {
+                    alphabet.append(body[i])
+                    i += 1
+                }
+            }
+            guard !alphabet.isEmpty else { continue }
+            out.append(pick(alphabet))
+        }
+        return out
     }
 
     /// Reads `"key": 123` out of a brace object without parsing it.
