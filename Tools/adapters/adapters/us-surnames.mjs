@@ -10,10 +10,25 @@
  *
  * Fills:
  *   en    person.last_name.generic   weighted by 2010 Census counts
+ *   en    person.last_name_model     an n-gram trained on the same names
+ *
+ * The list and the model do different jobs and both are kept. The list is what
+ * `lastName()` draws, because its weights are the real population frequencies and no
+ * model reproduces those. The model is what `lastName(novel:)` draws, because a list of
+ * 24,889 names runs out under a `unique` rule at 24,889 rows and a model does not run out
+ * at all.
+ *
+ * The model does *not* save space here, and the strategy doc used to claim it would.
+ * Measured: at order 3 the model is 89 KB against the list's 182 KB but the output
+ * degrades to `Rumboneczor` and `Garsterrever`; at order 4, where it produces `Newcomb`
+ * and `Sigmann`, it is comparable to or larger than the list. Order 4 with `minCount: 2`
+ * is the chosen point — the smallest model whose output reads as English surnames.
  */
 
 import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
+
+import { bloomFilter, train } from '../lib/ngram.mjs'
 
 export const id = 'us-surnames'
 export const source = 'us-census-surnames'
@@ -88,6 +103,18 @@ export async function run({ artifacts }) {
     throw new Error(`Census file yielded only ${values.length} surnames — verify before re-pinning`)
   }
 
+  // Trained on the names as types, one vote each. See lib/ngram.mjs for why the Census
+  // counts are deliberately not used as training weights.
+  const trained = train(values, { order: 4, minCount: 2 })
+  const filter = bloomFilter(values, { falsePositiveRate: 0.01 })
+  const model = {
+    ...trained,
+    filterHashCount: filter.hashCount,
+    // Base64: the filter is 29 KB of bytes, which would be 100 KB of decimal digits and
+    // commas in the intermediate JSON.
+    filterBits: Buffer.from(filter.bits).toString('base64'),
+  }
+
   return {
     // `en` rather than `en_US`: this is where faker's equivalent list lived, and `en` is
     // the chain every locale without its own surnames falls through to. Those locales
@@ -98,12 +125,15 @@ export async function run({ artifacts }) {
           value,
           weight: weights[i],
         })),
+        'person.last_name_model': { __model: model },
       },
     },
     stats: {
       surnames: values.length,
       belowThreshold: dropped,
       mostCommon: `${values[0]} (${weights[0].toLocaleString('en-US')})`,
+      modelContexts: model.contexts.length,
+      modelTransitions: model.contexts.reduce((n, c) => n + c.transitions.length, 0),
     },
   }
 }

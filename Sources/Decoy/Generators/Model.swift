@@ -5,7 +5,12 @@ extension Faker {
     /// A backed-off n-gram is not guaranteed to terminate: the shortest context is one
     /// symbol, and if the training data never ended a word after that symbol, the
     /// sentinel has no weight and the walk continues. Rare, and cheap to bound.
-    static let maxModelLength = 32
+    ///
+    /// Deliberately far above any real word. This is a runaway guard, not a length
+    /// policy — the model carries the training set's own range and the sampler rejects
+    /// outside it, so cutting the walk short here would silently truncate a candidate
+    /// into something that looks like a valid short name instead of discarding it.
+    static let maxModelLength = 64
 
     /// How many times to redraw when a candidate lands in the training set.
     ///
@@ -38,6 +43,10 @@ extension Faker {
     public mutating func draw(fromModel model: NGramModel) -> String? {
         for _ in 0..<Self.maxModelAttempts {
             guard let candidate = walk(model), !candidate.isEmpty else { continue }
+            // Length first: it is a count rather than seven hash probes, and it rejects
+            // more often than the filter does.
+            let length = candidate.count
+            guard length >= model.minLength, length <= model.maxLength else { continue }
             if !model.wasTrainedOn(candidate) { return candidate }
         }
         return nil

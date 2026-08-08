@@ -45,6 +45,30 @@ public struct PersonFaker {
         return gendered("person.middle_name", gender)
     }
 
+    /// Returns a surname that no real person is recorded as having.
+    ///
+    /// Drawn from a trained n-gram rather than a list, which is the difference that
+    /// matters under a `unique` rule: `en` carries 24,889 surnames, so a unique column
+    /// runs dry at 24,889 rows and a hundred thousand-row fixture cannot be generated at
+    /// all. A model does not run out.
+    ///
+    /// Every candidate is checked against the training set and redrawn on a hit, so a
+    /// generated surname is never one of the Census names it learned from. See
+    /// ``NGramModel/wasTrainedOn(_:)`` for why that check is safe to rely on and what it
+    /// costs.
+    ///
+    /// The distribution is deliberately *not* realistic — the model is trained on each
+    /// name once regardless of how many people bear it. Use ``lastName(_:)`` when the
+    /// shape of the distribution matters, which is most reporting and analytics work;
+    /// use this when you need more distinct names than exist.
+    ///
+    /// Falls back to ``lastName(_:)`` in locales with no model, which is every locale but
+    /// `en` today. A caller that must know the difference should check
+    /// ``LocaleCorpus/resolve(_:)`` for `person.last_name_model`.
+    public mutating func novelLastName() -> String {
+        faker.drawModel("person.last_name_model") ?? lastName()
+    }
+
     /// Returns a surname, optionally constrained to a gender.
     ///
     /// Locales that define a surname *pattern* get it: `en` weights a double-barrelled

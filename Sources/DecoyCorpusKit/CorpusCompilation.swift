@@ -196,6 +196,13 @@ public struct LocaleCompiler {
             guard let string = value.asString else { return }
             builder.index(path, stringTable: builder.addStringTable([string], source: sourceID(for: path)))
 
+        case .object(let members) where members["__model"] != nil:
+            // A trained n-gram rather than a node to walk into. Marked with a reserved
+            // key instead of inferred from shape, because a model *is* an object of
+            // arrays and guessing would make an ordinary contribution that happened to
+            // have the right keys compile into something unreadable.
+            emitModel(path: path, value: members["__model"]!, into: &builder)
+
         case .object(let members):
             // Sorted so the output is byte-identical across runs.
             let keys = members.keys.sorted()
@@ -223,6 +230,78 @@ public struct LocaleCompiler {
         case .array(let items):
             emitArray(path: path, items: items, into: &builder)
         }
+    }
+
+    /// Encodes a `__model` object into the corpus's model chunk.
+    ///
+    /// The intermediate carries the trained counts rather than the packed bytes, so the
+    /// binary layout stays a decision this compiler makes. The trainer's job is the
+    /// statistics; encoding them is not its business, and a pipeline emitting raw corpus
+    /// bytes would have to be re-run for a format change it has nothing to do with.
+    private mutating func emitModel(
+        path: String,
+        value: JSONValue,
+        into builder: inout CorpusBuilder
+    ) {
+        guard let model = value.asObject,
+            let order = model["order"]?.asNumber.map(Int.init),
+            let alphabet = model["alphabet"]?.asArray?.compactMap(\.asString),
+            let rawContexts = model["contexts"]?.asArray,
+            let minLength = model["minLength"]?.asNumber.map(Int.init),
+            let maxLength = model["maxLength"]?.asNumber.map(Int.init),
+            let hashCount = model["filterHashCount"]?.asNumber.map(Int.init),
+            let filter = model["filterBits"]?.asString
+        else {
+            stats.skipped.append("\(path) (malformed model)")
+            return
+        }
+
+        // Base64 rather than an array of numbers: the filter for English surnames is
+        // 29 KB, which is 100 KB of decimal digits and commas in the intermediate.
+        guard let bits = Base64.decode(Array(filter.utf8)) else {
+            stats.skipped.append("\(path) (model filter is not base64)")
+            return
+        }
+
+        var contexts: [(key: UInt64, transitions: [(symbol: UInt16, weight: UInt32)])] = []
+        contexts.reserveCapacity(rawContexts.count)
+        for entry in rawContexts {
+            // The key is a string because a u64 context key does not survive a JSON
+            // number: JavaScript would round it and the context would land in the wrong
+            // place in a sorted index, which reads as a model that has simply forgotten
+            // things.
+            guard let object = entry.asObject,
+                let key = object["key"]?.asString.flatMap(UInt64.init),
+                let transitions = object["transitions"]?.asArray
+            else {
+                stats.skipped.append("\(path) (malformed context)")
+                return
+            }
+            let parsed = transitions.compactMap { item -> (UInt16, UInt32)? in
+                guard let pair = item.asObject,
+                    let symbol = pair["symbol"]?.asNumber.map({ UInt16($0) }),
+                    let weight = pair["weight"]?.asNumber.map({ UInt32($0) })
+                else { return nil }
+                return (symbol, weight)
+            }
+            guard parsed.count == transitions.count, !parsed.isEmpty else {
+                stats.skipped.append("\(path) (malformed transition)")
+                return
+            }
+            contexts.append((key, parsed))
+        }
+
+        let id = builder.addModel(
+            order: order,
+            minLength: minLength,
+            maxLength: maxLength,
+            alphabet: alphabet,
+            contexts: contexts,
+            filterHashCount: hashCount,
+            filterBits: bits,
+            source: sourceID(for: path)
+        )
+        builder.index(path, model: id)
     }
 
     private mutating func emitArray(

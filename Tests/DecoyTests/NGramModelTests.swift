@@ -32,6 +32,8 @@ struct NGramModelTests {
 
         let model = builder.addModel(
             order: 2,
+            minLength: 1,
+            maxLength: 8,
             alphabet: ["", "a", "b"],
             contexts: [
                 (NGramModel.key([end][...]), [(a, 1)]),
@@ -154,5 +156,116 @@ struct NGramModelTests {
         builder.index("a.b", stringTable: builder.addStringTable(["x"], source: source))
         let corpus = try! Corpus(bytes: builder.build())
         #expect((try? corpus.model(0)) == nil, "there should be no models chunk at all")
+    }
+}
+
+/// Tests the shipped surname model against the list it was trained on.
+///
+/// The unit tests above use a hand-built model whose output is calculable. These check
+/// the real one, because the properties that matter — that it never emits a real name,
+/// that it does not run out, that it looks like English — are properties of the training
+/// rather than of the encoding.
+@Suite(
+    "Surname model",
+    .enabled(if: RealCorpus.isAvailable, "compiled corpus not present — see RealCorpus")
+)
+struct SurnameModelTests {
+
+    private func english() throws -> LocaleCorpus {
+        try RealCorpus.locale("en", chain: ["en", "base"])
+    }
+
+    private func censusNames(_ locale: LocaleCorpus) -> Set<String> {
+        guard let table = locale.strings("person.last_name.generic") else { return [] }
+        return Set((0..<table.count).compactMap { try? table.string(at: $0) })
+    }
+
+    /// The guarantee. Ten thousand draws, and not one of them a real person's surname.
+    ///
+    /// This is the difference between fake data and undisclosed PII, and it is the reason
+    /// the model carries a Bloom filter over its training set rather than trusting that
+    /// an n-gram will not reproduce its input. It reproduces it constantly — roughly a
+    /// quarter of raw walks land on a real name at this order.
+    @Test("no generated surname is a real one")
+    func neverEmitsARealName() throws {
+        let locale = try english()
+        let real = censusNames(locale)
+        try #require(real.count > 20_000, "expected the full Census list")
+
+        var faker = Faker(seed: 1337, locale: locale)
+        var emitted: [String] = []
+        for _ in 0..<10_000 {
+            let name = faker.person.novelLastName()
+            if real.contains(name) { emitted.append(name) }
+        }
+        #expect(emitted.isEmpty, "emitted \(emitted.count) real surnames: \(emitted.prefix(5))")
+    }
+
+    /// The reason the model exists: a list of 24,889 names cannot fill a unique column
+    /// past 24,889 rows, and a model has no such ceiling.
+    @Test("draws stay overwhelmingly distinct")
+    func staysDistinct() throws {
+        var faker = Faker(seed: 1337, locale: try english())
+        var seen = Set<String>()
+        for _ in 0..<10_000 { seen.insert(faker.person.novelLastName()) }
+        #expect(seen.count > 8_000, "only \(seen.count) distinct in 10,000 draws")
+    }
+
+    /// An n-gram decides what comes next, never how long the word is, so nothing stops a
+    /// run of plausible bigrams from adding up to a 28-character surname. It did, in 0.8%
+    /// of draws, until the model started carrying its training set's length range.
+    @Test("lengths stay inside the training set's range")
+    func lengthsAreRealistic() throws {
+        let locale = try english()
+        let real = censusNames(locale)
+        let shortest = real.map(\.count).min() ?? 1
+        let longest = real.map(\.count).max() ?? 1
+
+        var faker = Faker(seed: 4242, locale: locale)
+        for _ in 0..<5_000 {
+            let name = faker.person.novelLastName()
+            #expect(
+                name.count >= shortest && name.count <= longest,
+                "'\(name)' is \(name.count) characters; real names are \(shortest)...\(longest)"
+            )
+        }
+    }
+
+    /// Output has to look like the language, not merely be novel.
+    @Test("generated surnames look like English surnames")
+    func lookPlausible() throws {
+        var faker = Faker(seed: 99, locale: try english())
+        for _ in 0..<2_000 {
+            let name = faker.person.novelLastName()
+            #expect(name.first?.isUppercase == true, "'\(name)' does not start with a capital")
+            #expect(
+                name.allSatisfy { $0.isLetter || $0 == "-" || $0 == "'" || $0 == " " },
+                "'\(name)' contains something no surname does"
+            )
+            // Every real surname has a vowel or a Y. A run without one is the classic
+            // n-gram failure and would be visible immediately in a fixture set.
+            #expect(
+                name.lowercased().contains(where: { "aeiouy".contains($0) }),
+                "'\(name)' has no vowel"
+            )
+        }
+    }
+
+    @Test("the same seed gives the same names")
+    func reproducible() throws {
+        var a = Faker(seed: 7, locale: try english())
+        var b = Faker(seed: 7, locale: try english())
+        let first = (0..<50).map { _ in a.person.novelLastName() }
+        let second = (0..<50).map { _ in b.person.novelLastName() }
+        #expect(first == second)
+    }
+
+    /// A locale with no model must still answer, rather than trapping or returning "".
+    @Test("a locale without a model falls back to its list")
+    func fallsBack() throws {
+        let japanese = try RealCorpus.locale("ja", chain: ["ja", "en", "base"])
+        var faker = Faker(seed: 1, locale: japanese)
+        let name = faker.person.novelLastName()
+        #expect(!name.isEmpty)
     }
 }

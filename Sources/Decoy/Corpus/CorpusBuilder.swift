@@ -26,6 +26,8 @@ public struct CorpusBuilder {
     /// A trained n-gram, as handed in. Encoded at `build()` like everything else.
     private struct ModelSpec {
         let order: Int
+        let minLength: Int
+        let maxLength: Int
         /// Alphabet index 0 is the end-of-word sentinel and interns as the empty string.
         let alphabet: [UInt32]
         /// Sorted by packed key, which is what makes the index binary-searchable.
@@ -169,6 +171,8 @@ public struct CorpusBuilder {
     @discardableResult
     public mutating func addModel(
         order: Int,
+        minLength: Int = 1,
+        maxLength: Int = Int(UInt32.max),
         alphabet: [String],
         contexts: [(key: UInt64, transitions: [(symbol: UInt16, weight: UInt32)])],
         filterHashCount: Int,
@@ -176,6 +180,7 @@ public struct CorpusBuilder {
         source: UInt32 = 0
     ) -> UInt32 {
         precondition(order >= 2 && order <= NGramModel.maxOrder, "order must be 2...8")
+        precondition(minLength >= 1 && minLength <= maxLength, "the length range must be sane")
         precondition(
             alphabet.count >= 1 && alphabet.count <= NGramModel.maxAlphabet,
             "the alphabet must be 1...255 symbols, including the sentinel"
@@ -189,6 +194,8 @@ public struct CorpusBuilder {
         models.append(
             ModelSpec(
                 order: order,
+                minLength: minLength,
+                maxLength: maxLength,
                 alphabet: alphabet.map { intern($0) },
                 contexts: contexts.sorted { $0.key < $1.key },
                 filterHashCount: filterHashCount,
@@ -343,6 +350,8 @@ public struct CorpusBuilder {
             var body = [UInt8]()
             body.appendLE(model.sourceID)
             body.appendLE(UInt32(model.order))
+            body.appendLE(UInt32(model.minLength))
+            body.appendLE(UInt32(model.maxLength))
             body.appendLE(UInt32(model.alphabet.count))
             for symbol in model.alphabet { body.appendLE(symbol) }
             body.appendLE(UInt32(model.contexts.count))

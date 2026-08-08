@@ -215,7 +215,7 @@ coverage number that moves when somebody adds media types is not measuring the l
 
 ---
 
-## The generative layer — **Planned**
+## The generative layer — **Partly built**
 
 Strings are the wrong primitive for most categories. This is where Decoy stops needing
 anyone else's corpus at all.
@@ -227,19 +227,43 @@ anyone else's corpus at all.
 | Street addresses | Pattern over component lists |
 | Person / street / company names | Per-language phonotactic n-gram model |
 
-The last row is the real lever. A character-level n-gram model trained on a real name
-list generates *plausible new* names indefinitely, in the correct language and
-orthography. It gives:
+The last row is the real lever, and it is **built for English surnames**:
+`person.novelLastName()` draws from an order-4 model trained on the Census list.
+`Bednardt, Dorain, Finkston, Mcdoux, Mcfarles, Caber, Detwell, Territto` — none of them a
+real surname, all of them recognisably English.
 
-- **Infinite non-repeating values**, which dissolves `unique` rule exhaustion entirely
-- A **smaller** binary footprint than the list it was trained on
-- **Licensing independence** — a model is not its training data, and outputs are novel
-- Coverage for any language with one obtainable seed list
+Three of the four claims below held up when measured. One did not.
 
-**The honest risk:** an n-gram model will occasionally emit a real person's name by
-coincidence, or an offensive string. This needs a blocklist filter and a known-real-name
-exclusion pass, and it must be a stated guarantee rather than an afterthought. Fake data
-that turns out to be real PII is a serious failure for a library like this.
+- **Infinite non-repeating values**, which dissolves `unique` rule exhaustion. Ten
+  thousand draws give 8,939 distinct names and the model has no ceiling, where the list
+  runs out at 24,889 rows.
+- ~~A **smaller** binary footprint than the list it was trained on~~ — **false at usable
+  quality.** Measured: order 3 is 89 KB against the list's 182 KB, but its output degrades
+  to `Rumboneczor` and `Garsterrever`. Order 4 with pruning, which is where the output
+  reads as English, costs about 300 KB. The model earns its place on novelty, not size,
+  and both are kept: the list has the real population frequencies, which no model
+  reproduces, and the model has no ceiling. Different jobs.
+- **Licensing independence** — a model is not its training data. Note carefully that this
+  does *not* discharge the faker-js obligation by itself: a model trained on faker's lists
+  is still derived from them. Independence needs independently sourced seed lists, which
+  is a separate problem from the machinery.
+- Coverage for any language with one obtainable seed list. Untested beyond English.
+
+**The honest risk, and what was done about it.** An n-gram reproduces its training data
+constantly — roughly a quarter of raw walks at this order land on a real Census surname.
+For a name model that means shipping a real person's name as fake data, so the model
+carries a Bloom filter over its training set and every candidate is checked and redrawn on
+a hit. The filter's error is one-sided, so this discards some novel names and never admits
+a real one. Ten thousand draws, zero real surnames, asserted by a test.
+
+**A second failure was only visible once it was running.** An n-gram decides what comes
+next and never how long the word is, so a run of individually plausible bigrams added up
+to a 28-character surname when the longest real one is 15 — in 0.8% of draws, which is
+rare enough to miss in a sample and obvious in a fixture set. The model now carries the
+training set's own length range and rejects outside it.
+
+**Still to do:** an offensive-string screen. The exclusion pass is built; a blocklist is
+not, and a character model over English will eventually produce something unfortunate.
 
 The split, therefore:
 
@@ -480,8 +504,8 @@ Counts are not the quality bar.
 ## Sequencing
 
 1. ~~Binary format with all six requirements representable~~ — **done** (format v2)
-2. ~~Core generators against the faker-derived corpus~~ — **done** (198 methods across 18
-   namespaces; 180 across 17 without Foundation, which gates the `date` namespace)
+2. ~~Core generators against the faker-derived corpus~~ — **done** (199 methods across 18
+   namespaces; 181 across 17 without Foundation, which gates the `date` namespace)
 3. ~~Corpus discoverability and coverage measurement~~ — **done** (`Corpus.paths`, `decoy-inspect`)
 4. Authoritative reference adapters replacing factual fields — **done for everything
    with a pinnable registry**. Migrated: ISO 3166-1 and 3166-2, ISO 639, ISO 4217, IANA

@@ -51,6 +51,19 @@ indirect public enum JSONValue: Decodable {
         return nil
     }
 
+    public var asArray: [JSONValue]? {
+        if case .array(let a) = self { return a }
+        return nil
+    }
+
+    /// Numbers only. Unlike ``asString`` this does *not* coerce, because a model's
+    /// symbol and weight fields have to be numbers — reading `"3"` as 3 would let a
+    /// malformed intermediate compile into a model that draws the wrong character.
+    public var asNumber: Double? {
+        if case .number(let n) = self { return n }
+        return nil
+    }
+
     /// Formats a number without a trailing `.0`, so `020` stays usable as a string
     /// and integer-valued data does not acquire spurious decimals.
     static func format(_ value: Double) -> String {

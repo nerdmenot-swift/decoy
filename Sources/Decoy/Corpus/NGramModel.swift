@@ -14,6 +14,8 @@
 /// ```
 /// u32  sourceID         which upstream the training data came from
 /// u32  order            context length is order - 1
+/// u32  minLength        shortest word in the training set
+/// u32  maxLength        longest word in the training set
 /// u32  alphabetCount    symbol 0 is the end-of-word sentinel, not a character
 /// u32  arenaIndex       * alphabetCount, each a one-character string
 /// u32  contextCount
@@ -43,6 +45,16 @@ public struct NGramModel: Sendable {
 
     /// The largest context this model was trained with; contexts are `order - 1` long.
     public let order: Int
+
+    /// The shortest and longest word the training set contained.
+    ///
+    /// An n-gram has no notion of total length — it only ever decides what comes next —
+    /// so a run of individually plausible bigrams can add up to a 28-character surname
+    /// when the longest real one is 15. That happened in 0.8% of draws: rare enough to
+    /// miss in a sample, common enough to notice in a fixture set. The sampler rejects
+    /// outside this range.
+    public let minLength: Int
+    public let maxLength: Int
     /// Includes the end-of-word sentinel at index 0.
     public let alphabetCount: Int
     public let contextCount: Int
@@ -78,7 +90,9 @@ public struct NGramModel: Sendable {
 
         sourceID = try reader.u32(at: offset)
         order = Int(try reader.u32(at: offset + 4))
-        alphabetCount = Int(try reader.u32(at: offset + 8))
+        minLength = Int(try reader.u32(at: offset + 8))
+        maxLength = Int(try reader.u32(at: offset + 12))
+        alphabetCount = Int(try reader.u32(at: offset + 16))
         guard order >= 2, order <= Self.maxOrder else {
             throw CorpusError.malformed("model order \(order) outside 2...\(Self.maxOrder)")
         }
@@ -86,7 +100,7 @@ public struct NGramModel: Sendable {
             throw CorpusError.malformed("model alphabet \(alphabetCount) outside 1...255")
         }
 
-        let alphabetAt = offset + 12
+        let alphabetAt = offset + 20
         let countAt = alphabetAt + alphabetCount * 4
         contextCount = Int(try reader.u32(at: countAt))
         contextsAt = countAt + 4
@@ -110,7 +124,7 @@ public struct NGramModel: Sendable {
     /// The character a symbol stands for. Symbol 0 is the sentinel and has none.
     func character(_ symbol: UInt16) throws -> String {
         guard symbol != Self.endSymbol, Int(symbol) < alphabetCount else { return "" }
-        return try arena.string(at: try reader.u32(at: base + 12 + Int(symbol) * 4))
+        return try arena.string(at: try reader.u32(at: base + 20 + Int(symbol) * 4))
     }
 
     /// Packs a context into its index key: length in the top byte, symbols below it.
