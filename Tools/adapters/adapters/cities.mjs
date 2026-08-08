@@ -7,7 +7,7 @@
  *
  * Fills:
  *   <each>  location.city_name   that country's cities
- *   <each>  location.place       composite (city, state)
+ *   <each>  location.place       composite (city, state, state_code)
  *
  * KNOWN INCONSISTENCY: `location.state` comes from CLDR and `location.place`'s state
  * column from the gazetteer, and the two occasionally spell a subdivision differently --
@@ -95,6 +95,12 @@ export async function run({ artifacts, locales }) {
         // Empty rather than absent where the gazetteer has no subdivision, so the
         // composite keeps one shape across every row.
         state: adminNames.get(`${c.country}.${c.admin1}`) ?? '',
+        // Costs about 92 KB on the compiled `en` module, 7.5%. Weighed against the
+        // coordinates rejected just above, which cost 3x for a capability
+        // `latitude()` already covers: this one buys the coherent city/state/postcode
+        // row that corpus-strategy.md calls a bigger differentiator than referential
+        // integrity, and there is no algorithmic substitute for it.
+        state_code: c.admin1 ?? '',
       })),
     }
   }

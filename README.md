@@ -159,7 +159,7 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
 - [x] Adapter pipeline: 28 pinned sources, integrity-verified, provenance per path
 - [x] JSON → binary corpus format + Swift reader
-- [x] 194 generators across 18 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
+- [x] 195 generators across 18 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
 - [x] All 76 locales compile; `en`, `de`, `ja` ship as importable Swift modules
 - [x] `decoy-inspect`: enumeration, coverage, generated attribution
 - [ ] CI actually run — this repository has no remote, so every step in `ci.yml`

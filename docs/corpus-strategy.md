@@ -301,10 +301,21 @@ symbol with its atomic number, and `airline.airport()` a name with its IATA code
 `location.stateAndPostcode()` closes the state/postcode half of the example above for the
 US and Canada, which are the two locales carrying per-subdivision ranges.
 
-**Not built:** city correlated with either. That needs a source pairing them —
-GeoNames has city, subdivision, postcode, timezone and coordinates in one row — and the
-composite mechanism is already there to hold it. For a library aimed at database seeding
-this is arguably a bigger differentiator than referential integrity.
+`location.placeAndPostcode()` closes the example itself: a real city, the subdivision the
+gazetteer places it in, and a postcode from that subdivision's own range. The city and
+subdivision come from one GeoNames row, so they cannot disagree.
+
+The postcode half is exact for the United States and approximate elsewhere, and the
+reason is worth stating rather than hiding: GeoNames codes subdivisions its own way, and
+only the US codes coincide with the ISO 3166-2 ones the postcode ranges are keyed by —
+`US.AR` is `AR` either way, while Japan's Yamanashi is `JP.46` to GeoNames and `JP-19` to
+ISO. Outside the US and Canada the postcode falls back to the national mask rather than
+to a wrong range.
+
+**Not built:** timezone and coordinates in the same row. GeoNames has both. Coordinates
+were measured and rejected — 17,019 distinct high-entropy strings that never dedup in the
+arena, tripling the compiled module, for something `latitude()` already generates
+algorithmically. Re-adding them should be a deliberate choice about geo fixtures.
 
 ---
 
@@ -469,8 +480,8 @@ Counts are not the quality bar.
 ## Sequencing
 
 1. ~~Binary format with all six requirements representable~~ — **done** (format v2)
-2. ~~Core generators against the faker-derived corpus~~ — **done** (194 methods across 18
-   namespaces; 176 across 17 without Foundation, which gates the `date` namespace)
+2. ~~Core generators against the faker-derived corpus~~ — **done** (195 methods across 18
+   namespaces; 177 across 17 without Foundation, which gates the `date` namespace)
 3. ~~Corpus discoverability and coverage measurement~~ — **done** (`Corpus.paths`, `decoy-inspect`)
 4. Authoritative reference adapters replacing factual fields — **done for everything
    with a pinnable registry**. Migrated: ISO 3166-1 and 3166-2, ISO 639, ISO 4217, IANA

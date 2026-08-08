@@ -116,3 +116,77 @@ struct PostcodeTests {
         }
     }
 }
+
+/// Tests the row that `corpus-strategy.md` opens its "coherent records" section with.
+///
+/// `city: "Boston", state: "CA", postcode: "10001"` passes most validators and is
+/// nonsense, and it is what every faker produces, because the three are independent
+/// draws.
+@Suite(
+    "Coherent addresses",
+    .enabled(if: RealCorpus.isAvailable, "compiled corpus not present — see RealCorpus")
+)
+struct CoherentAddressTests {
+
+    private func locale(_ code: String) throws -> LocaleCorpus {
+        try RealCorpus.locale(code, chain: [code, "en", "base"])
+    }
+
+    @Test("city and subdivision come from the same gazetteer row")
+    func cityAgreesWithState() throws {
+        var faker = Faker(seed: 1337, locale: try RealCorpus.locale("en", chain: ["en", "base"]))
+        for _ in 0..<200 {
+            let row = faker.location.place()
+            let city = row["city"] ?? ""
+            let state = row["state"] ?? ""
+            #expect(!city.isEmpty)
+            // Drawn as one row, so the only way these disagree is if the source does.
+            #expect(row["state_code"] != nil, "the row must carry its subdivision code")
+            #expect(!state.isEmpty || row["state_code"] == "")
+        }
+    }
+
+    @Test("a US address pairs a city with a postcode from its own state")
+    func unitedStates() throws {
+        var faker = Faker(seed: 1337, locale: try locale("en_US"))
+        var withRange = 0
+
+        for _ in 0..<200 {
+            let address = faker.location.placeAndPostcode()
+            #expect(!address.city.isEmpty)
+            #expect(!address.postcode.isEmpty)
+
+            // Where the gazetteer knows the state, GeoNames' code is the ISO one for the
+            // US, so the postcode must fall in that state's range rather than the
+            // national mask.
+            guard !address.stateCode.isEmpty,
+                let expected = faker.location.postcode(state: address.stateCode)
+            else { continue }
+            withRange += 1
+            #expect(Int(address.postcode) != nil, "\(address.stateCode) gave \(address.postcode)")
+            #expect(Int(expected) != nil)
+        }
+        #expect(withRange > 100, "most US cities should resolve to a state with a range")
+    }
+
+    /// The honest degradation: elsewhere GeoNames codes subdivisions its own way, so the
+    /// postcode falls back to the national mask rather than to a wrong range.
+    @Test("a locale whose codes are not ISO still produces a usable address")
+    func nonISOLocale() throws {
+        var faker = Faker(seed: 1337, locale: try locale("ja"))
+        for _ in 0..<50 {
+            let address = faker.location.placeAndPostcode()
+            #expect(!address.city.isEmpty)
+            #expect(!address.postcode.isEmpty, "must fall back rather than yield nothing")
+        }
+    }
+
+    @Test("the same seed gives the same address")
+    func reproducible() throws {
+        var a = Faker(seed: 99, locale: try locale("en_US"))
+        var b = Faker(seed: 99, locale: try locale("en_US"))
+        let first = a.location.placeAndPostcode()
+        let second = b.location.placeAndPostcode()
+        #expect(first == second)
+    }
+}

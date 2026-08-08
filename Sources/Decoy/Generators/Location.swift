@@ -62,6 +62,33 @@ public struct LocationFaker {
         faker.drawRow("location.place") ?? [:]
     }
 
+    /// A city, the subdivision it is in, and a postcode from inside that subdivision.
+    ///
+    /// The row `corpus-strategy.md` opens its "coherent records" section with:
+    /// `city: "Boston", state: "CA", postcode: "10001"` passes most validators and is
+    /// nonsense, and it is what every faker produces, because the three are independent
+    /// draws.
+    ///
+    /// The city and subdivision come from one gazetteer row, so they cannot disagree.
+    /// The postcode is drawn from that subdivision's own range where the locale has one
+    /// — the United States and Canada — and falls back to the national mask elsewhere,
+    /// because GeoNames codes subdivisions its own way and only the US codes coincide
+    /// with the ISO ones the postcode ranges are keyed by.
+    ///
+    /// `stateCode` is empty where the gazetteer has no subdivision for that city.
+    public mutating func placeAndPostcode()
+        -> (city: String, state: String, stateCode: String, postcode: String)
+    {
+        let row = place()
+        let code = row["state_code"] ?? ""
+        return (
+            row["city"] ?? city(),
+            row["state"] ?? "",
+            code,
+            postcode(state: code) ?? postcode()
+        )
+    }
+
     public mutating func cityPrefix() -> String { faker.require("location.city_prefix") }
     public mutating func citySuffix() -> String { faker.require("location.city_suffix") }
     public mutating func county() -> String { faker.require("location.county") }

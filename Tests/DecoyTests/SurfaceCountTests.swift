@@ -61,20 +61,21 @@ struct SurfaceCountTests {
         let counts = try Self.namespaceMethods()
         let total = counts.values.reduce(0, +)
 
-        // 18 namespaces and 194 methods. `DateFaker` is compiled only where Foundation
-        // is, so a build without it has 17 and 176 — both figures are in the README and
+        // 18 namespaces and 195 methods. `DateFaker` is compiled only where Foundation
+        // is, so a build without it has 17 and 177 — both figures are in the README and
         // in docs/corpus-strategy.md, and both have to move together.
         //
-        // This has already earned its keep: adding `postcode(state:)` and
-        // `stateAndPostcode()` failed it, which is the whole point.
+        // This has already earned its keep three times: `postcode(state:)`,
+        // `stateAndPostcode()` and `placeAndPostcode()` each failed it on the way in,
+        // which is the whole point.
         #expect(
             counts.count == 18,
             "namespaces: expected 18, found \(counts.count) — \(counts.keys.sorted())"
         )
         #expect(
-            total == 194,
+            total == 195,
             """
-            generator methods: expected 194, found \(total).
+            generator methods: expected 195, found \(total).
             If that is intentional, update this literal, README.md and \
             docs/corpus-strategy.md together — they have drifted apart three times.
             Per namespace: \(counts.sorted { $0.key < $1.key })
@@ -82,7 +83,7 @@ struct SurfaceCountTests {
         )
 
         let withoutDate = total - (counts["DateFaker"] ?? 0)
-        #expect(withoutDate == 176, "without Foundation: expected 176, found \(withoutDate)")
+        #expect(withoutDate == 177, "without Foundation: expected 177, found \(withoutDate)")
     }
 
     /// The corpus suites skip rather than fail when the blobs are absent, which is right
