@@ -305,8 +305,20 @@ public struct Forge<T>: Sendable {
         var run = makeRun(seed: seed, traits: traits, startingAt: rows.lowerBound)
         var result = [T]()
         result.reserveCapacity(rows.count)
-        for _ in rows {
-            result.append(try run.nextOrThrow())
+        do {
+            for _ in rows {
+                result.append(try run.nextOrThrow())
+            }
+        } catch let error as ForgeError {
+            // A trait is the usual reason a unique pool runs dry: `.admin` narrowing a
+            // role, or a trait pinning a field to one of three values while ten thousand
+            // rows are asked for. Naming the traits applied turns "the pool is too small"
+            // into something you can act on without bisecting the call site.
+            //
+            // This is also what `Trait.name` is *for*. It was a stored property nothing
+            // read, kept on the argument that a caller might want to log it — which is a
+            // use case, not an implementation.
+            throw error.mentioning(traits.map(\.name))
         }
         return result
     }
@@ -424,10 +436,9 @@ public struct ForgeSequence<T>: Sequence, IteratorProtocol {
 public struct Trait<T>: Sendable {
     /// What the trait is called.
     ///
-    /// Nothing inside Decoy reads it — the transform is the whole behaviour. It is here
-    /// for the caller: a trait is a value, so a set of them is a thing you can hold,
-    /// log, or print in a test failure, and `Trait("admin")` reading as anonymous would
-    /// make that impossible.
+    /// Read when a unique constraint runs dry: a trait narrowing a field to three values
+    /// while ten thousand rows are requested is the usual cause, and the failure names
+    /// the traits in force rather than leaving you to bisect the call site.
     public let name: String
     let transform: @Sendable (Forge<T>) -> Forge<T>
 
@@ -438,15 +449,32 @@ public struct Trait<T>: Sendable {
 }
 
 public enum ForgeError: Error, CustomStringConvertible {
-    case uniqueConstraintExhausted(property: String, attempts: Int)
+    case uniqueConstraintExhausted(property: String, attempts: Int, traits: [String] = [])
 
     public var description: String {
         switch self {
-        case .uniqueConstraintExhausted(let property, let attempts):
+        case .uniqueConstraintExhausted(let property, let attempts, let traits):
+            let applied = traits.isEmpty
+                ? ""
+                : " Traits applied: \(traits.joined(separator: ", ")) — a trait narrowing "
+                    + "this field is the usual cause."
             return """
                 could not find an unused value for \(property) in \(attempts) attempts. \
-                The source pool is probably smaller than the number of rows requested.
+                The source pool is probably smaller than the number of rows requested.\
+                \(applied)
                 """
+        }
+    }
+
+    /// Returns the same error carrying the names of the traits in force when it was
+    /// thrown. The rule closure cannot know them — traits are applied by transforming
+    /// the forge — so they are attached on the way out.
+    func mentioning(_ traits: [String]) -> ForgeError {
+        guard !traits.isEmpty else { return self }
+        switch self {
+        case .uniqueConstraintExhausted(let property, let attempts, let existing):
+            return .uniqueConstraintExhausted(
+                property: property, attempts: attempts, traits: existing + traits)
         }
     }
 }

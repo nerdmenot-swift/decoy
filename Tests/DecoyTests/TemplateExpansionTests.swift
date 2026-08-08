@@ -69,11 +69,11 @@ struct TemplateExpansionTests {
         // `location.streetAddress()` returned "791 " when `{{location.street}}` resolved
         // to nothing.
         //
-        // A doubled space deliberately is NOT asserted. It looks like the same signal but
-        // has false positives — faker's own `person.bio_pattern` contains
-        // `{{person.bio_supporter}}  {{internet.emoji}}` with two spaces, and reproducing
-        // source data faithfully is correct. `everyTokenResolves` above is the rigorous
-        // check; this one catches what a user would actually notice.
+        // A doubled space is asserted too, now. It was left out on the grounds that
+        // faker's own `person.bio_pattern` has `{{person.bio_supporter}}  {{internet.emoji}}`
+        // and reproducing the source faithfully is correct — which was the wrong call.
+        // That is a typo, not data, every locale inherits it, and it produced 427
+        // distinct defective outputs across the corpus.
         for (code, locale) in Self.locales {
             var faker = Faker(seed: 20_260_808, locale: locale)
             for _ in 0..<200 {
@@ -89,6 +89,10 @@ struct TemplateExpansionTests {
                     #expect(
                         value.first != " " && value.last != " ",
                         "\(code) \(label) has leading or trailing space: '\(value)'"
+                    )
+                    #expect(
+                        !value.contains("  "),
+                        "\(code) \(label) has a doubled space: '\(value)'"
                     )
                 }
             }
@@ -136,5 +140,46 @@ struct TemplateExpansionTests {
 
         let chosen = faker.resolve(#"helpers.arrayElement(["5.1","6.0"])"#) ?? ""
         #expect(["5.1", "6.0"].contains(chosen), "got '\(chosen)'")
+    }
+}
+
+/// Tests for the whitespace tidy applied to expanded templates.
+///
+/// Newlines are the reason this is not a general "collapse whitespace": a postal address
+/// is a multi-line block, and flattening it would run the street into the city.
+@Suite("Template whitespace")
+struct TemplateWhitespaceTests {
+
+    @Test("runs of spaces collapse to one")
+    func collapses() {
+        #expect(Faker.tidied("a  b") == "a b")
+        #expect(Faker.tidied("a     b") == "a b")
+        #expect(Faker.tidied("a b") == "a b")
+    }
+
+    @Test("the ends are trimmed, which is what an empty token at an edge leaves")
+    func trims() {
+        // `{{person.prefix}} {{person.firstName}}` in a locale declaring prefixes empty.
+        #expect(Faker.tidied(" Jane Doe") == "Jane Doe")
+        #expect(Faker.tidied("Jane Doe ") == "Jane Doe")
+        #expect(Faker.tidied("  Jane Doe  ") == "Jane Doe")
+    }
+
+    @Test("newlines survive, because a postal address depends on them")
+    func keepsNewlines() {
+        #expect(Faker.tidied("12 Main St\nBoston") == "12 Main St\nBoston")
+        #expect(Faker.tidied("12  Main St\n\nBoston") == "12 Main St\n\nBoston")
+    }
+
+    @Test("a multi-line address keeps its shape end to end")
+    func postalAddress() {
+        guard RealCorpus.isAvailable else { return }
+        guard let locale = try? RealCorpus.locale("en", chain: ["en", "base"]) else { return }
+        var faker = Faker(seed: 1337, locale: locale)
+        for _ in 0..<50 {
+            let address = faker.location.postalAddress()
+            #expect(!address.contains("  "), "'\(address)'")
+            #expect(!address.isEmpty)
+        }
     }
 }

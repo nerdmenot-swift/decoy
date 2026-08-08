@@ -5,8 +5,11 @@ import Testing
 ///
 /// Four of seventy-six locales ship as Swift modules; the other seventy-two compile to
 /// `.decoy` and are emitted on demand. That is a deliberate deferral rather than an
-/// oversight — embedding all of them would put roughly 13 MB of base64 string literals in
-/// the package and make every `swift build` pay for locales nobody imported.
+/// oversight, and the reason is the checkout rather than the build. SwiftPM compiles only
+/// the locale targets a consumer depends on — measured: an app importing `DecoyLocaleDE`
+/// builds `DE`, `EN` and `Base` and never touches the others — but it clones the whole
+/// repository, so ~14 MB of base64 string literals would land in every consumer's
+/// `.build/checkouts` whether or not one of them is compiled.
 ///
 /// A deferral with a working mechanism is fine. A deferral with a mechanism that silently
 /// half-works is not, and this one did: `--emit-swift --locales pt_BR` wrote

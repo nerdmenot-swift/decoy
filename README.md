@@ -170,10 +170,8 @@ host-executed and historically awkward under cross-compilation) and rule sets.
 
 ## Embedding another locale
 
-All 76 compile to `.decoy`; four ship as Swift modules. Embedding every one would put
-roughly 13 MB of base64 string literals in the package and make every `swift build` pay
-for locales nobody imported, so the rest are emitted on request. Two steps, in this
-order:
+All 76 compile to `.decoy`; four ship as Swift modules. The rest are emitted on request,
+in two steps and in this order:
 
 ```
 swift run decoy-compile-corpus Tools/adapters/out Corpus/binary \
@@ -196,6 +194,13 @@ so adding the line first leaves you unable to run the command that would fix it.
 The array order is the fallback chain, most specific first. `LocaleModuleTests` checks it
 against the locale roster, because getting it wrong is silent: a module with a short chain
 resolves fewer paths and reads as missing data rather than as a manifest error.
+
+**Why not embed all 76?** Not build time — measured, and SwiftPM compiles only the locale
+targets a consumer actually depends on: an app importing `DecoyLocaleDE` builds `DE`, `EN`
+and `Base` and never touches the other 73. The cost is the checkout. SwiftPM clones the
+whole repository, so ~14 MB of base64 string literals would land in every consumer's
+`.build/checkouts` whether or not a single one is compiled, and in every CI cache that
+carries it.
 
 Known gaps, blocked rather than unscheduled: given-name frequencies (ssa.gov refuses
 non-interactive requests), vocabulary for German, French, Dutch, Portuguese and five

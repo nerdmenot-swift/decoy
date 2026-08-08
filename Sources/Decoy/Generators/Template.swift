@@ -34,7 +34,43 @@ extension Faker {
         if expansionDepth == 1 { expansionBudget = Self.maxTemplateTokens }
 
         let expanded = expand(template, depth: 0)
-        return numerify(expanded)
+        return expansionDepth == 1 ? Self.tidied(numerify(expanded)) : numerify(expanded)
+    }
+
+    /// Collapses runs of spaces and trims the ends of an expanded template.
+    ///
+    /// Two things make these. Upstream typos: faker's `en` bio pattern is
+    /// `{{word.noun}} {{person.bio_supporter}}  {{internet.emoji}}` with two spaces, and
+    /// every locale inherits it, so `bio()` produced a doubled space in 427 distinct
+    /// outputs across the corpus. I had decided that reproducing the source faithfully
+    /// was correct; it is not, because this is a typo rather than data, and the user sees
+    /// the output rather than the pattern.
+    ///
+    /// The other is structural and worth guarding even though nothing hits it today: a
+    /// field a locale declares explicitly empty expands to `""`, so
+    /// `{{person.prefix}} {{person.firstName}}` in a locale with no honorifics would
+    /// otherwise begin with a space.
+    ///
+    /// Only the space character. Newlines are load-bearing — `location.postal_address`
+    /// is a multi-line block — and collapsing them would run an address into one line.
+    /// Applied once at the top level rather than at every depth, so a nested expansion
+    /// cannot strip a space its caller meant to keep.
+    static func tidied(_ text: String) -> String {
+        var out = String()
+        out.reserveCapacity(text.count)
+        var previousWasSpace = false
+        for character in text {
+            if character == " " {
+                if previousWasSpace { continue }
+                previousWasSpace = true
+            } else {
+                previousWasSpace = false
+            }
+            out.append(character)
+        }
+        while out.first == " " { out.removeFirst() }
+        while out.last == " " { out.removeLast() }
+        return out
     }
 
     /// Scanned by hand rather than with `range(of:)`, which lives in Foundation — the

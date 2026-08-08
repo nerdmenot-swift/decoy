@@ -390,3 +390,55 @@ struct FakerHelperTests {
         }
     }
 }
+
+/// The failure a unique constraint produces, and what it says.
+///
+/// `Trait.name` was a stored property nothing read, kept on the argument that a caller
+/// might want to log it — a use case rather than an implementation. A trait narrowing a
+/// field is the usual reason a unique pool runs dry, so the failure names them.
+@Suite("Unique exhaustion reporting")
+struct UniqueExhaustionTests {
+
+    struct Row { var slot: String = "" }
+
+    @Test("the failure names the property and the attempt count")
+    func namesProperty() {
+        let forge = Forge<Row>("row") { Row() }
+            .rule(unique: \.slot, attempts: 20) { $0.pick(["a", "b"]) }
+
+        #expect(throws: ForgeError.self) {
+            _ = try forge.tryGenerate(50, seed: 1)
+        }
+    }
+
+    @Test("the failure names the traits in force")
+    func namesTraits() throws {
+        let forge = Forge<Row>("row") { Row() }
+            .rule(unique: \.slot, attempts: 20) { $0.pick(["a", "b", "c", "d", "e"]) }
+        // A trait that narrows the pool to one value: the exact shape that makes a
+        // unique rule unsatisfiable in a way the property name alone does not explain.
+        let narrow = Trait<Row>("single-slot") { $0.rule(\.slot) { _ in "only" } }
+
+        do {
+            _ = try forge.tryGenerate(10, seed: 1, applying: narrow)
+            Issue.record("expected exhaustion")
+        } catch let error as ForgeError {
+            #expect(
+                error.description.contains("single-slot"),
+                "the message must name the trait: \(error.description)"
+            )
+        }
+    }
+
+    @Test("with no traits the message stays as it was")
+    func noTraits() throws {
+        let forge = Forge<Row>("row") { Row() }
+            .rule(unique: \.slot, attempts: 20) { $0.pick(["a", "b"]) }
+        do {
+            _ = try forge.tryGenerate(50, seed: 1)
+            Issue.record("expected exhaustion")
+        } catch let error as ForgeError {
+            #expect(!error.description.contains("Traits applied"))
+        }
+    }
+}

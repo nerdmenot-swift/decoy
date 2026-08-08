@@ -124,6 +124,10 @@ struct MultiLocaleSmokeTests {
                 // declare a field explicitly empty, which is data rather than a fault.
                 let value = generator(&faker)
                 #expect(!value.contains("{{"), "\(code): \(label) leaked a template")
+                // Checked across all seventy-six rather than the three above, because
+                // the doubled space that shipped came from `en` and every locale
+                // inherited it.
+                #expect(!value.contains("  "), "\(code): \(label) has a doubled space")
             }
         }
     }
