@@ -166,9 +166,36 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
       has been executed locally instead, and none of it on Windows
 
 Deferred: strict-mode rule checking (needs a macro, and macro plugins are
-host-executed and historically awkward under cross-compilation), rule sets, and Swift
-modules for the other 72 locales — all 76 compile to `.decoy`, but only four are
-embedded.
+host-executed and historically awkward under cross-compilation) and rule sets.
+
+## Embedding another locale
+
+All 76 compile to `.decoy`; four ship as Swift modules. Embedding every one would put
+roughly 13 MB of base64 string literals in the package and make every `swift build` pay
+for locales nobody imported, so the rest are emitted on request. Two steps, in this
+order:
+
+```
+swift run decoy-compile-corpus Tools/adapters/out Corpus/binary \
+  --emit-swift Sources --locales de_AT
+```
+
+It writes `Sources/DecoyLocaleDE_AT/` and then prints the exact line to add to the
+`locales` array in `Package.swift`:
+
+```
+    ("DE_AT", ["DE", "EN", "Base"]),
+```
+
+Add it, and `import DecoyLocaleDE_AT` works.
+
+**Emit before declaring, not the other way round.** SwiftPM will not build anything —
+including the compiler that writes the directory — while a declared target has no sources,
+so adding the line first leaves you unable to run the command that would fix it.
+
+The array order is the fallback chain, most specific first. `LocaleModuleTests` checks it
+against the locale roster, because getting it wrong is silent: a module with a short chain
+resolves fewer paths and reads as missing data rather than as a manifest error.
 
 Known gaps, blocked rather than unscheduled: given-name frequencies (ssa.gov refuses
 non-interactive requests), Dutch vocabulary (OpenTaal publishes no immutable artifact),

@@ -26,8 +26,13 @@ struct Options {
 }
 
 /// The module and type name for a locale's generated source.
+/// The `Package.swift` name for a locale: `de_AT` -> `DE_AT`, `base` -> `Base`.
+func moduleSuffix(_ code: String) -> String {
+    code == "base" ? "Base" : code.uppercased()
+}
+
 func moduleName(_ code: String) -> String {
-    "DecoyLocale" + (code == "base" ? "Base" : code.uppercased())
+    "DecoyLocale" + moduleSuffix(code)
 }
 
 func parseArguments() -> Options {
@@ -254,24 +259,30 @@ if let swiftDirectory = options.emitSwift {
     let wanted = manifest.closure(over: options.swiftLocales)
     guard !wanted.isEmpty else { fail("--emit-swift requires --locales") }
 
-    // A module SwiftPM does not know about is not a module. `--locales pt_BR` happily
-    // wrote `Sources/DecoyLocalePT_BR/` with no matching target, so the directory sat
-    // there compiling nothing and importing it failed with an error naming neither the
-    // flag nor the manifest. Checked before writing rather than after, so a mistyped
-    // code leaves the tree as it found it.
+    // A module SwiftPM does not know about is not a module: `--emit-swift --locales
+    // pt_BR` wrote `Sources/DecoyLocalePT_BR/` with no matching target, so the directory
+    // compiled nothing and importing it failed with an error naming neither the flag nor
+    // the manifest.
+    //
+    // Reported *after* writing, not before. Refusing to write until the target exists
+    // reads as the safer order and is unbuildable: SwiftPM will not compile anything —
+    // including this compiler — while a declared target has no directory, so adding the
+    // line first means the command that creates the directory can no longer run. Emit,
+    // then say what is left to do. A mistyped code cannot get this far; `closure(over:)`
+    // drops codes the roster does not know, which leaves `--locales` empty.
     //
     // A text scan rather than a parse: `Package.swift` is a program, and shelling out to
     // SwiftPM to ask what targets exist would be a far larger dependency than reading the
-    // one array that names them. The module names are built there by interpolation, so
-    // the scan reads the `locales` literal rather than searching for `DecoyLocaleXX`.
+    // one array that names them.
     let packageURL = swiftDirectory.deletingLastPathComponent()
         .appendingPathComponent("Package.swift")
-    if let manifestText = try? String(contentsOf: packageURL, encoding: .utf8),
-        let arrayStart = manifestText.range(of: "let locales:"),
-        let arrayEnd = manifestText.range(of: "\n]", range: arrayStart.upperBound..<manifestText.endIndex)
-    {
+    func undeclaredTargets() -> [String] {
+        guard let text = try? String(contentsOf: packageURL, encoding: .utf8),
+            let start = text.range(of: "let locales:"),
+            let end = text.range(of: "\n]", range: start.upperBound..<text.endIndex)
+        else { return [] }
         let declared = Set(
-            manifestText[arrayStart.upperBound..<arrayEnd.lowerBound]
+            text[start.upperBound..<end.lowerBound]
                 .split(separator: "\n")
                 .compactMap { line -> String? in
                     guard let open = line.firstIndex(of: "\""),
@@ -280,18 +291,7 @@ if let swiftDirectory = options.emitSwift {
                     return String(line[line.index(after: open)..<close])
                 }
         )
-        let undeclared = wanted.filter {
-            !declared.contains($0 == "base" ? "Base" : $0.uppercased())
-        }
-        if !undeclared.isEmpty {
-            let names = undeclared.map { $0 == "base" ? "Base" : $0.uppercased() }
-            fail(
-                "\(undeclared.map(moduleName).joined(separator: ", ")) would be written but "
-                    + "\(packageURL.lastPathComponent) declares no such target. Add "
-                    + "\(names.joined(separator: ", ")) to the `locales` array there first, "
-                    + "with its fallback chain."
-            )
-        }
+        return wanted.filter { !declared.contains(moduleSuffix($0)) }
     }
 
     var emittedBytes = 0
@@ -319,6 +319,38 @@ if let swiftDirectory = options.emitSwift {
     }
     print("swift modules   : \(wanted.map(moduleName).joined(separator: ", "))")
     print("  embedding     : \(emittedBytes / 1024) KB of corpus")
+
+    let undeclared = undeclaredTargets()
+    if !undeclared.isEmpty {
+        // The exact lines, not a description of them. The chain has to be right and in
+        // order, and it is already known here — making the reader reconstruct it from the
+        // manifest is the step where this goes wrong.
+        let lines = undeclared.map { code -> String in
+            let chain = (manifest.locales[code]?.chain ?? []).dropFirst()
+                .map { "\"\(moduleSuffix($0))\"" }
+                .joined(separator: ", ")
+            return "    (\"\(moduleSuffix(code))\", [\(chain)]),"
+        }
+        print(
+            """
+
+            ── one step left ──────────────────────────────────────────────────
+            \(undeclared.map(moduleName).joined(separator: ", ")) \
+            \(undeclared.count == 1 ? "was" : "were") written, but \
+            \(packageURL.lastPathComponent) declares no such target, so \
+            \(undeclared.count == 1 ? "it compiles" : "they compile") nothing and \
+            cannot be imported.
+
+            Add to the `locales` array in \(packageURL.lastPathComponent):
+
+            \(lines.joined(separator: "\n"))
+
+            Order is the fallback chain, most specific first. `LocaleModuleTests`
+            fails until this is done.
+            ───────────────────────────────────────────────────────────────────
+            """
+        )
+    }
 }
 
 print("sources         : \(manifest.provenance)")
