@@ -116,6 +116,96 @@ public struct LocaleCorpus: Sendable {
         case .explicitlyEmpty, nil: return false
         }
     }
+
+    // MARK: - Coverage
+
+    /// The paths in this chain that a locale could meaningfully define for itself.
+    ///
+    /// Everything the chain resolves *except* what comes from its last corpus, which is
+    /// language-neutral by construction: `base` carries media types, country codes, time
+    /// zones and emoji, and there is no Japanese answer to `image/png`. Counting those
+    /// as fields Japanese has failed to supply put its coverage at 5% — of 1,145 paths,
+    /// 1,016 of them media types — which is not a fact about Japanese.
+    ///
+    /// A single-corpus chain has no language-neutral tail to exclude, so it is all of it.
+    var languageBearingPaths: [String] {
+        get throws {
+            guard chain.count > 1 else { return try paths.map(\.path) }
+            var seen = Set<String>()
+            for corpus in chain.dropLast() {
+                for entry in try corpus.paths { seen.insert(entry.path) }
+            }
+            return seen.sorted()
+        }
+    }
+
+    /// How many paths a locale in this chain could meaningfully define. The
+    /// denominator behind ``nativeCoverage``, exposed so the compiler can print the
+    /// fraction rather than only the percentage.
+    public var languageBearingPathCount: Int {
+        get throws { try languageBearingPaths.count }
+    }
+
+    /// What share of the language-bearing paths in this chain the locale supplies
+    /// itself, 0 to 1.
+    ///
+    /// `ta_IN` reads about 0.11: eleven paths of its own, and everything else — names,
+    /// company names, most vocabulary — arriving from English through the chain. A
+    /// fixture set built from it is largely English wearing a Tamil label, and nothing
+    /// about the call site says so.
+    ///
+    /// Walks the chain's path lists, so it is a setup-time question rather than
+    /// something to ask per row.
+    public var nativeCoverage: Double {
+        get throws {
+            let denominator = try languageBearingPaths.count
+            guard denominator > 0 else { return 0 }
+            let own = Set(try nativePaths.map(\.path))
+            let covered = try languageBearingPaths.filter { own.contains($0) }.count
+            return Double(covered) / Double(denominator)
+        }
+    }
+
+    /// Language-bearing paths the locale inherits rather than defines, sorted.
+    ///
+    /// The actionable half of ``nativeCoverage``: a number says a locale is thin, and
+    /// this says which fields to go and find data for.
+    public var inheritedPaths: [String] {
+        get throws {
+            let own = Set(try nativePaths.map(\.path))
+            return try languageBearingPaths.filter { !own.contains($0) }
+        }
+    }
+
+    /// A description of how much of this locale is really a fallback, or `nil` when
+    /// `threshold` is met.
+    ///
+    /// Deliberately a returned value rather than something printed.
+    ///
+    /// A library that writes to stderr is a library you have to work out how to silence,
+    /// and doing it here would mean Decoy's first piece of global mutable state — a
+    /// process-wide "have I already warned about this locale" set — introduced to
+    /// deduplicate a message nobody asked for. It would also have to be computed
+    /// somewhere, and `Faker.init` runs once per row.
+    ///
+    /// The failure this guards against is caught in review or in a test, not at three in
+    /// the morning in production, so it is shaped as something a test can assert on:
+    ///
+    /// ```swift
+    /// #expect(DecoyLocaleDE.locale.fallbackWarning() == nil)
+    /// ```
+    public func fallbackWarning(threshold: Double = 0.3) -> String? {
+        guard let coverage = try? nativeCoverage, coverage < threshold else { return nil }
+        let percent = Int((coverage * 100).rounded())
+        let inherited = (try? inheritedPaths.count) ?? 0
+        return """
+            locale '\(code)' defines \(percent)% of its fields itself; the other \
+            \(inherited) resolve through the fallback chain \
+            (\(chain.count) corpora). Records generated from it will be largely \
+            \(chain.count > 1 ? "another language's data" : "unavailable") wearing a \
+            '\(code)' label. Inspect with: decoy-inspect --coverage Corpus/binary
+            """
+    }
 }
 
 // MARK: - Built-in corpus

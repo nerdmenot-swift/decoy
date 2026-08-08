@@ -189,7 +189,29 @@ build. It is a regression gate rather than a quality bar — it catches an adapt
 dropping coverage, which is what the failure actually looks like, rather than asserting a
 threshold nobody has justified.
 
-Still **planned**: a runtime warning when a locale falls back to English for most fields.
+**Built**: `LocaleCorpus.nativeCoverage`, `.inheritedPaths` and `.fallbackWarning()`
+carry the same signal into the library, so a caller can find out that their locale is
+mostly somebody else's data without running the inspector. Each generated locale module
+also states its measured coverage in the doc comment on `locale`, which is where somebody
+importing `DecoyLocaleTA_IN` will actually see it.
+
+**Deliberately a value, not a printed warning.** A library that writes to stderr is a
+library you have to work out how to silence, and doing it here would mean Decoy's first
+piece of global mutable state: a process-wide "have I already warned about this locale"
+set, introduced to deduplicate a message nobody asked for. It would also need computing
+somewhere, and `Faker.init` runs once per row. The failure this guards against — Tamil
+records named Jennifer Williams — is caught in review or in a test, so it is shaped as
+something a test can assert on:
+
+```swift
+#expect(DecoyLocaleDE.locale.fallbackWarning() == nil)
+#expect(try DecoyLocaleJA.locale.nativeCoverage > 0.5)
+```
+
+The denominator is the chain's *language-bearing* paths — everything but its final,
+language-neutral corpus. Counting `base` put Japanese at 5%, because 1,016 of the 1,145
+paths it resolves are media types and there is no Japanese answer to `image/png`. A
+coverage number that moves when somebody adds media types is not measuring the language.
 
 ---
 

@@ -178,9 +178,16 @@ func emitSwiftModule(
     bytes: [UInt8],
     chain: [String],
     sources: [String],
+    coverage: (own: Int, resolvable: Int),
     into directory: URL
 ) throws {
     let module = moduleName(code)
+    let inheritedFrom = chain.count > 1
+        ? "; the rest arrive from \(chain.dropFirst().joined(separator: ", "))"
+        : ", which is all of them — this corpus has nothing behind it"
+    let percent = coverage.resolvable == 0
+        ? 0
+        : Int((Double(coverage.own) / Double(coverage.resolvable) * 100).rounded())
     let chainExpression = chain
         .map { $0 == code ? "corpus" : "\(moduleName($0)).corpus" }
         .joined(separator: ", ")
@@ -220,6 +227,13 @@ func emitSwiftModule(
             }()
 
             /// This locale with its fallback chain: \(chain.joined(separator: " -> ")).
+            ///
+            /// Defines \(coverage.own) of the \(coverage.resolvable) language-bearing
+            /// paths in its chain (\(percent)%)\(inheritedFrom).
+            ///
+            /// Measured from the compiled blobs, so it describes what shipped rather than
+            /// an intention. `locale.fallbackWarning()` is the same fact as a value, and
+            /// `decoy-inspect --coverage Corpus/binary` is the whole table.
             public static let locale = LocaleCorpus(code: "\(code)", chain: [\(chainExpression)])
 
             private static let payload: StaticString = "\(Base64.encode(bytes))"
@@ -288,11 +302,17 @@ if let swiftDirectory = options.emitSwift {
         // The union over the chain: `de_AT` resolves through `de` and `base`, so its
         // module is derived from what those carry as much as from its own tables.
         let chainSources = Set(chain.flatMap { usedSources[$0] ?? [] }).sorted()
+
+        // Measured from the blobs rather than taken from the compiler's own bookkeeping,
+        // so the number in the module describes what shipped.
+        let chainCorpora = try chain.map { try Corpus(bytes: compiled[$0] ?? []) }
+        let resolved = LocaleCorpus(code: code, chain: chainCorpora)
         try emitSwiftModule(
             code: code,
             bytes: bytes,
             chain: chain,
             sources: chainSources,
+            coverage: (try resolved.nativePaths.count, try resolved.languageBearingPathCount),
             into: swiftDirectory
         )
         emittedBytes += bytes.count
