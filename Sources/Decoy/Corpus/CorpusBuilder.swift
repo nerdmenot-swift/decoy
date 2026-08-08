@@ -357,11 +357,21 @@ public struct CorpusBuilder {
                 index.appendLE(UInt32(transitions.count))
                 index.appendLE(UInt32(context.transitions.count))
 
-                var cumulative: UInt32 = 0
+                // Cumulative weights are stored as `u16`, which halves the transition
+                // blob — it is the bulk of a model, 22,000 entries for English surnames.
+                // A context whose counts exceed 65,535 is scaled down proportionally,
+                // with every non-zero weight kept at least 1 so a rare transition cannot
+                // be silently deleted by rounding. Sampling only needs the ratios.
+                let total = context.transitions.reduce(0) { $0 + UInt64($1.weight) }
+                let scale = total > UInt64(UInt16.max) ? total : UInt64(UInt16.max)
+                var cumulative: UInt16 = 0
                 for transition in context.transitions {
-                    cumulative &+= transition.weight
+                    let scaled = UInt16(
+                        Swift.max(
+                            1,
+                            UInt64(transition.weight) * UInt64(UInt16.max) / scale))
+                    cumulative = cumulative &+ scaled
                     transitions.appendLE(transition.symbol)
-                    transitions.appendLE(UInt16(0))
                     transitions.appendLE(cumulative)
                 }
             }

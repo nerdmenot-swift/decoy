@@ -237,10 +237,9 @@ u32  contextCount
   u32 transitionOffset  byte offset into the transition blob
   u32 transitionCount
 } * contextCount
-{                     transition blob
+{                     transition blob, 4 bytes each
   u16 symbol
-  u16 —               reserved, must be 0
-  u32 cumulativeWeight
+  u16 cumulativeWeight
 } * total
 u32  filterHashCount
 u32  filterByteCount
@@ -255,7 +254,11 @@ are stored most-recent-last so backing off to a shorter context is a mask rather
 rebuild.
 
 **Weights are cumulative**, so a draw is one binary search rather than a running sum. The
-same choice weighted string tables make, for the same reason.
+same choice weighted string tables make, for the same reason. They are `u16` because the
+transition blob is the bulk of a model — 22,000 entries for English surnames — and only
+the ratios matter to a draw. A context whose counts exceed 65,535 is scaled down
+proportionally, with every non-zero weight held at a minimum of 1 so rounding cannot
+silently delete a rare transition.
 
 **The Bloom filter is not optional.** An n-gram will sometimes reproduce a training-set
 member exactly, and for a name model that means emitting a real person's name as fake

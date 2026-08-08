@@ -22,10 +22,9 @@
 ///   u32 transitionOffset
 ///   u32 transitionCount
 /// } * contextCount
-/// {                     transition blob
+/// {                     transition blob, 4 bytes each
 ///   u16 symbol
-///   u16 (reserved)
-///   u32 cumulativeWeight
+///   u16 cumulativeWeight
 /// } * total
 /// u32  filterHashCount  Bloom filter over the training set; see `wasTrainedOn`
 /// u32  filterByteCount
@@ -100,9 +99,9 @@ public struct NGramModel: Sendable {
         if contextCount > 0 {
             let last = contextsAt + (contextCount - 1) * 16
             transitionTotal =
-                Int(try reader.u32(at: last + 8)) / 8 + Int(try reader.u32(at: last + 12))
+                Int(try reader.u32(at: last + 8)) / 4 + Int(try reader.u32(at: last + 12))
         }
-        let filterHeader = transitionsAt + transitionTotal * 8
+        let filterHeader = transitionsAt + transitionTotal * 4
         filterHashCount = Int(try reader.u32(at: filterHeader))
         filterByteCount = Int(try reader.u32(at: filterHeader + 4))
         filterAt = filterHeader + 8
@@ -150,22 +149,22 @@ public struct NGramModel: Sendable {
     /// Cumulative weights, so this is a binary search over the transitions rather than a
     /// running sum — the same trick weighted string tables use.
     func sample(context: (offset: Int, count: Int), roll: UInt32) throws -> UInt16 {
-        let last = transitionsAt + context.offset + (context.count - 1) * 8
-        let total = try reader.u32(at: last + 4)
+        let last = transitionsAt + context.offset + (context.count - 1) * 4
+        let total = UInt32(try reader.u16(at: last + 2))
         guard total > 0 else { return Self.endSymbol }
-        let target = roll % total
+        let target = UInt16(roll % total)
 
         var low = 0
         var high = context.count - 1
         while low < high {
             let mid = low + (high - low) / 2
-            if try reader.u32(at: transitionsAt + context.offset + mid * 8 + 4) <= target {
+            if try reader.u16(at: transitionsAt + context.offset + mid * 4 + 2) <= target {
                 low = mid + 1
             } else {
                 high = mid
             }
         }
-        return try reader.u16(at: transitionsAt + context.offset + low * 8)
+        return try reader.u16(at: transitionsAt + context.offset + low * 4)
     }
 
     /// Whether the training set probably contained `word`.

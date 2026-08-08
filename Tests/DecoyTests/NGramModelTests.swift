@@ -16,6 +16,11 @@ struct NGramModelTests {
     ///
     /// Alphabet: sentinel, `a`, `b`. Start goes to `a`. After `a` comes `b`. After `b`
     /// the word ends. The only string this model can produce is `"ab"`.
+    ///
+    /// The start context is `[sentinel]`, not the empty one: the walk is left-padded, so
+    /// "nothing generated yet" is a real context. An empty context would mean the
+    /// marginal distribution over the whole training set, which is a different thing and
+    /// is why an earlier version generated words starting mid-word.
     private func deterministicCorpus(filterBits: [UInt8] = [], hashes: Int = 0) -> Corpus {
         var builder = CorpusBuilder(version: CorpusVersion(major: 1, minor: 0, patch: 0))
         let source = builder.addSource(
@@ -29,7 +34,7 @@ struct NGramModelTests {
             order: 2,
             alphabet: ["", "a", "b"],
             contexts: [
-                (NGramModel.key([][...]), [(a, 1)]),
+                (NGramModel.key([end][...]), [(a, 1)]),
                 (NGramModel.key([a][...]), [(b, 1)]),
                 (NGramModel.key([b][...]), [(end, 1)]),
             ],
@@ -118,7 +123,7 @@ struct NGramModelTests {
 
         let model = builder.addModel(
             order: 2, alphabet: ["", "a"],
-            contexts: [(NGramModel.key([][...]), [(1, 1)])],
+            contexts: [(NGramModel.key([0][...]), [(1, 1)])],
             filterHashCount: hashes, filterBits: bits)
         builder.index("t", model: model)
         let corpus = try! Corpus(bytes: builder.build())

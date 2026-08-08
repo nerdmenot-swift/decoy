@@ -45,7 +45,12 @@ extension Faker {
 
     /// One unfiltered pass through the model.
     private mutating func walk(_ model: NGramModel) -> String? {
-        var symbols: [UInt16] = []
+        // Left-padded with the sentinel, so "nothing generated yet" is a real context
+        // rather than the empty one. The empty context would be the marginal distribution
+        // over every character in the training data, not the start-of-word distribution,
+        // and a walk that begins there produces words that start mid-word: `ster`, `rda`,
+        // `uck`. The trainer pads identically.
+        var symbols = [UInt16](repeating: NGramModel.endSymbol, count: model.order - 1)
         var out = String()
 
         for _ in 0..<Self.maxModelLength {
@@ -60,11 +65,12 @@ extension Faker {
 
     /// Asks the model for the next symbol, backing off to shorter contexts.
     private mutating func step(_ model: NGramModel, history: [UInt16]) -> UInt16? {
-        // The longest usable context, shortened one symbol at a time. Length 0 is the
-        // start-of-word distribution, which every model has, so the loop always finds
-        // something unless the model is empty.
-        var length = Swift.min(model.order - 1, history.count)
-        while length >= 0 {
+        // The longest usable context, shortened one symbol at a time. Padding guarantees
+        // the history is at least `order - 1` long, so length 1 always exists — the loop
+        // stops there rather than at 0, because an empty context would mean the marginal
+        // distribution and the trainer does not record one.
+        var length = model.order - 1
+        while length >= 1 {
             let window = history.suffix(length)
             // Swift flattens `try?` over an optional return, so this is one level of
             // optionality: a throw and a miss both read as nil, and both mean "back off".
