@@ -291,6 +291,14 @@ public struct LocaleCompiler {
             contexts.append((key, parsed))
         }
 
+        // Optional so a model can be compiled before a screen exists for its language;
+        // `decoy-validate` is where "this model ships without a screen" should be caught,
+        // not here, because a compiler that refuses is a compiler someone works around.
+        let blockHashCount = model["blockHashCount"]?.asNumber.map(Int.init) ?? 0
+        let blockMinLength = model["blockMinLength"]?.asNumber.map(Int.init) ?? 4
+        let blockBits =
+            model["blockBits"]?.asString.flatMap { Base64.decode(Array($0.utf8)) } ?? []
+
         let id = builder.addModel(
             order: order,
             minLength: minLength,
@@ -299,6 +307,9 @@ public struct LocaleCompiler {
             contexts: contexts,
             filterHashCount: hashCount,
             filterBits: bits,
+            blockHashCount: blockHashCount,
+            blockMinLength: blockMinLength,
+            blockBits: blockBits,
             source: sourceID(for: path)
         )
         builder.index(path, model: id)

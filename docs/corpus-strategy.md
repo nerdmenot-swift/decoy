@@ -92,7 +92,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — seventeen adapters plus the faker-js bootstrap, twenty-eight sources:
+**Built so far** — seventeen adapters plus the faker-js bootstrap, twenty-nine sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -262,8 +262,28 @@ to a 28-character surname when the longest real one is 15 — in 0.8% of draws, 
 rare enough to miss in a sample and obvious in a fixture set. The model now carries the
 training set's own length range and rejects outside it.
 
-**Still to do:** an offensive-string screen. The exclusion pass is built; a blocklist is
-not, and a character model over English will eventually produce something unfortunate.
+**The offensive-string screen is built too.** A character model over English will
+eventually walk into something unfortunate, and "statistically unlikely" is not a thing to
+tell somebody who found it in their staging database. The model carries a second Bloom
+filter, over substrings from the LDNOOBW list (CC BY 4.0, pinned to a commit).
+
+**Only hashes ship.** Nothing from the blocklist reaches the binary as text. That keeps a
+list of slurs out of something people grep and security scanners read, and out of the
+string arena where a bug in path resolution could surface one as a value. It is also why
+the source is recorded with `mergedInto`: it claims no path by design, and would otherwise
+be a validator warning nobody could ever resolve.
+
+Two things about it are worth knowing rather than discovering:
+
+- **The false-positive rate is budgeted per word, not per lookup.** Screening one name
+  costs dozens of substring queries, so a per-query 0.1% compounds to roughly 7.5% per
+  name — and it showed up exactly there, rejecting 1.4% of real Census surnames under a
+  filter configured for 0.1%. At 1e-6 per query the per-word rate is negligible and the
+  filter still costs 967 bytes, because a Bloom filter grows with the log of the rate.
+- **A substring screen is over-broad, deliberately.** It rejects `Cummings`, `Hancock`,
+  `Draper` and `Canales` — 0.5% of real surnames — and those are true matches rather than
+  filter errors. The cost is novel names shaped like them; the benefit is that nothing
+  offensive gets through. One-sided, like every other check in this layer.
 
 The split, therefore:
 
@@ -443,7 +463,7 @@ All six are representable in format v2. Four are in use.
 |---|---|---|
 | Weights | A weight column alongside string tables | **In use** — faker-derived patterns, and real Census frequencies for English surnames |
 | Composite records | Heterogeneous field tuples, not parallel lists | **In use** — countries, languages, currencies |
-| Provenance | A source/license table, referenced by ID | **In use** — 28 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
+| Provenance | A source/license table, referenced by ID | **In use** — 29 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
 | Generative models | A model chunk type, not only string tables | Chunk kind reserved; nothing emits one |
 | Corpus version + compatibility | Header fields, checked on load | **In use** |
 | Cross-locale dedup | A shared string arena (21.2% redundancy measured) | **In use** |
@@ -592,7 +612,7 @@ table and attributed to CLDR, which is the known limitation recorded above.
 Every corpus carries its own source records, so the authoritative answer is
 `decoy-inspect <locale>.decoy` rather than this list. As shipped today:
 
-All twenty-eight, because a table that omits seven of them is the same failure as a
+All twenty-nine, because a table that omits seven of them is the same failure as a
 NOTICE that does:
 
 | Source | Licence | Obligation |

@@ -269,3 +269,80 @@ struct SurnameModelTests {
         #expect(!name.isEmpty)
     }
 }
+
+/// Tests the screen over what a model may emit.
+///
+/// A character-level model of English will eventually walk into something offensive.
+/// "Statistically unlikely" is not a thing to tell somebody who found it in their staging
+/// database, so it is screened rather than hoped about.
+@Suite(
+    "Offensive-output screen",
+    .enabled(if: RealCorpus.isAvailable, "compiled corpus not present — see RealCorpus")
+)
+struct BlocklistScreenTests {
+
+    private func model() throws -> NGramModel {
+        let locale = try RealCorpus.locale("en", chain: ["en", "base"])
+        guard case .model(let model)? = locale.resolve("person.last_name_model") else {
+            struct NoModel: Error {}
+            throw NoModel()
+        }
+        return model
+    }
+
+    @Test("the shipped model carries a screen")
+    func screenExists() throws {
+        let model = try model()
+        #expect(model.blockByteCount > 0, "a model with no screen may emit anything")
+        #expect(model.blockHashCount > 0)
+        #expect(model.blockMinLength >= 3)
+    }
+
+    /// Constructed rather than copied from the list: the test should not itself ship the
+    /// words, for the same reason the corpus does not.
+    @Test("a word containing a blocked term is rejected", arguments: [
+        "Shitwell", "Fuckerman", "Bastardly", "Cuntridge", "Wankerly", "Bollockson",
+    ])
+    func catchesBlocked(_ word: String) throws {
+        #expect(try model().isBlocked(word), "'\(word)' passed the screen")
+    }
+
+    /// Case must not be a way past it — the model produces capitalised names.
+    @Test("the screen is case-insensitive")
+    func caseInsensitive() throws {
+        let model = try model()
+        #expect(model.isBlocked("SHITWELL") == model.isBlocked("shitwell"))
+        #expect(model.isBlocked("Shitwell"))
+    }
+
+    /// Deliberately over-broad, and worth pinning so the extent is known rather than
+    /// discovered. A substring screen rejects `Hancock`, `Cummings` and `Draper`; those
+    /// are true matches, not filter errors, and the cost is novel names shaped like them.
+    @Test("it rejects a small, bounded share of ordinary surnames")
+    func falsePositiveRate() throws {
+        let locale = try RealCorpus.locale("en", chain: ["en", "base"])
+        let model = try model()
+        let table = try #require(locale.strings("person.last_name.generic"))
+        let real = (0..<table.count).compactMap { try? table.string(at: $0) }
+
+        let blocked = real.filter { model.isBlocked($0) }
+        let share = Double(blocked.count) / Double(real.count)
+        let complaint =
+            "\(blocked.count) of \(real.count) real surnames blocked — the screen has "
+            + "become too broad, or the filter is undersized for the number of substring "
+            + "lookups a word costs"
+        #expect(share < 0.01, "\(complaint)")
+    }
+
+    /// Nothing generated may contain a blocked term, over a large sample.
+    @Test("no generated surname trips the screen")
+    func generatedOutputIsClean() throws {
+        let locale = try RealCorpus.locale("en", chain: ["en", "base"])
+        let model = try model()
+        var faker = Faker(seed: 2026, locale: locale)
+        for _ in 0..<5_000 {
+            let name = faker.person.novelLastName()
+            #expect(!model.isBlocked(name), "'\(name)' was emitted despite the screen")
+        }
+    }
+}

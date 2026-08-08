@@ -140,6 +140,40 @@ export function train(words, { order = 4, minCount = 1 } = {}) {
  * that trains here and checks in Swift.
  */
 export function bloomFilter(words, { falsePositiveRate = 0.01 } = {}) {
+  return buildFilter(words, falsePositiveRate)
+}
+
+/**
+ * A filter over blocked substrings, for screening generated words.
+ *
+ * Only the hashes ship. Nothing in the blocklist reaches the binary as text, which keeps
+ * a list of slurs out of something people grep and security scanners read, and keeps one
+ * out of the string arena where a bug in path resolution could surface it as a value.
+ *
+ * Terms shorter than `minLength` are dropped. Two- and three-letter entries appear inside
+ * ordinary surnames constantly, and blocking on them would reject a large share of
+ * perfectly good output while catching nothing a longer term does not.
+ *
+ * **The false-positive rate is budgeted per word, not per lookup**, which is why it looks
+ * absurdly tight. Screening a 15-character name means about 78 substring queries, so a
+ * per-query rate of 0.1% gives `1 - 0.999^78`, about 7.5% per word — and it showed up
+ * exactly there: 1.4% of real Census surnames were being rejected by a filter configured
+ * for 0.1%. At 1e-6 per query the per-word rate is under 0.01% and the filter still costs
+ * under a kilobyte, because a Bloom filter's size grows with the log of the rate.
+ */
+export function blocklistFilter(terms, { falsePositiveRate = 1e-6, minLength = 4 } = {}) {
+  const kept = [
+    ...new Set(
+      terms
+        .map((term) => term.trim().toLowerCase())
+        // Multi-word entries cannot appear inside a single generated token.
+        .filter((term) => term.length >= minLength && !term.includes(' ')),
+    ),
+  ].sort()
+  return { minLength, dropped: terms.length - kept.length, ...buildFilter(kept, falsePositiveRate) }
+}
+
+function buildFilter(words, falsePositiveRate) {
   const n = Math.max(words.length, 1)
   const bits = Math.ceil((-n * Math.log(falsePositiveRate)) / Math.LN2 ** 2)
   const byteCount = Math.ceil(bits / 8)

@@ -10,7 +10,7 @@
  *
  * Fills:
  *   en    person.last_name.generic   weighted by 2010 Census counts
- *   en    person.last_name_model     an n-gram trained on the same names
+ *   en    person.last_name_model     an n-gram trained on the same names, plus a screen
  *
  * The list and the model do different jobs and both are kept. The list is what
  * `lastName()` draws, because its weights are the real population frequencies and no
@@ -25,13 +25,22 @@
  * is the chosen point — the smallest model whose output reads as English surnames.
  */
 
-import { readFile } from 'node:fs/promises'
+import { readdir, readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
-import { bloomFilter, train } from '../lib/ngram.mjs'
+import { blocklistFilter, bloomFilter, train } from '../lib/ngram.mjs'
 
 export const id = 'us-surnames'
 export const source = 'us-census-surnames'
+
+/**
+ * A second source, and not one whose words ever appear in the corpus.
+ *
+ * The Census list is the training data; this is the screen over what the model produces.
+ * Only hashes of it ship — see `blocklistFilter` — so nothing from it reaches the binary
+ * as text.
+ */
+export const sources = ['us-census-surnames', 'ldnoobw']
 
 /**
  * Surnames borne by at least this many people in the 2010 Census.
@@ -63,6 +72,18 @@ function titleCase(name) {
 }
 
 export async function run({ artifacts }) {
+  // A GitHub tarball unpacks under `<repo>-<sha>/`, so the language files sit one level
+  // down. Read rather than hard-coded, so re-pinning to a new commit does not silently
+  // break the screen — which would fail open, and a screen that fails open is worse than
+  // no screen because nobody looks at it again.
+  const [wordsRoot] = await readdir(artifacts.words)
+  const blocked = (await readFile(join(artifacts.words, wordsRoot, 'en'), 'utf8'))
+    .split('\n')
+    .filter(Boolean)
+  if (blocked.length < 100) {
+    throw new Error(`blocklist yielded only ${blocked.length} terms — verify before re-pinning`)
+  }
+
   const csv = await readFile(
     join(artifacts.surnames, 'Names_2010Census.csv'),
     'utf8',
@@ -107,8 +128,17 @@ export async function run({ artifacts }) {
   // counts are deliberately not used as training weights.
   const trained = train(values, { order: 4, minCount: 2 })
   const filter = bloomFilter(values, { falsePositiveRate: 0.01 })
+  // Far tighter than the training filter, and the rate is budgeted per *word*: screening
+  // one name means dozens of substring lookups, so a per-lookup 0.1% compounds to about
+  // 7.5% per name. It showed up exactly there — 1.4% of real Census surnames rejected by
+  // a filter configured for 0.1%. A Bloom filter grows with the log of the rate, so
+  // buying four more orders of magnitude costs a few hundred bytes.
+  const screen = blocklistFilter(blocked, { falsePositiveRate: 1e-6 })
   const model = {
     ...trained,
+    blockHashCount: screen.hashCount,
+    blockMinLength: screen.minLength,
+    blockBits: Buffer.from(screen.bits).toString('base64'),
     filterHashCount: filter.hashCount,
     // Base64: the filter is 29 KB of bytes, which would be 100 KB of decimal digits and
     // commas in the intermediate JSON.
@@ -132,6 +162,7 @@ export async function run({ artifacts }) {
       surnames: values.length,
       belowThreshold: dropped,
       mostCommon: `${values[0]} (${weights[0].toLocaleString('en-US')})`,
+      blockedTerms: blocked.length - screen.dropped,
       modelContexts: model.contexts.length,
       modelTransitions: model.contexts.reduce((n, c) => n + c.transitions.length, 0),
     },

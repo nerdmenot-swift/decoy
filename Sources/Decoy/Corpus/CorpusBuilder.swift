@@ -34,6 +34,9 @@ public struct CorpusBuilder {
         let contexts: [(key: UInt64, transitions: [(symbol: UInt16, weight: UInt32)])]
         let filterHashCount: Int
         let filterBits: [UInt8]
+        let blockHashCount: Int
+        let blockMinLength: Int
+        let blockBits: [UInt8]
         let sourceID: UInt32
     }
 
@@ -177,6 +180,9 @@ public struct CorpusBuilder {
         contexts: [(key: UInt64, transitions: [(symbol: UInt16, weight: UInt32)])],
         filterHashCount: Int,
         filterBits: [UInt8],
+        blockHashCount: Int = 0,
+        blockMinLength: Int = 4,
+        blockBits: [UInt8] = [],
         source: UInt32 = 0
     ) -> UInt32 {
         precondition(order >= 2 && order <= NGramModel.maxOrder, "order must be 2...8")
@@ -200,6 +206,9 @@ public struct CorpusBuilder {
                 contexts: contexts.sorted { $0.key < $1.key },
                 filterHashCount: filterHashCount,
                 filterBits: filterBits,
+                blockHashCount: blockHashCount,
+                blockMinLength: blockMinLength,
+                blockBits: blockBits,
                 sourceID: source
             )
         )
@@ -389,6 +398,10 @@ public struct CorpusBuilder {
             body.appendLE(UInt32(model.filterHashCount))
             body.appendLE(UInt32(model.filterBits.count))
             body.append(contentsOf: model.filterBits)
+            body.appendLE(UInt32(model.blockHashCount))
+            body.appendLE(UInt32(model.blockMinLength))
+            body.appendLE(UInt32(model.blockBits.count))
+            body.append(contentsOf: model.blockBits)
             bodies.append(body)
         }
         return packTables(bodies)

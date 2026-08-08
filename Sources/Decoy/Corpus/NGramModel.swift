@@ -31,6 +31,10 @@
 /// u32  filterHashCount  Bloom filter over the training set; see `wasTrainedOn`
 /// u32  filterByteCount
 /// u8   filterBits       * filterByteCount
+/// u32  blockHashCount   Bloom filter over blocked substrings; see `isBlocked`
+/// u32  blockMinLength   shortest substring worth testing
+/// u32  blockByteCount
+/// u8   blockBits        * blockByteCount
 /// ```
 ///
 /// The context key is packed into a `u64` rather than stored as a variable-length symbol
@@ -76,6 +80,11 @@ public struct NGramModel: Sendable {
     public let filterHashCount: Int
     public let filterByteCount: Int
 
+    let blockAt: Int
+    public let blockHashCount: Int
+    public let blockMinLength: Int
+    public let blockByteCount: Int
+
     /// The sentinel that ends a generated word. Never a real character.
     static let endSymbol: UInt16 = 0
 
@@ -119,6 +128,49 @@ public struct NGramModel: Sendable {
         filterHashCount = Int(try reader.u32(at: filterHeader))
         filterByteCount = Int(try reader.u32(at: filterHeader + 4))
         filterAt = filterHeader + 8
+
+        let blockHeader = filterAt + filterByteCount
+        blockHashCount = Int(try reader.u32(at: blockHeader))
+        blockMinLength = Swift.max(1, Int(try reader.u32(at: blockHeader + 4)))
+        blockByteCount = Int(try reader.u32(at: blockHeader + 8))
+        blockAt = blockHeader + 12
+    }
+
+    /// Whether `word` contains a blocked substring.
+    ///
+    /// A character model over English will eventually walk into something offensive, and
+    /// "statistically unlikely" is not a thing to tell somebody who found it in their
+    /// staging database. Every substring from `blockMinLength` up is tested.
+    ///
+    /// Only hashes ship, never the terms: a list of slurs in a binary is its own problem,
+    /// and keeping them out of the string arena means no path-resolution bug can surface
+    /// one as a value. Like ``wasTrainedOn(_:)`` the error is one-sided, so this rejects
+    /// a few innocent names and never passes a blocked one.
+    public func isBlocked(_ word: String) -> Bool {
+        guard blockByteCount > 0 else { return false }
+        let characters = Array(word.lowercased())
+        guard characters.count >= blockMinLength else { return false }
+        let bits = UInt64(blockByteCount) * 8
+
+        for start in 0...(characters.count - blockMinLength) {
+            for end in (start + blockMinLength)...characters.count {
+                var hash = SeedDerivation.fnv1a(String(characters[start..<end]))
+                var hit = true
+                for _ in 0..<blockHashCount {
+                    let bit = hash % bits
+                    guard let value = try? reader.u8(at: blockAt + Int(bit / 8)),
+                        value & (1 << UInt8(bit % 8)) != 0
+                    else {
+                        hit = false
+                        break
+                    }
+                    hash = hash &* 0x9E37_79B9_7F4A_7C15
+                    hash ^= hash >> 29
+                }
+                if hit { return true }
+            }
+        }
+        return false
     }
 
     /// The character a symbol stands for. Symbol 0 is the sentinel and has none.

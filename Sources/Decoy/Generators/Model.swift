@@ -47,6 +47,11 @@ extension Faker {
             // more often than the filter does.
             let length = candidate.count
             guard length >= model.minLength, length <= model.maxLength else { continue }
+            // Ordered by cost: a length check, then a scan for blocked substrings, then
+            // the training-set probe. All three reject rather than repair — editing a
+            // candidate to make it acceptable would bias the distribution in a way
+            // nothing downstream could see.
+            guard !model.isBlocked(candidate) else { continue }
             if !model.wasTrainedOn(candidate) { return candidate }
         }
         return nil

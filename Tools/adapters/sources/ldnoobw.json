@@ -1,0 +1,41 @@
+{
+  "id": "ldnoobw",
+  "name": "List of Dirty, Naughty, Obscene and Otherwise Bad Words",
+  "license": "CC-BY-4.0",
+  "copyright": "Copyright Shutterstock, Inc.",
+  "url": "https://github.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words",
+  "version": "5faf2ba",
+  "retrieved": "2026-08-09",
+  "mergedInto": "us-census-surnames",
+  "mergedIntoNote": [
+    "This source claims no path, and that is the whole design. It is a screen rather than",
+    "data: its only trace in the corpus is a Bloom filter inside the surname model, which is",
+    "attributed to the Census list it was trained on. `decoy-validate` would otherwise report",
+    "a source paying for nothing, which here would be a warning that can never be resolved."
+  ],
+  "note": [
+    "Not corpus data. Nothing in this list is ever drawn, emitted or shipped as a value --",
+    "it is a screen, and the only thing that reaches the binary is a Bloom filter of hashed",
+    "substrings. That is deliberate twice over: it keeps the list out of a binary that people",
+    "grep and that security scanners read, and it keeps a slur out of the arena where a bug",
+    "in path resolution could surface one.",
+    "",
+    "A generative model needs this. An n-gram over English characters will eventually walk",
+    "into something unfortunate, and 'it is statistically unlikely' is not a thing to tell",
+    "someone who found it in their staging database.",
+    "",
+    "Pinned to a commit rather than a branch: `master` is the default ref and this list gets",
+    "edits, so a branch pin would silently change what the screen blocks.",
+    "",
+    "One file per language, which is why this source rather than a hand-typed list -- the",
+    "screen has to grow with the models, and English is only the first."
+  ],
+  "artifacts": [
+    {
+      "name": "words",
+      "format": "tgz",
+      "url": "https://codeload.github.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words/tar.gz/5faf2ba42d7b1c0977169ec3611df25a3c08eb13",
+      "integrity": "sha512-9DtK7rWMUnrBtiOxwkTXs4LMqp9SSf2eErFMbdbgyC52nDom+7pGwyQIvVy3Qr/qlojreObVJsGIRHa4THzISA=="
+    }
+  ]
+}
