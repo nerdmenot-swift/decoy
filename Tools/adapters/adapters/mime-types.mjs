@@ -18,6 +18,21 @@ import { join } from 'node:path'
 export const id = 'mime-types'
 export const source = 'mime-db'
 
+/**
+ * Object nodes whose *keys* are data and must be drawable.
+ *
+ * The compiler used to emit a `__keys` table under every object node it walked, which
+ * came to 2,225 tables of which exactly one is ever read -- this one. In `base` alone
+ * that was 1,027 of 2,072 paths and about 90 KB, and 1,015 of them held the single
+ * string `"extensions"`, base64-inflated into every binary that links the module.
+ *
+ * Declared rather than inferred because only the adapter knows: `system.mime_type` is a
+ * map from media type to its extensions, so the types are the keys, while
+ * `person.first_name` is an object whose keys are `generic`/`female`/`male` and drawing
+ * from those would produce the string "female".
+ */
+export const keyTables = ['system.mime_type']
+
 export async function run({ artifacts }) {
   const db = JSON.parse(
     await readFile(join(artifacts.db, 'package', 'db.json'), 'utf8'),

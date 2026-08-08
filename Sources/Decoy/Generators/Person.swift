@@ -38,8 +38,21 @@ public struct PersonFaker {
         gendered("person.middle_name", gender)
     }
 
+    /// Returns a surname, optionally constrained to a gender.
+    ///
+    /// Locales that define a surname *pattern* get it: `en` weights a double-barrelled
+    /// form at 5%, which is the kind of variety a fixture set needs and which nothing
+    /// produced, because the pattern was compiled into three locales and read by none.
+    /// Locales without one draw the table directly, which is every locale but three.
     public mutating func lastName(_ gender: Gender? = nil) -> String {
-        gendered("person.last_name", gender)
+        // Only when no gender was asked for. The pattern's tokens point at
+        // `person.last_name.generic`, so honouring it under a gender request would
+        // quietly discard the constraint — which matters for the locales that inflect
+        // surnames, even though none of the three carrying a pattern today do.
+        if gender == nil, let pattern = faker.draw("person.last_name_pattern.generic") {
+            return faker.expand(pattern)
+        }
+        return gendered("person.last_name", gender)
     }
 
     public mutating func prefix(_ gender: Gender? = nil) -> String {

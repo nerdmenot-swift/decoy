@@ -54,6 +54,7 @@ func parse() -> Command {
     var gate: URL?
     var writeGate: URL?
     var against = "en"
+    var againstWasGiven = false
 
     var i = 1
     let args = CommandLine.arguments
@@ -95,6 +96,7 @@ func parse() -> Command {
         case "--against":
             guard i + 1 < args.count else { fail("--against needs a locale code") }
             against = args[i + 1]
+            againstWasGiven = true
             i += 2
         case "-h", "--help":
             print(usage)
@@ -105,13 +107,39 @@ func parse() -> Command {
         }
     }
 
+    // Every combination that cannot be honoured is refused here rather than silently
+    // resolved by the order of these `if`s. `--notice` used to win over `--coverage`,
+    // `--write-gate` over `--gate`, and `--against` was accepted and ignored under both
+    // gate modes — so a run could report success having done something other than what
+    // was asked, which is the worst thing a tool whose whole job is auditing can do.
+    if noticeDirectory != nil && coverageDirectory != nil {
+        fail("--notice and --coverage do different jobs; run them separately")
+    }
+    if gate != nil && writeGate != nil {
+        fail("--gate checks the baseline and --write-gate replaces it; pick one")
+    }
+    if againstWasGiven && (gate != nil || writeGate != nil) {
+        fail("--against applies to the coverage report, not to the gate, which compares "
+            + "each locale against its own recorded counts")
+    }
+    if !positional.isEmpty && (noticeDirectory != nil || coverageDirectory != nil) {
+        fail("unexpected argument '\(positional[0])': --notice and --coverage take a "
+            + "directory, not a file")
+    }
+
     if let directory = noticeDirectory { return .notice(directory, licenses: licensesDirectory) }
     if let directory = coverageDirectory {
         return .coverage(directory, against: against, gate: gate, writeGate: writeGate)
     }
+    if licensesDirectory != nil { fail("--licenses only applies to --notice") }
+    if gate != nil || writeGate != nil { fail("--gate and --write-gate need --coverage") }
+
     guard positional.count == 1 else { fail(usage) }
     let file = URL(fileURLWithPath: positional[0])
 
+    if singlePath != nil && pathsFilter != nil {
+        fail("--path shows one path's values and --paths lists them; pick one")
+    }
     if let singlePath { return .values(file, path: singlePath) }
     if let pathsFilter { return .paths(file, filter: pathsFilter) }
     return .summary(file)
@@ -140,7 +168,6 @@ func describe(_ kind: PathEntry.Kind) -> String {
     case .explicitlyEmpty: "null"
     case .strings: "strings"
     case .composite: "composite"
-    case .model: "model"
     case .unknown(let raw): "unknown(\(raw))"
     }
 }
@@ -151,7 +178,6 @@ func size(of entry: Entry) -> String {
     case .strings(let table): "\(table.count)\(table.hasWeights ? "w" : "")"
     case .composite(let table): "\(table.rowCount)x\(table.fieldCount)"
     case .explicitlyEmpty: "—"
-    case .model: "model"
     }
 }
 
@@ -182,7 +208,7 @@ func summary(_ url: URL) throws {
             sourceIDs.insert(table.sourceID)
             pathsBySource[table.sourceID, default: 0] += 1
             valuesBySource[table.sourceID, default: 0] += table.rowCount
-        case .explicitlyEmpty, .model:
+        case .explicitlyEmpty:
             break
         }
     }
@@ -285,9 +311,6 @@ func values(_ url: URL, path: String) throws {
             let cells = try (0..<table.fieldCount).map { try table.value(row: row, field: $0) }
             print("  " + cells.joined(separator: "\t"))
         }
-
-    case .model(let id):
-        print("'\(path)' is a generative model (id \(id)).")
     }
 }
 
@@ -367,7 +390,7 @@ func coverage(of corpus: Corpus) throws -> LocaleCoverage {
         switch try corpus.entry(for: entry) {
         case .strings(let table): values += table.count
         case .composite(let table): values += table.rowCount
-        case .explicitlyEmpty, .model: break
+        case .explicitlyEmpty: break
         }
     }
     return LocaleCoverage(paths: entries.count, values: values)

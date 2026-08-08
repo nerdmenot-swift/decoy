@@ -46,24 +46,20 @@ public struct Manifest: Decodable {
     public let attribution: [String: [String: String]]?
     public let generatedAt: String?
 
-    // Retained so a manifest written before faker-js became an adapter still compiles.
-    // Costs two optional fields and removes a reason to keep an old blob around.
-    public let fakerVersion: String?
-    public let extractedAt: String?
+    /// Object nodes whose *keys* are data, declared by the adapter that produced them.
+    ///
+    /// The compiler emits a `__keys` table for these and for nothing else. It used to
+    /// emit one under every object node, which was 2,225 tables of which one is read.
+    public let keyTables: [String]?
 
-    /// The sources to register, however the input described them.
-    public var sourceRecords: [SourceRecord] {
-        if let sources, !sources.isEmpty { return sources }
-        return [
-            SourceRecord(
-                id: "faker-js",
-                license: "MIT",
-                url: "https://github.com/faker-js/faker",
-                version: fakerVersion ?? "unknown",
-                retrieved: extractedAt ?? "unknown"
-            )
-        ]
-    }
+    /// The sources to register.
+    ///
+    /// The fallback here used to synthesise a faker-js record from `fakerVersion` and
+    /// `extractedAt`, for manifests written before faker-js became an adapter like any
+    /// other. No such manifest can be produced any more — `run.mjs` is the only writer
+    /// and has emitted `sources` since — so the branch was unreachable and the two
+    /// fields it read were decoded from nothing.
+    public var sourceRecords: [SourceRecord] { sources ?? [] }
 
     /// The version the pipeline declared, parsed.
     public var declaredCorpusVersion: CorpusVersion? {
@@ -78,8 +74,7 @@ public struct Manifest: Decodable {
     /// Each source carries its own retrieval date, so this reports when the intermediate
     /// was *generated* — conflating the two would misdate the data itself.
     public var provenance: String {
-        let date = generatedAt ?? extractedAt ?? "unknown"
-        return "\(sourceSummary); generated \(date)"
+        "\(sourceSummary); generated \(generatedAt ?? "unknown")"
     }
 
     /// The same summary without the generation date, for text that gets committed.
@@ -118,10 +113,16 @@ public struct Manifest: Decodable {
 /// into one pool — which is what lets a name agree with the gender drawn beside it.
 public struct LocaleCompiler {
 
-    public init(attribution: [String: String], defaultSourceID: UInt32, sourceIDs: [String: UInt32]) {
+    public init(
+        attribution: [String: String],
+        defaultSourceID: UInt32,
+        sourceIDs: [String: UInt32],
+        keyTables: Set<String> = []
+    ) {
         self.attribution = attribution
         self.defaultSourceID = defaultSourceID
         self.sourceIDs = sourceIDs
+        self.keyTables = keyTables
     }
 
     /// Path suffix under which an object node's own keys are stored.
@@ -133,6 +134,14 @@ public struct LocaleCompiler {
     /// Used for paths no adapter claimed, such as the synthetic `__keys` tables.
     public let defaultSourceID: UInt32
     public let sourceIDs: [String: UInt32]
+
+    /// Object nodes whose keys are data, declared by the adapters that produce them.
+    ///
+    /// Empty by default, which means no `__keys` tables at all. That is the right
+    /// default: emitting one everywhere produced 2,225 tables across the corpus of which
+    /// exactly one — `system.mime_type.__keys` — is ever read, and 1,015 of them held
+    /// the single string `"extensions"`.
+    public let keyTables: Set<String>
 
     public private(set) var stats = Stats()
 
@@ -163,11 +172,12 @@ public struct LocaleCompiler {
         }
     }
 
+    /// What the compiler could not represent.
+    ///
+    /// Only `skipped` is reported. The four counters beside it — string, weighted and
+    /// composite tables, and nulls — were incremented at eleven call sites and read at
+    /// none, which made them look like a summary somebody was consuming.
     public struct Stats {
-        public var stringTables = 0
-        public var weightedTables = 0
-        public var compositeTables = 0
-        public var nulls = 0
         public var skipped: [String] = []
     }
 
@@ -181,12 +191,10 @@ public struct LocaleCompiler {
         case .null:
             // Recorded rather than omitted: an explicit null blocks locale fallback.
             builder.indexNull(path)
-            stats.nulls += 1
 
         case .string, .number, .bool:
             guard let string = value.asString else { return }
             builder.index(path, stringTable: builder.addStringTable([string], source: sourceID(for: path)))
-            stats.stringTables += 1
 
         case .object(let members):
             // Sorted so the output is byte-identical across runs.
@@ -199,14 +207,17 @@ public struct LocaleCompiler {
                 )
             }
 
-            // Some of faker's data is keyed *by* the values you want to draw:
-            // `system.mime_type` is a map from "application/json" to its extensions,
-            // so the MIME types themselves are the object's keys and would otherwise
-            // be unreachable. Emitting a keys table makes every object node drawable.
-            if !path.isEmpty && !keys.isEmpty {
+            // Some data is keyed *by* the values you want to draw: `system.mime_type`
+            // is a map from "application/json" to its extensions, so the media types
+            // themselves are the object's keys and would otherwise be unreachable.
+            //
+            // Only for nodes an adapter has declared. Emitting one everywhere is not a
+            // harmless over-supply — `person.first_name` is an object too, and its keys
+            // are `generic`, `female` and `male`, so a `__keys` table there offers
+            // "female" as something to draw.
+            if !path.isEmpty && !keys.isEmpty && keyTables.contains(path) {
                 let table = builder.addStringTable(keys, source: sourceID(for: path))
                 builder.index("\(path).\(LocaleCompiler.keysSuffix)", stringTable: table)
-                stats.stringTables += 1
             }
 
         case .array(let items):
@@ -221,7 +232,6 @@ public struct LocaleCompiler {
     ) {
         guard let first = items.first else {
             builder.index(path, stringTable: builder.addStringTable([], source: sourceID(for: path)))
-            stats.stringTables += 1
             return
         }
 
@@ -233,7 +243,6 @@ public struct LocaleCompiler {
                 return
             }
             builder.index(path, stringTable: builder.addStringTable(strings, source: sourceID(for: path)))
-            stats.stringTables += 1
             return
         }
 
@@ -280,7 +289,6 @@ public struct LocaleCompiler {
             path,
             stringTable: builder.addStringTable(values, weights: weights, source: sourceID(for: path))
         )
-        stats.weightedTables += 1
     }
 
     private mutating func emitComposite(
@@ -308,6 +316,5 @@ public struct LocaleCompiler {
             path,
             compositeTable: builder.addCompositeTable(fields: fields, rows: rows, source: sourceID(for: path))
         )
-        stats.compositeTables += 1
     }
 }

@@ -422,6 +422,12 @@ public struct ForgeSequence<T>: Sequence, IteratorProtocol {
 /// let staff = users.generate(10, seed: 1337, applying: .admin)
 /// ```
 public struct Trait<T>: Sendable {
+    /// What the trait is called.
+    ///
+    /// Nothing inside Decoy reads it — the transform is the whole behaviour. It is here
+    /// for the caller: a trait is a value, so a set of them is a thing you can hold,
+    /// log, or print in a test failure, and `Trait("admin")` reading as anonymous would
+    /// make that impossible.
     public let name: String
     let transform: @Sendable (Forge<T>) -> Forge<T>
 

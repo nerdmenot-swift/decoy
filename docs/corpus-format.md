@@ -65,9 +65,14 @@ chunk kinds.
 | 3 | Composite tables | required |
 | 4 | Provenance | required |
 | 5 | Index | required |
-| 6 | Models | reserved — generative n-gram models |
+| 6 | Models | reserved — generative n-gram models, unallocated in the reader |
 
-Kind 6 is unimplemented but allocated. A reader skipping it today will not need a
+Kind 6 is unimplemented and deliberately has no case in the reader's `ChunkKind`: unknown
+chunk kinds are skipped by design, so an unwritten kind needs no code, and one that exists
+only to be exhaustively switched over reads as support that is not there. The same goes
+for index entry kind 3, which enumerates as `unknown(3)`.
+
+A reader skipping it today will not need a
 format bump when models arrive; only a `corpusMinor` bump.
 
 ---

@@ -134,6 +134,27 @@ function verifyChains(faker, chains, locales) {
  */
 const UNRESOLVABLE_TOKEN = /\{\{\s*(animal|food)\.|\{\{\s*company\.category\s*\}\}/
 
+/**
+ * Paths another adapter has superseded, dropped as whole `category.key` pairs.
+ *
+ * Distinct from a *claim*, which is how a real adapter takes a path over: a claim needs
+ * the claiming adapter to supply the path, and here nothing does. `date.time_zone` used
+ * to be written twice by the tzdb adapter, byte-identical to `location.time_zone`, so
+ * `date.timeZone()` now reads the one canonical path -- which left faker's own 419-entry
+ * `date.time_zone` unclaimed and free to fill a path nothing reads.
+ */
+const SUPERSEDED = new Set(['date.time_zone'])
+
+/** Removes superseded keys from one category's tree. */
+function withoutSuperseded(category, value) {
+  const out = {}
+  for (const [key, inner] of Object.entries(value)) {
+    if (SUPERSEDED.has(`${category}.${key}`)) continue
+    out[key] = inner
+  }
+  return Object.keys(out).length > 0 ? out : undefined
+}
+
 /** Recursively drops pattern strings whose tokens cannot be satisfied. */
 function withoutBrokenPatterns(value, dropped) {
   if (typeof value === 'string') {
@@ -190,7 +211,9 @@ export async function run({ artifacts, locales, chains }) {
         continue
       }
       if (value === null || typeof value !== 'object') continue
-      const cleaned = withoutBrokenPatterns(value, dropped)
+      const kept = withoutSuperseded(category, value)
+      if (kept === undefined) continue
+      const cleaned = withoutBrokenPatterns(kept, dropped)
       if (cleaned === undefined) continue
       perLocale[category] = cleaned
       categories += 1

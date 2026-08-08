@@ -74,8 +74,6 @@ func fail(_ message: String) -> Never {
     exit(1)
 }
 
-// MARK: - Manifest
-
 // MARK: - Driver
 
 let options = parseArguments()
@@ -143,7 +141,8 @@ for code in codes {
     var compiler = LocaleCompiler(
         attribution: manifest.attribution?[code] ?? [:],
         defaultSourceID: defaultSourceID,
-        sourceIDs: sourceIDs
+        sourceIDs: sourceIDs,
+        keyTables: Set(manifest.keyTables ?? [])
     )
     compiler.emit(path: "", value: root, into: &builder)
 
@@ -240,6 +239,46 @@ func emitSwiftModule(
 if let swiftDirectory = options.emitSwift {
     let wanted = manifest.closure(over: options.swiftLocales)
     guard !wanted.isEmpty else { fail("--emit-swift requires --locales") }
+
+    // A module SwiftPM does not know about is not a module. `--locales pt_BR` happily
+    // wrote `Sources/DecoyLocalePT_BR/` with no matching target, so the directory sat
+    // there compiling nothing and importing it failed with an error naming neither the
+    // flag nor the manifest. Checked before writing rather than after, so a mistyped
+    // code leaves the tree as it found it.
+    //
+    // A text scan rather than a parse: `Package.swift` is a program, and shelling out to
+    // SwiftPM to ask what targets exist would be a far larger dependency than reading the
+    // one array that names them. The module names are built there by interpolation, so
+    // the scan reads the `locales` literal rather than searching for `DecoyLocaleXX`.
+    let packageURL = swiftDirectory.deletingLastPathComponent()
+        .appendingPathComponent("Package.swift")
+    if let manifestText = try? String(contentsOf: packageURL, encoding: .utf8),
+        let arrayStart = manifestText.range(of: "let locales:"),
+        let arrayEnd = manifestText.range(of: "\n]", range: arrayStart.upperBound..<manifestText.endIndex)
+    {
+        let declared = Set(
+            manifestText[arrayStart.upperBound..<arrayEnd.lowerBound]
+                .split(separator: "\n")
+                .compactMap { line -> String? in
+                    guard let open = line.firstIndex(of: "\""),
+                        let close = line[line.index(after: open)...].firstIndex(of: "\"")
+                    else { return nil }
+                    return String(line[line.index(after: open)..<close])
+                }
+        )
+        let undeclared = wanted.filter {
+            !declared.contains($0 == "base" ? "Base" : $0.uppercased())
+        }
+        if !undeclared.isEmpty {
+            let names = undeclared.map { $0 == "base" ? "Base" : $0.uppercased() }
+            fail(
+                "\(undeclared.map(moduleName).joined(separator: ", ")) would be written but "
+                    + "\(packageURL.lastPathComponent) declares no such target. Add "
+                    + "\(names.joined(separator: ", ")) to the `locales` array there first, "
+                    + "with its fallback chain."
+            )
+        }
+    }
 
     var emittedBytes = 0
     for code in wanted {

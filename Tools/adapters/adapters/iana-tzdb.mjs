@@ -4,8 +4,7 @@
  * Zone IDs are language-neutral, so they live in `base` where every locale reaches them.
  *
  * Fills:
- *   base    location.time_zone
- *   base    date.time_zone
+ *   base    location.time_zone   -- `date.timeZone()` reads this path too
  */
 
 import { readFile } from 'node:fs/promises'
@@ -51,7 +50,6 @@ export async function run({ artifacts }) {
     contributions: {
       base: {
         'location.time_zone': zones,
-        'date.time_zone': zones,
       },
     },
     stats: { zones: zones.length },

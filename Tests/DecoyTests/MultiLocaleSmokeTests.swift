@@ -49,6 +49,8 @@ struct MultiLocaleSmokeTests {
             ("location.postalAddress", { $0.location.postalAddress() }),
             ("location.country", { $0.location.country() }),
             ("location.timeZone", { $0.location.timeZone() }),
+            // Both namespaces read one path now, so both have to be exercised.
+            ("date.timeZone", { $0.date.timeZone() }),
             ("company.name", { $0.company.name() }),
             ("company.catchPhrase", { $0.company.catchPhrase() }),
             ("commerce.productName", { $0.commerce.productName() }),

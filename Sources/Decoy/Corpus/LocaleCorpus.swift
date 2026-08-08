@@ -113,7 +113,6 @@ public struct LocaleCorpus: Sendable {
         switch resolve(path) {
         case .strings(let table): return !table.isEmpty
         case .composite(let table): return !table.isEmpty
-        case .model: return true
         case .explicitlyEmpty, nil: return false
         }
     }
@@ -193,7 +192,12 @@ extension LocaleCorpus {
             ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
         )
         add("date.weekday.abbr", ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"])
-        add("date.time_zone", ["UTC", "Europe/London", "America/New_York", "Asia/Kolkata"])
+        // `location.time_zone`, not `date.time_zone`: both `date.timeZone()` and
+        // `location.timeZone()` read this one path, so the corpus carries it once.
+        add(
+            "location.time_zone",
+            ["UTC", "Europe/London", "America/New_York", "Asia/Kolkata"]
+        )
 
         // A corpus that cannot be read is a programming error here, not a user error.
         let corpus = try! Corpus(bytes: builder.build())

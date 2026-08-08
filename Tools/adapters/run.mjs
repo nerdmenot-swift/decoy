@@ -283,14 +283,19 @@ async function main() {
     corpusVersion,
     generatedAt: new Date().toISOString().slice(0, 10),
     sources: [...sources.values()],
+    // Object nodes whose keys are data. Declared by the adapters that produce them; the
+    // compiler emits a `__keys` table for these and for nothing else.
+    keyTables: adapters.flatMap((a) => a.keyTables ?? []).sort(),
     locales: {},
     attribution,
   }
 
   let totalStrings = 0
   for (const code of locales) {
-    const flat = merged[code] ?? {}
-    const definitions = nest(flat)
+    // Already nested: every fragment is nested on the way in and merged node-wise, so
+    // the `nest()` that used to sit here re-walked a tree that had no dotted keys left
+    // in it.
+    const definitions = merged[code] ?? {}
     await writeFile(
       join(outDir, 'locales', `${code}.json`),
       JSON.stringify(definitions, null, 0),
@@ -300,9 +305,7 @@ async function main() {
     totalStrings += ownStrings
     manifest.locales[code] = {
       chain: chains[code],
-      categories: Object.keys(definitions).sort(),
       ownStrings,
-      paths: Object.keys(flat).sort(),
     }
   }
 

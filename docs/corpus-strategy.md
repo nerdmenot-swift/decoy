@@ -159,24 +159,29 @@ language-neutral `base`:
 
 | | |
 |---|---|
-| Median native coverage | 40% |
-| Locales under 30% native | 18 of 74 |
-| `ta_IN` | 13% (17 paths against `en`'s 126) |
-| `yo_NG` | 21% (26 paths) |
+| Median native coverage | 35% |
+| Locales under 30% native | 26 of 74 |
+| `ta_IN` | 11% (11 paths against `en`'s 99) |
+| `yo_NG` | 16% (16 paths) |
 
-**Around three fifths of what the median non-English locale produces is its own**, and
-the rest is English falling through the chain. That is the "Tamil records named Jennifer
+**Around a third of what the median non-English locale produces is its own**, and the
+rest is English falling through the chain. That is the "Tamil records named Jennifer
 Williams" failure, and at the bottom of the table it is still most of the output.
 
-These numbers moved a long way and the reason is worth recording: the first measurement
-put the median at 26% with 48 locales under 30%. Most of that gap was not new data but a
-shadowing bug — a source claiming a path in `en` suppressed every other locale's data
-beneath it, so locales were credited with nothing for fields they defined perfectly
-well. The registry adapters account for the rest.
+These numbers have moved twice, and both reasons are worth recording because both look
+like progress or regress and are neither.
 
-Caveat on the denominator: 27 of `en`'s 126 paths are synthetic `__keys` tables the
-compiler emits so object keys are drawable, so the real denominator is ~99 and the
-percentages are slightly pessimistic. The ranking is unaffected.
+The first measurement put the median at 26% with 48 locales under 30%. Most of that gap
+was a shadowing bug — a source claiming a path in `en` suppressed every other locale's
+data beneath it, so locales were credited with nothing for fields they defined perfectly
+well. Fixing it took the median to 40%.
+
+It then fell to 35% when the compiler stopped emitting a `__keys` table under every
+object node. Those were synthetic paths, and a locale carrying faker's objects was
+credited with one per node — coverage it had not earned, on data nothing could draw. The
+denominator fell too, from 126 to 99. **No locale lost a single drawable value**; the
+measurement stopped counting things that were not data. These figures are lower and more
+honest, which is the direction a coverage number should move when it is corrected.
 
 **Built**: `decoy-inspect --coverage --gate Corpus/coverage-baseline.json` fails when a
 locale carries less of its own data than the committed baseline, and CI runs it on every

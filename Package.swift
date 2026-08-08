@@ -38,8 +38,9 @@ let package = Package(
     name: "Decoy",
     // NOTE: `platforms` declares Apple minimums ONLY. Linux and Windows are
     // supported implicitly and cannot be listed here -- PackageDescription has
-    // no case for them. Portability is enforced by the CI matrix and by the
-    // core target importing no Foundation, not by anything in this array.
+    // no case for them. Portability comes from the core target importing no
+    // Foundation, and is meant to be checked by the three jobs in ci.yml -- which
+    // has never executed, because this repository has no remote.
     platforms: [
         .macOS(.v13),
         .iOS(.v16),

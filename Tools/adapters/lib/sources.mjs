@@ -179,5 +179,3 @@ export function provenanceOf(descriptor) {
     retrieved: descriptor.retrieved,
   }
 }
-
-export { readdir, readFile }

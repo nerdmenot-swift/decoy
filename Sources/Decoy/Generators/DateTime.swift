@@ -98,7 +98,11 @@ public struct InstantFaker {
     }
 
     public mutating func timeZone() -> String {
-        faker.require("date.time_zone")
+        // `location.time_zone`, not `date.time_zone`. The tzdb adapter used to emit both
+        // with byte-identical contents: the arena deduplicates the 312 strings but not
+        // the offset table, and two paths holding the same data are two paths that can
+        // drift apart. A time zone is one concept whichever namespace asks for it.
+        faker.require("location.time_zone")
     }
 
     // MARK: - Components
