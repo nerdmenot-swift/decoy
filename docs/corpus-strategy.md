@@ -294,10 +294,17 @@ Testable quality gates, run in CI against the built corpus:
 `city: "Boston", state: "CA", postcode: "10001"` passes most validators and is
 nonsense. Fields are drawn independently, so correlated ones disagree.
 
-Once composite records exist in the format, a whole row is drawn from a source like
-GeoNames — city, state, postcode, timezone, coordinates together. For a library aimed
-at database seeding this is arguably a bigger differentiator than referential
-integrity, and it reuses the same mechanism.
+**Partly built.** Composite tables exist in the format and carry the pairings that have
+a source: `location.countryCode()` returns a coherent alpha-2/alpha-3/numeric triple,
+`location.stateRow()` a subdivision with its abbreviation, `science.chemicalElement()` a
+symbol with its atomic number, and `airline.airport()` a name with its IATA code.
+`location.stateAndPostcode()` closes the state/postcode half of the example above for the
+US and Canada, which are the two locales carrying per-subdivision ranges.
+
+**Not built:** city correlated with either. That needs a source pairing them —
+GeoNames has city, subdivision, postcode, timezone and coordinates in one row — and the
+composite mechanism is already there to hold it. For a library aimed at database seeding
+this is arguably a bigger differentiator than referential integrity.
 
 ---
 
@@ -472,7 +479,9 @@ Counts are not the quality bar.
 
    What remains has no pinnable source and needs a different mechanism rather than
    another adapter: NHTSA publishes vehicle makes only as a live unversioned API, and
-   postcodes have ~200 national publishers rather than one.
+   postcodes have ~200 national publishers rather than one. US and Canadian postcodes
+   are an exception and are now generated per subdivision, from ranges that were already
+   in the corpus and unreachable.
 5. Frequency data (Census, SSA) populating the weight column — **done for English
    surnames** (24,889 Census names with real counts), blocked for given names: ssa.gov
    returns 403 to every non-interactive request. See "Frequency" above.

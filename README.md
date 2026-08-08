@@ -198,9 +198,11 @@ against the locale roster, because getting it wrong is silent: a module with a s
 resolves fewer paths and reads as missing data rather than as a manifest error.
 
 Known gaps, blocked rather than unscheduled: given-name frequencies (ssa.gov refuses
-non-interactive requests), Dutch vocabulary (OpenTaal publishes no immutable artifact),
-postcodes and vehicle makes (no pinnable source), and streets and non-English person
-names, which need the generative layer described in the strategy doc.
+non-interactive requests), vocabulary for German, French, Dutch, Portuguese and five
+others (their wordnets are CC BY-SA or CeCILL, and share-alike does not compose with
+Apache-2.0), national postcode formats outside the US and Canada, vehicle makes (no
+pinnable source), and streets and non-English person names, which need the generative
+layer described in the strategy doc.
 
 ## Attribution
 
