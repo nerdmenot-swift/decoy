@@ -168,6 +168,7 @@ func describe(_ kind: PathEntry.Kind) -> String {
     case .explicitlyEmpty: "null"
     case .strings: "strings"
     case .composite: "composite"
+    case .model: "model"
     case .unknown(let raw): "unknown(\(raw))"
     }
 }
@@ -178,6 +179,9 @@ func size(of entry: Entry) -> String {
     case .strings(let table): "\(table.count)\(table.hasWeights ? "w" : "")"
     case .composite(let table): "\(table.rowCount)x\(table.fieldCount)"
     case .explicitlyEmpty: "—"
+    // Contexts rather than values: a model has no row count, and the number of contexts
+    // is the thing that says how much of the training data it actually kept.
+    case .model(let model): "\(model.contextCount)ctx"
     }
 }
 
@@ -208,6 +212,9 @@ func summary(_ url: URL) throws {
             sourceIDs.insert(table.sourceID)
             pathsBySource[table.sourceID, default: 0] += 1
             valuesBySource[table.sourceID, default: 0] += table.rowCount
+        case .model(let model):
+            sourceIDs.insert(model.sourceID)
+            pathsBySource[model.sourceID, default: 0] += 1
         case .explicitlyEmpty:
             break
         }
@@ -287,6 +294,22 @@ func values(_ url: URL, path: String) throws {
     case .explicitlyEmpty:
         print("'\(path)' is explicitly empty — this locale defines it as having no value,")
         print("which blocks fallback to the locales behind it.")
+
+    case .model(let model):
+        // A model has no values to list, which is the whole point of it, so this reports
+        // its shape and then draws some — the only honest way to show what it holds.
+        if let source = try corpus.source(model.sourceID) {
+            print("source: \(source.id) (\(source.license)) — training data")
+        }
+        print("order \(model.order), \(model.alphabetCount - 1) characters, "
+            + "\(model.contextCount) contexts")
+        print("Bloom filter: \(model.filterByteCount) bytes, \(model.filterHashCount) hashes")
+        print("")
+        print("a model stores no values; these are drawn from it:")
+        var faker = Faker(seed: 1337, locale: LocaleCorpus(code: "?", chain: [corpus]))
+        for _ in 0..<20 {
+            print("  " + (faker.draw(fromModel: model) ?? "<empty>"))
+        }
 
     case .strings(let table):
         if let source = try corpus.source(table.sourceID) {
@@ -390,6 +413,7 @@ func coverage(of corpus: Corpus) throws -> LocaleCoverage {
         switch try corpus.entry(for: entry) {
         case .strings(let table): values += table.count
         case .composite(let table): values += table.rowCount
+        case .model(let model): values += model.contextCount
         case .explicitlyEmpty: break
         }
     }

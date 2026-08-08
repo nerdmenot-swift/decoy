@@ -13,6 +13,7 @@ public struct CorpusBuilder {
 
     private var stringTables: [StringTableSpec] = []
     private var compositeTables: [CompositeTableSpec] = []
+    private var models: [ModelSpec] = []
     private var sources: [SourceSpec] = []
     private var indexEntries: [IndexEntry] = []
 
@@ -20,6 +21,18 @@ public struct CorpusBuilder {
         var indices: [UInt32]
         var weights: [UInt32]?
         var sourceID: UInt32
+    }
+
+    /// A trained n-gram, as handed in. Encoded at `build()` like everything else.
+    private struct ModelSpec {
+        let order: Int
+        /// Alphabet index 0 is the end-of-word sentinel and interns as the empty string.
+        let alphabet: [UInt32]
+        /// Sorted by packed key, which is what makes the index binary-searchable.
+        let contexts: [(key: UInt64, transitions: [(symbol: UInt16, weight: UInt32)])]
+        let filterHashCount: Int
+        let filterBits: [UInt8]
+        let sourceID: UInt32
     }
 
     private struct CompositeTableSpec {
@@ -144,6 +157,48 @@ public struct CorpusBuilder {
         return UInt32(compositeTables.count - 1)
     }
 
+    /// Adds a trained character-level n-gram.
+    ///
+    /// `contexts` maps a symbol sequence to the distribution over what follows it, with
+    /// symbol 0 meaning end-of-word. Weights are given individually and made cumulative
+    /// here, because a caller thinking in counts should not have to think in prefix sums.
+    ///
+    /// `filterBits` is a Bloom filter over the training set. It is not optional in
+    /// practice: without it the sampler cannot promise that a generated name is not a
+    /// real one, which is the difference between fake data and undisclosed PII.
+    @discardableResult
+    public mutating func addModel(
+        order: Int,
+        alphabet: [String],
+        contexts: [(key: UInt64, transitions: [(symbol: UInt16, weight: UInt32)])],
+        filterHashCount: Int,
+        filterBits: [UInt8],
+        source: UInt32 = 0
+    ) -> UInt32 {
+        precondition(order >= 2 && order <= NGramModel.maxOrder, "order must be 2...8")
+        precondition(
+            alphabet.count >= 1 && alphabet.count <= NGramModel.maxAlphabet,
+            "the alphabet must be 1...255 symbols, including the sentinel"
+        )
+        precondition(alphabet[0].isEmpty, "alphabet index 0 is the end-of-word sentinel")
+        precondition(
+            contexts.allSatisfy { !$0.transitions.isEmpty },
+            "a context with no transitions would be a dead end in the walk"
+        )
+
+        models.append(
+            ModelSpec(
+                order: order,
+                alphabet: alphabet.map { intern($0) },
+                contexts: contexts.sorted { $0.key < $1.key },
+                filterHashCount: filterHashCount,
+                filterBits: filterBits,
+                sourceID: source
+            )
+        )
+        return UInt32(models.count - 1)
+    }
+
     // MARK: - Index
 
     public mutating func index(_ path: String, stringTable id: UInt32) {
@@ -152,6 +207,10 @@ public struct CorpusBuilder {
 
     public mutating func index(_ path: String, compositeTable id: UInt32) {
         addIndexEntry(path, kind: 2, tableID: id)
+    }
+
+    public mutating func index(_ path: String, model id: UInt32) {
+        addIndexEntry(path, kind: 3, tableID: id)
     }
 
     /// Records a key the locale explicitly defines as having no value.
@@ -194,6 +253,7 @@ public struct CorpusBuilder {
         let arena = buildArena()
         let stringTablesChunk = buildStringTables()
         let compositeChunk = buildCompositeTables()
+        let modelChunk = buildModels()
         let provenanceChunk = buildProvenance()
         let indexChunk = buildIndex()
 
@@ -204,6 +264,11 @@ public struct CorpusBuilder {
             (ChunkKind.provenance.rawValue, provenanceChunk),
             (ChunkKind.index.rawValue, indexChunk),
         ]
+        // Omitted entirely when nothing trained one, so a corpus without models is
+        // byte-identical to one built before models existed.
+        if !models.isEmpty {
+            payloads.append((ChunkKind.models.rawValue, modelChunk))
+        }
         payloads.append(contentsOf: rawChunks)
 
         var out = [UInt8]()
@@ -269,6 +334,45 @@ public struct CorpusBuilder {
         for checkpoint in checkpoints { out.appendLE(checkpoint) }
         out.append(contentsOf: body)
         return out
+    }
+
+    /// Encodes every model. See ``NGramModel`` for the layout and why it is that shape.
+    private func buildModels() -> [UInt8] {
+        var bodies = [[UInt8]]()
+        for model in models {
+            var body = [UInt8]()
+            body.appendLE(model.sourceID)
+            body.appendLE(UInt32(model.order))
+            body.appendLE(UInt32(model.alphabet.count))
+            for symbol in model.alphabet { body.appendLE(symbol) }
+            body.appendLE(UInt32(model.contexts.count))
+
+            // Transitions are laid out first so their offsets are known while the index
+            // is written, which is the same reason the chunk directory precedes the
+            // chunk bodies.
+            var transitions = [UInt8]()
+            var index = [UInt8]()
+            for context in model.contexts {
+                index.appendLE(context.key)
+                index.appendLE(UInt32(transitions.count))
+                index.appendLE(UInt32(context.transitions.count))
+
+                var cumulative: UInt32 = 0
+                for transition in context.transitions {
+                    cumulative &+= transition.weight
+                    transitions.appendLE(transition.symbol)
+                    transitions.appendLE(UInt16(0))
+                    transitions.appendLE(cumulative)
+                }
+            }
+            body.append(contentsOf: index)
+            body.append(contentsOf: transitions)
+            body.appendLE(UInt32(model.filterHashCount))
+            body.appendLE(UInt32(model.filterBits.count))
+            body.append(contentsOf: model.filterBits)
+            bodies.append(body)
+        }
+        return packTables(bodies)
     }
 
     private func buildStringTables() -> [UInt8] {

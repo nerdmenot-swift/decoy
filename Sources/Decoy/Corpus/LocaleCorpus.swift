@@ -113,6 +113,8 @@ public struct LocaleCorpus: Sendable {
         switch resolve(path) {
         case .strings(let table): return !table.isEmpty
         case .composite(let table): return !table.isEmpty
+        // A model always has something to say — that is the point of it.
+        case .model: return true
         case .explicitlyEmpty, nil: return false
         }
     }

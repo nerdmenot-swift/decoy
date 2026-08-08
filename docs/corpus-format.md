@@ -65,14 +65,12 @@ chunk kinds.
 | 3 | Composite tables | required |
 | 4 | Provenance | required |
 | 5 | Index | required |
-| 6 | Models | reserved — generative n-gram models, unallocated in the reader |
+| 6 | Models | character-level n-gram models |
 
-Kind 6 is unimplemented and deliberately has no case in the reader's `ChunkKind`: unknown
-chunk kinds are skipped by design, so an unwritten kind needs no code, and one that exists
-only to be exhaustively switched over reads as support that is not there. The same goes
-for index entry kind 3, which enumerates as `unknown(3)`.
+The chunk is written only when something trained a model, so a corpus without one is
+byte-identical to a corpus built before models existed. Index entry kind 3 points into it.
 
-A reader skipping it today will not need a
+A reader skipping an unknown chunk will not need a
 format bump when models arrive; only a `corpusMinor` bump.
 
 ---
@@ -215,6 +213,57 @@ One blob per locale, compiled from the unmerged definitions. Fallback is resolve
 time, so a locale's blob stays small and shared data is not duplicated 76 times.
 
 A `kind == 0` entry stops the walk. A missing entry continues it.
+
+---
+
+## Models — chunk kind 6
+
+A list is the wrong primitive for names, streets and company names: it repeats after N
+draws, which is what makes `unique` rules run dry; it stores every value; and it is
+somebody else's data. A character-level n-gram generates plausible new values
+indefinitely, in less space than the list it was trained on.
+
+Packed like the other table chunks — a count, an offset directory, then the bodies — so
+`tableBody(in:id:)` reaches a model the same way it reaches a string table.
+
+```
+u32  sourceID         which upstream the training data came from
+u32  order            2...8; contexts are order - 1 symbols long
+u32  alphabetCount    1...255; symbol 0 is the end-of-word sentinel
+u32  arenaIndex       * alphabetCount, each a one-character string
+u32  contextCount
+{                     context index, 16-byte stride, sorted by key
+  u64 key             length in the top 8 bits, symbols packed 8 bits each below it
+  u32 transitionOffset  byte offset into the transition blob
+  u32 transitionCount
+} * contextCount
+{                     transition blob
+  u16 symbol
+  u16 —               reserved, must be 0
+  u32 cumulativeWeight
+} * total
+u32  filterHashCount
+u32  filterByteCount
+u8   filterBits       * filterByteCount
+```
+
+**Why the key is packed into a `u64`.** A variable-length symbol run would make the index
+unsearchable without a second level of offsets. Packing caps the alphabet at 255 and the
+order at 8, both far past anything useful — an order-4 model of English surnames already
+tracks its training distribution closely, and a longer context mostly memorises. Symbols
+are stored most-recent-last so backing off to a shorter context is a mask rather than a
+rebuild.
+
+**Weights are cumulative**, so a draw is one binary search rather than a running sum. The
+same choice weighted string tables make, for the same reason.
+
+**The Bloom filter is not optional.** An n-gram will sometimes reproduce a training-set
+member exactly, and for a name model that means emitting a real person's name as fake
+data. Every candidate is checked against the filter and redrawn on a hit. The filter's
+error is one-sided — a `false` is certain, a `true` may be a collision — so rejecting on
+it discards some novel values and never admits a real one. That is the correct direction
+to be wrong in, and it is why the training set is stored as a filter rather than as a
+list: the list is the thing a model exists to avoid shipping.
 
 ---
 

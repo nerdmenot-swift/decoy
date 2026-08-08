@@ -188,16 +188,17 @@ public struct Corpus: Sendable {
         case 0: return .explicitlyEmpty
         case 1: return .strings(try stringTable(tableID))
         case 2: return .composite(try compositeTable(tableID))
-        // Kind 3 is reserved for generative models and nothing writes one. It lands
-        // here rather than in a `.model` case: the reader could return an id, but no
-        // caller could do anything with it, so the four branches that handled it were
-        // unreachable code dressed as support. Enumeration still reports `.unknown(3)`,
-        // which is the right answer for a blob a newer compiler wrote.
+        case 3: return .model(try model(tableID))
         default: throw CorpusError.malformed("unknown index entry kind \(kind)")
         }
     }
 
     // MARK: - Tables
+
+    func model(_ id: UInt32) throws -> NGramModel {
+        try NGramModel(
+            reader: reader, arena: arena, at: try tableBody(in: .models, id: id))
+    }
 
     func stringTable(_ id: UInt32) throws -> StringTable {
         let body = try tableBody(in: .stringTables, id: id)
@@ -360,9 +361,10 @@ enum ChunkKind: UInt32 {
     case compositeTables = 3
     case provenance = 4
     case index = 5
-    // Kind 6 is reserved for generative models. Not declared here: the reader skips
-    // chunk kinds it does not know by design, so an unwritten kind needs no case, and
-    // one that exists only to be exhaustively switched over reads as implemented.
+    // Removed once, correctly: while nothing wrote a model, a case existing only to be
+    // exhaustively switched over read as support that was not there. Something writes
+    // one now.
+    case models = 6
 }
 
 public struct CorpusVersion: Sendable, Equatable, Comparable, CustomStringConvertible {
@@ -415,10 +417,8 @@ public struct PathEntry: Sendable, Equatable {
         case explicitlyEmpty
         case strings
         case composite
+        case model
         /// Written by a newer compiler than this reader understands.
-        ///
-        /// Index kind 3 is reserved for generative models and arrives here, which is
-        /// what it should do until something writes one.
         ///
         /// Reported rather than thrown, matching how the chunk directory treats kinds
         /// it does not know: enumeration must not be the one operation a
@@ -431,6 +431,7 @@ public struct PathEntry: Sendable, Equatable {
             case 0: self = .explicitlyEmpty
             case 1: self = .strings
             case 2: self = .composite
+            case 3: self = .model
             default: self = .unknown(raw)
             }
         }
@@ -440,6 +441,7 @@ public struct PathEntry: Sendable, Equatable {
             case .explicitlyEmpty: 0
             case .strings: 1
             case .composite: 2
+            case .model: 3
             case .unknown(let raw): raw
             }
         }
@@ -457,6 +459,8 @@ public enum Entry: Sendable {
     case explicitlyEmpty
     case strings(StringTable)
     case composite(CompositeTable)
+    /// A trained n-gram that generates values rather than storing them.
+    case model(NGramModel)
 }
 
 /// The shared, deduplicated string pool.
