@@ -54,12 +54,12 @@ public struct LocationFaker {
     /// who lives there, and the only thing the invented form has over them is that it
     /// cannot accidentally name a real town — which for a city, unlike a person, is not a
     /// problem anybody has.
+    /// Every chain reaches `en`, which has 19,000 US cities, so this cannot come up
+    /// empty. The composition fallback that used to sit here is gone with the data —
+    /// `decoy-validate` reported the branch as a call no locale could answer, which is
+    /// what a fallback becomes once the thing it was falling back from is the only case.
     public mutating func city() -> String {
-        if let name = faker.draw("location.city_name") { return name }
-        if let pattern = faker.draw("location.city_pattern") {
-            return faker.expand(pattern)
-        }
-        return faker.require("location.city_name")
+        faker.require("location.city_name")
     }
 
     /// A city and the subdivision it is actually in, as one row.
