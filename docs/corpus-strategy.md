@@ -92,7 +92,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — twenty adapters plus the faker-js bootstrap, thirty-two sources:
+**Built so far** — twenty-one adapters plus the faker-js bootstrap, thirty-four sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -102,6 +102,7 @@ someone else's package should not itself require a package manager.
 | `iana-tzdb` | tzdata 2026b | public domain | `location.time_zone`, `date.time_zone` |
 | `mime-types` | mime-db 1.54.0 | MIT | `system.mime_type` — 1,015 types with extensions |
 | `programming-languages` | Linguist 9.4.0 | MIT | `system.programming_language` — 533 languages |
+| `iana-web` | IANA HTTP status + JOSE registries | facts | `internet.http_status_code.*` — 62 codes; `internet.jwt_algorithm` — 38 |
 | `iana-tld` | IANA root zone 2026080700 | facts | `internet.domain_suffix` — 1,438 TLDs |
 | `periodic-table` | PubChem (NIH) | public domain | `science.chemical_element` (composite) |
 | `si-units` | CLDR 48.2.0 | Unicode-3.0 | `science.unit` (composite) in 74 locales |
@@ -504,7 +505,7 @@ All six are representable in format v2. Four are in use.
 |---|---|---|
 | Weights | A weight column alongside string tables | **In use** — faker-derived patterns, and real Census frequencies for English surnames |
 | Composite records | Heterogeneous field tuples, not parallel lists | **In use** — countries, languages, currencies |
-| Provenance | A source/license table, referenced by ID | **In use** — 32 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
+| Provenance | A source/license table, referenced by ID | **In use** — 34 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
 | Generative models | A model chunk type, not only string tables | Chunk kind reserved; nothing emits one |
 | Corpus version + compatibility | Header fields, checked on load | **In use** |
 | Cross-locale dedup | A shared string arena (21.2% redundancy measured) | **In use** |
@@ -608,6 +609,9 @@ Counts are not the quality bar.
    | `lorem.word` | faker, 26 locales | Whitaker's Latin dictionary, 1,987 words in `base` |
    | `word.{noun,verb,adjective,adverb}` | faker in 8 locales OMW cannot reach | dropped; those locales fall through to English as fifty-three already did |
    | `word.{preposition,conjunction,interjection}` | faker only | dropped with their generators — no wordnet carries closed-class words and no registry publishes them |
+   | `internet.http_status_code.*` | faker, 63 codes | IANA's registry, 62 current ones with the reserved ranges excluded |
+   | `internet.jwt_algorithm` | faker, 13 | IANA JOSE, 38 — `alg` usage only, since `enc` names a content encryption method a JWT header never carries |
+   | `date.{month,weekday}.*_context` | faker, 4-6 locales | CLDR stand-alone forms in every locale that has dates |
 
    What is left divides into three, and only the first is predictable work:
 
@@ -703,7 +707,7 @@ table and attributed to CLDR, which is the known limitation recorded above.
 
 **Yes, and it is checked on every build rather than concluded once.**
 
-All thirty-two sources are attribution-style: keep the notice, do not claim the licensor
+All thirty-four sources are attribution-style: keep the notice, do not claim the licensor
 endorses you. None is share-alike, none restricts commercial use, and none requires
 derived work to be relicensed — any one of which would make an Apache-2.0 distribution
 impossible rather than merely inconvenient.
@@ -744,7 +748,7 @@ NOTICE.
 Every corpus carries its own source records, so the authoritative answer is
 `decoy-inspect <locale>.decoy` rather than this list. As shipped today:
 
-All thirty-two, because a table that omits seven of them is the same failure as a
+All thirty-four, because a table that omits seven of them is the same failure as a
 NOTICE that does:
 
 | Source | Licence | Obligation |

@@ -78,6 +78,17 @@ export async function run({ artifacts, locales, overrides }) {
     const daysWide = ordered(gregorian.days?.format?.wide, WEEKDAY_KEYS)
     const daysAbbr = ordered(gregorian.days?.format?.abbreviated, WEEKDAY_KEYS)
 
+    // The stand-alone forms, which faker called `_context`. CLDR keeps both because they
+    // genuinely differ: a Slavic month name inside a date is genitive — "5 stycznia" —
+    // and the same month named on its own is nominative, "styczeń". German has one form
+    // for both, which is why the distinction looks redundant until it is not.
+    const monthsWideStandalone = ordered(gregorian.months?.['stand-alone']?.wide, MONTH_KEYS)
+    const monthsAbbrStandalone = ordered(
+      gregorian.months?.['stand-alone']?.abbreviated, MONTH_KEYS)
+    const daysWideStandalone = ordered(gregorian.days?.['stand-alone']?.wide, WEEKDAY_KEYS)
+    const daysAbbrStandalone = ordered(
+      gregorian.days?.['stand-alone']?.abbreviated, WEEKDAY_KEYS)
+
     if (!monthsWide || !monthsAbbr || !daysWide || !daysAbbr) {
       unmapped.push(code)
       continue
@@ -90,6 +101,10 @@ export async function run({ artifacts, locales, overrides }) {
       'date.month.abbr': monthsAbbr,
       'date.weekday.wide': daysWide,
       'date.weekday.abbr': daysAbbr,
+      ...(monthsWideStandalone ? { 'date.month.wide_context': monthsWideStandalone } : {}),
+      ...(monthsAbbrStandalone ? { 'date.month.abbr_context': monthsAbbrStandalone } : {}),
+      ...(daysWideStandalone ? { 'date.weekday.wide_context': daysWideStandalone } : {}),
+      ...(daysAbbrStandalone ? { 'date.weekday.abbr_context': daysAbbrStandalone } : {}),
     }
   }
 

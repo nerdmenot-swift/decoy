@@ -1,0 +1,14 @@
+No licence text exists for this source, and that is a recorded conclusion rather
+than an omission.
+
+IANA maintains the IANA JSON Object Signing and Encryption as a matter of
+record under the IETF's registry process. Which number means "Not Found", and which
+string names an HMAC-SHA-256 signature, are assignments -- facts about a protocol with a
+single correct answer. There is no creative expression in the mapping and therefore
+nothing to license.
+
+Decoy takes only the assigned values and their classes. It records IANA as the source,
+with the date the content was last verified, because being able to say where a value came
+from is useful independently of whether anyone requires it.
+
+This is the same reasoning applied to the DNS root zone; see LICENSES/iana-tld.txt.

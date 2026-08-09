@@ -1,0 +1,33 @@
+{
+  "id": "iana-http-status",
+  "name": "IANA HTTP Status Code Registry",
+  "license": "public-facts",
+  "copyright": "",
+  "url": "https://www.iana.org/assignments/http-status-codes",
+  "version": "2026-08-09",
+  "retrieved": "2026-08-09",
+  "note": [
+    "An IANA registry: the definition of the thing, not a copy of it. A status code is 404",
+    "because this file says so, and there is no locale, no opinion and no editorial",
+    "judgement anywhere in it.",
+    "",
+    "No licence, and none needed. IANA maintains these registries as a matter of record",
+    "under the IETF's process; the assignments are facts about the protocol rather than",
+    "authored work, in the same way the root zone's list of delegated TLDs is. See",
+    "LICENSES/iana-tld.txt for the same reasoning at more length.",
+    "",
+    "IANA re-exports these CSVs on every registry change rather than versioning them, so the",
+    "integrity hash pins the content at the moment it was verified. A change upstream fails",
+    "the build, which is the intended behaviour: a new status code should be a deliberate",
+    "re-pin rather than a silent drift in what the corpus generates."
+  ],
+  "artifacts": [
+    {
+      "name": "status",
+      "format": "file",
+      "filename": "http-status-codes-1.csv",
+      "url": "https://www.iana.org/assignments/http-status-codes/http-status-codes-1.csv",
+      "integrity": "sha512-sgVI4U86FRNwbaaT4xDiDYBf+71N+NaNhuJjMhAt+cjCiEXEHbjKcATY3UGH3uMDm2YN6Nlq+a4vXOn/pL8L7g=="
+    }
+  ]
+}
