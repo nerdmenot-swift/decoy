@@ -65,7 +65,7 @@ struct GoldenOutputTests {
                 "Sleepy Hollow",
                 "6109 David Key",
                 "India",
-                "Conlan Ltd",
+                "Conlan LC",
                 "vincent.ashley@example.com",
                 "Mozilla/5.0 (Linux; Android 11; SM-G994B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36",
                 "Recycled Linen Ball",

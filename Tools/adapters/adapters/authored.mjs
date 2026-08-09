@@ -513,17 +513,19 @@ const JOB_TYPES = [
  * How a company name is assembled, and the remaining patterns nothing else supplies.
  *
  * `company.name_pattern` composes from surnames and legal forms, which is how firms are
- * actually named — Dittmer-Kick, Grasse und Menga. The legal form itself comes from
- * faker's `legal_entity_type` where a locale has one, and GmbH or Ltd is a fact about
- * that jurisdiction; a locale without one gets the bare surname form.
+ * actually named — Dittmer-Kick, Grasse und Menga. The legal form comes from the ISO 20275
+ * register; a locale without one gets the bare surname form.
+ *
+ * The list of English forms that used to live here has gone with it. It read
+ * `Inc, LLC, Ltd, Group, Holdings, Partners`, and the last three are not legal entity
+ * types at all — they are words that appear in company names. The register knows the
+ * difference, and knows it per jurisdiction.
  */
 const COMPANY_NAME_PATTERN = [
   { value: '{{person.lastName}} {{company.legal_entity_type}}', weight: 5 },
   { value: '{{person.lastName}}-{{person.lastName}}', weight: 3 },
   { value: '{{person.lastName}}, {{person.lastName}} and {{person.lastName}}', weight: 2 },
 ]
-
-const LEGAL_ENTITY_TYPES = ['Inc', 'LLC', 'Ltd', 'Group', 'Holdings', 'Partners']
 
 /** The remaining composition rules, each naming only paths this file also supplies. */
 const PRODUCT_NAME_PATTERN = [
@@ -636,7 +638,6 @@ export async function run() {
         'company.buzz_adjective': BUZZ_ADJECTIVES,
         'company.buzz_noun': BUZZ_NOUNS,
         'company.name_pattern': COMPANY_NAME_PATTERN,
-        'company.legal_entity_type': LEGAL_ENTITY_TYPES,
         'commerce.product_name.pattern': PRODUCT_NAME_PATTERN,
         'person.job_title_pattern': JOB_TITLE_PATTERN,
         'person.bio_pattern': BIO_PATTERN,

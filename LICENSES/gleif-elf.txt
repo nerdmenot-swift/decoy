@@ -1,0 +1,34 @@
+No licence text exists for this source, and that is a recorded conclusion
+rather than an omission.
+
+The Global LEI Foundation is the registration authority for ISO 20275,
+"Financial Services -- Entity Legal Forms (ELF)", and publishes the code
+list of entity legal forms in each jurisdiction. Decoy reads two facts
+from it: which legal forms a jurisdiction has, and what each is
+abbreviated to in the local language.
+
+Both are facts about statute. A German company may be a Gesellschaft mit
+beschraenkter Haftung, abbreviated GmbH, because the GmbH-Gesetz says so;
+an Austrian Offene Gesellschaft is abbreviated OG because Austrian company
+law says so. There is no creative expression in recording that, and no
+authorship for anyone to license. GLEIF's own contribution -- assigning an
+ELF code to each form, and the selection and arrangement of the list -- is
+not used here.
+
+GLEIF does grant CC0 in two nearby places, and this file is covered by
+neither:
+
+  - The Open Source page grants CC0 for GLEIF's software repositories.
+  - The LEI Data Terms of Use grant CC0 for "data available through the
+    Access Service", which is the LEI register.
+
+The ISO 20275 code list is published separately from both, and its
+download page states no licence of its own. Reading either grant as
+covering it would be convenient and unsupported, so neither is claimed.
+
+This is the same conclusion, on the same reasoning, that Decoy records for
+the ISO 4217 currency registry published by SIX Group. Both are ISO code
+lists maintained by a registration authority; both are read for the facts
+they record rather than for the compilation.
+
+Source: https://www.gleif.org/en/about-lei/code-lists/iso-20275-entity-legal-forms-code-list

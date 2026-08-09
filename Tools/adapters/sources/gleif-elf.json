@@ -1,0 +1,41 @@
+{
+  "id": "gleif-elf",
+  "name": "ISO 20275 Entity Legal Forms code list (GLEIF), version 1.6",
+  "license": "public-facts",
+  "copyright": "",
+  "url": "https://www.gleif.org/en/about-lei/code-lists/iso-20275-entity-legal-forms-code-list",
+  "version": "1.6",
+  "retrieved": "2026-08-10",
+  "note": [
+    "GLEIF is the ISO 20275 registration authority, so this is the registry itself rather",
+    "than a redistribution of it. The same relationship `iso-4217-six` has to currency",
+    "codes, and treated the same way for the same reason.",
+    "",
+    "That reason is that entity legal forms are statutory facts. `GmbH` is an abbreviation",
+    "because the Gesetz betreffend die Gesellschaften mit beschraenkter Haftung says so,",
+    "and Germany having such a form is a fact about German law rather than anything GLEIF",
+    "authored. What is extracted here is that set of facts -- which forms a jurisdiction",
+    "has and what each is abbreviated to -- and not GLEIF's selection or arrangement.",
+    "",
+    "`public-facts` records that reasoning rather than asserting a grant GLEIF has not",
+    "made. Worth being exact about, because GLEIF does grant CC0 in two nearby places and",
+    "neither one covers this file: the Open Source page grants it for GLEIF's software,",
+    "and the LEI Data Terms of Use grant it for `data available through the Access",
+    "Service`. The code list is published separately from both. Reading either statement",
+    "as covering this download would be convenient and wrong.",
+    "",
+    "Keyed by country and language together, which is what makes it better than the list",
+    "it replaces rather than merely differently licensed. `de_AT` gets Austrian forms and",
+    "`de_CH` Swiss ones, because Austrian and Swiss company law are not German company",
+    "law -- a distinction no hand-curated list had drawn."
+  ],
+  "artifacts": [
+    {
+      "name": "list",
+      "format": "file",
+      "filename": "elf-code-list.csv",
+      "url": "https://www.gleif.org/lei-data/code-lists/iso-20275-entity-legal-forms-code-list/2026-02-19-elf-code-list-v1.6.csv",
+      "integrity": "sha512-nCPStbTvaa8XpO9+Jd8Ia36j5AH0WIdmnhTtOigsMefy38DZDFO7qW/fipDEQRchuczlepYbFLVl9MOsYZzowg=="
+    }
+  ]
+}
