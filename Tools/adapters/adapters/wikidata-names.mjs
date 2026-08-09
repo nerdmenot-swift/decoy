@@ -80,7 +80,65 @@ const DEFERRED = {
   fr: ['female', 'male'], // INSEE. Surnames are published commercially only, so not here.
 }
 
-export async function run({ locales }) {
+/**
+ * Wikidata labels are per language; several Decoy locales carry a region and no bare
+ * language beside it.
+ *
+ * Without this the match is by exact code, and eight languages' worth of names were
+ * fetched, committed and then silently used by nobody: Portuguese has no `pt` locale, only
+ * `pt_BR` and `pt_PT`, so 1,571 Portuguese names sat in the data file while Portuguese
+ * fixtures were served English ones. The same for Czech, Slovene, Norwegian, Bengali,
+ * Georgian, Serbian and Yoruba -- about 10,700 names in total, present and unreachable.
+ *
+ * An exact match still wins where there is one. This only fills in for a locale whose
+ * language has data that nothing else claims.
+ */
+function languageOf(code) {
+  return code.split('_')[0]
+}
+
+/**
+ * Some locales name their script, and the label store does not separate them.
+ *
+ * Serbian is written in both alphabets and Wikidata holds both under `sr`: the female list
+ * runs `Jasenka, Јарослава, Јелена`. Decoy's locale is `sr_RS_latin`, so taking the
+ * language wholesale would put Cyrillic names in a Latin-script fixture -- which reads as
+ * data corruption rather than as a language.
+ *
+ * Only applied where the locale declares a script. Georgian and Bengali have one alphabet
+ * each and need no filtering; `ka_GE` and `bn_BD` take everything their language offers.
+ */
+const SCRIPTS = {
+  latin: /^[\p{Script=Latin}\p{Mark}\p{Punctuation}\s]+$/u,
+  cyrl: /^[\p{Script=Cyrillic}\p{Mark}\p{Punctuation}\s]+$/u,
+}
+
+function scriptOf(code) {
+  const last = code.split('_').at(-1)
+  return SCRIPTS[last] ?? null
+}
+
+/**
+ * Whether an ancestor in this locale's chain already receives the same language's names.
+ *
+ * `de_AT` resolves through `de`, which has German names, so writing them into `de_AT` as
+ * well would put a second copy of 5,377 names in the corpus to say what the chain already
+ * says. The first version of the language fallback did exactly that and grew nine locales
+ * by a full duplicate each.
+ *
+ * The bare-language lookup is what needs guarding, not the exact-code one: an exact match
+ * means the register really does hold something specific to that locale.
+ */
+function ancestorCovers(code, chain, names) {
+  const language = languageOf(code)
+  for (const ancestor of (chain ?? []).slice(1)) {
+    if (languageOf(ancestor) !== language) continue
+    if (names[ancestor] ?? names[languageOf(ancestor)]) return true
+  }
+  return false
+}
+
+export async function run({ locales, chains }) {
   const raw = await readFile(join(here, '..', 'data', 'wikidata-names.json'), 'utf8')
   const { names, retrieved } = JSON.parse(raw)
 
@@ -88,15 +146,25 @@ export async function run({ locales }) {
   const taken = []
   const tooThin = []
 
-  for (const [code, sets] of Object.entries(names)) {
-    if (!locales.includes(code)) continue
+  // Driven by the locale roster rather than by the data file. The other way round matches
+  // on exact code and silently skips every locale whose language has no bare entry, which
+  // is what left Portuguese, Czech, Slovene, Norwegian, Bengali, Georgian, Serbian and
+  // Yoruba fixtures on English names while their names sat in the file.
+  for (const code of locales) {
+    if (code === 'base') continue
+    const exact = names[code]
+    if (!exact && ancestorCovers(code, chains?.[code], names)) continue
+    const sets = exact ?? names[languageOf(code)]
+    if (!sets) continue
 
+    const script = scriptOf(code)
     const contribution = {}
-    const deferred = DEFERRED[code] ?? []
+    const deferred = DEFERRED[code] ?? DEFERRED[languageOf(code)] ?? []
     for (const [kind, path] of Object.entries(PATHS)) {
       if (deferred.includes(kind)) continue
-      const list = sets[kind]
+      let list = sets[kind]
       if (!Array.isArray(list)) continue
+      if (script) list = list.filter((value) => script.test(value))
       if (list.length < MINIMUM_NAMES) {
         tooThin.push(`${code}.${kind}(${list.length})`)
         continue
