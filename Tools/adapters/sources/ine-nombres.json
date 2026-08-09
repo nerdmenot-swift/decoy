@@ -1,0 +1,35 @@
+{
+  "id": "ine-nombres",
+  "name": "Nombres por edad media (Instituto Nacional de Estadística), census 01/01/2025",
+  "license": "CC-BY-4.0",
+  "copyright": "Instituto Nacional de Estadística (INE), Spain",
+  "url": "https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177009",
+  "version": "2025-01-01",
+  "retrieved": "2026-08-10",
+  "note": [
+    "Every given name in the Spanish population census with twenty or more bearers, by sex,",
+    "with the count: 31,119 male and 32,321 female names. ANTONIO is borne by 590,938 men",
+    "and MARIA CARMEN by 618,622 women.",
+    "",
+    "CC BY 4.0, stated by INE for the statistical information on its site and quoted in",
+    "LICENSES/ine-nombres.txt. Attribution-only, explicitly including commercial use, so",
+    "nothing conflicts with Apache-2.0 distribution.",
+    "",
+    "The `.xlsx` is pinned rather than the `.xls` at the neighbouring path. They are not two",
+    "formats of one file: the `.xls` is a stale 2022 edition that INE left in place, and",
+    "taking it would silently ship four-year-old data under a 2025 label.",
+    "",
+    "Serves `es`, and through the chain `es_MX` as well. That is a real limitation rather",
+    "than an oversight -- Mexican given-name frequencies differ from Spanish ones, and",
+    "Mexico's registry would be a separate entry here if an open one turns up."
+  ],
+  "artifacts": [
+    {
+      "name": "spanish-names",
+      "format": "file",
+      "filename": "nombres_por_edad_media.xlsx",
+      "url": "https://www.ine.es/daco/daco42/nombyapel/nombres_por_edad_media.xlsx",
+      "integrity": "sha512-kirLf/oL+61L6eH1lF5rvnDZC/PJH+8Z3iQKodWPDxdNwiNlLVkvJ3dkEZKFdQVRjLdTUAVKTmyU978aeu+KFg=="
+    }
+  ]
+}
