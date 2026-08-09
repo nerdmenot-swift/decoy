@@ -24,9 +24,21 @@
  * 1. **Try to cite first.** Most things have a source; four rounds of searching moved
  *    counties, subdivisions, phone formats, name patterns, status codes, JOSE algorithms,
  *    Latin vocabulary and job titles out of this category. Only add here after looking.
- * 2. **English only.** These are not translations. A locale without its own data falls
- *    through to English, which is what already happens for wordnet vocabulary and job
- *    titles. Inventing a German list would be inventing German.
+ * 2. **English only, with one narrow exception.** These are not translations. A locale
+ *    without its own data falls through to English, which is what already happens for
+ *    wordnet vocabulary, commerce words and job titles. Inventing a German list of *content*
+ *    would be inventing German.
+ *
+ *    The exception is a closed set of ordinary words whose members are not in doubt --
+ *    the compass points, and the street types below. `straße` means street and `platz`
+ *    means square; writing them down is translating a short list, not authoring one, and
+ *    a speaker can check every entry at a glance. The test is whether being wrong would
+ *    be *visible*: a wrong street type is obvious to anyone who reads the language, where
+ *    a wrong surname or a wrong colour name is not.
+ *
+ *    It applies to vocabulary and never to stems. Inventing German street *names* would be
+ *    inventing German, which is why streets are composed from real surnames rather than
+ *    listed, and why the languages that inflect the stem are left out entirely.
  * 3. **Facts where possible.** `color.human` is the CSS/X11 named-colour set, which is at
  *    least a de-facto standard rather than a preference; `vehicle.fuel` is what fuels
  *    exist. Prefer the enumerable over the imagined.
@@ -230,6 +242,152 @@ const STREET_SUFFIXES = [
  * rule for it. `####` is a four-digit number, which is what the masks elsewhere mean.
  */
 const BUILDING_NUMBER = ['###', '####', '#####', '##']
+
+/**
+ * How other languages build a street name, for the languages where that is settled.
+ *
+ * The note above says writing German street vocabulary would be inventing German. On
+ * reflection that is too broad, and the distinction worth drawing is between the *stem* of
+ * a street name and its *type*. Inventing stems would indeed be inventing German -- there
+ * is no way to know that Bohnenkamp is a real Hamburg street rather than a plausible
+ * string. But `straße`, `weg` and `platz` are ordinary nouns meaning street, way and
+ * square, and writing them down is translation of a closed set, the same thing already
+ * done for the compass points a few lines above.
+ *
+ * Wikidata was tried for the vocabulary first and is not usable here. Its "street" item is
+ * a formal concept -- "public thoroughfare in a built environment" -- and the label a
+ * language attaches to it is often the technical register rather than the everyday word:
+ * German returns `Innerortsstraße` and Italian `strada urbana`, while `Straße` and `strada`
+ * come back under "road". The same shape of mismatch that made CLDR's coordinate labels
+ * unusable for the compass.
+ *
+ * Two families, because they compose differently and the difference is orthography rather
+ * than preference:
+ *
+ *   - Germanic languages compound, with no space: Schillerstraße, Kalverstraat,
+ *     Drottninggatan. The type is written lower case and joined to the stem.
+ *   - Romance languages put the type first as a separate word: Rue Lafayette, Calle
+ *     Serrano, Via Garibaldi, Rua Augusta.
+ *
+ * Turkish is neither, and puts the type last as its own word: Atatürk Caddesi.
+ *
+ * ## What is deliberately not here
+ *
+ * Only languages whose street formation can be stated without qualification. Polish,
+ * Czech and Russian inflect the stem -- a street named for Piłsudski is `ulica
+ * Piłsudskiego`, not `ulica Piłsudski` -- and generating the genitive correctly is
+ * grammar, not a list. Getting it wrong produces something that reads as broken to a
+ * speaker and fine to everybody else, which is the worst failure available. Those locales
+ * keep the English fallback until somebody who reads the language writes the rule.
+ *
+ * Japanese, Korean and Chinese are absent for a different reason: their addresses number
+ * blocks rather than naming streets, and `location.postal_address` already renders them
+ * that way.
+ */
+const STREET_TYPES = {
+  // Germanic: compounded onto the surname, lower case.
+  de: ['straße', 'weg', 'gasse', 'platz', 'allee', 'ring', 'damm', 'ufer', 'steig', 'hof'],
+  nl: ['straat', 'weg', 'laan', 'plein', 'gracht', 'kade', 'dijk', 'singel', 'hof'],
+  sv: ['gatan', 'vägen', 'torget', 'gränden', 'backen', 'stigen'],
+  da: ['gade', 'vej', 'allé', 'plads', 'stræde', 'have'],
+  nb: ['gate', 'veien', 'plassen', 'stien', 'bakken'],
+  // Romance: the type leads, as its own word.
+  fr: ['Rue', 'Avenue', 'Boulevard', 'Place', 'Impasse', 'Allée', 'Chemin', 'Quai'],
+  es: ['Calle', 'Avenida', 'Plaza', 'Paseo', 'Camino', 'Ronda', 'Travesía'],
+  it: ['Via', 'Viale', 'Piazza', 'Corso', 'Vicolo', 'Largo', 'Lungomare'],
+  pt: ['Rua', 'Avenida', 'Travessa', 'Praça', 'Largo', 'Alameda', 'Estrada'],
+  // Turkish: the type trails, as its own word.
+  tr: ['Sokak', 'Caddesi', 'Bulvarı', 'Meydanı', 'Yolu'],
+}
+
+/** Which locales take which language's street formation. */
+const STREET_LOCALES = {
+  de: ['de', 'de_AT', 'de_CH'],
+  nl: ['nl', 'nl_BE'],
+  sv: ['sv'],
+  da: ['da'],
+  nb: ['nb_NO'],
+  fr: ['fr', 'fr_BE', 'fr_CA', 'fr_CH', 'fr_LU', 'fr_SN'],
+  es: ['es', 'es_MX'],
+  it: ['it'],
+  pt: ['pt_BR', 'pt_PT'],
+  tr: ['tr'],
+}
+
+const COMPOUNDING = new Set(['de', 'nl', 'sv', 'da', 'nb'])
+const TYPE_TRAILS = new Set(['tr'])
+
+/**
+ * The pattern that composes a street name in one language.
+ *
+ * Surnames dominate over given names in every one of these languages, which is why the
+ * weights match the English pattern's: streets are named after people by surname, and
+ * `Rue Marie` is far rarer than `Rue Lafayette`.
+ */
+function streetPatternFor(language) {
+  if (COMPOUNDING.has(language)) {
+    // No space, and the surname keeps its capital: Schillerstraße.
+    return [
+      { value: '{{person.lastName}}{{location.street_suffix}}', weight: 8 },
+      { value: '{{person.firstName}}{{location.street_suffix}}', weight: 2 },
+    ]
+  }
+  if (TYPE_TRAILS.has(language)) {
+    return [
+      { value: '{{person.lastName}} {{location.street_suffix}}', weight: 8 },
+      { value: '{{person.firstName}} {{location.street_suffix}}', weight: 2 },
+    ]
+  }
+  return [
+    { value: '{{location.street_suffix}} {{person.lastName}}', weight: 8 },
+    { value: '{{location.street_suffix}} {{person.firstName}}', weight: 2 },
+  ]
+}
+
+/**
+ * Where the house number goes, and how big it gets.
+ *
+ * English-speaking countries lead with the number -- 46 Crosslin Turnpike -- and almost
+ * nowhere else does. German is `Hauptstraße 5`, Italian `Via Roma 12`, Swedish
+ * `Drottninggatan 5`, Turkish `Atatürk Caddesi 5`. French is the exception among these and
+ * keeps the English order: `12 Rue de Rivoli`.
+ *
+ * The size matters too and is easy to miss. The English set runs to five digits because US
+ * addresses really do -- 38722 is an ordinary number on a long road -- and applying it
+ * elsewhere produced `Simonring 38722`, which is not a German address. European numbering
+ * restarts per street, so one to three digits is the range.
+ */
+const NUMBER_LEADS = new Set(['fr'])
+const EUROPEAN_BUILDING_NUMBER = ['#', '##', '###']
+
+function streetAddressFor(language) {
+  if (NUMBER_LEADS.has(language)) {
+    return {
+      normal: ['{{location.buildingNumber}} {{location.street}}'],
+      full: ['{{location.buildingNumber}} {{location.street}} {{location.secondaryAddress}}'],
+    }
+  }
+  return {
+    normal: ['{{location.street}} {{location.buildingNumber}}'],
+    full: ['{{location.street}} {{location.buildingNumber}} {{location.secondaryAddress}}'],
+  }
+}
+
+/** Builds the per-locale street contributions from the tables above. */
+function streetContributions() {
+  const out = {}
+  for (const [language, locales] of Object.entries(STREET_LOCALES)) {
+    for (const code of locales) {
+      out[code] = {
+        'location.street_suffix': STREET_TYPES[language],
+        'location.street_pattern': streetPatternFor(language),
+        'location.street_address': streetAddressFor(language),
+        'location.building_number': EUROPEAN_BUILDING_NUMBER,
+      }
+    }
+  }
+  return out
+}
 const SECONDARY_ADDRESS = ['Apt. ###', 'Suite ###', 'Unit ###', 'Flat #', 'Floor #']
 const STREET_ADDRESS = {
   normal: ['{{location.buildingNumber}} {{location.street}}'],
@@ -585,6 +743,7 @@ const PRODUCT_MATERIALS = [
 export async function run() {
   return {
     contributions: {
+      ...streetContributions(),
       // `base` for anything language-neutral enough that falling through to it is right,
       // `en` for anything that is plainly English and should be shadowed by a locale that
       // knows better.

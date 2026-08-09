@@ -29,20 +29,20 @@
       "values" : 11300
     },
     "da" : {
-      "paths" : 50,
-      "values" : 5068
+      "paths" : 51,
+      "values" : 5073
     },
     "de" : {
-      "paths" : 47,
-      "values" : 24431
+      "paths" : 48,
+      "values" : 24439
     },
     "de_AT" : {
-      "paths" : 47,
-      "values" : 10251
+      "paths" : 48,
+      "values" : 10259
     },
     "de_CH" : {
-      "paths" : 42,
-      "values" : 5556
+      "paths" : 46,
+      "values" : 5572
     },
     "dv" : {
       "paths" : 35,
@@ -110,11 +110,11 @@
     },
     "es" : {
       "paths" : 52,
-      "values" : 37166
+      "values" : 37101
     },
     "es_MX" : {
       "paths" : 48,
-      "values" : 22288
+      "values" : 22220
     },
     "fa" : {
       "paths" : 51,
@@ -126,27 +126,27 @@
     },
     "fr" : {
       "paths" : 48,
-      "values" : 36778
+      "values" : 36720
     },
     "fr_BE" : {
       "paths" : 46,
-      "values" : 9694
+      "values" : 9484
     },
     "fr_CA" : {
-      "paths" : 31,
-      "values" : 8119
+      "paths" : 35,
+      "values" : 8132
     },
     "fr_CH" : {
       "paths" : 47,
-      "values" : 6854
+      "values" : 6336
     },
     "fr_LU" : {
-      "paths" : 31,
-      "values" : 1446
+      "paths" : 36,
+      "values" : 1461
     },
     "fr_SN" : {
       "paths" : 41,
-      "values" : 2154
+      "values" : 2131
     },
     "he" : {
       "paths" : 52,
@@ -205,8 +205,8 @@
       "values" : 1900
     },
     "nb_NO" : {
-      "paths" : 50,
-      "values" : 3898
+      "paths" : 49,
+      "values" : 3850
     },
     "ne" : {
       "paths" : 33,
@@ -214,7 +214,7 @@
     },
     "nl" : {
       "paths" : 47,
-      "values" : 9740
+      "values" : 9736
     },
     "nl_BE" : {
       "paths" : 41,
@@ -225,12 +225,12 @@
       "values" : 19259
     },
     "pt_BR" : {
-      "paths" : 42,
-      "values" : 17878
+      "paths" : 45,
+      "values" : 17887
     },
     "pt_PT" : {
-      "paths" : 46,
-      "values" : 3870
+      "paths" : 47,
+      "values" : 3877
     },
     "ro" : {
       "paths" : 48,
@@ -257,8 +257,8 @@
       "values" : 4941
     },
     "sv" : {
-      "paths" : 52,
-      "values" : 7412
+      "paths" : 51,
+      "values" : 7409
     },
     "ta_IN" : {
       "paths" : 27,
@@ -269,8 +269,8 @@
       "values" : 14330
     },
     "tr" : {
-      "paths" : 47,
-      "values" : 14818
+      "paths" : 48,
+      "values" : 14821
     },
     "uk" : {
       "paths" : 54,

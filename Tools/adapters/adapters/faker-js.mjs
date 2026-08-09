@@ -202,6 +202,11 @@ const SUPERSEDED = new Set([
   // `cldr-directions.mjs`.
   'location.direction.cardinal_abbr',
   'location.direction.ordinal_abbr',
+  // Swedish and Norwegian street vocabulary, reachable only through faker's own street
+  // patterns for those two locales. `authored.mjs` now supplies their patterns, so nothing
+  // draws these any more -- reported by `decoy-validate` as an orphan the moment the
+  // patterns landed, which is the check doing precisely its job.
+  'location.common_street_suffix',
   // Translated vocabulary, dropped so every locale uses the English set `authored.mjs`
   // supplies. The same move already made for `word.noun`, and made here for a reason that
   // was measured rather than assumed: most locales *already* fall back. Commerce words are
