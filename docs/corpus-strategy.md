@@ -92,7 +92,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — seventeen adapters plus the faker-js bootstrap, twenty-nine sources:
+**Built so far** — eighteen adapters plus the faker-js bootstrap, thirty sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -111,6 +111,7 @@ someone else's package should not itself require a package manager.
 | `us-surnames` | US Census 2010 | public domain | `person.last_name.generic` in `en` — 24,889 names, **weighted** |
 | `wordnet` | Open Multilingual Wordnet 2.0 | per language (see below) | `word.noun/verb/adjective/adverb` in 15 locales |
 | `persian-words` | Lilak 3.3 | Apache-2.0 | `lorem.word` in `fa` |
+| `phone-formats` | libphonenumber 9.0.36 | Apache-2.0 | `phone_number.format.{national,human,international}` in 74 locales |
 | `emoji` | Unicode Emoji 16.0 | Unicode-3.0 | `internet.emoji.*` — 3,780 sequences across 10 categories |
 | `airports` | airport-data 1.0.1 (OpenFlights) | Unlicense | `airline.airport` (composite) — 5,614 IATA-coded airports |
 | `faker-js` | @faker-js/faker 10.5.0 | MIT | everything not yet covered, at lowest precedence |
@@ -501,7 +502,7 @@ All six are representable in format v2. Four are in use.
 |---|---|---|
 | Weights | A weight column alongside string tables | **In use** — faker-derived patterns, and real Census frequencies for English surnames |
 | Composite records | Heterogeneous field tuples, not parallel lists | **In use** — countries, languages, currencies |
-| Provenance | A source/license table, referenced by ID | **In use** — 29 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
+| Provenance | A source/license table, referenced by ID | **In use** — 30 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
 | Generative models | A model chunk type, not only string tables | Chunk kind reserved; nothing emits one |
 | Corpus version + compatibility | Header fields, checked on load | **In use** |
 | Cross-locale dedup | A shared string arena (21.2% redundancy measured) | **In use** |
@@ -695,7 +696,7 @@ table and attributed to CLDR, which is the known limitation recorded above.
 Every corpus carries its own source records, so the authoritative answer is
 `decoy-inspect <locale>.decoy` rather than this list. As shipped today:
 
-All twenty-nine, because a table that omits seven of them is the same failure as a
+All thirty, because a table that omits seven of them is the same failure as a
 NOTICE that does:
 
 | Source | Licence | Obligation |

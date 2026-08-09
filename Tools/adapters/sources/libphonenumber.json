@@ -1,0 +1,32 @@
+{
+  "id": "libphonenumber",
+  "name": "Google libphonenumber (PhoneNumberMetadata.xml)",
+  "license": "Apache-2.0",
+  "copyright": "Copyright (C) 2009 The Libphonenumber Authors",
+  "url": "https://github.com/google/libphonenumber",
+  "version": "9.0.36",
+  "retrieved": "2026-08-09",
+  "note": [
+    "The closest licence match any source in this corpus has: Apache-2.0 into an Apache-2.0",
+    "project, so there is nothing to reconcile.",
+    "",
+    "Only the metadata file is taken, not the library. Decoy needs the *shapes* -- how a",
+    "country writes its numbers -- and those are a capture pattern and a template sitting in",
+    "the XML, from which a mask falls out directly. Pulling in the formatting engine to",
+    "produce example numbers and then reducing them back to masks would be the long way",
+    "round to the same answer, with a runtime dependency at the end of it.",
+    "",
+    "Pinned to a release tag rather than master: the metadata changes whenever a country",
+    "renumbers, which is often, and a branch pin would silently alter every phone number",
+    "the corpus generates."
+  ],
+  "artifacts": [
+    {
+      "name": "metadata",
+      "format": "file",
+      "filename": "PhoneNumberMetadata.xml",
+      "url": "https://raw.githubusercontent.com/google/libphonenumber/v9.0.36/resources/PhoneNumberMetadata.xml",
+      "integrity": "sha512-WeXAyeZ3ShTd1ft6ybhDz3UrEjr4mS48Qqx75GJdpiomjZmXdDV3wo1VQeehw5YlaVxPnWPhlcuIt8WkBiLHuw=="
+    }
+  ]
+}

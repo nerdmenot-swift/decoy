@@ -24,6 +24,10 @@ government — that file records why, rather than leaving the absence unexplaine
 
 Apache-2.0
 ----------
+  libphonenumber — version 9.0.36, retrieved 2026-08-09
+    Copyright (C) 2009 The Libphonenumber Authors
+    https://github.com/google/libphonenumber
+    Full licence: LICENSES/libphonenumber.txt
   lilak — version 3.3, retrieved 2026-08-07
     Copyright 2015 Lilak contributors
     https://github.com/b00f/lilak
