@@ -1,0 +1,32 @@
+{
+  "id": "libaddressinput",
+  "name": "Google libaddressinput (countryinfo.txt)",
+  "license": "Apache-2.0",
+  "copyright": "Copyright 2014 Google Inc.",
+  "url": "https://github.com/google/libaddressinput",
+  "version": "81eb962",
+  "retrieved": "2026-08-09",
+  "note": [
+    "Postal metadata for roughly 240 countries: the regular expression a postcode must",
+    "match, and the layout an address is written in. Apache-2.0, which is the licence this",
+    "project ships under.",
+    "",
+    "The address format is the part with no other source. `%N%n%O%n%A%n%C %S %Z` says a US",
+    "address puts name, organisation and street on their own lines and then city, state and",
+    "ZIP on one -- and `\u3012%Z%n%S%C%n%A%n%O%n%N` says a Japanese one runs the other way",
+    "entirely, postcode first and name last. That is exactly what `location.postal_address`",
+    "encodes, and faker carried it for twelve locales as hand-written strings.",
+    "",
+    "Pinned to a commit: the file changes when a country reforms its postcodes, which should",
+    "be a deliberate re-pin rather than a silent change in what every address looks like."
+  ],
+  "artifacts": [
+    {
+      "name": "countryinfo",
+      "format": "file",
+      "filename": "countryinfo.txt",
+      "url": "https://raw.githubusercontent.com/google/libaddressinput/81eb9628382b07d371d8ea0b11badf7de3857fd5/testdata/countryinfo.txt",
+      "integrity": "sha512-iiXe0jj+Lre9e6AvqZnLibj/yLOIcuLY9dzvPPgr+espCVNAFH+fsSjV0B6pQZ+0CDgZBkatsNqwA8LGg6TaLg=="
+    }
+  ]
+}
