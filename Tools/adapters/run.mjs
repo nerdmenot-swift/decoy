@@ -22,6 +22,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { MODELLED_FIELDS, loadBlocklists, trainLocale } from './lib/models.mjs'
+import { applyNamePatterns, loadNameFormats } from './lib/patterns.mjs'
 import { loadSource, provenanceOf } from './lib/sources.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
@@ -303,6 +304,13 @@ async function main() {
     await loadSource('ldnoobw')
   sources.set(screenDescriptor.id, provenanceOf(screenDescriptor))
   const blocklists = await loadBlocklists(screenArtifacts.words)
+
+  // Name order and separator, from the CLDR release the corpus already pins. A pattern
+  // is a composition rule rather than data, and this is the published authority for the
+  // one part of it that varies by language.
+  const { artifacts: cldrArtifacts } = await loadSource('cldr-48')
+  const nameFormats = await loadNameFormats(cldrArtifacts.core, cldrArtifacts.personnames)
+  let namePatterns = 0
   const modelStats = { locales: 0, models: 0, unscreened: [], tooSmall: 0, notViable: [] }
 
   let totalStrings = 0
@@ -311,6 +319,13 @@ async function main() {
     // the `nest()` that used to sit here re-walked a tree that had no dotted keys left
     // in it.
     const definitions = merged[code] ?? {}
+
+    const parents = (chains[code] ?? []).slice(1).map((c) => merged[c] ?? {})
+    if (applyNamePatterns(code, definitions, nameFormats, parents)) {
+      namePatterns += 1
+      attribution[code] ??= {}
+      attribution[code]['person.name'] = 'cldr-48'
+    }
 
     const { trained, skipped } = trainLocale(code, definitions, blocklists)
     for (const reason of skipped) {
@@ -357,6 +372,7 @@ async function main() {
   console.log(`  with own data : ${covered.length}`)
   console.log(`  empty         : ${locales.length - covered.length}`)
   console.log(`strings written : ${totalStrings.toLocaleString('en-US')}`)
+  console.log(`name patterns   : ${namePatterns} locales, from CLDR`)
   console.log(
     `models trained  : ${modelStats.models} across ${modelStats.locales} locales`,
   )
