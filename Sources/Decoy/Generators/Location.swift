@@ -41,7 +41,21 @@ public struct LocationFaker {
 
     // MARK: - Places
 
+    /// A city in this locale's country.
+    ///
+    /// The gazetteer first, the composition pattern only as a fallback — and that order
+    /// was the wrong way round until the street work went looking at it. faker composes
+    /// city names from a prefix, a given name and a suffix, because it had no gazetteer:
+    /// "Lake Jenniferville", "Port Karlchester". Decoy has had 180,022 real cities from
+    /// GeoNames since the cities adapter landed, and was shadowing all of them with the
+    /// invented form in the sixty-nine locales faker gave a pattern to.
+    ///
+    /// Real place names are better fake data. They geocode, they look right to somebody
+    /// who lives there, and the only thing the invented form has over them is that it
+    /// cannot accidentally name a real town — which for a city, unlike a person, is not a
+    /// problem anybody has.
     public mutating func city() -> String {
+        if let name = faker.draw("location.city_name") { return name }
         if let pattern = faker.draw("location.city_pattern") {
             return faker.expand(pattern)
         }

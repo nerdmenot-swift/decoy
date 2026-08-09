@@ -185,6 +185,24 @@ const FREE_EMAIL = ['gmail.com', 'hotmail.com', 'icloud.com', 'outlook.com', 'pr
  */
 const EXAMPLE_EMAIL = ['example.com', 'example.net', 'example.org']
 
+/**
+ * English toponymic elements — the pieces place names are built from.
+ *
+ * `city()` draws a real GeoNames city now, so these no longer compose one; they remain
+ * because `cityPrefix()` and `citySuffix()` are public generators and a feature should
+ * not vanish because its data moved. Real elements rather than invented ones: every
+ * suffix here is a live English place-name ending with an etymology behind it.
+ */
+const CITY_PREFIXES = [
+  'East', 'Fort', 'Great', 'Lake', 'Little', 'Lower', 'Mount', 'New', 'North', 'Old',
+  'Port', 'Saint', 'South', 'Upper', 'West',
+]
+const CITY_SUFFIXES = [
+  'borough', 'bury', 'burgh', 'cester', 'chester', 'dale', 'field', 'ford', 'ham',
+  'haven', 'land', 'mouth', 'port', 'shire', 'side', 'stead', 'ton', 'view', 'ville',
+  'worth',
+]
+
 /** Compass points. Closed, ancient, and not published by anybody as a registry. */
 const CARDINAL = ['North', 'East', 'South', 'West']
 const CARDINAL_ABBR = ['N', 'E', 'S', 'W']
@@ -425,6 +443,8 @@ export async function run() {
         'vehicle.bicycle_type': BICYCLE_TYPES,
         'airline.airplane': AIRPLANES,
         'airline.airline': AIRLINES,
+        'location.city_prefix': CITY_PREFIXES,
+        'location.city_suffix': CITY_SUFFIXES,
         'location.direction.cardinal': CARDINAL,
         'location.direction.cardinal_abbr': CARDINAL_ABBR,
         'location.direction.ordinal': ORDINAL,

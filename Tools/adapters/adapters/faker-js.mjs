@@ -173,6 +173,11 @@ const SUPERSEDED = new Set([
   'word.preposition',
   'word.conjunction',
   'word.interjection',
+  // City composition, superseded by the gazetteer. `city()` draws a real city where the
+  // locale has one, which is seventy-four of seventy-six, so a prefix/suffix pattern only
+  // shadows better data. GeoNames gives Osnabrück; this gave "Lake Jenniferville".
+  'location.city_pattern',
+  'location.city_infix',
 ])
 
 /** Removes superseded keys from one category's tree. */

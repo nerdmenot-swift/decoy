@@ -655,7 +655,20 @@ Counts are not the quality bar.
    | `lorem.word` (26 locales, mostly Latin) | Perseus, Wikisource, Latin Library | The Latin *texts* are public domain; the digital editions are CC BY-SA, which does not compose with Apache-2.0. Project Gutenberg is usable but the extraction — tokenising a classical text into a usable vocabulary — is a project rather than an adapter. |
    | `company.legal_entity_type` (42 locales) | GLEIF's ISO 20275 Entity Legal Forms list | Versioned and stably hosted, but GLEIF states no licence for it and the list derives from a proprietary ISO standard. An unstated licence is not a permissive one. |
 
-   **The three largest items have no registry and will not get one.**
+   **Streets are the second blocker, and unlike names they may have no answer.**
+   `location.street_name` is 18,725 values across thirty locales. OpenStreetMap has every
+   street in the world under ODbL, which is share-alike and therefore unusable here. There
+   is no other gazetteer of streets. The three locales that compose rather than list —
+   Swedish builds `Björk` + `vägen` — could be authored, but doing that for thirty
+   languages means inventing German and Japanese street vocabulary, which the authored
+   source's own rules forbid for good reason.
+
+   The honest position is that streets may stay on faker, and that a faker-free corpus
+   might mean `streetName()` composing from a surname and an authored English suffix in
+   every locale — worse output than faker gives today for German. That trade has not been
+   made and should be made deliberately.
+
+   **The largest item has no registry and will not get one.**
    `location.street_name`, `person.last_name` and `person.first_name` are 68,000 of the
    remaining 122,000 values. OpenStreetMap has street names under ODbL, which is
    share-alike. Name lists exist per country from national statistics offices — INSEE,
