@@ -1,0 +1,3641 @@
+{
+ "retrieved": "2026-08-09",
+ "terms": {
+  "direction_cardinal": {
+   "dag": [
+    "tudu",
+    "wulinpuhili",
+    "Nyɔŋ ni",
+    "wulinluhili"
+   ],
+   "diq": [
+    "zıme",
+    "rocvetış",
+    "Veroc",
+    "Rocawan"
+   ],
+   "dtp": [
+    "koibutan",
+    "kosilahon",
+    "kabaatan",
+    "kotonobon"
+   ],
+   "eml": [
+    "nôt",
+    "Matèina",
+    "Mezdé",
+    "Sîra"
+   ],
+   "en-ca": [
+    "north",
+    "east",
+    "south",
+    "west"
+   ],
+   "en-gb": [
+    "north",
+    "east",
+    "south",
+    "west"
+   ],
+   "ext": [
+    "Norti",
+    "Salienti",
+    "Sul",
+    "Ponienti"
+   ],
+   "frp": [
+    "bise",
+    "levant",
+    "mié-jorn",
+    "cuchient"
+   ],
+   "frr": [
+    "Nuurd",
+    "Uast",
+    "Süüd",
+    "Waast"
+   ],
+   "fy": [
+    "Noard",
+    "east",
+    "súd",
+    "West"
+   ],
+   "ga": [
+    "tuaisceart",
+    "oirthear",
+    "deisceart",
+    "iarthar"
+   ],
+   "gl": [
+    "norte",
+    "leste",
+    "sur",
+    "oeste"
+   ],
+   "glk": [
+    "کلسيا",
+    "خۊرتاو",
+    "نسا",
+    "خۊرخۊس"
+   ],
+   "gor": [
+    "tilayo",
+    "pobbutuwa",
+    "Huliyaliyo",
+    "otolopa"
+   ],
+   "gu": [
+    "ઉત્તર",
+    "પૂર્વ",
+    "દક્ષિણ",
+    "પશ્ચિમ"
+   ],
+   "guc": [
+    "Palaapünaa",
+    "Wiinna",
+    "Uuchipünaa",
+    "Waapünaa"
+   ],
+   "ha": [
+    "Arewa,",
+    "Gabas",
+    "Kudu",
+    "Yamma"
+   ],
+   "hr": [
+    "sjever",
+    "istok",
+    "jug",
+    "zapad"
+   ],
+   "hsb": [
+    "sewjer",
+    "wuchod",
+    "juh",
+    "zapad"
+   ],
+   "ht": [
+    "nò",
+    "Lès",
+    "Sid",
+    "Lwès"
+   ],
+   "hy": [
+    "հյուսիս",
+    "արևելք",
+    "հարավ",
+    "արևմուտք"
+   ],
+   "ia": [
+    "nord",
+    "est",
+    "sud",
+    "west"
+   ],
+   "ie": [
+    "nord",
+    "ost",
+    "sud",
+    "west"
+   ],
+   "inh": [
+    "ГӀинбухе",
+    "Малхбоале",
+    "ЗӀилбухе",
+    "Малхбузе"
+   ],
+   "is": [
+    "norður",
+    "Austur",
+    "Suður",
+    "Vestur"
+   ],
+   "jv": [
+    "lor",
+    "Wétan",
+    "Kidul",
+    "kulon"
+   ],
+   "ka": [
+    "ჩრდილოეთი",
+    "აღმოსავლეთი",
+    "სამხრეთი",
+    "დასავლეთი"
+   ],
+   "kab": [
+    "Agafa",
+    "asamar",
+    "Anẓul",
+    "Amalu(Tanila)"
+   ],
+   "kcg": [
+    "a̱za",
+    "a̱tyin",
+    "a̱tak",
+    "jenshyung"
+   ],
+   "kge": [
+    "Liba",
+    "Darak",
+    "Hulu (Arah Mata Angin)",
+    "Topi (Arah Mata Angin)"
+   ],
+   "kk": [
+    "солтүстік",
+    "шығыс",
+    "Оңтүстік",
+    "Батыс"
+   ],
+   "ko": [
+    "북쪽",
+    "동쪽",
+    "남쪽",
+    "서쪽"
+   ],
+   "koi": [
+    "ойвыв",
+    "асыввыв",
+    "Лунвыв",
+    "Рытвыв"
+   ],
+   "ku": [
+    "bakur",
+    "rojhilat",
+    "Başûr",
+    "Rojava"
+   ],
+   "kv": [
+    "войвыв",
+    "асыввыв",
+    "Лунвыв",
+    "Рытыввыв"
+   ],
+   "lmo": [
+    "Nòrd",
+    "Est",
+    "Sud",
+    "Ovest"
+   ],
+   "ln": [
+    "nola",
+    "Monyɛlɛ",
+    "Súdi",
+    "Límbe"
+   ],
+   "lo": [
+    "ເໜືອ",
+    "ຕາເວັນອອກ",
+    "ພາກໃຕ້",
+    "ຕາເວັນຕົກ"
+   ],
+   "lt": [
+    "šiaurė",
+    "rytai",
+    "pietūs",
+    "vakarai"
+   ],
+   "mai": [
+    "उत्तर",
+    "पूर्व",
+    "दक्षिण",
+    "पश्चिम"
+   ],
+   "map-bms": [
+    "lor",
+    "Wetan",
+    "Kidul",
+    "Kulon"
+   ],
+   "mdf": [
+    "Кельме ширесь",
+    "Шинь стяма ширесь",
+    "Лямбе ширесь",
+    "Шинь мадома ширесь"
+   ],
+   "mhr": [
+    "йӱдвел",
+    "Эрвел",
+    "Кечывалвел",
+    "Касвел"
+   ],
+   "min": [
+    "utaro",
+    "Timua",
+    "Salatan",
+    "Baraik"
+   ],
+   "mk": [
+    "север",
+    "исток",
+    "југ",
+    "запад"
+   ],
+   "mr": [
+    "उत्तर दिशा",
+    "पूर्व दिशा",
+    "दक्षिण दिशा",
+    "पश्चिम दिशा"
+   ],
+   "my": [
+    "မြောက်အရပ်",
+    "အရှေ့အရပ်",
+    "တောင်အရပ်",
+    "အနောက်အရပ်"
+   ],
+   "myv": [
+    "пелеве ёнкс",
+    "Чилисема",
+    "Лембе ёнкс",
+    "Чивалгома"
+   ],
+   "nan": [
+    "Pak-pêng",
+    "tang-pêng",
+    "lâm-pêng",
+    "sai-pêng"
+   ],
+   "nap": [
+    "nord",
+    "Est",
+    "Sud",
+    "Ovest"
+   ],
+   "new": [
+    "यंता",
+    "वंता",
+    "येता",
+    "योता"
+   ],
+   "nrm": [
+    "nord",
+    "êst",
+    "Su",
+    "Vouêt"
+   ],
+   "oc": [
+    "nòrd",
+    "Èst",
+    "sud",
+    "Oèst"
+   ],
+   "or": [
+    "ଉତ୍ତର",
+    "ପୂର୍ବ",
+    "ଦକ୍ଷିଣ",
+    "ପଶ୍ଚିମ"
+   ],
+   "os": [
+    "цæгат",
+    "скæсæн",
+    "хуссар",
+    "ныгуылæн"
+   ],
+   "pam": [
+    "pangulu",
+    "Aslagan",
+    "Mauli",
+    "Albugan"
+   ],
+   "pap": [
+    "nort",
+    "ost",
+    "sùit",
+    "wèst"
+   ],
+   "pnb": [
+    "اُبھا",
+    "چڑھدا",
+    "لما",
+    "لہندا"
+   ],
+   "pt-br": [
+    "norte",
+    "leste",
+    "sul",
+    "oeste"
+   ],
+   "pwn": [
+    "viri",
+    "kacedas",
+    "navalj",
+    "kaledep"
+   ],
+   "qu": [
+    "chincha",
+    "Anti",
+    "Urin",
+    "Kunti"
+   ],
+   "ro": [
+    "nord",
+    "est",
+    "sud",
+    "vest"
+   ],
+   "rue": [
+    "сївер",
+    "восток",
+    "юг",
+    "запад"
+   ],
+   "ryu": [
+    "にし",
+    "あがり",
+    "ふぇー",
+    "いり"
+   ],
+   "sah": [
+    "хоту",
+    "илин",
+    "соҕуруу",
+    "арҕаа"
+   ],
+   "scn": [
+    "nord",
+    "est",
+    "sud",
+    "ovist"
+   ],
+   "sco": [
+    "north",
+    "east",
+    "sooth",
+    "wast"
+   ],
+   "sgs": [
+    "šiaurė",
+    "Rītā",
+    "Pėitā",
+    "Vakarā"
+   ],
+   "sh": [
+    "sjever",
+    "istok",
+    "jug",
+    "zapad"
+   ],
+   "sl": [
+    "sever",
+    "vzhod",
+    "jug",
+    "zahod"
+   ],
+   "sn": [
+    "maodzanyemba",
+    "Mabvazuva",
+    "Chamhembe",
+    "Madokero"
+   ],
+   "so": [
+    "woqooyi",
+    "Bari",
+    "Koonfur",
+    "Galbeed"
+   ],
+   "sr": [
+    "север",
+    "исток",
+    "југ",
+    "запад"
+   ],
+   "su": [
+    "kalér",
+    "Wétan",
+    "Kidul",
+    "Kulon"
+   ],
+   "sw": [
+    "kaskazini",
+    "Mashariki",
+    "Kusini",
+    "Magharibi"
+   ],
+   "tcy": [
+    "ಬಡಕ್ಕಾಯಿ",
+    "ಮೂಡಾಯಿ",
+    "ತೆನ್ಕಾಯಿ",
+    "ಪಡ್ಡಾಯಿ"
+   ],
+   "tg": [
+    "шимол",
+    "Шарқ",
+    "Ҷануб",
+    "Ғарб"
+   ],
+   "tr": [
+    "kuzey",
+    "doğu",
+    "güney",
+    "batı"
+   ],
+   "tt": [
+    "төньяк",
+    "көнчыгыш",
+    "көньяк",
+    "көнбатыш"
+   ],
+   "tt-cyrl": [
+    "төньяк",
+    "көнчыгыш",
+    "көньяк",
+    "көнбатыш"
+   ],
+   "udm": [
+    "уйпал",
+    "шундыӝужан",
+    "лымшор",
+    "шундыпуксён"
+   ],
+   "ug": [
+    "شىمال",
+    "شەرق",
+    "جەنۇب",
+    "غەرب"
+   ],
+   "ur": [
+    "شمال",
+    "مشرق",
+    "جنوب",
+    "مغرب-سمت"
+   ],
+   "uz": [
+    "shimol",
+    "Sharq",
+    "Janub",
+    "Gʻarb"
+   ],
+   "vec": [
+    "nord",
+    "est",
+    "sud",
+    "òvest"
+   ],
+   "vep": [
+    "pohjoine",
+    "Päivnouzm",
+    "Suvi",
+    "Päivlaskm"
+   ],
+   "vi": [
+    "hướng bắc",
+    "hướng đông",
+    "hướng nam",
+    "hướng tây"
+   ],
+   "wa": [
+    "bijhe",
+    "Levant",
+    "Sud",
+    "Coûtchant"
+   ],
+   "war": [
+    "amihan",
+    "Sinirangan",
+    "Salatan",
+    "Katundan"
+   ],
+   "xmf": [
+    "ოორუე",
+    "ბჟაეიოლი",
+    "ობჟათე",
+    "ბჟადალი"
+   ],
+   "yi": [
+    "צפון",
+    "מיזרח",
+    "דרום",
+    "מערב"
+   ],
+   "tl": [
+    "hilaga",
+    "Silangan",
+    "Timog",
+    "kanluran"
+   ],
+   "uk": [
+    "північ",
+    "схід",
+    "південь",
+    "захід"
+   ],
+   "yo": [
+    "àríwá",
+    "ilà oòrùn",
+    "gúúsù",
+    "ìwọ̀ oòrùn"
+   ],
+   "za": [
+    "Baihbaek",
+    "Baihdoeng",
+    "Baihnamz",
+    "Baihsae"
+   ],
+   "zgh": [
+    "ⴰⴳⴰⴼⴰ",
+    "ⴰⴳⵎⵎⵓⴹ",
+    "ⴰⵏⵣⵓⵍ",
+    "ⴰⵜⴰⵔⴰⵎ"
+   ],
+   "mg": [
+    "北",
+    "Atsinanana",
+    "Atsimo",
+    "Andrefana"
+   ],
+   "vo": [
+    "Nolüd",
+    "Lofüd",
+    "Sulüd",
+    "Vesüd"
+   ],
+   "shn": [
+    "ၽၢႆႇႁွင်ႇ",
+    "ၽၢႆႇဢွၵ်ႇ",
+    "ၽၢႆႇၸၢၼ်း",
+    "ၽၢႆႇတူၵ်း"
+   ],
+   "wal": [
+    "huuphessa",
+    "arshsho",
+    "tohossa",
+    "arggo"
+   ],
+   "ks": [
+    "وۄتُر",
+    "مَشرِق",
+    "دَکھیُٛن",
+    "پَچھِم"
+   ],
+   "sjd": [
+    "таввял",
+    "нуҏҏьт",
+    "соа̄ййв",
+    "вуэррьял"
+   ],
+   "isv-cyrl": [
+    "сєвер",
+    "возход",
+    "југ",
+    "запад"
+   ],
+   "isv-latn": [
+    "sěver",
+    "vozhod",
+    "jug",
+    "zapad"
+   ],
+   "en": [
+    "north",
+    "east",
+    "south",
+    "west"
+   ],
+   "ru": [
+    "север",
+    "восток",
+    "юг",
+    "запад"
+   ],
+   "ml": [
+    "വടക്ക്",
+    "കിഴക്ക്",
+    "തെക്ക്",
+    "പടിഞ്ഞാറ്"
+   ],
+   "it": [
+    "nord",
+    "est",
+    "sud",
+    "ovest"
+   ],
+   "id": [
+    "utara",
+    "timur",
+    "selatan",
+    "barat"
+   ],
+   "bn": [
+    "উত্তর",
+    "পূর্ব",
+    "দক্ষিণ",
+    "পশ্চিম"
+   ],
+   "da": [
+    "nord",
+    "øst",
+    "syd",
+    "vest"
+   ],
+   "fr": [
+    "nord",
+    "est",
+    "sud",
+    "ouest"
+   ],
+   "he": [
+    "צפון",
+    "מזרח",
+    "דרום",
+    "מערב"
+   ],
+   "zh": [
+    "北",
+    "東",
+    "南",
+    "西"
+   ],
+   "sk": [
+    "sever",
+    "východ",
+    "juh",
+    "západ"
+   ],
+   "cs": [
+    "sever",
+    "východ",
+    "jih",
+    "západ"
+   ],
+   "de": [
+    "Norden",
+    "Osten",
+    "Süden",
+    "Westen"
+   ],
+   "nn": [
+    "nord",
+    "aust",
+    "sør",
+    "vest"
+   ],
+   "fi": [
+    "pohjoinen",
+    "itä",
+    "etelä",
+    "länsi"
+   ],
+   "et": [
+    "põhi",
+    "ida",
+    "lõuna",
+    "lääs"
+   ],
+   "nb": [
+    "nord",
+    "øst",
+    "sør",
+    "vest"
+   ],
+   "ms": [
+    "utara",
+    "timur",
+    "selatan",
+    "barat"
+   ],
+   "ms-arab": [
+    "اوتارا",
+    "تيمور",
+    "سلاتن",
+    "بارت"
+   ],
+   "sv": [
+    "norr",
+    "öster",
+    "söder",
+    "väster"
+   ],
+   "pt": [
+    "norte",
+    "leste",
+    "sul",
+    "oeste"
+   ],
+   "eo": [
+    "nordo",
+    "oriento",
+    "sudo",
+    "okcidento"
+   ],
+   "es": [
+    "norte",
+    "este",
+    "sur",
+    "oeste"
+   ],
+   "ja": [
+    "北",
+    "東",
+    "南",
+    "西"
+   ],
+   "hi": [
+    "उत्तर",
+    "पूर्व",
+    "दक्षिण",
+    "पश्चिम"
+   ],
+   "ne": [
+    "उत्तर",
+    "पूर्व",
+    "दक्षिण",
+    "पश्चिम"
+   ],
+   "te": [
+    "ఉత్తరం",
+    "తూర్పు",
+    "దక్షిణం",
+    "పడమర"
+   ],
+   "mnc": [
+    "ᠠᠮᠠᡵᡤᡳ",
+    "ᡩᡝᡵᡤᡳ",
+    "ᠵᡠᠯᡝᡵᡤᡳ",
+    "ᠸᠠᡵᡤᡳ"
+   ],
+   "eu": [
+    "ipar",
+    "ekialde",
+    "hego",
+    "mendebalde"
+   ],
+   "el": [
+    "βορράς",
+    "ανατολή",
+    "νότος",
+    "δύση"
+   ],
+   "be-tarask": [
+    "поўнач",
+    "усход",
+    "поўдзень",
+    "захад"
+   ],
+   "zh-hant": [
+    "北",
+    "東",
+    "南",
+    "西"
+   ],
+   "be": [
+    "поўнач",
+    "усход",
+    "поўдзень",
+    "захад"
+   ],
+   "bg": [
+    "север",
+    "Изток",
+    "Юг",
+    "Запад"
+   ],
+   "bs": [
+    "sjever",
+    "istok",
+    "jug",
+    "zapad"
+   ],
+   "sr-ec": [
+    "Север",
+    "Исток",
+    "Југ",
+    "Запад"
+   ],
+   "la": [
+    "Septentrio",
+    "Oriens",
+    "Meridies",
+    "Occidens"
+   ],
+   "zh-hans": [
+    "北",
+    "东",
+    "南",
+    "西"
+   ],
+   "ca": [
+    "nord",
+    "est",
+    "sud",
+    "oest"
+   ],
+   "fa": [
+    "شمال",
+    "خاور",
+    "جنوب",
+    "باختر"
+   ],
+   "ar": [
+    "شمال",
+    "شرق",
+    "جنوب",
+    "غرب"
+   ],
+   "zh-cn": [
+    "北",
+    "东",
+    "南",
+    "西"
+   ],
+   "zh-hk": [
+    "北",
+    "東",
+    "南",
+    "西"
+   ],
+   "zh-mo": [
+    "北",
+    "東",
+    "南",
+    "西"
+   ],
+   "zh-my": [
+    "北",
+    "东",
+    "南",
+    "西"
+   ],
+   "zh-sg": [
+    "北",
+    "东",
+    "南",
+    "西"
+   ],
+   "zh-tw": [
+    "北",
+    "東",
+    "南",
+    "西"
+   ],
+   "kn": [
+    "ಉತ್ತರ",
+    "ಪೂರ್ವ",
+    "ದಕ್ಷಿಣ",
+    "ಪಶ್ಚಿಮ"
+   ],
+   "pl": [
+    "północ",
+    "wschód",
+    "południe",
+    "zachód"
+   ],
+   "yue": [
+    "北",
+    "東",
+    "南",
+    "西"
+   ],
+   "de-at": [
+    "Norden",
+    "Osten",
+    "Süden",
+    "Westen"
+   ],
+   "de-ch": [
+    "Norden",
+    "Osten",
+    "Süden",
+    "Westen"
+   ],
+   "lb": [
+    "Norden",
+    "Osten",
+    "Süden",
+    "Westen"
+   ],
+   "nds": [
+    "Noorden",
+    "Oosten",
+    "Süden",
+    "Westen"
+   ],
+   "gan": [
+    "北",
+    "東",
+    "南",
+    "西"
+   ],
+   "hak": [
+    "北",
+    "東",
+    "南",
+    "西"
+   ],
+   "wuu": [
+    "北",
+    "东",
+    "南",
+    "西"
+   ],
+   "br": [
+    "norzh",
+    "Reter",
+    "Su",
+    "Kornôg"
+   ],
+   "bjn": [
+    "utara",
+    "Timur",
+    "Salatan",
+    "Barat"
+   ],
+   "pa": [
+    "ਉੱਤਰ",
+    "ਪੂਰਬ",
+    "ਦੱਖਣ",
+    "ਪੱਛਮ"
+   ],
+   "sq": [
+    "veriu",
+    "Lindja",
+    "Jugu",
+    "Perëndimi"
+   ],
+   "lv": [
+    "ziemeļi",
+    "austrumi",
+    "dienvidi",
+    "rietumi"
+   ],
+   "hu": [
+    "észak",
+    "kelet",
+    "dél",
+    "nyugat"
+   ],
+   "th": [
+    "ทิศเหนือ",
+    "ทิศตะวันออก",
+    "ทิศใต้",
+    "ทิศตะวันตก"
+   ],
+   "ban": [
+    "Kaja",
+    "Kangin",
+    "Kelod",
+    "kauh"
+   ],
+   "fur": [
+    "Nord",
+    "Est",
+    "Sud",
+    "Ovest"
+   ],
+   "an": [
+    "Norte",
+    "Este",
+    "Sud",
+    "Ueste"
+   ],
+   "nl": [
+    "noord",
+    "oost",
+    "zuid",
+    "west"
+   ],
+   "ckb": [
+    "باکوور",
+    "ڕۆژھەڵات",
+    "باشوور",
+    "ڕۆژاوا"
+   ],
+   "sd": [
+    "اتر",
+    "اوڀر",
+    "ڏکڻ",
+    "اولھ"
+   ],
+   "ta": [
+    "வடக்கு",
+    "கிழக்கு",
+    "தெற்கு",
+    "மேற்கு"
+   ],
+   "ab": [
+    "Аҩада",
+    "Амрагылара",
+    "Алада",
+    "Амраҭашәара"
+   ],
+   "af": [
+    "noord",
+    "oos",
+    "suid",
+    "wes"
+   ],
+   "am": [
+    "ሰሜን",
+    "ምሥራቅ",
+    "ደቡብ",
+    "ምዕራብ"
+   ],
+   "arc": [
+    "ܓܪܒܝܐ",
+    "ܡܕܢܚܐ",
+    "ܬܝܡܢܐ",
+    "ܡܥܪܒܐ"
+   ],
+   "ast": [
+    "norte",
+    "este",
+    "sur",
+    "oeste"
+   ],
+   "atj": [
+    "kiwetinok",
+    "wapanok",
+    "cawonok",
+    "nakapehonok"
+   ],
+   "av": [
+    "север",
+    "Бакъбаккул рахъ",
+    "Къиблаяб рахъ",
+    "БакътӀерхьул рахъ"
+   ],
+   "az": [
+    "şimal",
+    "Şərq",
+    "cənub",
+    "Qərb"
+   ],
+   "azb": [
+    "قوزئی",
+    "دوغو",
+    "گونئی",
+    "باتی"
+   ],
+   "ba": [
+    "төньяҡ",
+    "Көнсығыш",
+    "Көньяҡ",
+    "Көнбайыш"
+   ],
+   "bcl": [
+    "amihanan",
+    "sirangan",
+    "Habagatan",
+    "Solnopan"
+   ],
+   "bew": [
+    "Lor",
+    "Wètan",
+    "Kidul",
+    "Kulon"
+   ],
+   "bo": [
+    "བྱང་ཕྱོགས།",
+    "ཤར་ཕྱོགས།",
+    "ལྷོ་ཕྱོགས།",
+    "ནུབ་ཕྱོགས།"
+   ],
+   "bxr": [
+    "хойто зүг",
+    "Зүүн зүг",
+    "Урда зүг",
+    "Баруун зүг"
+   ],
+   "ceb": [
+    "amihanan",
+    "Sidlakan",
+    "Habagatan",
+    "Kasadpan"
+   ],
+   "co": [
+    "nordu",
+    "Estu",
+    "sudu",
+    "uvestu"
+   ],
+   "crh-ro": [
+    "sîrt",
+    "kúntuwar",
+    "kúnbetí",
+    "kúnbatar"
+   ],
+   "cu": [
+    "сѣвєръ",
+    "Въстокъ",
+    "Югъ",
+    "Ꙁападъ"
+   ],
+   "cy": [
+    "gogledd",
+    "dwyrain",
+    "de",
+    "gorllewin"
+   ],
+   "mt": [
+    "tramuntana",
+    "lvant",
+    "nofsinhar",
+    "punent"
+   ]
+  },
+  "direction_ordinal": {
+   "zh": [
+    "东北",
+    "西北",
+    "東南",
+    "西南"
+   ],
+   "br": [
+    "Biz",
+    "Gwalarn",
+    "Gevred",
+    "Mervent"
+   ],
+   "fa": [
+    "شمال شرقی",
+    "شمال غربی",
+    "جنوب شرقی",
+    "جنوب غربی"
+   ],
+   "fi": [
+    "koillinen",
+    "luode",
+    "kaakko",
+    "lounas"
+   ],
+   "ru": [
+    "северо-восток",
+    "северо-запад",
+    "юго-восток",
+    "юго-запад"
+   ],
+   "et": [
+    "Kirre",
+    "Loe",
+    "Kagu",
+    "Edel"
+   ],
+   "fr": [
+    "nord-est",
+    "nord-ouest",
+    "sud-est",
+    "sud-ouest"
+   ],
+   "ckb": [
+    "باکووری ڕۆژھەڵات",
+    "باکووری ڕۆژاوا",
+    "باشووری ڕۆژھەڵات",
+    "باشووری ڕۆژاوا"
+   ],
+   "an": [
+    "Noreste",
+    "Norueste",
+    "Sudeste",
+    "Sudueste"
+   ],
+   "ar": [
+    "شمال شرقي",
+    "شمال غربي",
+    "جنوب شرقي",
+    "جنوب غربي"
+   ],
+   "atj": [
+    "kiwetinok wapanok",
+    "kiwetinok nakapehonok",
+    "cawonok wapanok",
+    "cawonok nakapehonok"
+   ],
+   "az": [
+    "Şimal-şərq",
+    "Şimal-qərb",
+    "Cənub-şərq",
+    "Cənub-qərb"
+   ],
+   "azb": [
+    "قوزئی دوغو",
+    "قوزئی باتی",
+    "گونئی دوغو",
+    "گونئی باتی"
+   ],
+   "bew": [
+    "Lor-wètan",
+    "Lor-kulon",
+    "Kidul-wètan",
+    "Kidul-kulon"
+   ],
+   "bg": [
+    "Североизток",
+    "Северозапад",
+    "Югоизток",
+    "Югозапад"
+   ],
+   "bn": [
+    "উত্তর পূর্ব",
+    "উত্তর পশ্চিম",
+    "দক্ষিণ পূর্ব",
+    "দক্ষিণ পশ্চিম"
+   ],
+   "bs": [
+    "sjeveroistok",
+    "sjeverozapad",
+    "jugoistok",
+    "jugozapad"
+   ],
+   "ca": [
+    "nord-est",
+    "nord-oest",
+    "sud-est",
+    "sud-oest"
+   ],
+   "de-at": [
+    "Nordost",
+    "Nordwest",
+    "Südost",
+    "Südwest"
+   ],
+   "de-ch": [
+    "Nordost",
+    "Nordwest",
+    "Südost",
+    "Südwest"
+   ],
+   "diq": [
+    "Zımeyê rocvetışi",
+    "Zımeyê rocawani",
+    "Verocê rocvetışi",
+    "Verocê rocawani"
+   ],
+   "dtp": [
+    "koibutan kosilahon",
+    "koibutan kotonobon",
+    "kabaatan kosilahon",
+    "kabaatan kotonobon"
+   ],
+   "el": [
+    "βορειοανατολικά",
+    "βορειοδυτικά",
+    "νοτιοανατολικά",
+    "νοτιοδυτικά"
+   ],
+   "eo": [
+    "nordoriento",
+    "nordokcidento",
+    "sudoriento",
+    "sudokcidento"
+   ],
+   "frr": [
+    "Nuurduast",
+    "Nuurdwaast",
+    "Süüduast",
+    "Süüdwaast"
+   ],
+   "gl": [
+    "nordés",
+    "noroeste",
+    "sueste",
+    "suroeste"
+   ],
+   "he": [
+    "צפון-מזרח",
+    "צפון-מערב",
+    "דרום-מזרח",
+    "דרום-מערב"
+   ],
+   "hr": [
+    "sjeveroistok",
+    "sjeverozapad",
+    "jugoistok",
+    "jugozapad"
+   ],
+   "hsb": [
+    "sewjerowuchod",
+    "sewjerozapad",
+    "juhowuchod",
+    "juhozapad"
+   ],
+   "hu": [
+    "északkelet",
+    "északnyugat",
+    "délkelet",
+    "délnyugat"
+   ],
+   "hy": [
+    "հյուսիս-արևելք",
+    "հյուսիս-արևմուտք",
+    "հարավ-արևելք",
+    "հարավ-արևմուտք"
+   ],
+   "ia": [
+    "nord-est",
+    "nord-west",
+    "sud-est",
+    "sud-west"
+   ],
+   "ja": [
+    "北東",
+    "北西",
+    "南東",
+    "南西"
+   ],
+   "jv": [
+    "Lor-Wétan",
+    "Lor-Kulon",
+    "Kidul-Wétan",
+    "Kidul-Kulon"
+   ],
+   "ko": [
+    "북동쪽",
+    "북서쪽",
+    "남동쪽",
+    "남서쪽"
+   ],
+   "ku": [
+    "Bakur rojhilat",
+    "Bakur rojava",
+    "Başûr rojhilat",
+    "Başûr rojava"
+   ],
+   "lv": [
+    "ziemeļaustrumi",
+    "ziemeļrietumi",
+    "dienvidaustrumi",
+    "dienvidrietumi"
+   ],
+   "map-bms": [
+    "Lor-Wetan",
+    "Lor-Kulon",
+    "Kidul-Wetan",
+    "Kidul-Kulon"
+   ],
+   "mk": [
+    "североисток",
+    "северозапад",
+    "југоисток",
+    "Југозапад"
+   ],
+   "ms": [
+    "timur laut",
+    "barat laut",
+    "tenggara",
+    "barat daya"
+   ],
+   "ms-arab": [
+    "تيمور لاءوت",
+    "بارت لاءوت",
+    "تڠݢارا",
+    "بارت داي"
+   ],
+   "nds": [
+    "Noordoost",
+    "Noordwest",
+    "Süüdoost",
+    "Süüdwest"
+   ],
+   "nn": [
+    "nordaust",
+    "nordvest",
+    "søraust",
+    "sørvest"
+   ],
+   "pl": [
+    "północny wschód",
+    "północny zachód",
+    "południowy wschód",
+    "południowy zachód"
+   ],
+   "pt-br": [
+    "nordeste",
+    "noroeste",
+    "sudeste",
+    "Sudoeste"
+   ],
+   "rue": [
+    "Северовыход",
+    "Северозапад",
+    "Юговыход",
+    "Югозапад"
+   ],
+   "sh": [
+    "sjeveroistok",
+    "sjeverozapad",
+    "jugoistok",
+    "jugozapad"
+   ],
+   "sk": [
+    "severovýchod",
+    "severozápad",
+    "juhovýchod",
+    "juhozápad"
+   ],
+   "sl": [
+    "severovzhod",
+    "severozahod",
+    "jugovzhod",
+    "jugozahod"
+   ],
+   "sn": [
+    "Maodzanyemba kwakadziva kuMabvazuva",
+    "Maodzanyemba kwakadziva kuMadokero",
+    "Chamhembe kwakadziva kumabvazuva",
+    "Chamhembe kwakadziva kuMadokero"
+   ],
+   "sr": [
+    "североисток",
+    "северозапад",
+    "југоисток",
+    "југозапад"
+   ],
+   "sr-ec": [
+    "североисток",
+    "северозапад",
+    "југоисток",
+    "југозапад"
+   ],
+   "tcy": [
+    "ಈಸಾನ್ಯೊ",
+    "ವಾಯುವ್ಯೊ",
+    "ಆಗ್ನೆಯೊ",
+    "ನೈರುತ್ಯೊ"
+   ],
+   "th": [
+    "ทิศตะวันออกเฉียงเหนือ",
+    "ทิศตะวันตกเฉียงเหนือ",
+    "ทิศตะวันออกเฉียงใต้",
+    "ทิศตะวันตกเฉียงใต้"
+   ],
+   "tr": [
+    "kuzeydoğu",
+    "kuzeybatı",
+    "güneydoğu",
+    "güneybatı"
+   ],
+   "uk": [
+    "північний схід",
+    "північний захід",
+    "південний схід",
+    "південний захід"
+   ],
+   "vec": [
+    "nordest",
+    "nordòvest",
+    "sudest",
+    "sudòvest"
+   ],
+   "vep": [
+    "Homendezbok",
+    "Öbok",
+    "Longibok",
+    "Ehtbok"
+   ],
+   "vi": [
+    "đông bắc",
+    "tây bắc",
+    "đông nam",
+    "tây nam"
+   ],
+   "war": [
+    "Dumagsaan",
+    "Kanawayan",
+    "Timugan",
+    "Habagatan"
+   ],
+   "yue": [
+    "東北",
+    "西北",
+    "東南",
+    "西南"
+   ],
+   "za": [
+    "Baihdoengbaek",
+    "Baihsaebaek",
+    "Baihdoengnamz",
+    "Baihsaenamz"
+   ],
+   "zh-hans": [
+    "东北",
+    "西北",
+    "东南",
+    "西南"
+   ],
+   "zh-hk": [
+    "東北",
+    "西北",
+    "東南",
+    "西南"
+   ],
+   "id": [
+    "timur laut",
+    "barat laut",
+    "tenggara",
+    "Barat daya"
+   ],
+   "ro": [
+    "nord-est",
+    "nord-vest",
+    "sud-est",
+    "sud-vest"
+   ],
+   "my": [
+    "အရှေ့မြောက်",
+    "အနောက်မြောက်",
+    "အရှေ့တောင်",
+    "အနောက်တောင်"
+   ],
+   "shn": [
+    "ၸဵင်ႇႁွင်ႇဝၼ်းဢွၵ်ႇ",
+    "ၸဵင်ႇႁွင်ႇဝၼ်းတူၵ်း",
+    "ၸဵင်ႇၸၢၼ်းဝၼ်းဢွၵ်ႇ",
+    "ၸဵင်ႇၸၢၼ်းဝၼ်းတူၵ်း"
+   ],
+   "wal": [
+    "huuphessa arshsho",
+    "huuphessa arggo",
+    "tohossa arshsho",
+    "tohossa arggo"
+   ],
+   "it": [
+    "nord-est",
+    "nord-ovest",
+    "sud-est",
+    "sud-ovest"
+   ],
+   "en": [
+    "northeast",
+    "northwest",
+    "southeast",
+    "southwest"
+   ],
+   "nl": [
+    "noordoost",
+    "noordwest",
+    "zuidoost",
+    "zuidwest"
+   ],
+   "cs": [
+    "severovýchod",
+    "severozápad",
+    "jihovýchod",
+    "jihozápad"
+   ],
+   "da": [
+    "nordøst",
+    "nordvest",
+    "sydøst",
+    "sydvest"
+   ],
+   "nb": [
+    "nordøst",
+    "nordvest",
+    "sørøst",
+    "sørvest"
+   ],
+   "pt": [
+    "nordeste",
+    "noroeste",
+    "sudeste",
+    "sudoeste"
+   ],
+   "eu": [
+    "ipar-ekialde",
+    "ipar-mendebalde",
+    "hego-ekialde",
+    "hego-mendebalde"
+   ],
+   "es": [
+    "nordeste",
+    "noroeste",
+    "sureste",
+    "suroeste"
+   ],
+   "de": [
+    "Nordost",
+    "Nordwest",
+    "Südost",
+    "Südwest"
+   ],
+   "sv": [
+    "nordöst",
+    "nordväst",
+    "sydöst",
+    "sydväst"
+   ]
+  },
+  "western_zodiac_sign": {
+   "it": [
+    "Ariete",
+    "Toro",
+    "Gemelli",
+    "Cancro",
+    "Leone",
+    "Vergine",
+    "Bilancia",
+    "Scorpione",
+    "Sagittario",
+    "Capricorno",
+    "Acquario",
+    "Pesci"
+   ],
+   "bg": [
+    "Овен",
+    "Телец",
+    "Близнаци",
+    "Рак",
+    "Лъв",
+    "Дева",
+    "Везни",
+    "Скорпион",
+    "Стрелец",
+    "Козирог",
+    "Водолей",
+    "Риби"
+   ],
+   "lv": [
+    "Auns",
+    "Vērsis",
+    "Dvīņi",
+    "Vēzis",
+    "Lauva",
+    "Jaunava",
+    "Svari",
+    "Skorpions",
+    "Strēlnieks",
+    "Mežāzis",
+    "Ūdensvīrs",
+    "Zivis"
+   ],
+   "el": [
+    "Κριός",
+    "Ταύρος",
+    "Δίδυμοι",
+    "Καρκίνος",
+    "Λέων",
+    "Παρθένος",
+    "Ζυγός",
+    "Σκορπιός",
+    "Τοξότης",
+    "Αιγόκερως",
+    "Υδροχόος",
+    "Ιχθύες"
+   ],
+   "eu": [
+    "Aries",
+    "Taurus",
+    "Gemini",
+    "Cancer",
+    "Leo",
+    "Virgo",
+    "Libra",
+    "Eskorpioia",
+    "Sagitarioa",
+    "Kaprikornioa",
+    "Akuarioa",
+    "Pisces"
+   ],
+   "ka": [
+    "ვერძი",
+    "კურო",
+    "მარჩბივი",
+    "კირჩხიბი",
+    "ლომი",
+    "ქალწული",
+    "სასწორი",
+    "ღრიანკალი",
+    "მშვილდოსანი",
+    "თხის რქა",
+    "მერწყული",
+    "თევზები"
+   ],
+   "ms": [
+    "Aries",
+    "Taurus",
+    "Gemini",
+    "Cancer",
+    "Leo",
+    "Virgo",
+    "Libra",
+    "Scorpio",
+    "Sagittarius",
+    "Capricorn",
+    "Aquarius",
+    "Pisces"
+   ],
+   "nb": [
+    "Væren",
+    "Tyren",
+    "Tvillingene",
+    "Krepsen",
+    "Løven",
+    "Jomfruen",
+    "Vekten",
+    "Skorpionen",
+    "Skytten",
+    "Steinbukken",
+    "Vannmannen",
+    "Fiskene"
+   ],
+   "ro": [
+    "Berbec",
+    "Taur",
+    "Gemeni",
+    "Rac",
+    "Leu",
+    "Fecioară",
+    "Balanță",
+    "Scorpion",
+    "Săgetător",
+    "Capricorn",
+    "Vărsător",
+    "Pești"
+   ],
+   "hr": [
+    "Ovan",
+    "Bik",
+    "Blizanci",
+    "Rak",
+    "Lav",
+    "Djevica",
+    "Vaga",
+    "Škorpion",
+    "Strijelac",
+    "Jarac",
+    "Vodenjak",
+    "Ribe"
+   ],
+   "tl": [
+    "Aries",
+    "Taurus",
+    "Gemini",
+    "Cancer",
+    "Leo",
+    "Virgo",
+    "Libra",
+    "Scorpio",
+    "Sagittarius",
+    "Capricorn",
+    "Aquarius",
+    "Pisces"
+   ],
+   "pl": [
+    "Baran",
+    "byk",
+    "Bliźnięta",
+    "Rak",
+    "Lew",
+    "Panna",
+    "Waga",
+    "Skorpion",
+    "Strzelec",
+    "Koziorożec",
+    "Wodnik",
+    "Ryby"
+   ],
+   "da": [
+    "Vædderen",
+    "Tyren",
+    "Tvillingerne",
+    "Krebsen",
+    "Løven",
+    "Jomfruen",
+    "Vægten",
+    "Skorpionen",
+    "Skytten",
+    "Stenbukken",
+    "Vandmanden",
+    "Fiskene"
+   ],
+   "sv": [
+    "Väduren",
+    "Oxen",
+    "Tvillingarna",
+    "Kräftan",
+    "Lejonet",
+    "Jungfrun",
+    "Vågen",
+    "Skorpionen",
+    "Skytten",
+    "Stenbocken",
+    "Vattumannen",
+    "Fiskarna"
+   ],
+   "hu": [
+    "Kos",
+    "Bika",
+    "Ikrek",
+    "Rák",
+    "Oroszlán",
+    "Szűz",
+    "Mérleg",
+    "Skorpió",
+    "Nyilas",
+    "Bak",
+    "Vízöntő",
+    "Halak"
+   ],
+   "et": [
+    "Jäär",
+    "Sõnn",
+    "Kaksikud",
+    "Vähk",
+    "Lõvi",
+    "Neitsi",
+    "Kaalud",
+    "Skorpion",
+    "Ambur",
+    "Kaljukits",
+    "Veevalaja",
+    "Kalad"
+   ],
+   "ru": [
+    "Овен",
+    "Телец",
+    "Близнецы",
+    "Рак",
+    "Лев",
+    "Дева",
+    "Весы",
+    "Скорпион",
+    "Стрелец",
+    "Козерог",
+    "Водолей",
+    "Рыба"
+   ],
+   "bs": [
+    "Ovan",
+    "Bik",
+    "Blizanci",
+    "Rak",
+    "Lav",
+    "Djevica (znak)",
+    "Vaga",
+    "Škorpion",
+    "Strijelac",
+    "Jarac",
+    "Vodenjak",
+    "Ribe (znak)"
+   ],
+   "sh": [
+    "Ovan",
+    "Bik",
+    "Blizanci",
+    "Rak",
+    "Lav",
+    "Djevica",
+    "Vaga",
+    "Škorpion",
+    "Strijelac",
+    "Jarac",
+    "Vodenjak",
+    "Ribe"
+   ],
+   "sr": [
+    "Ован (астролошки знак)",
+    "Бик",
+    "Близанци",
+    "Рак",
+    "Лав",
+    "Девица (астролошки знак)",
+    "Вага",
+    "Шкорпион",
+    "Стрелац",
+    "Јарац",
+    "Водолија",
+    "Рибе (астролошки знак)"
+   ],
+   "af": [
+    "Ram",
+    "Bul",
+    "Tweeling",
+    "Kreef",
+    "Leeu",
+    "Maagd",
+    "Weegskaal",
+    "Skerpioen",
+    "Boogskutter",
+    "Steenbok",
+    "Waterdraer",
+    "Visse"
+   ],
+   "ar": [
+    "برج الحمل",
+    "برج الثور",
+    "برج الجوزاء",
+    "برج السرطان",
+    "برج الأسد",
+    "برج العذراء",
+    "برج الميزان",
+    "برج العقرب",
+    "برج القوس",
+    "برج الجدي",
+    "برج الدلو",
+    "برج الحوت"
+   ],
+   "arc": [
+    "ܐܡܪܐ (ܡܠܘܫܐ)",
+    "ܬܘܪܐ (ܡܠܘܫܐ)",
+    "ܬܐܡܐ (ܡܠܘܫܐ)",
+    "ܣܪܛܢܐ",
+    "ܐܪܝܐ (ܡܠܘܫܐ)",
+    "ܫܒܠܬܐ (ܡܠܘܫܐ)",
+    "ܡܣܐܬܐ (ܡܠܘܫܐ)",
+    "ܥܩܪܒܐ (ܡܠܘܫܐ)",
+    "ܟܫܛܐ (ܡܠܘܫܐ)",
+    "ܓܕܝܐ (ܡܠܘܫܐ)",
+    "ܕܘܠܐ (ܡܠܘܫܐ)",
+    "ܢܘܢܐ (ܡܠܘܫܐ)"
+   ],
+   "az": [
+    "Qoç",
+    "Buğa",
+    "Əkizlər",
+    "Xərçəng",
+    "Şir",
+    "Qız",
+    "Tərəzi bürcü",
+    "Əqrəb",
+    "Oxatan",
+    "Oğlaq",
+    "Dolça",
+    "Balıqlar"
+   ],
+   "bcl": [
+    "Aries",
+    "Taurus",
+    "Gemini",
+    "Cancer",
+    "Leo",
+    "Virgo",
+    "Libra (astrolohiya)",
+    "Scorpio",
+    "Sagittarius",
+    "Capricorn",
+    "Aquarius",
+    "Pisces"
+   ],
+   "be": [
+    "Авен, знак задыяка",
+    "Цялец, знак задыяка",
+    "Блізняты",
+    "Рак, знак задыяка",
+    "Леў, знак задыяка",
+    "Дзева, знак задыяка",
+    "Шалі, знак задыяка",
+    "Скарпіён, знак задыяка",
+    "Стралец, знак задыяка",
+    "Казярог, знак задыяка",
+    "Вадаліў",
+    "Рыбы, знак задыяка"
+   ],
+   "be-tarask": [
+    "Авен",
+    "Цялец",
+    "Блізьняты",
+    "Рак",
+    "Леў",
+    "Панна",
+    "Шалі",
+    "Скарпіён",
+    "Стралец",
+    "Казярог",
+    "Вадаліў",
+    "Рыбы"
+   ],
+   "ca": [
+    "Àries",
+    "Taure",
+    "Gèminis",
+    "Càncer",
+    "Lleó",
+    "Verge",
+    "Balança",
+    "Escorpió",
+    "Sagitari",
+    "Capricorn",
+    "Aquari",
+    "Pisces"
+   ],
+   "ckb": [
+    "کەلووی بەرخ",
+    "کەلووی گا",
+    "کەلووی جمک",
+    "کەلووی قرژاڵ",
+    "کەلووی شێر",
+    "کەلووی ھۆشە",
+    "کەلووی تەرازوو",
+    "کەلووی دووپشک",
+    "کەلووی کەوان",
+    "کەلووی گیسک",
+    "کەلووی دۆڵچە",
+    "کەلووی نەھەنگ"
+   ],
+   "cy": [
+    "Yr Hwrdd",
+    "Y Tarw",
+    "Y Gefeilliaid",
+    "Y Cranc",
+    "Y Llew",
+    "Y Forwyn",
+    "Y Fantol",
+    "Y Sgorpion",
+    "Y Saethydd",
+    "Yr Afr",
+    "Y Dyfrwr",
+    "Y Pysgod"
+   ],
+   "eo": [
+    "Ŝafo",
+    "Taŭro",
+    "Ĝemeloj",
+    "Kankro",
+    "Leono",
+    "Virgo",
+    "Pesilo",
+    "Skorpio",
+    "Sagitario",
+    "Kaprikorno",
+    "Amforo",
+    "Fiŝoj"
+   ],
+   "es": [
+    "Aries",
+    "Tauro",
+    "Géminis",
+    "Cáncer",
+    "Leo",
+    "Virgo",
+    "Libra",
+    "Escorpio",
+    "Sagitario",
+    "Capricornio",
+    "Acuario",
+    "Piscis"
+   ],
+   "fa": [
+    "برج حمل",
+    "برج ثور",
+    "برج جوزا",
+    "برج سرطان",
+    "برج اسد",
+    "برج سنبله",
+    "برج میزان",
+    "برج عقرب",
+    "برج قوس",
+    "برج جدی",
+    "برج دلو",
+    "برج حوت"
+   ],
+   "fi": [
+    "Oinas",
+    "Härkä",
+    "Kaksoset",
+    "Krapu",
+    "Leijona",
+    "Neitsyt",
+    "Vaaka",
+    "Skorpioni",
+    "Jousimies",
+    "Kauris",
+    "Vesimies",
+    "Kalat"
+   ],
+   "fr": [
+    "Bélier",
+    "Taureau",
+    "Gémeaux",
+    "Cancer",
+    "Lion",
+    "Vierge",
+    "Balance",
+    "Scorpion",
+    "Sagittaire",
+    "Capricorne",
+    "Verseau",
+    "Poissons"
+   ],
+   "fy": [
+    "Raam",
+    "Bolle",
+    "Twillingen",
+    "Kreeft",
+    "Liuw",
+    "Faam",
+    "Skealjes",
+    "Skorpioen",
+    "bôgesjitter",
+    "Stienbok",
+    "Wetterman",
+    "Fisken"
+   ],
+   "gl": [
+    "Carneiro",
+    "Touro",
+    "Xémini",
+    "Cáncer",
+    "León",
+    "Virxe (astroloxía)",
+    "Libra",
+    "Escorpión (astroloxía)",
+    "Saxitario",
+    "Capricornio",
+    "Acuario",
+    "Pisces"
+   ],
+   "gu": [
+    "મેષ",
+    "વૃષભ",
+    "મિથુન",
+    "કર્ક",
+    "સિંહ",
+    "કન્યા",
+    "તુલા",
+    "વૃશ્ચિક",
+    "ધનુ",
+    "મકર",
+    "કુંભ",
+    "મીન"
+   ],
+   "he": [
+    "מזל טלה",
+    "מזל שור",
+    "מזל תאומים",
+    "מזל סרטן",
+    "מזל אריה",
+    "מזל בתולה",
+    "מזל מאזניים",
+    "מזל עקרב",
+    "מזל קשת",
+    "מזל גדי",
+    "מזל דלי",
+    "מזל דגים"
+   ],
+   "hi": [
+    "मेष राशि",
+    "वृष राशि",
+    "मिथुन राशि",
+    "कर्क राशि",
+    "सिंह राशि",
+    "कन्या राशि",
+    "तुला राशि",
+    "वॄश्चिक राशि",
+    "धनु राशि",
+    "मकर राशि",
+    "कुंभ राशि",
+    "मीन राशि"
+   ],
+   "ht": [
+    "Belye",
+    "Towo",
+    "Jemo (astwoloji)",
+    "Kansè",
+    "Lyon (astwoloji)",
+    "Vyèj (astwoloji)",
+    "Balans (astwoloji)",
+    "Eskòpyon (astwoloji)",
+    "Sajitè (astwoloji)",
+    "Kaprikòn (astwoloji)",
+    "Vèso (astwoloji)",
+    "Pwason"
+   ],
+   "ia": [
+    "Ariete",
+    "Tauro",
+    "Geminos",
+    "Cancere",
+    "Leon",
+    "Virgine",
+    "Libra",
+    "Scorpion",
+    "Sagittario",
+    "Capricorno",
+    "Aquario",
+    "Pisces"
+   ],
+   "id": [
+    "Aries",
+    "Taurus",
+    "Gemini",
+    "Kanser",
+    "Leo",
+    "Virgo (astrologi)",
+    "Libra",
+    "Skorpio",
+    "Sagitarius",
+    "Kaprikornus (astrologi)",
+    "Akuarius",
+    "Pisces"
+   ],
+   "ja": [
+    "白羊宮",
+    "金牛宮",
+    "双児宮",
+    "巨蟹宮",
+    "獅子宮",
+    "処女宮",
+    "天秤宮",
+    "天蝎宮",
+    "人馬宮",
+    "磨羯宮",
+    "宝瓶宮",
+    "双魚宮"
+   ],
+   "ko": [
+    "양자리",
+    "황소자리",
+    "쌍둥이자리",
+    "게자리",
+    "사자자리",
+    "처녀자리",
+    "천칭자리",
+    "전갈자리",
+    "사수자리",
+    "염소자리",
+    "물병자리",
+    "물고기자리"
+   ],
+   "lb": [
+    "Widder",
+    "Stéier",
+    "Zwilling",
+    "Kriibs",
+    "Léiw",
+    "Jongfra",
+    "Wo",
+    "Skorpioun",
+    "Schëtz",
+    "Steebock",
+    "Waassermann",
+    "Fësch"
+   ],
+   "lt": [
+    "Avinas",
+    "Jautis",
+    "Dvyniai",
+    "Vėžys",
+    "Liūtas",
+    "Mergelė",
+    "Svarstyklės",
+    "Skorpionas",
+    "Šaulys",
+    "Ožiaragis",
+    "Vandenis",
+    "Žuvys"
+   ],
+   "mg": [
+    "Alahamady",
+    "Adaoro",
+    "Adizaoza",
+    "Asorotany",
+    "Alahasaty",
+    "Asombola",
+    "Adimizana",
+    "Alakarabo",
+    "Alakaosy",
+    "Adijady",
+    "Adalo",
+    "Alohotsy"
+   ],
+   "mhr": [
+    "Шорык",
+    "Презе",
+    "Йыгыр",
+    "Рак",
+    "Арыслан",
+    "Ӱдыр",
+    "Виса",
+    "Скорпион",
+    "Пикшызе",
+    "Ирказа",
+    "Вӱд йоктарыше",
+    "Кол"
+   ],
+   "mk": [
+    "Овен",
+    "Бик",
+    "Близнаци",
+    "Рак",
+    "Лав",
+    "Девица",
+    "Вага",
+    "Скорпија",
+    "Стрелец",
+    "Јарец",
+    "Водолија",
+    "Риби"
+   ],
+   "mr": [
+    "मेष रास",
+    "वृषभ रास",
+    "मिथुन रास",
+    "कर्क रास",
+    "सिंह रास",
+    "कन्या रास",
+    "तूळ रास",
+    "वृश्चिक रास",
+    "धनु रास",
+    "मकर रास",
+    "कुंभ रास",
+    "मीन रास"
+   ],
+   "mt": [
+    "Il-Wott",
+    "It-Tawr",
+    "It-Tewmin",
+    "Il-Qabru",
+    "Id-Durbies",
+    "L-Għodra",
+    "Il-Miżien",
+    "L-Għaqreb",
+    "Il-Qaws",
+    "Il-Kibx",
+    "Iż-Żir",
+    "Il-Ħut"
+   ],
+   "my": [
+    "မိဿ",
+    "ပြိဿ",
+    "မေထုန်",
+    "ကရကဋ်",
+    "သိဟ်",
+    "ကန်",
+    "တူ",
+    "ဗြိစ္ဆာ",
+    "ဓနု",
+    "မကာရ",
+    "ကုံ",
+    "မိန်"
+   ],
+   "ne": [
+    "मेष राशि",
+    "वृष राशि",
+    "मिथुन राशि",
+    "कर्कट राशि",
+    "सिंह राशि",
+    "कन्या राशि",
+    "तुला राशि",
+    "वृश्चिक राशि",
+    "धनु राशि",
+    "मकर राशि",
+    "कुम्भ राशि",
+    "मीन राशि"
+   ],
+   "nl": [
+    "Ram",
+    "Stier",
+    "Tweelingen",
+    "Kreeft",
+    "Leeuw",
+    "Maagd",
+    "Weegschaal",
+    "Schorpioen",
+    "Boogschutter",
+    "Steenbok",
+    "Waterman",
+    "Vissen"
+   ],
+   "or": [
+    "ମେଷ ରାଶି",
+    "ବୃଷ ରାଶି",
+    "ମିଥୁନ",
+    "କର୍କଟ ରାଶି",
+    "ସିଂହ",
+    "କନ୍ୟା ରାଶି",
+    "ତୁଳା",
+    "ବିଛା",
+    "ଧନୁ",
+    "ମକର",
+    "କୁମ୍ଭ",
+    "ମୀନ"
+   ],
+   "pa": [
+    "ਮੇਖ",
+    "ਵ੍ਰਸ਼",
+    "ਮਿਥੁਨ",
+    "ਕਰਕ",
+    "ਸਿੰਘ",
+    "ਕੰਨਿਆ",
+    "ਤੱਕੜੀ",
+    "ਵ੍ਰਸਚਿਕ",
+    "ਧਨੁ",
+    "ਮਕਰ",
+    "ਕੁੰਭ",
+    "ਮੀਨ"
+   ],
+   "pcd": [
+    "Ran",
+    "Toér",
+    "Moétiès",
+    "Vavèr",
+    "Lion",
+    "Vièrge",
+    "Bastchule",
+    "Éscorpion",
+    "Fléqueu",
+    "Madjet",
+    "Pucheu",
+    "Pichons"
+   ],
+   "pt": [
+    "Carneiro",
+    "Touro",
+    "Gêmeos",
+    "Caranguejo",
+    "Leão",
+    "Virgem",
+    "Balança",
+    "Escorpião",
+    "Sagitário",
+    "Capricórnio",
+    "Aquário",
+    "Peixes"
+   ],
+   "sa": [
+    "मेषराशिः",
+    "वृषभराशिः",
+    "मिथुनराशिः",
+    "कर्कटराशिः",
+    "सिंहराशिः",
+    "कन्यराशिः",
+    "तुलाराशिः",
+    "वृश्चिकराशिः",
+    "धनूराशिः",
+    "मकरराशिः",
+    "कुम्भराशिः",
+    "मीनराशिः"
+   ],
+   "sah": [
+    "Хой",
+    "Оҕус",
+    "Игирэлэр",
+    "Араак",
+    "Хахай",
+    "Кыыс",
+    "Ыйааһын",
+    "Скорпион",
+    "Охчут",
+    "Чубуку",
+    "Күрүлгэн",
+    "Балыктар"
+   ],
+   "sk": [
+    "Baran",
+    "Býk",
+    "Blíženci",
+    "Rak",
+    "Lev",
+    "Panna",
+    "Váhy",
+    "Škorpión",
+    "Strelec",
+    "Kozorožec",
+    "Vodnár",
+    "Ryby"
+   ],
+   "sl": [
+    "oven",
+    "bik",
+    "dvojčka",
+    "rak",
+    "lev",
+    "devica",
+    "tehtnica",
+    "škorpijon",
+    "strelec",
+    "kozorog",
+    "vodnar",
+    "ribi"
+   ],
+   "sn": [
+    "Hondowe (nyeredzi)",
+    "Handira (nyeredzi)",
+    "Mamanga (nyeredzi)",
+    "Gakanje",
+    "Shumba (nyeredzi)",
+    "Mhandara (nyeredzi)",
+    "Pima (nyeredzi)",
+    "Nyavada (nyeredzi)",
+    "Uta (nyeredzi)",
+    "Mbudzi (nyeredzi)",
+    "Chirongo (nyeredzi)",
+    "Hove (nyeredzi)"
+   ],
+   "ta": [
+    "மேழம்",
+    "விடை",
+    "ஆடவை",
+    "கடகம்",
+    "மடங்கல்",
+    "கன்னி",
+    "துலை",
+    "நளி",
+    "தனுசு",
+    "சுறவம்",
+    "கும்பம்",
+    "மீனம்"
+   ],
+   "th": [
+    "ราศีเมษ",
+    "ราศีพฤษภ",
+    "ราศีเมถุน",
+    "ราศีกรกฎ",
+    "ราศีสิงห์",
+    "ราศีกันย์",
+    "ราศีตุล",
+    "ราศีพิจิก",
+    "ราศีธนู",
+    "ราศีมกร",
+    "ราศีกุมภ์",
+    "ราศีมีน"
+   ],
+   "tr": [
+    "Koç",
+    "Boğa burcu",
+    "İkizler burcu",
+    "Yengeç burcu",
+    "Aslan",
+    "Başak burcu",
+    "Terazi burcu",
+    "Akrep burcu",
+    "Yay burcu",
+    "Oğlak burcu",
+    "Kova burcu",
+    "Balık burcu"
+   ],
+   "udm": [
+    "Така",
+    "Ош",
+    "Кыктоос",
+    "Кисло-кусло",
+    "Лев",
+    "Нылмурт",
+    "Весъёс",
+    "Скорпион",
+    "Ыбылӥськись",
+    "Сюро кеч",
+    "Ву кисьтась",
+    "Чорыгъёс"
+   ],
+   "uk": [
+    "Овен",
+    "Телець",
+    "Близнюки",
+    "Рак",
+    "Лев",
+    "Діва",
+    "Терези",
+    "Скорпіон",
+    "Стрілець",
+    "Козоріг",
+    "Водолій",
+    "Риби"
+   ],
+   "vi": [
+    "Bạch Dương",
+    "Kim Ngưu",
+    "Song Tử",
+    "Cự Giải",
+    "Sư Tử",
+    "Thất Nữ",
+    "Thiên Bình",
+    "Thiên Hạt",
+    "Nhân Mã",
+    "Ma Kết",
+    "Bảo Bình",
+    "Song Ngư"
+   ],
+   "wa": [
+    "Bassî",
+    "Torea",
+    "Djermale",
+    "Crantche",
+    "Liyon",
+    "Pucele",
+    "Balance",
+    "Scoirpion",
+    "Airtchî",
+    "Gadot",
+    "Raiweu",
+    "Pexhons"
+   ],
+   "war": [
+    "Aries",
+    "Taurus",
+    "Gemini",
+    "Cancer",
+    "Leo",
+    "Virgo",
+    "Libra",
+    "Scorpio",
+    "Sagittarius",
+    "Capricorn",
+    "Aquarius",
+    "Pisces"
+   ],
+   "wuu": [
+    "白羊宫",
+    "金牛宫",
+    "双子宫",
+    "巨蟹宫",
+    "狮子宫",
+    "室女宫",
+    "天秤宫",
+    "天蝎宫",
+    "人马宫",
+    "摩羯宫",
+    "宝瓶宫",
+    "双鱼宫"
+   ],
+   "yue": [
+    "白羊宮",
+    "金牛宮",
+    "雙子宮",
+    "巨蟹宮",
+    "獅子宮",
+    "處女宮",
+    "天秤宮",
+    "天蠍宮",
+    "射手宮",
+    "摩羯宮",
+    "水瓶宮",
+    "雙魚宮"
+   ],
+   "zh": [
+    "白羊宮",
+    "金牛宮",
+    "雙子宮",
+    "巨蟹宮",
+    "獅子宮",
+    "室女宮",
+    "天秤宮",
+    "天蝎宫",
+    "人马宫",
+    "摩羯宮",
+    "寶瓶宮",
+    "雙魚宮"
+   ],
+   "ks": [
+    "میٖش",
+    "وریٚش",
+    "مؠتھن",
+    "کرکٹھ",
+    "سِہٕم",
+    "کنؠکھ",
+    "تول",
+    "ورچکھ",
+    "کمان",
+    "مکر",
+    "کُمب",
+    "میٖن"
+   ],
+   "en": [
+    "Aries",
+    "Taurus",
+    "Gemini",
+    "Cancer",
+    "Leo",
+    "Virgo",
+    "Libra",
+    "Scorpio",
+    "Sagittarius",
+    "Capricorn",
+    "Aquarius",
+    "Pisces"
+   ],
+   "de": [
+    "Widder",
+    "Stier",
+    "Zwillinge",
+    "Krebs",
+    "Löwe",
+    "Jungfrau",
+    "Waage",
+    "Skorpion",
+    "Schütze",
+    "Steinbock",
+    "Wassermann",
+    "Fische"
+   ],
+   "cs": [
+    "Beran",
+    "Býk",
+    "Blíženci",
+    "Rak",
+    "Lev",
+    "Panna",
+    "Váhy",
+    "Štír",
+    "Střelec",
+    "Kozoroh",
+    "Vodnář",
+    "Ryby"
+   ]
+  },
+  "sex": {
+   "shi": [
+    "awtm",
+    "unti"
+   ],
+   "si": [
+    "පුරුෂ",
+    "ස්ත්රී"
+   ],
+   "sje": [
+    "källe",
+    "kujdna"
+   ],
+   "sma": [
+    "alma",
+    "nyjsene"
+   ],
+   "smj": [
+    "ålmåj",
+    "nissun"
+   ],
+   "sr": [
+    "мушки",
+    "женски"
+   ],
+   "sr-ec": [
+    "мушки",
+    "женски"
+   ],
+   "sr-el": [
+    "muški",
+    "ženski"
+   ],
+   "tg-cyrl": [
+    "мард",
+    "ҷинси занона"
+   ],
+   "tly": [
+    "merd",
+    "ženə čins"
+   ],
+   "vi": [
+    "nam",
+    "nữ"
+   ],
+   "vo": [
+    "manik",
+    "vomik"
+   ],
+   "yo": [
+    "akọ",
+    "abo"
+   ],
+   "zgh": [
+    "ⴰⵡⵜⵎ",
+    "ⵜⴰⵡⵜⵎⵜ"
+   ],
+   "zu": [
+    "owesilisa",
+    "isifazane"
+   ],
+   "sw": [
+    "mume",
+    "kike"
+   ],
+   "nov": [
+    "viro",
+    "fema"
+   ],
+   "pam": [
+    "laláki",
+    "babái"
+   ],
+   "lg": [
+    "musajja",
+    "mukyala"
+   ],
+   "krj": [
+    "laki",
+    "babayi"
+   ],
+   "shn": [
+    "တူဝ်ပေႃႈ",
+    "တူဝ်မႄႈ"
+   ],
+   "kab": [
+    "amalay",
+    "unti"
+   ],
+   "wal": [
+    "attuma",
+    "macca"
+   ],
+   "arc": [
+    "ܓܰܒܪܳܐ",
+    "ܐܰܢܬܬܐ"
+   ],
+   "syl": [
+    "ꠛꠦꠐꠣ",
+    "ꠛꠦꠐꠤ"
+   ],
+   "hak-hant": [
+    "男",
+    "⼥"
+   ],
+   "kw": [
+    "gorow",
+    "benow"
+   ],
+   "tum": [
+    "mwanalume",
+    "mwanakazi"
+   ],
+   "isv-cyrl": [
+    "мужскы",
+    "женскы"
+   ],
+   "da": [
+    "mand",
+    "kvinde"
+   ],
+   "en": [
+    "male",
+    "female"
+   ],
+   "pa": [
+    "ਮਰਦ",
+    "ਨਾਰੀ"
+   ],
+   "pnb": [
+    "مرد",
+    "ناری"
+   ],
+   "grc": [
+    "ἀνήρ",
+    "γυνή"
+   ],
+   "fa": [
+    "مذکر",
+    "مؤنث"
+   ],
+   "it": [
+    "maschio",
+    "femmina"
+   ],
+   "dag": [
+    "Doo",
+    "Paɣa"
+   ],
+   "de": [
+    "männlich",
+    "weiblich"
+   ],
+   "sv": [
+    "man",
+    "kvinna"
+   ],
+   "sq": [
+    "mashkull",
+    "femër"
+   ],
+   "bn": [
+    "পুরুষ",
+    "নারী"
+   ],
+   "chy": [
+    "hetane",
+    "hē'e"
+   ],
+   "lmo": [
+    "mas'c",
+    "fómna"
+   ],
+   "ku": [
+    "mêr",
+    "mê"
+   ],
+   "pl": [
+    "mężczyzna",
+    "kobieta"
+   ],
+   "es": [
+    "masculino",
+    "femenino"
+   ],
+   "fr": [
+    "masculin",
+    "féminin"
+   ],
+   "nl": [
+    "mannelijk",
+    "vrouwelijk"
+   ],
+   "he": [
+    "זכר",
+    "נקבה"
+   ],
+   "tok": [
+    "mije",
+    "meli"
+   ],
+   "ja": [
+    "男性",
+    "女性"
+   ],
+   "sk": [
+    "muž",
+    "žena"
+   ],
+   "ml": [
+    "പുരുഷൻ",
+    "സ്ത്രീ"
+   ],
+   "eu": [
+    "gizonezko",
+    "emakumezko"
+   ],
+   "la": [
+    "masculinus",
+    "femininus"
+   ],
+   "tg": [
+    "мард",
+    "зан"
+   ],
+   "nan-hani": [
+    "查埔",
+    "查某"
+   ],
+   "nan-latn-pehoeji": [
+    "cha-po͘",
+    "cha-bó͘"
+   ],
+   "nan-latn-tailo": [
+    "tsa-poo",
+    "tsa-bóo"
+   ],
+   "nb": [
+    "mann",
+    "kvinne"
+   ],
+   "et": [
+    "meessoost",
+    "naissoost"
+   ],
+   "cs": [
+    "muž",
+    "žena"
+   ],
+   "lv": [
+    "vīrietis",
+    "sieviete"
+   ],
+   "ms": [
+    "lelaki",
+    "perempuan"
+   ],
+   "ms-arab": [
+    "للاکي",
+    "ڤرمڤوان"
+   ],
+   "fi": [
+    "mies",
+    "nainen"
+   ],
+   "pt": [
+    "masculino",
+    "feminino"
+   ],
+   "uk": [
+    "чоловіча",
+    "жіноча"
+   ],
+   "ig": [
+    "nwoke",
+    "nwanyị"
+   ],
+   "ha": [
+    "namiji",
+    "mace"
+   ],
+   "br": [
+    "paotr",
+    "plac'h"
+   ],
+   "or": [
+    "ପୁରୁଷ",
+    "ମହିଳା"
+   ],
+   "sat": [
+    "ᱠᱚᱲᱟ",
+    "ᱠᱩᱲᱤ"
+   ],
+   "ff": [
+    "gorko",
+    "debbum"
+   ],
+   "zh": [
+    "男",
+    "女"
+   ],
+   "id": [
+    "laki-laki",
+    "perempuan"
+   ],
+   "nn": [
+    "mann",
+    "kvinne"
+   ],
+   "el": [
+    "άνδρας",
+    "γυναίκα"
+   ],
+   "en-gb": [
+    "male",
+    "female"
+   ],
+   "gl": [
+    "home",
+    "muller"
+   ],
+   "lt": [
+    "vyras",
+    "moteris"
+   ],
+   "nqo": [
+    "ߗߍ߭",
+    "ߡߏ߬ߛߏ"
+   ],
+   "pt-br": [
+    "masculino",
+    "feminino"
+   ],
+   "ro": [
+    "bărbat",
+    "femeie"
+   ],
+   "ast": [
+    "masculín",
+    "femenín"
+   ],
+   "hi": [
+    "पुरुष",
+    "महिला"
+   ],
+   "mai": [
+    "पुरुष",
+    "महिला"
+   ],
+   "ne": [
+    "पुरुष",
+    "महिला"
+   ],
+   "zh-cn": [
+    "男",
+    "女"
+   ],
+   "zh-hans": [
+    "男",
+    "女"
+   ],
+   "zh-hant": [
+    "男",
+    "女"
+   ],
+   "ar": [
+    "ذكر",
+    "أنثى"
+   ],
+   "fy": [
+    "man",
+    "frou"
+   ],
+   "hyw": [
+    "արական",
+    "իգական"
+   ],
+   "mt": [
+    "maskil",
+    "femminili"
+   ],
+   "my": [
+    "အထီး",
+    "အမျိုးသမီး"
+   ],
+   "myv": [
+    "цёраломань",
+    "аваломань"
+   ],
+   "mzn": [
+    "مذکر",
+    "مؤنث"
+   ],
+   "nan": [
+    "cha-po͘",
+    "cha-bó͘"
+   ],
+   "nan-hant": [
+    "查埔",
+    "查某"
+   ],
+   "new": [
+    "बायचिं",
+    "मिसा"
+   ],
+   "nod": [
+    "ᨻᩮᩆᨩᩣ᩠ᨿ",
+    "ᨻᩮᩆᨿᩥ᩠ᨦ"
+   ],
+   "olo": [
+    "mies",
+    "naine"
+   ],
+   "os": [
+    "нæлгоймаг",
+    "сылгоймаг"
+   ],
+   "pcm": [
+    "man",
+    "wuman"
+   ],
+   "ps": [
+    "نارينه",
+    "ښځينه"
+   ],
+   "rm": [
+    "masculin",
+    "feminin"
+   ],
+   "ru": [
+    "мужской пол",
+    "женский пол"
+   ],
+   "ryu": [
+    "ゐきが",
+    "ゐなぐ"
+   ],
+   "sc": [
+    "mascru",
+    "fèmina"
+   ],
+   "sco": [
+    "male",
+    "female"
+   ],
+   "sd": [
+    "نر",
+    "مادِي"
+   ],
+   "se": [
+    "almmái",
+    "nisson"
+   ],
+   "sh": [
+    "muškarac",
+    "žena"
+   ],
+   "smn": [
+    "almai",
+    "nissoon"
+   ],
+   "sms": [
+    "åålmai",
+    "neezzan"
+   ],
+   "szl": [
+    "chop",
+    "kobiyta"
+   ],
+   "te": [
+    "పురుషుడు",
+    "స్త్రీ"
+   ],
+   "tl": [
+    "lalaki",
+    "babae"
+   ],
+   "tr": [
+    "erkek",
+    "kadın"
+   ],
+   "tt": [
+    "ир-ат",
+    "хатын-кыз"
+   ],
+   "tt-cyrl": [
+    "ир җенесе",
+    "хатын-кыз"
+   ],
+   "tt-latn": [
+    "ir cenese",
+    "xatın-qız"
+   ],
+   "udm": [
+    "пиосмурт",
+    "кышномурт"
+   ],
+   "ur": [
+    "مرد",
+    "عورت"
+   ],
+   "uz": [
+    "erkak",
+    "ayol"
+   ],
+   "vec": [
+    "màscolo",
+    "fémana"
+   ],
+   "xh": [
+    "indoda",
+    "umfazi"
+   ],
+   "xmf": [
+    "ქომოლი",
+    "ოსური"
+   ],
+   "za": [
+    "bouxsai",
+    "mehmbwk"
+   ],
+   "ota": [
+    "اركك",
+    "قادین"
+   ],
+   "eo": [
+    "vira",
+    "ina"
+   ],
+   "pap": [
+    "maskulino",
+    "femenino"
+   ],
+   "nds": [
+    "Mann",
+    "Fro"
+   ],
+   "nds-nl": [
+    "man",
+    "vrouwe"
+   ],
+   "ko": [
+    "남성",
+    "여성"
+   ],
+   "ca": [
+    "masculí",
+    "femení"
+   ],
+   "yue": [
+    "男",
+    "女"
+   ],
+   "zh-hk": [
+    "男",
+    "女"
+   ],
+   "zh-mo": [
+    "男",
+    "女"
+   ],
+   "zh-my": [
+    "男",
+    "女"
+   ],
+   "zh-sg": [
+    "男",
+    "女"
+   ],
+   "zh-tw": [
+    "男",
+    "女"
+   ],
+   "af": [
+    "manlik",
+    "vroulik"
+   ],
+   "am": [
+    "ወንድ",
+    "ሴት"
+   ],
+   "ary": [
+    "دكر",
+    "نتوة"
+   ],
+   "be": [
+    "мужчынскі пол",
+    "жанчына"
+   ],
+   "ckb": [
+    "نێر",
+    "مێ"
+   ],
+   "hr": [
+    "muško",
+    "žensko"
+   ],
+   "hy": [
+    "արական",
+    "իգական"
+   ],
+   "ks": [
+    "مَرٕد",
+    "زٕنؠ"
+   ],
+   "lb": [
+    "männlech",
+    "weiblech"
+   ],
+   "lfn": [
+    "mas",
+    "fema"
+   ],
+   "scn": [
+    "màsculu",
+    "fìmmina"
+   ],
+   "ta": [
+    "ஆண்பால்",
+    "பெண்"
+   ],
+   "th": [
+    "เพศชาย",
+    "เพศหญิง"
+   ],
+   "yi": [
+    "זכר",
+    "נקיבה"
+   ],
+   "gd": [
+    "fireann",
+    "boireann"
+   ],
+   "ku-latn": [
+    "nêr",
+    "mê"
+   ],
+   "sl": [
+    "moški",
+    "ženska"
+   ],
+   "atj": [
+    "iriniw",
+    "iskwew"
+   ],
+   "dga": [
+    "dɔɔ",
+    "pɔge"
+   ],
+   "oc": [
+    "òme",
+    "femna"
+   ],
+   "an": [
+    "masculín",
+    "femenín"
+   ],
+   "arz": [
+    "دكر",
+    "ست"
+   ],
+   "as": [
+    "পুৰুষ",
+    "মহিলা"
+   ],
+   "az": [
+    "kişi",
+    "qadın"
+   ],
+   "ba": [
+    "ир-ат",
+    "ҡатын-ҡыҙ"
+   ],
+   "be-tarask": [
+    "мужчынская",
+    "жаночая"
+   ],
+   "bg": [
+    "мъжки",
+    "женски"
+   ],
+   "bho": [
+    "𑂧𑂩𑂠",
+    "𑂧𑂵𑂯𑂩𑂰𑂩𑂴"
+   ],
+   "bjn": [
+    "lakian",
+    "binian"
+   ],
+   "bm": [
+    "cɛma",
+    "musoma"
+   ],
+   "bs": [
+    "muški",
+    "ženski"
+   ],
+   "cdo": [
+    "nàng",
+    "nṳ̄"
+   ],
+   "ce": [
+    "боьршаниг",
+    "зударийн"
+   ],
+   "ceb": [
+    "lalaki",
+    "babayi"
+   ],
+   "cho": [
+    "hattak",
+    "ohoyo"
+   ],
+   "chr": [
+    "ᎠᏍᎦᏯ",
+    "ᎠᎨᏴ"
+   ],
+   "csb": [
+    "mãżczëzna",
+    "białka"
+   ],
+   "cy": [
+    "gwrywaidd",
+    "benywaidd"
+   ],
+   "diq": [
+    "Camêrd",
+    "Cêniye"
+   ],
+   "en-us": [
+    "male",
+    "female"
+   ],
+   "ext": [
+    "masculinu",
+    "femeninu"
+   ],
+   "fo": [
+    "maður",
+    "kvinna"
+   ],
+   "frr": [
+    "maan",
+    "wüf"
+   ],
+   "ga": [
+    "fireann",
+    "baineann"
+   ],
+   "gsw": [
+    "männlich",
+    "wiiblich"
+   ],
+   "gu": [
+    "પુરુષ",
+    "સ્ત્રી"
+   ],
+   "guw": [
+    "sunnu",
+    "yọnnu"
+   ],
+   "gv": [
+    "firryn",
+    "bwoirrin"
+   ],
+   "hak": [
+    "nàm",
+    "ńg"
+   ],
+   "hsb": [
+    "muž",
+    "žona"
+   ],
+   "ht": [
+    "maskilen",
+    "feminen"
+   ],
+   "hu": [
+    "férfi",
+    "nő"
+   ],
+   "ia": [
+    "mascule",
+    "feminin"
+   ],
+   "ilo": [
+    "lalaki",
+    "babai"
+   ],
+   "io": [
+    "maskula",
+    "femina"
+   ],
+   "is": [
+    "karlmaður",
+    "kvenmaður"
+   ],
+   "jbo": [
+    "lo nakni",
+    "lo fetsi"
+   ],
+   "jv": [
+    "lanang",
+    "perempuan"
+   ],
+   "ka": [
+    "მამრობითი",
+    "მდედრობითი"
+   ],
+   "kaa": [
+    "erkek",
+    "hayal"
+   ],
+   "kcg": [
+    "a̱sam",
+    "a̱nap"
+   ],
+   "kk": [
+    "ер",
+    "әйел"
+   ],
+   "kn": [
+    "ಪುರುಷ",
+    "ಮಹಿಳೆ"
+   ],
+   "ko-kp": [
+    "남성",
+    "녀성"
+   ],
+   "ksh": [
+    "männlesch",
+    "Frou udder Mähdsche"
+   ],
+   "kus": [
+    "Dau",
+    "pua"
+   ],
+   "ky": [
+    "эркек",
+    "Аял"
+   ],
+   "lez": [
+    "итимдин",
+    "папарин"
+   ],
+   "ltg": [
+    "veirīts",
+    "sīvīte"
+   ],
+   "mg": [
+    "lehilahy",
+    "vehivavy"
+   ],
+   "mi": [
+    "tāne",
+    "wāhine"
+   ],
+   "min": [
+    "laki-laki",
+    "padusi"
+   ],
+   "mk": [
+    "машки",
+    "женски"
+   ],
+   "mni": [
+    "ꯅꯨꯄꯥ",
+    "ꯅꯨꯄꯤ"
+   ],
+   "mr": [
+    "पुरूष",
+    "महिला"
+   ]
+  }
+ }
+}

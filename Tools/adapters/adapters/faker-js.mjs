@@ -194,6 +194,14 @@ const SUPERSEDED = new Set([
   'location.city_infix',
   'location.city_prefix',
   'location.city_suffix',
+  // Compass abbreviations, dropped so every locale falls back to the English set rather
+  // than to an unsourceable one. The words themselves now come from CLDR and Wikidata;
+  // no open dataset publishes the abbreviations, and deriving them from the words is not
+  // available either -- first-letter is wrong twenty-seven times in seventy-two, because
+  // Welsh writes `GN` for `Gorllewin` and Armenian writes `հս․ լ․`. See
+  // `cldr-directions.mjs`.
+  'location.direction.cardinal_abbr',
+  'location.direction.ordinal_abbr',
 ])
 
 /**
@@ -237,11 +245,30 @@ function withoutUnisexSubset(category, value) {
   return changed ? out : value
 }
 
-/** Removes superseded keys from one category's tree. */
-function withoutSuperseded(category, value) {
+/**
+ * Removes superseded paths from one category's tree, at any depth.
+ *
+ * It used to compare `category.key` only, which silently ignored anything deeper.
+ * `location.direction.cardinal_abbr` was added to the list above and did nothing at all --
+ * no error, no warning, the abbreviations simply kept shipping. An entry that cannot match
+ * is worse than a missing one, because the list reads as though the decision was made.
+ *
+ * So the walk is recursive, and `unmatched` below turns a path that never fired into a
+ * build failure.
+ */
+function withoutSuperseded(category, value, seen, prefix = category) {
   const out = {}
   for (const [key, inner] of Object.entries(value)) {
-    if (SUPERSEDED.has(`${category}.${key}`)) continue
+    const path = `${prefix}.${key}`
+    if (SUPERSEDED.has(path)) {
+      seen.add(path)
+      continue
+    }
+    if (inner !== null && typeof inner === 'object' && !Array.isArray(inner)) {
+      const kept = withoutSuperseded(category, inner, seen, path)
+      if (kept !== undefined) out[key] = kept
+      continue
+    }
     out[key] = inner
   }
   return Object.keys(out).length > 0 ? out : undefined
@@ -286,6 +313,8 @@ export async function run({ artifacts, locales, chains }) {
 
   const contributions = {}
   const dropped = { count: 0 }
+  // Every entry in SUPERSEDED must fire at least once. See `withoutSuperseded`.
+  const supersededSeen = new Set()
   let categories = 0
   let outOfScope = 0
 
@@ -303,7 +332,8 @@ export async function run({ artifacts, locales, chains }) {
         continue
       }
       if (value === null || typeof value !== 'object') continue
-      const kept = withoutSuperseded(category, withoutUnisexSubset(category, value))
+      const kept = withoutSuperseded(
+        category, withoutUnisexSubset(category, value), supersededSeen)
       if (kept === undefined) continue
       const cleaned = withoutBrokenPatterns(kept, dropped)
       if (cleaned === undefined) continue
@@ -312,6 +342,15 @@ export async function run({ artifacts, locales, chains }) {
     }
 
     if (Object.keys(perLocale).length > 0) contributions[code] = perLocale
+  }
+
+  const unmatched = [...SUPERSEDED].filter((path) => !supersededSeen.has(path))
+  if (unmatched.length > 0) {
+    throw new Error(
+      `SUPERSEDED lists ${unmatched.join(', ')}, which matched nothing in faker's data. ` +
+        `Either the path moved upstream or it was written at the wrong depth — both are ` +
+        `decisions that silently stopped happening.`,
+    )
   }
 
   return {
