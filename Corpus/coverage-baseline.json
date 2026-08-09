@@ -10,7 +10,7 @@
     },
     "az" : {
       "paths" : 49,
-      "values" : 1968
+      "values" : 1966
     },
     "base" : {
       "paths" : 1045,
@@ -166,11 +166,11 @@
     },
     "id_ID" : {
       "paths" : 59,
-      "values" : 20262
+      "values" : 20261
     },
     "it" : {
       "paths" : 50,
-      "values" : 36103
+      "values" : 36102
     },
     "ja" : {
       "paths" : 57,
@@ -198,7 +198,7 @@
     },
     "mk" : {
       "paths" : 47,
-      "values" : 5404
+      "values" : 5403
     },
     "mn_MN_cyrl" : {
       "paths" : 19,
@@ -230,7 +230,7 @@
     },
     "pt_PT" : {
       "paths" : 53,
-      "values" : 4713
+      "values" : 4712
     },
     "ro" : {
       "paths" : 40,
@@ -238,11 +238,11 @@
     },
     "ro_MD" : {
       "paths" : 42,
-      "values" : 3228
+      "values" : 3227
     },
     "ru" : {
       "paths" : 58,
-      "values" : 16192
+      "values" : 16190
     },
     "sk" : {
       "paths" : 45,

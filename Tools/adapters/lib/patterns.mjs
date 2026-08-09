@@ -64,15 +64,23 @@ function formatFor({ surnameFirst, separators }, code) {
   }
 }
 
-/** Whether a locale can actually resolve a path, so a pattern cannot reference a hole. */
-function has(definitions, path) {
+/**
+ * What a locale says about a path: `filled`, `empty`, or `absent`.
+ *
+ * The three-way answer is the point. `null` means the locale declares it deliberately
+ * empty, which **blocks** inheritance — Azerbaijani has no honorifics, and the whole
+ * reason the corpus format carries explicit nulls is to stop it borrowing English ones.
+ * Collapsing `empty` into `absent` makes a chain walk continue past a stop sign.
+ */
+function stateOf(definitions, path) {
   let cursor = definitions
   for (const part of path.split('.')) {
-    if (cursor === null || typeof cursor !== 'object' || !(part in cursor)) return false
+    if (cursor === null || typeof cursor !== 'object' || !(part in cursor)) return 'absent'
     cursor = cursor[part]
   }
-  if (cursor === null) return false
-  return Array.isArray(cursor) ? cursor.length > 0 : typeof cursor === 'object'
+  if (cursor === null) return 'empty'
+  if (Array.isArray(cursor)) return cursor.length > 0 ? 'filled' : 'empty'
+  return typeof cursor === 'object' ? 'filled' : 'absent'
 }
 
 /**
@@ -111,11 +119,22 @@ export function namePattern(resolves, format) {
  * Returns the codes it claimed, so the run can attribute them and report the count.
  */
 export function applyNamePatterns(code, definitions, formats, chain = []) {
-  // Resolved through the chain, not just the locale's own data. `en_GB` and `en_HK`
-  // define no given names and inherit English ones, so an own-data check refused to write
-  // them a pattern and left faker's in place — the two locales that kept `person.name` on
-  // the bootstrap after everything else had moved.
-  const resolves = (path) => has(definitions, path) || chain.some((parent) => has(parent, path))
+  // Resolved through the chain, and stopping where the chain says to stop.
+  //
+  // Two failures, both found by the validator rather than by reading. Checking only the
+  // locale's own data left `en_GB` and `en_HK` on faker's pattern, because both define
+  // surnames and inherit given names. And walking the chain *without* honouring explicit
+  // nulls gave Azerbaijani a `{{person.prefix}}` variant on the strength of English
+  // honorifics it deliberately blocks — a token that expands to nothing in the one locale
+  // the blocking mechanism was built for.
+  const resolves = (path) => {
+    for (const level of [definitions, ...chain]) {
+      const state = stateOf(level, path)
+      if (state === 'filled') return true
+      if (state === 'empty') return false
+    }
+    return false
+  }
 
   // A pattern referencing a name nothing in the chain supplies would trap at the call
   // site rather than fail the build, which is why this is checked at all.

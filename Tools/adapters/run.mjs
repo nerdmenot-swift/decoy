@@ -280,6 +280,26 @@ async function main() {
   await rm(outDir, { recursive: true, force: true })
   await mkdir(join(outDir, 'locales'), { recursive: true })
 
+  // Loaded before the manifest is built, not after, because `sources` is snapshotted
+  // into it by value. Loading them afterwards left LDNOOBW out of the manifest and
+  // therefore out of NOTICE — an attribution failure for a CC BY 4.0 source, produced by
+  // a line ordering. `decoy-validate` now checks every declared source reaches NOTICE.
+  //
+  // The blocklist is loaded here rather than by an adapter because no adapter uses it:
+  // it screens what models produce, and models are trained at this level. Registered in
+  // `sources` all the same, so it reaches the manifest and NOTICE like everything else.
+  const { descriptor: screenDescriptor, artifacts: screenArtifacts } =
+    await loadSource('ldnoobw')
+  sources.set(screenDescriptor.id, provenanceOf(screenDescriptor))
+  const blocklists = await loadBlocklists(screenArtifacts.words)
+
+  // Name order and separator, from the CLDR release the corpus already pins. A pattern
+  // is a composition rule rather than data, and this is the published authority for the
+  // one part of it that varies by language.
+  const { artifacts: cldrArtifacts } = await loadSource('cldr-48')
+  const nameFormats = await loadNameFormats(cldrArtifacts.core, cldrArtifacts.personnames)
+  let namePatterns = 0
+
   const manifest = {
     generator: 'decoy adapters',
     corpusVersion,
@@ -296,21 +316,6 @@ async function main() {
   // what a locale *ends up with* after the merge, not from one adapter's contribution.
   // The Census surnames win in `en` and faker's win in `de`; this code does not need to
   // know which, and will not need changing when a replacement wins instead.
-  //
-  // The blocklist is loaded here rather than by an adapter because no adapter uses it:
-  // it screens what models produce, and models are trained at this level. Registered in
-  // `sources` all the same, so it reaches the manifest and NOTICE like everything else.
-  const { descriptor: screenDescriptor, artifacts: screenArtifacts } =
-    await loadSource('ldnoobw')
-  sources.set(screenDescriptor.id, provenanceOf(screenDescriptor))
-  const blocklists = await loadBlocklists(screenArtifacts.words)
-
-  // Name order and separator, from the CLDR release the corpus already pins. A pattern
-  // is a composition rule rather than data, and this is the published authority for the
-  // one part of it that varies by language.
-  const { artifacts: cldrArtifacts } = await loadSource('cldr-48')
-  const nameFormats = await loadNameFormats(cldrArtifacts.core, cldrArtifacts.personnames)
-  let namePatterns = 0
   const modelStats = { locales: 0, models: 0, unscreened: [], tooSmall: 0, notViable: [] }
 
   let totalStrings = 0

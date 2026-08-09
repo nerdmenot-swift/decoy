@@ -228,6 +228,82 @@ if descriptors.isEmpty {
     report(.error, "descriptor", "no source descriptors found in \(options.sources.path)")
 }
 
+// MARK: - Check: every licence permits Apache-2.0 distribution
+
+/// Licences reviewed and found to compose with distributing Decoy under Apache-2.0.
+///
+/// An allow-list rather than a deny-list, and that is the whole point. A deny-list lets an
+/// unreviewed licence ship by default and only stops the ones somebody thought of; this
+/// stops everything nobody has looked at. Adding a source with a new licence fails the
+/// build until a line is added here, which is the moment to actually read it.
+///
+/// Every entry is attribution-style: keep the notice, do not claim endorsement. None is
+/// share-alike, none restricts commercial use, and none requires derived work to be
+/// relicensed — any of which would make an Apache-2.0 distribution impossible rather than
+/// merely inconvenient.
+let apacheCompatible: [String: String] = [
+    "Apache-2.0": "the same licence",
+    "MIT": "attribution and disclaimer only",
+    "Unlicense": "a public-domain dedication",
+    "Unicode-3.0": "attribution; Unicode's own permission notice must travel with it",
+    "CC-BY": "attribution only, version unstated by the licensor",
+    "CC-BY-3.0": "attribution only",
+    "CC-BY-4.0": "attribution only; explicitly one-way compatible with more permissive use",
+    "WordNet-3.0": "Princeton's BSD-style grant: any purpose, notice retained",
+    "WordNet-3.0 AND CC-BY-3.0": "both halves attribution-only; the stricter governs",
+    "LicenseRef-DanNet-1.0": "BSD-style grant from Copenhagen; the 'Commercial Use' heading is an invitation, not a restriction",
+    "LicenseRef-NWN": "BSD-style grant from the Norwegian Language Bank; same shape as DanNet",
+    "LicenseRef-ChineseOpenWordNet": "Princeton's template re-issued by Francis Bond",
+    "LicenseRef-HebrewWordNet": "Princeton's template re-issued by the University of Haifa",
+    "LicenseRef-JapaneseWordNet": "Princeton's template re-issued by NICT",
+    "LicenseRef-ThaiWordNet": "Princeton's template re-issued by NICT",
+    "LicenseRef-EtalabOpenLicence-2.0": "attribution only; Etalab declares it compatible with CC BY 4.0",
+    "public-domain": "no grant needed; a work of government or an expired term",
+    "public-facts": "no grant exists; a registry of facts carries no authorship",
+]
+
+/// Phrases that would make a licence incompatible however it is labelled.
+///
+/// Read from the committed text rather than the declared identifier, because the
+/// identifier is what somebody typed and the text is what they agreed to. This is the
+/// check that would catch a source relabelled upstream without the descriptor changing.
+let incompatiblePhrases: [(needle: String, why: String)] = [
+    ("noncommercial", "forbids commercial use"),
+    ("non-commercial use", "forbids commercial use"),
+    ("share-alike", "requires derived work under the same licence"),
+    ("sharealike", "requires derived work under the same licence"),
+    ("gnu general public license", "copyleft"),
+    ("lesser general public license", "copyleft"),
+    ("for research purposes only", "restricts the field of use"),
+    ("academic use only", "restricts the field of use"),
+]
+
+for (id, descriptor) in descriptors.sorted(by: { $0.key < $1.key }) {
+    guard apacheCompatible[descriptor.license] != nil else {
+        report(
+            .error, "apache",
+            "\(id) declares '\(descriptor.license)', which has not been reviewed against "
+                + "Apache-2.0 distribution. Read it, then add it to `apacheCompatible` with "
+                + "the reason — or do not ship the source.")
+        continue
+    }
+    let file = options.licenses.appendingPathComponent("\(id).txt")
+    guard let text = try? String(contentsOf: file, encoding: .utf8) else { continue }
+    let lowered = text.lowercased()
+    for phrase in incompatiblePhrases where lowered.contains(phrase.needle) {
+        // The Unlicense says "commercial or non-commercial", granting both. A substring
+        // match cannot tell a permission from a prohibition, so the surrounding words are
+        // checked for the one construction that recurs.
+        if phrase.needle.contains("commercial") && lowered.contains("commercial or non-commercial") {
+            continue
+        }
+        report(
+            .error, "apache",
+            "\(id)'s licence text contains '\(phrase.needle)' — \(phrase.why), which "
+                + "Apache-2.0 distribution cannot accommodate")
+    }
+}
+
 // MARK: - Check: licence texts
 
 let licenceTexts = Set(

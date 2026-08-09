@@ -160,6 +160,57 @@ struct LicenseIntegrityTests {
         }
     }
 
+    /// The question the whole licence apparatus exists to answer.
+    ///
+    /// Decoy is distributed under Apache-2.0, which is only possible if every source
+    /// permits it. Share-alike would force the corpus open under a different licence;
+    /// a non-commercial term would forbid most of what users do with a fixture library.
+    /// Neither can be allowed in by accident, so the test asserts the *shape* of every
+    /// licence rather than trusting the label.
+    @Test("no source licence forbids Apache-2.0 distribution")
+    func everyLicencePermitsApacheDistribution() throws {
+        let forbidden = [
+            "noncommercial", "non-commercial use", "share-alike", "sharealike",
+            "gnu general public license", "lesser general public license",
+            "for research purposes only", "academic use only",
+        ]
+
+        for descriptor in Self.descriptors {
+            let file = Self.root.appendingPathComponent("LICENSES/\(descriptor.id).txt")
+            guard let text = try? String(contentsOf: file, encoding: .utf8) else { continue }
+            let lowered = text.lowercased()
+
+            for phrase in forbidden where lowered.contains(phrase) {
+                // The Unlicense grants "commercial or non-commercial" use. A substring
+                // match cannot tell a permission from a prohibition, and this is the one
+                // construction that recurs.
+                if phrase.contains("commercial"),
+                    lowered.contains("commercial or non-commercial")
+                {
+                    continue
+                }
+                let complaint =
+                    "\(descriptor.id) contains '\(phrase)', which Apache-2.0 distribution "
+                    + "cannot accommodate"
+                Issue.record("\(complaint)")
+            }
+        }
+    }
+
+    /// Attribution is the one obligation every source here imposes, and the one that is
+    /// easiest to fail silently — a source can be fetched, used and never named.
+    @Test("every source reaches NOTICE")
+    func everySourceIsAttributed() throws {
+        let notice = try String(
+            contentsOf: Self.root.appendingPathComponent("NOTICE"), encoding: .utf8)
+        for descriptor in Self.descriptors {
+            #expect(
+                notice.contains(descriptor.id),
+                "\(descriptor.id) is fetched and used but never named in NOTICE"
+            )
+        }
+    }
+
     /// Decoy's own copyright, which nothing else asserts.
     @Test("the project asserts its own copyright")
     func ownCopyright() throws {

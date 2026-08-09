@@ -692,6 +692,46 @@ table and attributed to CLDR, which is the known limitation recorded above.
 
 ---
 
+## Can this be distributed under Apache-2.0?
+
+**Yes, and it is checked on every build rather than concluded once.**
+
+All thirty-one sources are attribution-style: keep the notice, do not claim the licensor
+endorses you. None is share-alike, none restricts commercial use, and none requires
+derived work to be relicensed — any one of which would make an Apache-2.0 distribution
+impossible rather than merely inconvenient.
+
+`decoy-validate` enforces it two ways:
+
+- **An allow-list of reviewed licences.** A source declaring anything not on it fails the
+  build. An allow-list rather than a deny-list on purpose: a deny-list ships an unreviewed
+  licence by default and only stops the ones somebody thought of. Adding a source with a
+  new licence fails until a line is added with the reason, which is the moment to actually
+  read it.
+- **A scan of the committed text**, not the declared identifier. The identifier is what
+  somebody typed; the text is what they agreed to. This is what would catch a source
+  relicensed upstream without its descriptor changing.
+
+Two entries look alarming and are not. DanNet and the Norwegian Wordnet both open with a
+heading reading "Commercial Use of …", which is an invitation rather than a restriction —
+the grant beneath it is BSD-shaped: *permission to use, copy, modify and distribute … for
+any purpose and without fee or royalty*. Both also forbid using the licensor's name in
+publicity, which is why NOTICE states that no source endorses Decoy.
+
+**Attribution is discharged through NOTICE**, generated from the provenance records
+embedded in the compiled corpus rather than maintained by hand, so it describes what
+actually shipped. Every source's full licence text is committed at `LICENSES/<id>.txt` —
+several of these licences require the notice itself to travel with the distribution, which
+a link does not satisfy.
+
+One attribution failure has been found this way and is worth recording, because it was
+invisible to everything except a direct check: LDNOOBW was loaded after the manifest
+snapshotted its source list, so a CC BY 4.0 source was being used and not named. A line
+ordering, not a decision. `decoy-validate` now checks that every declared source reaches
+NOTICE.
+
+---
+
 ## Attribution
 
 Every corpus carries its own source records, so the authoritative answer is
