@@ -1,0 +1,18 @@
+Wikidata's content is released under the Creative Commons CC0 1.0 Universal Public
+Domain Dedication, stated at https://www.wikidata.org/wiki/Wikidata:Licensing and applied
+to all structured data in the repository.
+
+    "All structured data from the main, Property, Lexeme, and EntitySchema namespaces is
+     available under the Creative Commons CC0 License."
+
+Full text: https://creativecommons.org/publicdomain/zero/1.0/
+
+CC0 waives copyright and related rights to the fullest extent permitted by law. There is
+no attribution condition and no share-alike condition, so nothing here constrains
+distributing Decoy under Apache-2.0.
+
+Decoy names Wikidata in NOTICE regardless of that, because the provenance records exist to
+answer where a value came from rather than only to discharge obligations.
+
+Wikidata asks, as a courtesy rather than a licence term, that reusers identify themselves
+in the User-Agent header when querying. `fetch-wikidata-names.mjs` does.

@@ -68,8 +68,10 @@ struct LicenseIntegrityTests {
         // `public-facts` and `public-domain` are the deliberate exceptions — there is no
         // holder because there is no grant, which `LICENSES/<id>.txt` states in prose.
         // `Unlicense` joins them for the same reason: it is a dedication *away* from
-        // copyright, so naming a holder would contradict the grant it makes.
-        let noGrant: Set<String> = ["public-facts", "public-domain", "Unlicense"]
+        // copyright, so naming a holder would contradict the grant it makes. `CC0-1.0` is
+        // the same instrument despite the Creative Commons name it shares with the CC BY
+        // licences: it waives the rights rather than licensing them.
+        let noGrant: Set<String> = ["public-facts", "public-domain", "Unlicense", "CC0-1.0"]
 
         for descriptor in Self.descriptors where !noGrant.contains(descriptor.license) {
             #expect(
@@ -180,7 +182,8 @@ struct LicenseIntegrityTests {
             guard let text = try? String(contentsOf: file, encoding: .utf8) else { continue }
             let lowered = text.lowercased()
 
-            for phrase in forbidden where lowered.contains(phrase) {
+            for phrase in forbidden {
+                guard let hit = lowered.range(of: phrase) else { continue }
                 // The Unlicense grants "commercial or non-commercial" use. A substring
                 // match cannot tell a permission from a prohibition, and this is the one
                 // construction that recurs.
@@ -189,6 +192,18 @@ struct LicenseIntegrityTests {
                 {
                     continue
                 }
+                // Where a source publishes no licence file, `LICENSES/<id>.txt` records the
+                // conclusion in prose instead — and prose says things like "no share-alike
+                // condition", which a substring scan reads as the opposite of its meaning.
+                // A short look-back for a negator is enough: the window is deliberately too
+                // narrow to reach a negation two clauses away, which would start excusing
+                // text that really does impose the term.
+                let start =
+                    lowered.index(hit.lowerBound, offsetBy: -32, limitedBy: lowered.startIndex)
+                    ?? lowered.startIndex
+                let before = lowered[start..<hit.lowerBound]
+                let negators = ["no ", "not ", "nor ", "neither ", "without ", "waives ", "free of "]
+                if negators.contains(where: before.contains) { continue }
                 let complaint =
                     "\(descriptor.id) contains '\(phrase)', which Apache-2.0 distribution "
                     + "cannot accommodate"

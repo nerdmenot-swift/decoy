@@ -272,6 +272,7 @@ let apacheCompatible: [String: String] = [
     "LicenseRef-EtalabOpenLicence-2.0": "attribution only; Etalab declares it compatible with CC BY 4.0",
     "public-domain": "no grant needed; a work of government or an expired term",
     "public-facts": "no grant exists; a registry of facts carries no authorship",
+    "CC0-1.0": "a public-domain dedication; no attribution or share-alike condition",
     "LicenseRef-WhitakersWords":
         "an unconditional grant — 'permission is hereby freely given for any and all use "
         + "of program and data'; attribution is requested, not required",
@@ -293,6 +294,25 @@ let incompatiblePhrases: [(needle: String, why: String)] = [
     ("academic use only", "restricts the field of use"),
 ]
 
+/// Whether a phrase is being denied rather than imposed at this position.
+///
+/// The files in `LICENSES/` are not all verbatim upstream text. Where a source publishes no
+/// licence file — a public-domain dedication, a government work, a bare statement on a web
+/// page — the convention here is to record the conclusion in prose instead, and that prose
+/// naturally says things like "no share-alike condition". A substring scan reads that as the
+/// opposite of what it says.
+///
+/// So the words just before a match are checked for a negator. The window is short on
+/// purpose: "no attribution condition and no share-alike condition" is the construction that
+/// occurs, and widening it far enough to catch a negation two clauses away would start
+/// clearing sentences that really do impose the term.
+func isNegated(_ text: String, before index: String.Index) -> Bool {
+    let start = text.index(index, offsetBy: -32, limitedBy: text.startIndex) ?? text.startIndex
+    let window = text[start..<index]
+    let negators = ["no ", "not ", "nor ", "neither ", "without ", "waives ", "free of "]
+    return negators.contains { window.contains($0) }
+}
+
 for (id, descriptor) in descriptors.sorted(by: { $0.key < $1.key }) {
     guard apacheCompatible[descriptor.license] != nil else {
         report(
@@ -305,13 +325,15 @@ for (id, descriptor) in descriptors.sorted(by: { $0.key < $1.key }) {
     let file = options.licenses.appendingPathComponent("\(id).txt")
     guard let text = try? String(contentsOf: file, encoding: .utf8) else { continue }
     let lowered = text.lowercased()
-    for phrase in incompatiblePhrases where lowered.contains(phrase.needle) {
+    for phrase in incompatiblePhrases {
+        guard let hit = lowered.range(of: phrase.needle) else { continue }
         // The Unlicense says "commercial or non-commercial", granting both. A substring
         // match cannot tell a permission from a prohibition, so the surrounding words are
         // checked for the one construction that recurs.
         if phrase.needle.contains("commercial") && lowered.contains("commercial or non-commercial") {
             continue
         }
+        if isNegated(lowered, before: hit.lowerBound) { continue }
         report(
             .error, "apache",
             "\(id)'s licence text contains '\(phrase.needle)' — \(phrase.why), which "
@@ -335,7 +357,11 @@ for (id, descriptor) in descriptors.sorted(by: { $0.key < $1.key }) {
                 + "a source with no grant needs a file recording why instead.")
         continue
     }
-    let noGrant = ["public-facts", "public-domain", "Unlicense"].contains(descriptor.license)
+    // CC0 belongs here rather than with the CC licences it is named alongside: it is a
+    // dedication, not a grant. The holder waives the rights instead of licensing them, so
+    // demanding a copyright line asks for the one thing the instrument exists to remove.
+    let noGrant = ["public-facts", "public-domain", "Unlicense", "CC0-1.0"].contains(
+        descriptor.license)
     if descriptor.copyright.isEmpty && !noGrant {
         report(
             .error, "licence",

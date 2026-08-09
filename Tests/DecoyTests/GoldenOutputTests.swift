@@ -87,13 +87,13 @@ struct GoldenOutputTests {
         #expect(
             Self.sample(DecoyLocaleDE.locale) == [
                 "Kim",
-                "Schlitzer",
-                "Dr. Kim Grasse",
+                "Rummel",
+                "Dr. Kim Drangmeister",
                 "Erlenmoos",
                 "Im Jücherfeld 10b",
                 "Mayotte",
-                "Dittmer-Kick",
-                "jamie.viellehner@example.net",
+                "Biber-Happe",
+                "jamie.warnatz@example.net",
                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.0.0 Safari/537.36",
                 "Ergonomic Wooden Chair",
                 "GB66MGQT74075995809174",
@@ -114,12 +114,12 @@ struct GoldenOutputTests {
         #expect(
             Self.sample(DecoyLocaleJA.locale) == [
                 "葵",
-                "竹下",
-                "浅野葵",
+                "立松",
+                "沓脱葵",
                 "Iwai",
                 "9丁目5番7号",
                 "チリ",
-                "株式会社角田保険",
+                "株式会社西堀保険",
                 "user479.user938@example.net",
                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.0.0 Safari/537.36",
                 "Ergonomic Wooden Chair",

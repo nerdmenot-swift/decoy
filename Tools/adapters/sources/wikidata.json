@@ -1,0 +1,33 @@
+{
+  "id": "wikidata",
+  "name": "Wikidata (given names and surnames by language)",
+  "license": "CC0-1.0",
+  "copyright": "",
+  "url": "https://query.wikidata.org/",
+  "version": "2026-08-09",
+  "retrieved": "2026-08-09",
+  "authored": true,
+  "note": [
+    "The answer to a question this campaign kept running into: there is no consolidated,",
+    "permissively licensed, pinnable dataset of names by language -- except that Wikidata is",
+    "one, if you query it rather than download it. The full dump is about 140 GB and 99.99%",
+    "of it is irrelevant; the queries in `fetch-wikidata-names.mjs` return exactly the names.",
+    "",
+    "CC0. No attribution required, no share-alike, nothing to reconcile with Apache-2.0.",
+    "Decoy names it in NOTICE anyway, because being able to say where a value came from is",
+    "the point of the provenance machinery whether or not anyone requires it.",
+    "",
+    "Marked `authored` for the same reason as Decoy's own lists: there is no artifact to",
+    "fetch and no integrity hash, because a SPARQL endpoint cannot be pinned -- it answers",
+    "with whatever Wikidata says today, it is rate-limited, and it returned a truncated body",
+    "mid-run while this was being set up. The query results are committed to the repository",
+    "instead, with the queries beside them, so the data can be re-derived and diffed. That",
+    "is checkable by inspection rather than only by comparison.",
+    "",
+    "Not weighted, and that matters: the US Census and INSEE lists carry how many people",
+    "bear each name, which is why `en` and `fr` produce realistic collision rates and these",
+    "locales do not. Wikidata records that a name exists, not how common it is. A national",
+    "registry replacing any of these lists is a straight upgrade."
+  ],
+  "artifacts": []
+}

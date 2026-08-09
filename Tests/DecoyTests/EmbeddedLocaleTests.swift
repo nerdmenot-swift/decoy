@@ -44,9 +44,11 @@ struct EmbeddedLocaleTests {
         #expect(locale.code == "de")
         #expect(locale.chain.count == 3, "de -> en -> base")
 
-        // Names come from `de` itself.
+        // Names come from `de` itself — Wikidata's German list, which is smaller than the
+        // one it replaced. That is the trade the source change makes: 449 names that can be
+        // pointed at a licence, rather than 573 that cannot.
         let german = try #require(locale.strings("person.first_name.female"))
-        #expect(german.count == 573)
+        #expect(german.count == 449)
 
         // Country codes live only in `base`, two hops away.
         let countries = try #require(locale.composite("location.country_code"))
