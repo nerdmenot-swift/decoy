@@ -1,0 +1,38 @@
+{
+  "id": "whitakers-words",
+  "name": "Whitaker's Words (DICTLINE.GEN)",
+  "license": "LicenseRef-WhitakersWords",
+  "copyright": "Copyright William A. Whitaker (1936-2010)",
+  "url": "https://github.com/mk270/whitakers-words",
+  "version": "9b11477",
+  "retrieved": "2026-08-09",
+  "note": [
+    "A Latin dictionary, for `lorem.word`. Lorem ipsum is Latin, and every permissively",
+    "licensed *digital edition* of a Latin text turned out to be CC BY-SA -- Perseus,",
+    "Wikisource, the Latin WordNet -- which does not compose with Apache-2.0. This is a",
+    "dictionary rather than a text, and William Whitaker's terms are unambiguous:",
+    "'Permission is hereby freely given for any and all use of program and data.'",
+    "Redistribution and commercial use are explicit; attribution is requested rather than",
+    "required, and is given anyway.",
+    "",
+    "Only entries whose first stem is already a complete word are taken -- third-declension",
+    "nouns and adjectives, where the nominative is irregular and therefore stored whole, and",
+    "adverbs, which do not decline. Everything else in the file is a stem that needs its",
+    "declension ending to become a word, and reconstructing those means implementing Latin",
+    "morphology. Getting it subtly wrong would produce strings that look like Latin and are",
+    "not, in a language nobody reviewing this reads. 1,987 words survive that rule, against",
+    "faker's 999.",
+    "",
+    "Filtered to Whitaker's own frequency codes A through C, so the vocabulary is words a",
+    "Latinist would recognise rather than hapax legomena from the back of the corpus."
+  ],
+  "artifacts": [
+    {
+      "name": "dictionary",
+      "format": "file",
+      "filename": "DICTLINE.GEN",
+      "url": "https://raw.githubusercontent.com/mk270/whitakers-words/9b11477e53f4adfb17d6f6aa563669dc71e0a680/DICTLINE.GEN",
+      "integrity": "sha512-d2CC/DLva67d0AAW+lMREsMN215lfMfZERosO+BRp0Mz0yG01wPue3s+weo1mjpORg04UsCJK2M1o/Zqs3H8nw=="
+    }
+  ]
+}

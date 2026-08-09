@@ -156,6 +156,23 @@ const SUPERSEDED = new Set([
   // Welsh-only, and CLDR supplies continents for every locale that has territory names.
   // Keeping faker's would mean `continent()` working in one locale out of seventy-six.
   'location.continents',
+  // Open Multilingual Wordnet supplies these in fifteen locales under licences that
+  // compose; the eight faker also covered are ones OMW cannot reach. Dropping them lets
+  // those eight fall through to English, which is what the other fifty-three already do.
+  // A German noun from faker is better than an English one, and neither is worth keeping
+  // a dependency for once the rest of the namespace has moved.
+  'word.noun',
+  'word.verb',
+  'word.adjective',
+  'word.adverb',
+  // No wordnet carries closed-class function words -- OMW is nouns, verbs, adjectives and
+  // adverbs only -- and no registry publishes them. `word.preposition()`,
+  // `word.conjunction()` and `word.interjection()` are dropped with the data rather than
+  // left to trap: they existed because faker had the lists, not because anybody needs a
+  // generated preposition.
+  'word.preposition',
+  'word.conjunction',
+  'word.interjection',
 ])
 
 /** Removes superseded keys from one category's tree. */

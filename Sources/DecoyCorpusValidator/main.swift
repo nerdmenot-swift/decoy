@@ -260,6 +260,9 @@ let apacheCompatible: [String: String] = [
     "LicenseRef-EtalabOpenLicence-2.0": "attribution only; Etalab declares it compatible with CC BY 4.0",
     "public-domain": "no grant needed; a work of government or an expired term",
     "public-facts": "no grant exists; a registry of facts carries no authorship",
+    "LicenseRef-WhitakersWords":
+        "an unconditional grant — 'permission is hereby freely given for any and all use "
+        + "of program and data'; attribution is requested, not required",
 ]
 
 /// Phrases that would make a licence incompatible however it is labelled.

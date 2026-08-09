@@ -115,7 +115,7 @@ rather than block a release.
 ## The corpus is a build artifact
 
 No data is hand-edited, and none is committed. `Tools/adapters/` holds *programs* that
-derive the corpus from thirty-one pinned upstreams — each fetched by URL, verified
+derive the corpus from thirty-two pinned upstreams — each fetched by URL, verified
 against an integrity hash, and recorded in the corpus with its licence:
 
 ```
@@ -157,9 +157,9 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
 - [x] Multi-platform package skeleton, Foundation-free core, `swiftLanguageMode(.v6)`
 - [x] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
-- [x] Adapter pipeline: 31 pinned sources, integrity-verified, provenance per path
+- [x] Adapter pipeline: 32 pinned sources, integrity-verified, provenance per path
 - [x] JSON → binary corpus format + Swift reader
-- [x] 199 generators across 18 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
+- [x] 196 generators across 18 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
 - [x] All 76 locales compile; `en`, `de`, `ja` ship as importable Swift modules
 - [x] `decoy-inspect`: enumeration, coverage, generated attribution
 - [ ] CI actually run — this repository has no remote, so every step in `ci.yml`

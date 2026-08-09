@@ -151,10 +151,7 @@ struct GeneratorSmokeTests {
         var f = try english()
         check("word.adjective", &f) { $0.word.adjective() }
         check("word.adverb", &f) { $0.word.adverb() }
-        check("word.conjunction", &f) { $0.word.conjunction() }
-        check("word.interjection", &f) { $0.word.interjection() }
         check("word.noun", &f) { $0.word.noun() }
-        check("word.preposition", &f) { $0.word.preposition() }
         check("word.verb", &f) { $0.word.verb() }
         check("word.words", &f) { $0.word.words() }
 

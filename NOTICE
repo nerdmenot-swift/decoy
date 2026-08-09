@@ -119,6 +119,13 @@ LicenseRef-ThaiWordNet
     https://omwn.org/
     Full licence: LICENSES/omw-th.txt
 
+LicenseRef-WhitakersWords
+-------------------------
+  whitakers-words — version 9b11477, retrieved 2026-08-09
+    Copyright William A. Whitaker (1936-2010)
+    https://github.com/mk270/whitakers-words
+    Full licence: LICENSES/whitakers-words.txt
+
 MIT
 ---
   faker-js — version 10.5.0, retrieved 2026-08-07
