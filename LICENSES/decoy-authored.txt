@@ -1,0 +1,10 @@
+This source is Decoy's own content, not a third party's.
+
+The lists it covers -- colour names, vehicle makes, database vocabulary, company
+buzzwords and the rest -- were written for this project because no registry publishes
+them. They are distributed under the Apache License, Version 2.0, the same licence as
+the rest of Decoy, whose full text is in LICENSE at the root of this repository.
+
+There is no third-party obligation attached to this source. It is listed in NOTICE
+alongside the others so that the provenance of every path in the corpus can be answered
+the same way: by naming where the data came from. In this case, here.

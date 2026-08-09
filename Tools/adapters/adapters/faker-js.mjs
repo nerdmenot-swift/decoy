@@ -166,10 +166,10 @@ const SUPERSEDED = new Set([
   'word.adjective',
   'word.adverb',
   // No wordnet carries closed-class function words -- OMW is nouns, verbs, adjectives and
-  // adverbs only -- and no registry publishes them. `word.preposition()`,
-  // `word.conjunction()` and `word.interjection()` are dropped with the data rather than
-  // left to trap: they existed because faker had the lists, not because anybody needs a
-  // generated preposition.
+  // adverbs only -- and no registry publishes them, so Decoy writes its own; see
+  // `authored.mjs`. Superseded rather than merely outranked, because faker's translations
+  // for seven locales would otherwise shadow an English list that is deliberately the only
+  // one.
   'word.preposition',
   'word.conjunction',
   'word.interjection',

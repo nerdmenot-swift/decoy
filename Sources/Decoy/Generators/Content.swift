@@ -45,17 +45,19 @@ extension Faker {
 public struct WordFaker {
     var faker: Faker
 
-    // Nouns, verbs, adjectives and adverbs, and no function words.
-    //
-    // `preposition()`, `conjunction()` and `interjection()` used to sit here and are gone.
-    // No wordnet carries closed-class words — the Open Multilingual Wordnet is these four
-    // parts of speech and nothing else — and no registry publishes them, so they existed
-    // only because faker shipped the lists. A generated preposition is not a thing anybody
-    // needs, and keeping three generators alive to justify a dependency is the wrong way
-    // round.
     public mutating func adjective() -> String { faker.require("word.adjective") }
     public mutating func adverb() -> String { faker.require("word.adverb") }
+    public mutating func conjunction() -> String { faker.require("word.conjunction") }
+    public mutating func interjection() -> String { faker.require("word.interjection") }
     public mutating func noun() -> String { faker.require("word.noun") }
+    /// Closed-class function words, which Decoy authors rather than cites.
+    ///
+    /// These three were briefly deleted along with faker's lists, on the reasoning that
+    /// nobody needs a generated preposition. That was the wrong trade: a feature should
+    /// not disappear because no institution publishes a list of English prepositions.
+    /// They are a closed class, so what is written in `authored.mjs` is very nearly the
+    /// complete set rather than a sample of one.
+    public mutating func preposition() -> String { faker.require("word.preposition") }
     public mutating func verb() -> String { faker.require("word.verb") }
 
     public mutating func words(_ count: Int = 3) -> String {

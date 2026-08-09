@@ -1,0 +1,32 @@
+{
+  "id": "onet",
+  "name": "O*NET 30.3 Database (US Department of Labor)",
+  "license": "CC-BY-4.0",
+  "copyright": "Copyright National Center for O*NET Development, for the US Department of Labor, Employment and Training Administration",
+  "url": "https://www.onetcenter.org/database.html",
+  "version": "30.3",
+  "retrieved": "2026-08-09",
+  "note": [
+    "The occupational taxonomy the US Department of Labor maintains: 1,016 job titles, each",
+    "an occupation somebody is actually employed in, against faker's components glued",
+    "together into strings like 'Lead Solutions Engineer' that name no real job.",
+    "",
+    "CC BY 4.0, stated plainly on the download page, and versioned -- `db_30_3` rather than",
+    "a moving `latest`, so a quarterly update is a deliberate re-pin.",
+    "",
+    "English only, which is the usual shape: the classification is a US federal instrument",
+    "and the other nineteen locales that carried faker's job data fall through to English,",
+    "as they already do for wordnet vocabulary. ESCO covers 28 European languages and was",
+    "the obvious alternative, but its download requires an email address and a privacy",
+    "acceptance and states no licence -- neither of which a pinned, verifiable pipeline can",
+    "work with."
+  ],
+  "artifacts": [
+    {
+      "name": "database",
+      "format": "zip",
+      "url": "https://www.onetcenter.org/dl_files/database/db_30_3_text.zip",
+      "integrity": "sha512-Z/R4CyItqZ32IGu1K8Qfo7KHUPGSMFUwt8XFrnD3uVu4/Kt2PXGeuto4yoj6PUOI3sCKtAmVNTf+G61hwMgBuA=="
+    }
+  ]
+}

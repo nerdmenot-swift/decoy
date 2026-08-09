@@ -1,0 +1,31 @@
+{
+  "id": "decoy-authored",
+  "name": "Decoy's own data",
+  "license": "Apache-2.0",
+  "copyright": "Copyright 2026 Srinivas Iyer",
+  "url": "https://github.com/NerdMeNot/decoy",
+  "version": "1",
+  "retrieved": "2026-08-09",
+  "authored": true,
+  "note": [
+    "Not fetched from anywhere: this is original content, written for this project and",
+    "distributed under the same licence as the code. It is the deliberate exception to the",
+    "rule that no data here is hand-edited, and it exists because some fields have no",
+    "registry to cite -- nobody publishes an authoritative list of car manufacturers, or",
+    "bicycle types, or the words people use for colours.",
+    "",
+    "The rule that stops this becoming a dumping ground is in the adapter: try to cite",
+    "first. Four rounds of searching moved counties, subdivisions, phone formats, name",
+    "patterns, HTTP status codes, JOSE algorithms, Latin vocabulary and job titles out of",
+    "this category and into real sources. Only what survives that search is written here.",
+    "",
+    "English only. These are not translations -- a locale without its own data falls through",
+    "to English, which is already what happens for wordnet vocabulary and occupations.",
+    "Inventing a German list would be inventing German.",
+    "",
+    "Carries no artifact because there is nothing to fetch and no integrity hash because",
+    "there is no upstream to verify against. The content is in the repository, reviewable in",
+    "a diff, which is a stronger guarantee than a hash over somebody else's server."
+  ],
+  "artifacts": []
+}

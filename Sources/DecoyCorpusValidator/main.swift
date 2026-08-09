@@ -171,6 +171,8 @@ struct Descriptor {
     let integrities: [String]
     /// Set when this source's data is merged into another's table and credited there.
     let mergedInto: String?
+    /// Set when the data is Decoy's own rather than fetched from anywhere.
+    let authored: Bool
 }
 
 var descriptors: [String: Descriptor] = [:]
@@ -201,7 +203,8 @@ for file in directoryContents(options.sources, suffix: ".json") {
         version: object["version"] as? String ?? "",
         retrieved: object["retrieved"] as? String ?? "",
         integrities: artifacts.compactMap { $0["integrity"] as? String },
-        mergedInto: object["mergedInto"] as? String
+        mergedInto: object["mergedInto"] as? String,
+        authored: object["authored"] as? Bool ?? false
     )
 
     for (field, value) in [
@@ -211,7 +214,16 @@ for file in directoryContents(options.sources, suffix: ".json") {
         report(.error, "descriptor", "\(id) declares no \(field)")
     }
 
-    if artifacts.isEmpty {
+    // An authored source has nothing to fetch and nothing to verify against, because the
+    // content is in this repository. A diff is a stronger guarantee than a hash over
+    // somebody else's server, so the absence is required rather than tolerated.
+    if descriptors[id]!.authored {
+        if !artifacts.isEmpty {
+            report(
+                .error, "descriptor",
+                "\(id) is marked authored but declares artifacts — it is one or the other")
+        }
+    } else if artifacts.isEmpty {
         report(.error, "descriptor", "\(id) declares no artifacts to fetch")
     }
     for integrity in descriptors[id]!.integrities where !integrity.hasPrefix("sha512-") {
@@ -401,6 +413,7 @@ if let data = try? Data(contentsOf: options.manifest),
 {
     let contributing = Set(attribution.values.flatMap(\.values))
     for id in descriptors.keys.sorted() where !contributing.contains(id) {
+        if descriptors[id]?.authored == true { continue }
         // A source can legitimately claim nothing: the format stores one source id per
         // table, so an upstream merged into another's table is credited there. That is a
         // fact about the corpus and belongs in the descriptor, where `mergedInto` records

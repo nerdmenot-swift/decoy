@@ -1,0 +1,13 @@
+The O*NET 30.3 Database is published by the National Center for O*NET Development for
+the US Department of Labor under the Creative Commons Attribution 4.0 International
+License, stated on https://www.onetcenter.org/database.html.
+
+    "This work is licensed under a Creative Commons Attribution 4.0 International
+     License. ... O*NET(R) is a trademark of the U.S. Department of Labor, Employment and
+     Training Administration."
+
+Full text: https://creativecommons.org/licenses/by/4.0/
+
+Attribution is discharged through NOTICE, which names the source, its version and the
+date it was retrieved. Decoy uses only the occupation titles, and does not use the O*NET
+trademark to describe itself or imply endorsement.

@@ -92,7 +92,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — twenty-one adapters plus the faker-js bootstrap, thirty-four sources:
+**Built so far** — twenty-three adapters plus the faker-js bootstrap, thirty-six sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -110,6 +110,8 @@ someone else's package should not itself require a package manager.
 | `cldr-dates` | CLDR 48.2.0 | Unicode-3.0 | `date.month.*`, `date.weekday.*` in 74 locales |
 | `cities` | cities.json 1.1.61 (GeoNames) | CC BY 4.0 | `location.city_name`, `location.place` (composite) in 74 locales |
 | `civil-names` | INSEE, Fichier des prénoms | Licence Ouverte 2.0 | `person.first_name.{female,male}` in `fr` — 9,243 names, **weighted** |
+| `occupations` | O*NET 30.3 (US Dept of Labor) | CC BY 4.0 | `person.job_title` — 941 real occupations |
+| `authored` | Decoy's own | Apache-2.0 | 38 lists no registry publishes; see below |
 | `us-surnames` | US Census 2010 | public domain | `person.last_name.generic` in `en` — 24,889 names, **weighted** |
 | `wordnet` | Open Multilingual Wordnet 2.0 | per language (see below) | `word.noun/verb/adjective/adverb` in 15 locales |
 | `latin-words` | Whitaker's Words | permissive, see LICENSES | `lorem.word` in `base` — 1,987 Latin words |
@@ -505,7 +507,7 @@ All six are representable in format v2. Four are in use.
 |---|---|---|
 | Weights | A weight column alongside string tables | **In use** — faker-derived patterns, and real Census frequencies for English surnames |
 | Composite records | Heterogeneous field tuples, not parallel lists | **In use** — countries, languages, currencies |
-| Provenance | A source/license table, referenced by ID | **In use** — 34 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
+| Provenance | A source/license table, referenced by ID | **In use** — 36 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
 | Generative models | A model chunk type, not only string tables | Chunk kind reserved; nothing emits one |
 | Corpus version + compatibility | Header fields, checked on load | **In use** |
 | Cross-locale dedup | A shared string arena (21.2% redundancy measured) | **In use** |
@@ -566,8 +568,8 @@ Counts are not the quality bar.
 ## Sequencing
 
 1. ~~Binary format with all six requirements representable~~ — **done** (format v2)
-2. ~~Core generators against the faker-derived corpus~~ — **done** (196 methods across 18
-   namespaces; 178 across 17 without Foundation, which gates the `date` namespace)
+2. ~~Core generators against the faker-derived corpus~~ — **done** (199 methods across 18
+   namespaces; 181 across 17 without Foundation, which gates the `date` namespace)
 3. ~~Corpus discoverability and coverage measurement~~ — **done** (`Corpus.paths`, `decoy-inspect`)
 4. Authoritative reference adapters replacing factual fields — **done for everything
    with a pinnable registry**. Migrated: ISO 3166-1 and 3166-2, ISO 639, ISO 4217, IANA
@@ -620,9 +622,28 @@ Counts are not the quality bar.
    - **A registry exists but is not pinnable, or is licensed incompatibly.** Vehicle makes
      (NHTSA publishes a live unversioned API), postcode formats (~200 national
      publishers), vocabulary for nine languages whose wordnets are CC BY-SA or CeCILL.
-   - **No registry exists, because the data is invented.** Company name components, lorem
-     words, buzz phrases. These need an independently licensed seed list or they need
-     dropping — a generated value is fine here, but something has to seed it.
+   - **No registry exists, because the data is invented.** Company name components, buzz
+     phrases, colour names, car makes. **Decoy writes these itself**, in
+     `adapters/authored.mjs`, under the same Apache-2.0 licence as the code.
+
+     That is a deliberate exception to the rule this document opens with — *no data is
+     hand-edited* — and the exception is narrow. The rule exists to stop an unaudited list
+     acquiring authority it never earned: a thousand surnames from nowhere, unverifiable
+     and quietly wrong. These are the opposite case. They are short, closed, checkable by
+     anyone reading the diff, and there is genuinely nothing to cite. No standards body
+     maintains the list of bicycle types.
+
+     The alternative was deleting the generators, and deleting `vehicle.manufacturer()`
+     because no institution has blessed a list of car makes is the wrong trade for a
+     fixture library. Three generators — `preposition()`, `conjunction()`,
+     `interjection()` — were briefly deleted on that reasoning and have been restored.
+
+     Four rules keep it from becoming a dumping ground: **try to cite first** (four rounds
+     of searching moved counties, phone formats, status codes, Latin vocabulary and job
+     titles out of here and into real sources); **English only**, because inventing a
+     German list would be inventing German; **prefer the enumerable** — `color.human` is
+     the CSS named-colour set, `vehicle.fuel` is what fuels exist; and **short enough to
+     read**, since a list needing hundreds of entries wants a source, not an author.
 
    **Investigated and rejected**, recorded so the next attempt does not repeat the search:
 
@@ -707,7 +728,7 @@ table and attributed to CLDR, which is the known limitation recorded above.
 
 **Yes, and it is checked on every build rather than concluded once.**
 
-All thirty-four sources are attribution-style: keep the notice, do not claim the licensor
+All thirty-six sources are attribution-style: keep the notice, do not claim the licensor
 endorses you. None is share-alike, none restricts commercial use, and none requires
 derived work to be relicensed — any one of which would make an Apache-2.0 distribution
 impossible rather than merely inconvenient.
@@ -748,7 +769,7 @@ NOTICE.
 Every corpus carries its own source records, so the authoritative answer is
 `decoy-inspect <locale>.decoy` rather than this list. As shipped today:
 
-All thirty-four, because a table that omits seven of them is the same failure as a
+All thirty-six, because a table that omits seven of them is the same failure as a
 NOTICE that does:
 
 | Source | Licence | Obligation |
