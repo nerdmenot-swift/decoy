@@ -24,11 +24,13 @@ struct EmbeddedLocaleTests {
     @Test("generation works straight out of the box")
     func generation() throws {
         var faker = Faker(seed: 1337, locale: DecoyLocaleEN.locale)
-        let pool = try Set(
-            (0..<473).map { try #require(DecoyLocaleEN.locale.strings("person.first_name.female"))
-                .string(at: $0)
-            }
-        )
+        // The whole table, not a fixed count of it. Hard-coding 473 pinned the size of
+        // faker's given-name list, so replacing it with 18,387 registry names made a test
+        // about "does the module work at all" fail on names that were perfectly valid.
+        let table = try #require(DecoyLocaleEN.locale.strings("person.first_name.female"))
+        let pool = Set((0..<table.count).compactMap { try? table.string(at: $0) })
+        #expect(pool.count > 1_000, "the embedded module should carry the full list")
+
         for _ in 0..<200 {
             #expect(pool.contains(faker.person.firstName(.female)))
         }
@@ -72,9 +74,9 @@ struct EmbeddedLocaleTests {
     func provenance() throws {
         let table = try #require(DecoyLocaleEN.locale.strings("person.first_name.female"))
         let source = try #require(try DecoyLocaleEN.corpus.source(table.sourceID))
-        #expect(source.id == "faker-js")
-        #expect(source.license == "MIT")
-        #expect(source.version == "10.5.0")
+        #expect(source.id == "gender-by-name")
+        #expect(source.license == "CC-BY-4.0")
+        #expect(source.version == "591")
     }
 
     @Test("an embedded locale drives Forge end to end")

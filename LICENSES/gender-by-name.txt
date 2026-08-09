@@ -1,0 +1,13 @@
+The Gender by Name dataset is distributed by the UCI Machine Learning Repository under
+the Creative Commons Attribution 4.0 International License, stated on its dataset page at
+https://archive.ics.uci.edu/dataset/591/gender+by+name.
+
+Full text: https://creativecommons.org/licenses/by/4.0/
+
+Its operative condition is attribution: a reuser must credit the source, indicate whether
+changes were made, and link to the licence. Decoy discharges this through NOTICE, which
+names the dataset, its version and the date it was retrieved, and which states plainly
+that the corpus data has been modified -- filtered, re-encoded and deduplicated.
+
+The dataset aggregates name frequencies from the civil registries of the United States,
+United Kingdom, Canada and Australia.

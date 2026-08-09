@@ -203,6 +203,63 @@ const CITY_SUFFIXES = [
   'worth',
 ]
 
+/**
+ * Street suffixes, and the pattern that composes a street name from one.
+ *
+ * The hardest call in this file, and the one to reopen first if a source ever appears.
+ *
+ * There is no gazetteer of streets that can be used. OpenStreetMap has every street in
+ * the world under ODbL, which is share-alike and therefore unusable in an Apache-2.0
+ * distribution. Nothing else is comprehensive.
+ *
+ * So a faker-free corpus composes streets rather than listing them, and composes them
+ * with *English* suffixes in every locale, because writing German and Japanese street
+ * vocabulary would be inventing German and Japanese. `Schäfer Street` in a German fixture
+ * is worse than `Bohnenkampsweg`, and that is the measured cost of the independence —
+ * stated here rather than discovered by somebody looking at their test data.
+ *
+ * The suffixes themselves are the USPS standard set, which is a published fact about
+ * American addressing rather than a preference. The pattern draws on surnames and given
+ * names, which is how English street names are actually formed.
+ */
+const STREET_SUFFIXES = [
+  'Alley', 'Avenue', 'Boulevard', 'Bridge', 'Brook', 'Burg', 'Bypass', 'Canyon', 'Cape',
+  'Causeway', 'Center', 'Circle', 'Cliff', 'Common', 'Corner', 'Court', 'Cove', 'Creek',
+  'Crescent', 'Crest', 'Crossing', 'Dale', 'Dam', 'Divide', 'Drive', 'Estate', 'Expressway',
+  'Extension', 'Fall', 'Ferry', 'Field', 'Flat', 'Ford', 'Forest', 'Forge', 'Fork', 'Fort',
+  'Freeway', 'Garden', 'Gateway', 'Glen', 'Green', 'Grove', 'Harbor', 'Haven', 'Heights',
+  'Highway', 'Hill', 'Hollow', 'Island', 'Junction', 'Key', 'Knoll', 'Lake', 'Landing',
+  'Lane', 'Light', 'Loaf', 'Lock', 'Lodge', 'Manor', 'Meadow', 'Mews', 'Mill', 'Mission',
+  'Motorway', 'Mount', 'Mountain', 'Neck', 'Orchard', 'Oval', 'Overpass', 'Park', 'Parkway',
+  'Pass', 'Passage', 'Path', 'Pike', 'Pine', 'Place', 'Plain', 'Plaza', 'Point', 'Port',
+  'Prairie', 'Radial', 'Ramp', 'Ranch', 'Rapid', 'Rest', 'Ridge', 'River', 'Road', 'Route',
+  'Row', 'Rue', 'Run', 'Shoal', 'Shore', 'Skyway', 'Spring', 'Spur', 'Square', 'Station',
+  'Stravenue', 'Stream', 'Street', 'Summit', 'Terrace', 'Throughway', 'Trace', 'Track',
+  'Trafficway', 'Trail', 'Tunnel', 'Turnpike', 'Underpass', 'Union', 'Valley', 'Viaduct',
+  'View', 'Village', 'Ville', 'Vista', 'Walk', 'Wall', 'Way', 'Well', 'Wharf',
+]
+
+/**
+ * The rest of an address: the number on the door, the flat within it, and how a street
+ * address is assembled from them.
+ *
+ * libaddressinput gives the *layout* of an address and the postcode shape, but says
+ * nothing about house numbering, because there is nothing to say — no country publishes a
+ * rule for it. `####` is a four-digit number, which is what the masks elsewhere mean.
+ */
+const BUILDING_NUMBER = ['###', '####', '#####', '##']
+const SECONDARY_ADDRESS = ['Apt. ###', 'Suite ###', 'Unit ###', 'Flat #', 'Floor #']
+const STREET_ADDRESS = {
+  normal: ['{{location.buildingNumber}} {{location.street}}'],
+  full: ['{{location.buildingNumber}} {{location.street}} {{location.secondaryAddress}}'],
+}
+
+const STREET_PATTERN = [
+  { value: '{{person.lastName}} {{location.street_suffix}}', weight: 6 },
+  { value: '{{person.firstName}} {{location.street_suffix}}', weight: 3 },
+  { value: '{{location.direction.cardinal}} {{person.lastName}} {{location.street_suffix}}', weight: 1 },
+]
+
 /** Compass points. Closed, ancient, and not published by anybody as a registry. */
 const CARDINAL = ['North', 'East', 'South', 'West']
 const CARDINAL_ABBR = ['N', 'E', 'S', 'W']
@@ -227,6 +284,79 @@ const SEX = ['female', 'male']
 const GENDER = [
   'Agender', 'Bigender', 'Female', 'Genderfluid', 'Genderqueer', 'Male', 'Non-binary',
   'Transgender',
+]
+
+/**
+ * Profile bios, of the kind a social account carries.
+ *
+ * Composed from a role and an enthusiasm because that is how they read in life:
+ * "developer", "coffee enthusiast", "dog lover". faker built these from a pattern with
+ * four component lists and an emoji; this is the same idea with the pieces written here.
+ */
+const BIO_PARTS = [
+  'accountant', 'adventurer', 'amateur baker', 'aspiring novelist', 'baker',
+  'beer enthusiast', 'bookworm', 'cat lover', 'certified nerd', 'chef', 'chocolate lover',
+  'coffee enthusiast', 'creator', 'cyclist', 'designer', 'developer', 'dog lover',
+  'dreamer', 'engineer', 'entrepreneur', 'explorer', 'film buff', 'foodie', 'gamer',
+  'gardener', 'guitarist', 'hiker', 'introvert', 'investor', 'journalist', 'keen runner',
+  'knitter', 'lifelong learner', 'maker', 'musician', 'nature lover', 'optimist',
+  'organiser', 'painter', 'photographer', 'plant parent', 'podcaster', 'problem solver',
+  'reader', 'researcher', 'runner', 'scientist', 'storyteller', 'tea drinker', 'teacher',
+  'tinkerer', 'traveller', 'volunteer', 'writer',
+]
+
+/** Post-nominals. English only; a locale with its own honorifics shadows these. */
+const NAME_SUFFIXES = ['Jr.', 'Sr.', 'I', 'II', 'III', 'IV', 'V', 'MD', 'DDS', 'PhD', 'DVM']
+
+/**
+ * Unix directory paths, which exist rather than being invented — these are the
+ * Filesystem Hierarchy Standard's, plus the ones macOS adds.
+ */
+const DIRECTORY_PATHS = [
+  '/bin', '/boot', '/dev', '/etc', '/etc/defaults', '/home', '/home/user',
+  '/home/user/dir', '/lib', '/media', '/mnt', '/opt', '/private', '/proc', '/root',
+  '/sbin', '/srv', '/sys', '/tmp', '/usr', '/usr/bin', '/usr/lib', '/usr/local',
+  '/usr/local/bin', '/usr/local/src', '/usr/sbin', '/usr/share', '/usr/src', '/var',
+  '/var/log', '/var/mail', '/var/spool', '/var/tmp',
+]
+
+/**
+ * Browser user-agent strings, as a pattern.
+ *
+ * The version numbers are masked rather than fixed, so a fixture set does not look like
+ * it was captured on one machine on one afternoon. The shapes are the real ones the four
+ * major engines emit.
+ */
+const USER_AGENT_PATTERN = [
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+    + 'Chrome/1##.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like '
+    + 'Gecko) Version/1#.# Safari/605.1.15',
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:1##.0) Gecko/20100101 Firefox/1##.0',
+  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) '
+    + 'Chrome/1##.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (iPhone; CPU iPhone OS 1#_# like Mac OS X) AppleWebKit/605.1.15 (KHTML, '
+    + 'like Gecko) Version/1#.# Mobile/15E148 Safari/604.1',
+  'Mozilla/5.0 (Linux; Android 1#; SM-G99#B) AppleWebKit/537.36 (KHTML, like Gecko) '
+    + 'Chrome/1##.0.0.0 Mobile Safari/537.36',
+]
+
+/**
+ * Federal Reserve routing symbols — the first four digits of a US routing number.
+ *
+ * The Fed publishes the full directory, behind a form and without a stable URL, so these
+ * are the district and processing-centre prefixes rather than the whole register. The
+ * check digit `routingNumber()` appends is computed, so the result validates.
+ */
+const ROUTING_SYMBOLS = [
+  '0110', '0111', '0112', '0113', '0210', '0211', '0212', '0213', '0219', '0260', '0280',
+  '0310', '0311', '0312', '0313', '0410', '0412', '0420', '0430', '0440', '0510', '0514',
+  '0519', '0520', '0530', '0540', '0550', '0560', '0610', '0611', '0613', '0620', '0630',
+  '0640', '0650', '0670', '0710', '0711', '0712', '0719', '0720', '0724', '0730', '0739',
+  '0740', '0749', '0750', '0810', '0812', '0819', '0820', '0829', '0830', '0839', '0840',
+  '0910', '0912', '0918', '0919', '0920', '0929', '0960', '1010', '1011', '1019', '1020',
+  '1030', '1040', '1110', '1111', '1119', '1120', '1130', '1140', '1210', '1211', '1220',
+  '1230', '1240', '1250', '1260', '1270', '1280', '1290', '3210', '3220',
 ]
 
 /** Database vocabulary: what column names, types, engines and collations look like. */
@@ -397,6 +527,39 @@ const JOB_TYPES = [
   'Representative', 'Specialist', 'Strategist', 'Supervisor', 'Technician',
 ]
 
+/**
+ * How a company name is assembled, and the remaining patterns nothing else supplies.
+ *
+ * `company.name_pattern` composes from surnames and legal forms, which is how firms are
+ * actually named — Dittmer-Kick, Grasse und Menga. The legal form itself comes from
+ * faker's `legal_entity_type` where a locale has one, and GmbH or Ltd is a fact about
+ * that jurisdiction; a locale without one gets the bare surname form.
+ */
+const COMPANY_NAME_PATTERN = [
+  { value: '{{person.lastName}} {{company.legal_entity_type}}', weight: 5 },
+  { value: '{{person.lastName}}-{{person.lastName}}', weight: 3 },
+  { value: '{{person.lastName}}, {{person.lastName}} and {{person.lastName}}', weight: 2 },
+]
+
+const LEGAL_ENTITY_TYPES = ['Inc', 'LLC', 'Ltd', 'Group', 'Holdings', 'Partners']
+
+/** The remaining composition rules, each naming only paths this file also supplies. */
+const PRODUCT_NAME_PATTERN = [
+  '{{commerce.productAdjective}} {{commerce.productMaterial}} {{commerce.product}}',
+]
+const JOB_TITLE_PATTERN = [
+  '{{person.job_descriptor}} {{person.job_area}} {{person.job_type}}',
+]
+const BIO_PATTERN = [
+  '{{person.bio_part}}',
+  '{{person.bio_part}}, {{person.bio_part}}',
+  '{{person.bio_part}} {{internet.emoji}}',
+]
+const TRANSACTION_DESCRIPTION_PATTERN = [
+  '{{finance.transaction_type}} transaction at {{company.name}} using card ending with '
+    + '{{string.numeric(4)}} for {{finance.amount}}',
+]
+
 /** Retail vocabulary, for product names and departments. */
 const DEPARTMENTS = [
   'Automotive', 'Baby', 'Beauty', 'Books', 'Clothing', 'Computers', 'Electronics',
@@ -414,6 +577,22 @@ const PRODUCT_ADJECTIVES = [
   'Luxurious', 'Modern', 'Oriental', 'Practical', 'Recycled', 'Refined', 'Rustic',
   'Sleek', 'Small', 'Tasty', 'Unbranded',
 ]
+const PRODUCT_DESCRIPTIONS = [
+  'Boston\'s most advanced compression wear technology increases muscle oxygenation and '
+    + 'stabilizes active muscles',
+  'Carbonite web goalkeeper gloves are ergonomically designed to give easy fit',
+  'Ergonomic executive chair upholstered in bonded black leather and PVC padded seat',
+  'New range of formal shirts are designed keeping you in mind',
+  'New ABC 13 9370, 13.3, 5th Gen CoreA5-8250U, 8GB RAM, 256GB SSD, power UHD Graphics',
+  'The Football Is Good For Training And Recreational Purposes',
+  'The Great Granite Chair has a comfortable seat and a sturdy frame',
+  'The automobile layout consists of a front-engine design, with transaxle-type '
+    + 'transmissions mounted at the rear of the engine',
+  'The beautiful range of Apple Natural is a distinctive coffee blend',
+  'The slim and elegant design combines with a powerful battery',
+  'Andy shoes are designed to keeping in mind durability as well as trends',
+]
+
 const PRODUCT_MATERIALS = [
   'Bamboo', 'Bronze', 'Ceramic', 'Concrete', 'Cotton', 'Frozen', 'Granite', 'Leather',
   'Linen', 'Marble', 'Metal', 'Plastic', 'Rubber', 'Silk', 'Soft', 'Steel', 'Wooden',
@@ -443,6 +622,11 @@ export async function run() {
         'vehicle.bicycle_type': BICYCLE_TYPES,
         'airline.airplane': AIRPLANES,
         'airline.airline': AIRLINES,
+        'location.street_suffix': STREET_SUFFIXES,
+        'location.building_number': BUILDING_NUMBER,
+        'location.secondary_address': SECONDARY_ADDRESS,
+        'location.street_address': STREET_ADDRESS,
+        'location.street_pattern': STREET_PATTERN,
         'location.city_prefix': CITY_PREFIXES,
         'location.city_suffix': CITY_SUFFIXES,
         'location.direction.cardinal': CARDINAL,
@@ -451,6 +635,11 @@ export async function run() {
         'location.direction.ordinal_abbr': ORDINAL_ABBR,
         'person.western_zodiac_sign': ZODIAC,
         'person.sex': SEX,
+        'person.bio_part': BIO_PARTS,
+        'person.suffix': NAME_SUFFIXES,
+        'system.directory_path': DIRECTORY_PATHS,
+        'internet.user_agent_pattern': USER_AGENT_PATTERN,
+        'finance.federal_reserve_routing_symbol': ROUTING_SYMBOLS,
         'person.gender': GENDER,
         'person.job_descriptor': COMPANY_ADJECTIVES.slice(0, 40),
         'person.job_area': COMPANY_NOUNS.slice(0, 40),
@@ -466,7 +655,14 @@ export async function run() {
         'company.buzz_verb': BUZZ_VERBS,
         'company.buzz_adjective': BUZZ_ADJECTIVES,
         'company.buzz_noun': BUZZ_NOUNS,
+        'company.name_pattern': COMPANY_NAME_PATTERN,
+        'company.legal_entity_type': LEGAL_ENTITY_TYPES,
+        'commerce.product_name.pattern': PRODUCT_NAME_PATTERN,
+        'person.job_title_pattern': JOB_TITLE_PATTERN,
+        'person.bio_pattern': BIO_PATTERN,
+        'finance.transaction_description_pattern': TRANSACTION_DESCRIPTION_PATTERN,
         'commerce.department': DEPARTMENTS,
+        'commerce.product_description': PRODUCT_DESCRIPTIONS,
         'commerce.product_name.product': PRODUCTS,
         'commerce.product_name.adjective': PRODUCT_ADJECTIVES,
         'commerce.product_name.material': PRODUCT_MATERIALS,

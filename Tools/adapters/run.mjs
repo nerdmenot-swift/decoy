@@ -153,9 +153,24 @@ async function main() {
   const locales = roster.locales
   const rosterSet = new Set(locales)
 
+  // `--without <id>` drops an adapter from the run.
+  //
+  // Built for one question: does the corpus still work with `faker-js` gone? While faker
+  // supplies anything, "we could remove it" is a claim rather than a fact, and the way to
+  // turn it into a fact is to remove it and look. The answer is measured in
+  // `docs/corpus-strategy.md` rather than asserted.
+  const excluded = new Set()
+  for (let i = 0; i < process.argv.length - 1; i++) {
+    if (process.argv[i] === '--without') excluded.add(process.argv[i + 1])
+  }
+
   const adapterFiles = (await readdir(join(here, 'adapters')))
     .filter((f) => f.endsWith('.mjs'))
+    .filter((f) => !excluded.has(f.replace(/\.mjs$/, '')))
     .sort()
+  if (excluded.size > 0) {
+    process.stderr.write(`excluded        : ${[...excluded].join(', ')}\n`)
+  }
 
   // Load every adapter before running any, so fallbacks can be ordered last regardless
   // of filename. `faker-js.mjs` sorts near the front alphabetically and must not.

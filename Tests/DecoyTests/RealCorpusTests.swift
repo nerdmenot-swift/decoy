@@ -70,9 +70,9 @@ struct RealCorpusTests {
             LocaleCorpus(code: "en", chain: [corpus]).strings("person.first_name.female")
         )
         let source = try #require(try corpus.source(table.sourceID))
-        #expect(source.id == "faker-js")
-        #expect(source.license == "MIT")
-        #expect(source.version == "10.5.0")
+        #expect(source.id == "gender-by-name")
+        #expect(source.license == "CC-BY-4.0")
+        #expect(source.version == "591")
         #expect(!source.retrieved.isEmpty, "a retrieval date is the point of provenance")
     }
 
@@ -83,8 +83,8 @@ struct RealCorpusTests {
         let male = try #require(locale.strings("person.first_name.male"))
         let generic = try #require(locale.strings("person.first_name.generic"))
 
-        #expect(female.count == 473)
-        #expect(male.count == 473)
+        #expect(female.count > 15_000)
+        #expect(male.count > 10_000)
         #expect(generic.count == 2_240)
     }
 

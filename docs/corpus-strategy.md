@@ -92,7 +92,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — twenty-four adapters plus the faker-js bootstrap, thirty-seven sources:
+**Built so far** — twenty-five adapters plus the faker-js bootstrap, thirty-nine sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -508,7 +508,7 @@ All six are representable in format v2. Four are in use.
 |---|---|---|
 | Weights | A weight column alongside string tables | **In use** — faker-derived patterns, and real Census frequencies for English surnames |
 | Composite records | Heterogeneous field tuples, not parallel lists | **In use** — countries, languages, currencies |
-| Provenance | A source/license table, referenced by ID | **In use** — 37 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
+| Provenance | A source/license table, referenced by ID | **In use** — 39 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
 | Generative models | A model chunk type, not only string tables | Chunk kind reserved; nothing emits one |
 | Corpus version + compatibility | Header fields, checked on load | **In use** |
 | Cross-locale dedup | A shared string arena (21.2% redundancy measured) | **In use** |
@@ -590,6 +590,33 @@ Counts are not the quality bar.
    runs against a committed baseline on every build; `decoy-validate` checks a change
    before it lands and runs in CI on errors only.
 8. Coverage gates reach threshold → `rm adapters/faker-js.mjs sources/faker-js.json`
+
+   **The corpus already builds without it, and that is now a fact rather than a claim.**
+
+   ```
+   node Tools/adapters/run.mjs --without faker-js
+   ```
+
+   Seventy-five locales, every generator producing a value, nothing trapping. Getting
+   there took one source and one measurement: building without faker trapped immediately
+   on `person.first_name`, because every locale's chain ends at `en` and English had no
+   given names from any source. **English given names are the keystone of the entire
+   corpus** — one list fixed fifty-five locales at once — and nothing about the path
+   counts made that visible. Only removing faker and looking did.
+
+   **What it costs, measured rather than estimated.** German without faker:
+
+   ```
+   Carmella Alvaro | 01 Baker Orchard | Riegsee | Nichol, Clayton and Hilton
+   ```
+
+   Only the city is German, because GeoNames has real German cities and nothing else has
+   German names or streets. That is the honest state of independence today: it *works*,
+   and for non-English locales it produces English-looking people at German addresses.
+
+   So the adapter stays for now, and the remaining work is exactly two things — per-country
+   given names and surnames, and any usable source of street names. Neither is a code
+   problem.
 
    **Tracked rather than hoped for.** `decoy-validate` prints what faker-js still supplies
    on every run — 194 paths and 121,909 values as of corpus 18.0.0 — so the number goes
@@ -742,7 +769,7 @@ table and attributed to CLDR, which is the known limitation recorded above.
 
 **Yes, and it is checked on every build rather than concluded once.**
 
-All thirty-seven sources are attribution-style: keep the notice, do not claim the licensor
+All thirty-nine sources are attribution-style: keep the notice, do not claim the licensor
 endorses you. None is share-alike, none restricts commercial use, and none requires
 derived work to be relicensed — any one of which would make an Apache-2.0 distribution
 impossible rather than merely inconvenient.
@@ -783,7 +810,7 @@ NOTICE.
 Every corpus carries its own source records, so the authoritative answer is
 `decoy-inspect <locale>.decoy` rather than this list. As shipped today:
 
-All thirty-seven, because a table that omits seven of them is the same failure as a
+All thirty-nine, because a table that omits seven of them is the same failure as a
 NOTICE that does:
 
 | Source | Licence | Obligation |
