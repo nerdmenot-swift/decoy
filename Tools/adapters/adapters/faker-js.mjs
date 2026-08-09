@@ -135,8 +135,16 @@ function verifyChains(faker, chains, locales) {
  * it, and all four use it in their company name patterns. Dropping those patterns left
  * the data orphaned and the names missing the industry that identifies them. Found by
  * `decoy-validate`, which reported the data as unreachable.
+ *
+ * Not simply "everything in `SUPERSEDED`", which is the tempting shortcut and is wrong.
+ * Most superseded paths are still reachable: `word.noun` is dropped from eight locales
+ * precisely so they fall through to English, and a pattern using `{{word.noun}}` resolves
+ * fine. Only paths that no adapter supplies anywhere belong here. The city-composition
+ * pieces became such paths when the generators that drew them were retired, and Esperanto
+ * was still holding a pattern that used one -- caught by `decoy-validate`, which is the
+ * second time it has found exactly this and the reason it checks.
  */
-const UNRESOLVABLE_TOKEN = /\{\{\s*(animal|food)\./
+const UNRESOLVABLE_TOKEN = /\{\{\s*(animal|food)\.|\{\{\s*location\.city_(prefix|suffix|infix)/
 
 /**
  * Paths another adapter has superseded, dropped as whole `category.key` pairs.
