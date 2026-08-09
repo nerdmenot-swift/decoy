@@ -202,6 +202,48 @@ const SUPERSEDED = new Set([
   // `cldr-directions.mjs`.
   'location.direction.cardinal_abbr',
   'location.direction.ordinal_abbr',
+  // Translated vocabulary, dropped so every locale uses the English set `authored.mjs`
+  // supplies. The same move already made for `word.noun`, and made here for a reason that
+  // was measured rather than assumed: most locales *already* fall back. Commerce words are
+  // carried by 24 locales of 75, company buzzwords by 9, job vocabulary by 21 -- so German
+  // and Japanese, two of the three shipped locales, have been producing English commerce
+  // words all along. That is why the German golden output reads `Fantastic Metal Sausages`.
+  //
+  // The minority carrying its own copy was the inconsistency, not the feature. None of
+  // this is a registry: no authority publishes marketing adjectives or department names,
+  // so translating them would mean authoring vocabulary in twenty-odd languages, which is
+  // the curation this project exists to stop doing.
+  //
+  // Six neighbours are deliberately absent, because English has no copy of its own and
+  // dropping them would delete the path rather than redirect it: `company.category`,
+  // `company.prefix`, `company.suffix`, `company.company_name`, `person.bio_parts` and
+  // `person.bio_supporter`. `company.category` is the one that matters -- ja, ko, uk and
+  // zh_CN all use it in their company name patterns, which is a hole this file has already
+  // punched once.
+  'commerce.product_name.product',
+  'commerce.product_name.adjective',
+  'commerce.product_name.material',
+  'commerce.product_name.pattern',
+  'commerce.department',
+  'commerce.product_description',
+  'company.noun',
+  'company.adjective',
+  'company.descriptor',
+  'company.buzz_adjective',
+  'company.buzz_verb',
+  'company.buzz_noun',
+  'person.job_type',
+  'person.job_area',
+  'person.job_descriptor',
+  'person.job_title',
+  'person.job_title_pattern',
+  'person.bio_part',
+  'person.bio_pattern',
+  'person.gender',
+  'finance.account_type',
+  'finance.transaction_type',
+  'vehicle.type',
+  'vehicle.bicycle_type',
 ])
 
 /**
