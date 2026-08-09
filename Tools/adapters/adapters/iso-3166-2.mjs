@@ -9,7 +9,8 @@
  * Californian state attached.
  *
  * Fills:
- *   <each>  location.state   composite (name, abbr) — that locale's country's subdivisions
+ *   <each>  location.state       composite (name, abbr) -- that locale's subdivisions
+ *   <each>  location.state_abbr  the same codes as a flat list
  *
  * KNOWN GAP, and a worse one than it first appears: CLDR translates subdivision names
  * into English only. Every other locale file carries three entries (England, Scotland,
@@ -95,6 +96,11 @@ export async function run({ artifacts, locales }) {
     // Parallel lists would pair Bavaria with Hamburg's code and pass most validators.
     contributions[code] = {
       'location.state': rows.map((r) => ({ name: r.name, abbr: r.code })),
+      // The flat list too, because `stateAbbreviation()` fills a column of its own and
+      // should not have to draw a whole row to do it. Same values as the composite's
+      // `abbr`, from the same rows, so the two cannot disagree — which is the failure a
+      // separate source for this would reintroduce.
+      'location.state_abbr': rows.map((r) => r.code),
     }
   }
 

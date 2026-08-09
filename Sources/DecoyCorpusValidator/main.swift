@@ -573,6 +573,55 @@ for (path, locales) in orphans.sorted(by: { ($0.value.count, $1.key) > ($1.value
         locales: locales.sorted())
 }
 
+// MARK: - Report: how much still comes from faker-js
+
+/// Counts the paths and values the bootstrap adapter still supplies.
+///
+/// Not a warning. faker-js is a legitimate source, correctly licensed and correctly
+/// attributed, and every path it fills is one nothing else fills yet. But replacing it is
+/// the stated goal, and a goal with no number attached is a wish — so the number is
+/// printed on every run, and it goes down or it does not.
+///
+/// Read from the manifest's attribution rather than the blobs, because the format credits
+/// a merged table to its primary source and this needs the per-path answer.
+@MainActor
+func fakerFootprint() -> (paths: Int, values: Int, top: [(String, Int)])? {
+    guard let data = try? Data(contentsOf: options.manifest),
+        let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+        let attribution = object["attribution"] as? [String: [String: String]]
+    else { return nil }
+
+    func credited(_ claims: [String: String], _ path: String) -> String? {
+        var parts = path.split(separator: ".").map(String.init)
+        while !parts.isEmpty {
+            if let source = claims[parts.joined(separator: ".")] { return source }
+            parts.removeLast()
+        }
+        return nil
+    }
+
+    var values: [String: Int] = [:]
+    for (code, corpus) in corpora {
+        let claims = attribution[code] ?? [:]
+        for entry in (try? corpus.paths) ?? [] {
+            // Models are derived from whatever trained them, so they carry that
+            // attribution. Counting them again would double-count the same debt.
+            guard !entry.path.contains("_model."), entry.path.hasSuffix("_model") == false
+            else { continue }
+            guard credited(claims, entry.path) == "faker-js" else { continue }
+            let count: Int
+            switch try? corpus.entry(for: entry) {
+            case .strings(let table): count = table.count
+            case .composite(let table): count = table.rowCount
+            default: count = 0
+            }
+            values[entry.path, default: 0] += count
+        }
+    }
+    let top = values.sorted { ($0.value, $1.key) > ($1.value, $0.key) }.prefix(5)
+    return (values.count, values.values.reduce(0, +), top.map { ($0.key, $0.value) })
+}
+
 // MARK: - Output
 
 let errors = findings.filter { $0.severity == .error }
@@ -595,7 +644,15 @@ func show(_ list: [Finding], _ label: String) {
 }
 
 print("decoy-validate: \(corpora.count) locales, \(descriptors.count) sources, "
-    + "\(adapterSources.count) adapters\n")
+    + "\(adapterSources.count) adapters")
+if let footprint = fakerFootprint() {
+    print(
+        "  still from faker-js: \(footprint.paths) paths, \(footprint.values) values")
+    for (path, count) in footprint.top {
+        print("      \(path) (\(count))")
+    }
+}
+print("")
 show(errors, "errors")
 show(warnings, "warnings")
 

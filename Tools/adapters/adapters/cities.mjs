@@ -7,6 +7,7 @@
  *
  * Fills:
  *   <each>  location.city_name   that country's cities
+ *   <each>  location.county      that country's second-level divisions
  *   <each>  location.place       composite (city, state, state_code)
  *
  * KNOWN INCONSISTENCY: `location.state` comes from CLDR and `location.place`'s state
@@ -54,6 +55,10 @@ export async function run({ artifacts, locales }) {
 
   const cities = JSON.parse(await readFile(join(root, 'cities.json'), 'utf8'))
   const admin1 = JSON.parse(await readFile(join(root, 'admin1.json'), 'utf8'))
+  // Second-level divisions: US counties, French départements, Japanese districts. Real
+  // ones, and a great many more of them than faker carried — 3,143 US counties against
+  // its 106, and something for 158 countries rather than thirteen locales.
+  const admin2 = JSON.parse(await readFile(join(root, 'admin2.json'), 'utf8'))
 
   // admin1 codes are country-scoped (`US.CA`, `DE.02`), so the lookup has to be keyed by
   // the pair — `03` alone means a different subdivision in every country.
@@ -66,8 +71,18 @@ export async function run({ artifacts, locales }) {
     byCountry.get(city.country).push(city)
   }
 
+  // Second-level divisions, grouped by the country prefix of their code.
+  const countiesByCountry = new Map()
+  for (const entry of admin2) {
+    const country = entry.code?.slice(0, 2)
+    if (!country || !entry.name) continue
+    if (!countiesByCountry.has(country)) countiesByCountry.set(country, new Set())
+    countiesByCountry.get(country).add(entry.name)
+  }
+
   const contributions = {}
   const withoutCities = []
+  let counties = 0
 
   for (const code of locales) {
     if (code === 'base') continue
@@ -81,7 +96,14 @@ export async function run({ artifacts, locales }) {
 
     const sorted = [...rows].sort((a, b) => (a.name < b.name ? -1 : 1))
 
+    // Below this a locale would offer three or four counties as if they were the whole
+    // set, which reads as data rather than as a gap. The list stays absent instead, and
+    // the locale falls through to English the way it did before.
+    const county = [...(countiesByCountry.get(region) ?? [])].sort()
+    if (county.length >= 20) counties += 1
+
     contributions[code] = {
+      ...(county.length >= 20 ? { 'location.county': county } : {}),
       'location.city_name': [...new Set(sorted.map((c) => c.name))],
       // Coordinates are deliberately omitted. The gazetteer has them, and a coherent
       // place row arguably wants them, but they are single-use high-entropy strings that
@@ -108,6 +130,7 @@ export async function run({ artifacts, locales }) {
   return {
     contributions,
     stats: {
+      countyLocales: counties,
       cities: cities.length,
       countries: byCountry.size,
       locales: Object.keys(contributions).length,

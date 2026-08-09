@@ -584,6 +584,33 @@ Counts are not the quality bar.
    before it lands and runs in CI on errors only.
 8. Coverage gates reach threshold → `rm adapters/faker-js.mjs sources/faker-js.json`
 
+   **Tracked rather than hoped for.** `decoy-validate` prints what faker-js still supplies
+   on every run — 194 paths and 121,909 values as of corpus 18.0.0 — so the number goes
+   down or it visibly does not. A goal with no number attached is a wish.
+
+   Models do not shorten this list. A model trained on faker's names is derived from
+   faker's names and carries its attribution, which is why the count excludes them rather
+   than crediting them twice. Deleting the adapter needs an independent source for each
+   path, not a model over the one that is there.
+
+   Replaced so far from sources already fetched, with no new licence work:
+
+   | path | was | now |
+   |---|---|---|
+   | `location.county` | faker, 13 locales | GeoNames admin2, 65 locales — 1,881 real US counties against 106 |
+   | `location.state_abbr` | faker, 31 locales | CLDR ISO 3166-2, 73 locales, the same rows as the `location.state` composite so the two cannot disagree |
+
+   What is left divides into three, and only the first is predictable work:
+
+   - **A registry exists and we have not tapped it.** Getting smaller; the two above were
+     the obvious ones.
+   - **A registry exists but is not pinnable, or is licensed incompatibly.** Vehicle makes
+     (NHTSA publishes a live unversioned API), postcode formats (~200 national
+     publishers), vocabulary for nine languages whose wordnets are CC BY-SA or CeCILL.
+   - **No registry exists, because the data is invented.** Company name components, lorem
+     words, buzz phrases. These need an independently licensed seed list or they need
+     dropping — a generated value is fine here, but something has to seed it.
+
 Steps 4–6 are independent and can proceed in any order. Step 8 is a consequence, not a
 task.
 
