@@ -81,11 +81,20 @@ struct RealCorpusTests {
         let locale = try RealCorpus.locale("en", chain: ["en", "base"])
         let female = try #require(locale.strings("person.first_name.female"))
         let male = try #require(locale.strings("person.first_name.male"))
-        let generic = try #require(locale.strings("person.first_name.generic"))
 
         #expect(female.count > 15_000)
         #expect(male.count > 10_000)
-        #expect(generic.count == 2_240)
+
+        // No `generic` pool, and its absence is the assertion. This used to pin 2,240 —
+        // faker's list of names used for *either* gender, which is not what Decoy means
+        // by `generic`. Decoy reads `generic` as the pool to draw from when the caller
+        // named no gender, and prefers it over the gendered lists, so importing the one
+        // as the other made `firstName()` draw from 2,240 names instead of 30,000 here
+        // and from exactly one in Japanese. See `withoutUnisexSubset` in the adapter.
+        #expect(
+            locale.strings("person.first_name.generic") == nil,
+            "a locale with gendered pools should not also carry a unisex subset as `generic`"
+        )
     }
 
     @Test("generating from the real corpus produces varied, correct names")

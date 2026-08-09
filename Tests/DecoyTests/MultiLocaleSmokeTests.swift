@@ -131,4 +131,79 @@ struct MultiLocaleSmokeTests {
             }
         }
     }
+
+    /// A generator that always returns the same value passes every other test here.
+    ///
+    /// This suite asserts that a call produces something, and the bug it missed produced
+    /// something every time: `Faker(locale: ja).person.firstName()` returned `葵` for all
+    /// five hundred seeds, because faker's `first_name.generic` is a list of names used
+    /// for *either* gender rather than the general pool, and Japanese had exactly one.
+    /// Twenty-nine locales carried such a list and eight were collapsed to a single name,
+    /// with thousands of gendered names sitting unread beside them.
+    ///
+    /// So variety is its own assertion — measured against the names the locale *holds*,
+    /// not against a fixed number.
+    ///
+    /// A constant threshold cannot express this. Set high, it fails Maldivian for having
+    /// fourteen male given names, which is a gap in the world's open data rather than a
+    /// fault in the code. Set low enough to pass Maldivian, it would have passed Japanese
+    /// returning one name out of five thousand. The defect is always a *ratio*: the draw
+    /// reaching far less than the locale has.
+    ///
+    /// So the expectation is the smaller of twenty and the pool — where "the pool" is the
+    /// largest one the draw could legitimately use, which for an ungendered call is the
+    /// gendered lists together rather than whichever list it happened to pick. That is
+    /// what makes the collapse visible: Japanese had 5,240 names to reach and reached one.
+    @Test("no locale's names collapse to less than it holds")
+    func namesVary() throws {
+        let codes = try RealCorpus.availableCodes()
+
+        for code in codes where code != "base" {
+            let chain = code == "en" ? ["en", "base"] : [code, "en", "base"]
+            guard let locale = try? RealCorpus.locale(code, chain: chain) else { continue }
+
+            func size(_ path: String) -> Int { locale.strings(path)?.count ?? 0 }
+
+            // An ungendered draw may use `generic`, but the gendered lists are what the
+            // locale actually holds — so a tiny `generic` beside large gendered pools is
+            // measured against the large ones, which is the whole point.
+            for field in ["first_name", "last_name"] {
+                let generic = size("person.\(field).generic")
+                let female = size("person.\(field).female")
+                let male = size("person.\(field).male")
+                let cases: [(String, Int, (inout Faker) -> String)] = [
+                    ("\(field)()", max(generic, female + male), {
+                        field == "first_name" ? $0.person.firstName() : $0.person.lastName()
+                    }),
+                    // A gendered draw uses the gendered list and only falls back to
+                    // `generic` when there is none, so that is what it is measured
+                    // against. Taking the larger of the two would fail Azerbaijani for
+                    // drawing its ten real female surnames instead of the eighty-two
+                    // ungendered ones sitting beside them, which is correct behaviour:
+                    // Azerbaijani surnames inflect, and -ova is not interchangeable with -ov.
+                    ("\(field)(.female)", female > 0 ? female : generic, {
+                        field == "first_name"
+                            ? $0.person.firstName(.female) : $0.person.lastName(.female)
+                    }),
+                    ("\(field)(.male)", male > 0 ? male : generic, {
+                        field == "first_name"
+                            ? $0.person.firstName(.male) : $0.person.lastName(.male)
+                    }),
+                ]
+
+                for (label, pool, draw) in cases where pool > 0 {
+                    var seen = Set<String>()
+                    for seed in 0..<200 {
+                        var faker = Faker(seed: UInt64(seed), locale: locale)
+                        seen.insert(draw(&faker))
+                    }
+                    let expected = min(20, pool)
+                    let complaint =
+                        "\(code): \(label) produced \(seen.count) distinct values over 200 "
+                        + "seeds from a pool of \(pool) — \(seen.sorted().prefix(4))"
+                    #expect(seen.count >= expected, "\(complaint)")
+                }
+            }
+        }
+    }
 }

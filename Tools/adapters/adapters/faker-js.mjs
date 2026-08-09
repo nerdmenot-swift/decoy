@@ -180,6 +180,47 @@ const SUPERSEDED = new Set([
   'location.city_infix',
 ])
 
+/**
+ * Drops a `generic` name list that is a unisex subset rather than the general pool.
+ *
+ * The two projects mean different things by the same word. In faker a `generic` list
+ * alongside `female` and `male` is the set of names used for *either* gender -- Jamie,
+ * Charlie, Camille -- deliberately small and deliberately not a superset. In Decoy
+ * `generic` is the pool to draw from when the caller expressed no preference, and
+ * `gendered()` prefers it precisely because a locale that has one is taken to have said
+ * that is the list.
+ *
+ * Importing one as the other made the ungendered call collapse. Japanese carried exactly
+ * one unisex given name, so `Faker(locale: ja).person.firstName()` returned the same
+ * value for every seed while 1,469 female and 3,771 male names sat unread beside it.
+ * Twenty-nine locales carried such a list for `first_name` and eight were down to a single
+ * name. `last_name` had it worse in one place: `id_ID` shipped one generic surname against
+ * full gendered lists, so every Indonesian surname was "Purnama".
+ *
+ * So the list is dropped where the locale also has gendered pools, and kept where it does
+ * not -- a locale with only a `generic` list means it as the general pool, which is what
+ * Decoy reads it as. Where it is dropped, `gendered()` does what it already documents for
+ * the locales that never had one: picks a gender, then a name from that pool, which keeps
+ * a result coherent instead of merging two lists the locale kept apart.
+ */
+const GENDERED_NAMES = ['first_name', 'last_name']
+
+function withoutUnisexSubset(category, value) {
+  if (category !== 'person') return value
+  const out = { ...value }
+  let changed = false
+  for (const field of GENDERED_NAMES) {
+    const names = out[field]
+    if (!names || typeof names !== 'object') continue
+    if (!Array.isArray(names.generic)) continue
+    if (!Array.isArray(names.female) || !Array.isArray(names.male)) continue
+    const { generic, ...rest } = names
+    out[field] = rest
+    changed = true
+  }
+  return changed ? out : value
+}
+
 /** Removes superseded keys from one category's tree. */
 function withoutSuperseded(category, value) {
   const out = {}
@@ -246,7 +287,7 @@ export async function run({ artifacts, locales, chains }) {
         continue
       }
       if (value === null || typeof value !== 'object') continue
-      const kept = withoutSuperseded(category, value)
+      const kept = withoutSuperseded(category, withoutUnisexSubset(category, value))
       if (kept === undefined) continue
       const cleaned = withoutBrokenPatterns(kept, dropped)
       if (cleaned === undefined) continue
