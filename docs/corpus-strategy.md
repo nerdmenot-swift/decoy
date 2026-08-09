@@ -92,7 +92,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — eighteen adapters plus the faker-js bootstrap, thirty sources:
+**Built so far** — nineteen adapters plus the faker-js bootstrap, thirty-one sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -108,6 +108,7 @@ someone else's package should not itself require a package manager.
 | `iso-3166-2` | CLDR 48.2.0 | Unicode-3.0 | `location.state` (composite) — 3,341 subdivisions across 73 locales, each getting its own country's (upstream carries 5,395 across 200) |
 | `cldr-dates` | CLDR 48.2.0 | Unicode-3.0 | `date.month.*`, `date.weekday.*` in 74 locales |
 | `cities` | cities.json 1.1.61 (GeoNames) | CC BY 4.0 | `location.city_name`, `location.place` (composite) in 74 locales |
+| `civil-names` | INSEE, Fichier des prénoms | Licence Ouverte 2.0 | `person.first_name.{female,male}` in `fr` — 9,243 names, **weighted** |
 | `us-surnames` | US Census 2010 | public domain | `person.last_name.generic` in `en` — 24,889 names, **weighted** |
 | `wordnet` | Open Multilingual Wordnet 2.0 | per language (see below) | `word.noun/verb/adjective/adverb` in 15 locales |
 | `persian-words` | Lilak 3.3 | Apache-2.0 | `lorem.word` in `fa` |
@@ -502,7 +503,7 @@ All six are representable in format v2. Four are in use.
 |---|---|---|
 | Weights | A weight column alongside string tables | **In use** — faker-derived patterns, and real Census frequencies for English surnames |
 | Composite records | Heterogeneous field tuples, not parallel lists | **In use** — countries, languages, currencies |
-| Provenance | A source/license table, referenced by ID | **In use** — 30 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
+| Provenance | A source/license table, referenced by ID | **In use** — 31 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
 | Generative models | A model chunk type, not only string tables | Chunk kind reserved; nothing emits one |
 | Corpus version + compatibility | Header fields, checked on load | **In use** |
 | Cross-locale dedup | A shared string arena (21.2% redundancy measured) | **In use** |
@@ -696,7 +697,7 @@ table and attributed to CLDR, which is the known limitation recorded above.
 Every corpus carries its own source records, so the authoritative answer is
 `decoy-inspect <locale>.decoy` rather than this list. As shipped today:
 
-All thirty, because a table that omits seven of them is the same failure as a
+All thirty-one, because a table that omits seven of them is the same failure as a
 NOTICE that does:
 
 | Source | Licence | Obligation |

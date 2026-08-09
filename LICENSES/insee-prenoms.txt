@@ -1,0 +1,23 @@
+INSEE publishes this dataset under the Licence Ouverte / Open Licence version 2.0,
+issued by Etalab for the French public administration. INSEE declares the licence in
+data.gouv.fr's catalogue entry for the dataset (as `lov2`) rather than on the download
+page itself.
+
+The full text is published at:
+
+    https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf
+
+Its operative terms, in summary — the text above is the authority, not this summary:
+
+  The licensor grants a worldwide, free, non-exclusive right to reproduce, redistribute,
+  adapt and exploit the information, including commercially.
+
+  The sole condition is attribution: the reuser must acknowledge the authorship of the
+  information, its source, and the date of its most recent update.
+
+  Etalab states that the Open Licence 2.0 is compatible with CC BY 4.0, ODC-BY and the
+  Open Government Licence, so a work combining them may be distributed under any of them.
+
+Decoy discharges the attribution condition through NOTICE, which names INSEE, this
+dataset, its version and the date it was retrieved, generated from the provenance records
+embedded in the compiled corpus.

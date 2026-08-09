@@ -1,0 +1,38 @@
+{
+  "id": "insee-prenoms",
+  "name": "INSEE — Fichier des prénoms depuis 1900",
+  "license": "LicenseRef-EtalabOpenLicence-2.0",
+  "copyright": "Copyright Institut national de la statistique et des études économiques (INSEE)",
+  "url": "https://www.insee.fr/fr/statistiques/7633685",
+  "version": "2022",
+  "retrieved": "2026-08-09",
+  "note": [
+    "Every given name registered in France since 1900, with the number of people who bear",
+    "it. Real frequencies, from the office that records the births -- the same class of",
+    "source as the US Census surnames, and the same reason for using it: names are",
+    "Zipf-distributed and a uniform draw produces data that is wrong in exactly the way",
+    "that matters for deduplication and analytics work.",
+    "",
+    "Licence Ouverte 2.0, France's open-data licence. Attribution only, commercial use",
+    "permitted, and explicitly declared compatible by Etalab with CC BY 4.0 -- which is",
+    "already in this corpus for GeoNames. It composes with Apache-2.0.",
+    "",
+    "The licence is not stated on the INSEE download page, which is why it is recorded here",
+    "from data.gouv.fr's catalogue entry for the same dataset, where INSEE declares it as",
+    "`lov2`. A licence found only by asking the right registry is still a stated licence;",
+    "an unstated one would have been a reason to walk away, as it was for GLEIF's entity",
+    "legal forms list.",
+    "",
+    "France publishes given names openly and surnames only commercially. That asymmetry is",
+    "common -- birth registers are public record and family-name frequencies usually are",
+    "not -- so `person.last_name` in `fr` stays on faker until a source appears."
+  ],
+  "artifacts": [
+    {
+      "name": "names",
+      "format": "zip",
+      "url": "https://www.insee.fr/fr/statistiques/fichier/7633685/nat2022_csv.zip",
+      "integrity": "sha512-ab0Q0UKtCPefzyXk66npdpA1Ic5gY45/ZuEGdRHaVtu2/Wmx/hMJZP2y40mHnOPgCEY5NPQulJD5YOu2mHc9Pw=="
+    }
+  ]
+}
