@@ -611,6 +611,24 @@ Counts are not the quality bar.
      words, buzz phrases. These need an independently licensed seed list or they need
      dropping — a generated value is fine here, but something has to seed it.
 
+   **Investigated and rejected**, recorded so the next attempt does not repeat the search:
+
+   | path | candidate | why not |
+   |---|---|---|
+   | `color.human` (34 locales) | CLDR | CLDR carries no colour names in any locale. The W3C CSS list is English-only, so taking it would fix one locale of thirty-four and make `en` differ from the rest for no reason a user could see. |
+   | `airline.airline`, `airline.airplane` | the `airport-data` package we already fetch | It ships `airports.json` and nothing else. OpenFlights publishes `airlines.dat` separately, unversioned. |
+   | `lorem.word` (26 locales, mostly Latin) | Perseus, Wikisource, Latin Library | The Latin *texts* are public domain; the digital editions are CC BY-SA, which does not compose with Apache-2.0. Project Gutenberg is usable but the extraction — tokenising a classical text into a usable vocabulary — is a project rather than an adapter. |
+   | `company.legal_entity_type` (42 locales) | GLEIF's ISO 20275 Entity Legal Forms list | Versioned and stably hosted, but GLEIF states no licence for it and the list derives from a proprietary ISO standard. An unstated licence is not a permissive one. |
+
+   **The three largest items have no registry and will not get one.**
+   `location.street_name`, `person.last_name` and `person.first_name` are 68,000 of the
+   remaining 122,000 values. OpenStreetMap has street names under ODbL, which is
+   share-alike. Name lists exist per country from national statistics offices — INSEE,
+   ONS, SSB, INE — mostly under open licences, and that is the realistic path, but it is
+   one source, one format and one licence review per country. That is the honest shape of
+   what "delete faker" costs, and it is why the number is printed on every run rather than
+   estimated once.
+
 Steps 4–6 are independent and can proceed in any order. Step 8 is a consequence, not a
 task.
 
