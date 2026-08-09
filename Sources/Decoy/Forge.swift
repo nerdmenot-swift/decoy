@@ -40,6 +40,7 @@ public struct Forge<T>: Sendable {
 
     /// The instant relative date generation is anchored to.
     private var referenceInstant: Timestamp = .decoyReference
+    private var wantsNovelNames = false
 
     private struct Step: Sendable {
         let apply: @Sendable (inout Faker, inout T, inout [Set<UInt64>]) throws -> Void
@@ -205,6 +206,23 @@ public struct Forge<T>: Sendable {
         return copy
     }
 
+    /// Returns a copy whose name generators produce names no real person has.
+    ///
+    /// Set once for the whole forge rather than per rule, because the rule somebody
+    /// forgets is the one that leaks. See ``Faker/novelNames`` for what it costs and what
+    /// it does not cover.
+    ///
+    /// ```swift
+    /// let users = Forge<User>("user") { User() }
+    ///     .locale(DecoyLocaleEN.locale)
+    ///     .novelNames()
+    /// ```
+    public func novelNames(_ enabled: Bool = true) -> Forge {
+        var copy = self
+        copy.wantsNovelNames = enabled
+        return copy
+    }
+
     /// Returns a copy whose relative dates are anchored to `instant`.
     ///
     /// Defaults to a fixed constant rather than the system clock, so regenerating a
@@ -333,6 +351,7 @@ public struct Forge<T>: Sendable {
             baseSeed: SeedDerivation.derive(seed, entity: resolved.entityName),
             locale: resolved.localeCorpus,
             reference: resolved.referenceInstant,
+            novelNames: resolved.wantsNovelNames,
             startingAt: row
         )
     }
@@ -358,6 +377,7 @@ struct ForgeRun<T> {
     private let baseSeed: UInt64
     private let locale: LocaleCorpus
     private let reference: Timestamp
+    private let novelNames: Bool
     private var used: [Set<UInt64>]
     private var row: Int
 
@@ -369,6 +389,7 @@ struct ForgeRun<T> {
         baseSeed: UInt64,
         locale: LocaleCorpus,
         reference: Timestamp,
+        novelNames: Bool,
         startingAt row: Int
     ) {
         self.factory = factory
@@ -377,6 +398,7 @@ struct ForgeRun<T> {
         self.baseSeed = baseSeed
         self.locale = locale
         self.reference = reference
+        self.novelNames = novelNames
         self.used = Array(repeating: [], count: uniqueSlots)
         self.row = row
     }
@@ -386,7 +408,8 @@ struct ForgeRun<T> {
             seed: SeedDerivation.rowSeed(baseSeed, row: row),
             index: row,
             locale: locale,
-            reference: reference
+            reference: reference,
+            novelNames: novelNames
         )
         row += 1
 

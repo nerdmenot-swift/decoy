@@ -227,7 +227,36 @@ anyone else's corpus at all.
 | Street addresses | Pattern over component lists |
 | Person / street / company names | Per-language phonotactic n-gram model |
 
-The last row is the real lever, and it is **built for English surnames**:
+The last row is the real lever, and it is **built for 133 models across 49 locales** —
+first names, surnames and middle names wherever a locale has enough data to train on.
+Turn it on once with `Faker(novelNames: true)` or `Forge.novelNames()`; it is off by
+default, because `lastName()` draws real Census surnames weighted by how many people bear
+each, and switching that silently would rewrite every existing fixture.
+
+Three rules decide whether a field gets a model, and all three were learned by getting
+them wrong first:
+
+- **Under 100 distinct values, no model.** Fifty names do not teach a machine what a name
+  looks like at any order.
+- **The order scales with the list, and with the word.** Fixed at 4 it memorises small
+  lists — 33% novel output at 200 values against 89% at order 3. And the context must be a
+  *fragment* of a word: Japanese given names are two characters, so an order-3 context
+  spans the whole name, every candidate is a training-set member, and the generator
+  returns nothing at all. Which it did.
+- **A trained model must prove it can generate.** The trainer draws from its own model and
+  refuses to ship one below 50% novel output. Thirteen fields are refused on this today —
+  Japanese, Korean and Hebrew given names among them — because a character n-gram is the
+  wrong model for a two-character name and no parameter fixes that. Those locales keep
+  their lists.
+
+The guarantee is per field rather than global, and the distinction is worth keeping
+straight: a generated *given* name may coincide with a real *surname*, because the model
+that produced it never saw the surname list. That identifies nobody. What holds is that
+no value is a real one **for the field it was drawn for** — and the filter covers every
+sibling list of that field, not just the sub-list a model trained on, because
+`first_name.generic` and `first_name.female` overlap without being equal.
+
+Originally built for English surnames:
 `person.novelLastName()` draws from an order-4 model trained on the Census list.
 `Bednardt, Dorain, Finkston, Mcdoux, Mcfarles, Caber, Detwell, Territto` — none of them a
 real surname, all of them recognisably English.

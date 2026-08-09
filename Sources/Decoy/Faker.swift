@@ -40,6 +40,27 @@ public struct Faker: Sendable {
     /// The locale and its fallback chain, which every generator reads through.
     public let locale: LocaleCorpus
 
+    /// Whether name generators should produce names no real person has.
+    ///
+    /// Off by default, and that default is the conservative one rather than the safe one:
+    /// `person.lastName()` draws from a list of 24,889 real American surnames weighted by
+    /// how many people actually bear each, and turning that off silently would change
+    /// every existing fixture and throw away the frequency realism the Census adapter was
+    /// built for.
+    ///
+    /// Set it once — here, or with ``Forge/novelNames(_:)`` — and every name generator
+    /// switches to a trained model where the locale has one. Measured over ten thousand
+    /// draws in `en`: off, 9,499 surnames belong to real people; on, none do.
+    ///
+    /// A per-call flag was the alternative and it is the wrong shape. The call site you
+    /// forget is the one that matters, and "did every developer remember at every call"
+    /// is not a property anybody can audit.
+    ///
+    /// Locales with no model for a field fall back to the list, so this is a preference
+    /// rather than a guarantee. 133 models across 48 locales today; the fields and
+    /// locales without one are listed by `decoy-validate`.
+    public let novelNames: Bool
+
     /// The instant that "past" and "future" are relative to.
     ///
     /// Deliberately **not** the system clock. Every other faker anchors `past()` to
@@ -53,12 +74,14 @@ public struct Faker: Sendable {
         seed: UInt64,
         index: Int = 0,
         locale: LocaleCorpus = .builtIn,
-        reference: Timestamp = .decoyReference
+        reference: Timestamp = .decoyReference,
+        novelNames: Bool = false
     ) {
         self.rng = Xoshiro256StarStar(seed: seed)
         self.index = index
         self.locale = locale
         self.reference = reference
+        self.novelNames = novelNames
     }
 
     // MARK: - Corpus access

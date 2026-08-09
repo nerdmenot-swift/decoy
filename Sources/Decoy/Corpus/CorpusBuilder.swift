@@ -185,11 +185,13 @@ public struct CorpusBuilder {
         blockBits: [UInt8] = [],
         source: UInt32 = 0
     ) -> UInt32 {
-        precondition(order >= 2 && order <= NGramModel.maxOrder, "order must be 2...8")
+        precondition(
+            order >= 2 && order <= NGramModel.maxOrder,
+            "order must be 2...\(NGramModel.maxOrder)")
         precondition(minLength >= 1 && minLength <= maxLength, "the length range must be sane")
         precondition(
             alphabet.count >= 1 && alphabet.count <= NGramModel.maxAlphabet,
-            "the alphabet must be 1...255 symbols, including the sentinel"
+            "the alphabet must be 1...\(NGramModel.maxAlphabet) symbols, including the sentinel"
         )
         precondition(alphabet[0].isEmpty, "alphabet index 0 is the end-of-word sentinel")
         precondition(

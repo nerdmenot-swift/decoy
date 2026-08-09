@@ -74,7 +74,7 @@ public struct PersonFaker {
     /// `en` today. A caller that must know the difference should check
     /// ``LocaleCorpus/resolve(_:)`` for `person.last_name_model`.
     public mutating func novelLastName() -> String {
-        faker.drawModel("person.last_name_model") ?? lastName()
+        faker.drawModel("person.last_name_model.generic") ?? lastName()
     }
 
     /// Returns a surname, optionally constrained to a gender.
@@ -84,6 +84,11 @@ public struct PersonFaker {
     /// produced, because the pattern was compiled into three locales and read by none.
     /// Locales without one draw the table directly, which is every locale but three.
     public mutating func lastName(_ gender: Gender? = nil) -> String {
+        // A model first, when asked for: the surname pattern below composes *real* names
+        // from the list, so honouring it under `novelNames` would hand back real people
+        // joined by a hyphen.
+        if let generated = modelled("person.last_name", gender) { return generated }
+
         // Ten locales inflect surnames and carry a pattern per gender; three carry only
         // a generic one. Reading `.generic` alone left twenty gendered patterns compiled
         // and unreachable, which `decoy-validate` reports as exactly that.
@@ -209,6 +214,26 @@ public struct PersonFaker {
 
     /// Draws from `<path>.<gender>`, falling back to `<path>.generic` and then to the
     /// bare path, which is the shape locales without a gender split use.
+    /// Draws from a model at `<path>_model.<gender>` when the mode is on and one exists.
+    ///
+    /// Rewriting the path rather than branching in each generator keeps the model and the
+    /// list resolving through the same chain, so a locale that defines a model inherits
+    /// and overrides it exactly the way it does a list — including
+    /// `explicitlyEmpty` blocking fallback, which a parallel lookup path would have got
+    /// wrong the first time somebody declared a field empty.
+    private mutating func modelled(_ path: String, _ gender: Gender?) -> String? {
+        guard faker.novelNames else { return nil }
+        let base = "\(path)_model"
+        switch gender {
+        case .female: return faker.drawModel("\(base).female") ?? faker.drawModel("\(base).generic")
+        case .male: return faker.drawModel("\(base).male") ?? faker.drawModel("\(base).generic")
+        case nil:
+            if let value = faker.drawModel("\(base).generic") { return value }
+            let picked: Gender = faker.bool() ? .female : .male
+            return faker.drawModel("\(base).\(picked == .female ? "female" : "male")")
+        }
+    }
+
     private mutating func gendered(_ path: String, _ gender: Gender?) -> String {
         // Asked before the children, not after. A locale declaring `person.prefix` empty
         // is saying it has no honorifics at all, but the children are asked first and
@@ -217,6 +242,11 @@ public struct PersonFaker {
         // prevent, cited as its reason for being in four separate files. The declaration
         // lives on the parent path, so the parent has to be consulted first.
         if faker.locale.declaresEmpty(path) { return "" }
+
+        // A model where the locale has one and the caller asked for it. Falls through to
+        // the list otherwise, which is every locale for the fields no model was viable
+        // for — see `isViable` in the trainer for why that is a refusal rather than a gap.
+        if let generated = modelled(path, gender) { return generated }
 
         switch gender {
         case .female:

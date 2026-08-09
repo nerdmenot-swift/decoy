@@ -21,6 +21,7 @@ import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { MODELLED_FIELDS, loadBlocklists, trainLocale } from './lib/models.mjs'
 import { loadSource, provenanceOf } from './lib/sources.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
@@ -290,12 +291,48 @@ async function main() {
     attribution,
   }
 
+  // Models are trained here rather than in an adapter because a model has to learn from
+  // what a locale *ends up with* after the merge, not from one adapter's contribution.
+  // The Census surnames win in `en` and faker's win in `de`; this code does not need to
+  // know which, and will not need changing when a replacement wins instead.
+  //
+  // The blocklist is loaded here rather than by an adapter because no adapter uses it:
+  // it screens what models produce, and models are trained at this level. Registered in
+  // `sources` all the same, so it reaches the manifest and NOTICE like everything else.
+  const { descriptor: screenDescriptor, artifacts: screenArtifacts } =
+    await loadSource('ldnoobw')
+  sources.set(screenDescriptor.id, provenanceOf(screenDescriptor))
+  const blocklists = await loadBlocklists(screenArtifacts.words)
+  const modelStats = { locales: 0, models: 0, unscreened: [], tooSmall: 0, notViable: [] }
+
   let totalStrings = 0
   for (const code of locales) {
     // Already nested: every fragment is nested on the way in and merged node-wise, so
     // the `nest()` that used to sit here re-walked a tree that had no dotted keys left
     // in it.
     const definitions = merged[code] ?? {}
+
+    const { trained, skipped } = trainLocale(code, definitions, blocklists)
+    for (const reason of skipped) {
+      if (reason.includes('novel')) modelStats.notViable.push(`${code} ${reason}`)
+      else modelStats.tooSmall += 1
+    }
+    if (trained.length > 0) {
+      modelStats.locales += 1
+      modelStats.models += trained.length
+      if (trained.some((m) => !m.screened)) modelStats.unscreened.push(code)
+      for (const model of trained) {
+        // A model is attributed to whatever supplied the values it learned from, because
+        // that is what it is derived from. Training does not launder provenance.
+        attribution[code] ??= {}
+        const from = MODELLED_FIELDS.find(([, to]) => to === model.path)[0]
+        const inherited = Object.entries(attribution[code])
+          .filter(([path]) => from === path || from.startsWith(`${path}.`))
+          .sort(([a], [b]) => b.length - a.length)[0]
+        if (inherited) attribution[code][model.path] = inherited[1]
+      }
+    }
+
     await writeFile(
       join(outDir, 'locales', `${code}.json`),
       JSON.stringify(definitions, null, 0),
@@ -320,6 +357,25 @@ async function main() {
   console.log(`  with own data : ${covered.length}`)
   console.log(`  empty         : ${locales.length - covered.length}`)
   console.log(`strings written : ${totalStrings.toLocaleString('en-US')}`)
+  console.log(
+    `models trained  : ${modelStats.models} across ${modelStats.locales} locales`,
+  )
+  console.log(
+    `  refused       : ${modelStats.tooSmall} below the training floor, ` +
+      `${modelStats.notViable.length} could not generate`,
+  )
+  for (const reason of modelStats.notViable.slice(0, 6)) {
+    console.log(`      ${reason}`)
+  }
+  if (modelStats.notViable.length > 6) {
+    console.log(`      … ${modelStats.notViable.length - 6} more`)
+  }
+  if (modelStats.unscreened.length > 0) {
+    console.log(
+      `  no blocklist  : ${modelStats.unscreened.length} locales ` +
+        `(${modelStats.unscreened.slice(0, 8).join(', ')}${modelStats.unscreened.length > 8 ? ', …' : ''})`,
+    )
+  }
 }
 
 await main()

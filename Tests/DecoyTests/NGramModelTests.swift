@@ -309,7 +309,7 @@ struct BlocklistScreenTests {
 
     private func model() throws -> NGramModel {
         let locale = try RealCorpus.locale("en", chain: ["en", "base"])
-        guard case .model(let model)? = locale.resolve("person.last_name_model") else {
+        guard case .model(let model)? = locale.resolve("person.last_name_model.generic") else {
             struct NoModel: Error {}
             throw NoModel()
         }

@@ -228,8 +228,8 @@ Packed like the other table chunks — a count, an offset directory, then the bo
 
 ```
 u32  sourceID         which upstream the training data came from
-u32  order            2...8; contexts are order - 1 symbols long
-u32  alphabetCount    1...255; symbol 0 is the end-of-word sentinel
+u32  order            2...4; contexts are order - 1 symbols long
+u32  alphabetCount    1...65535; symbol 0 is the end-of-word sentinel
 u32  arenaIndex       * alphabetCount, each a one-character string
 u32  contextCount
 {                     context index, 16-byte stride, sorted by key
@@ -247,11 +247,15 @@ u8   filterBits       * filterByteCount
 ```
 
 **Why the key is packed into a `u64`.** A variable-length symbol run would make the index
-unsearchable without a second level of offsets. Packing caps the alphabet at 255 and the
-order at 8, both far past anything useful — an order-4 model of English surnames already
-tracks its training distribution closely, and a longer context mostly memorises. Symbols
-are stored most-recent-last so backing off to a shorter context is a mask rather than a
-rebuild.
+unsearchable without a second level of offsets. Three 16-bit symbols and a length byte fit
+exactly, capping the order at 4 and the alphabet at 65,535. Symbols are stored
+most-recent-last so backing off to a shorter context is a mask rather than a rebuild.
+
+The first version used 8-bit symbols for a 255-character alphabet and allowed an order of
+8, and both halves were wrong. Nothing wants order 8 — order 4 already tracks the training
+distribution and longer contexts memorise. And 255 characters is not an alphabet, it is a
+Latin-script assumption: the first Chinese locale to reach the trainer had 980 distinct
+characters in its name lists.
 
 **Weights are cumulative**, so a draw is one binary search rather than a running sum. The
 same choice weighted string tables make, for the same reason. They are `u16` because the

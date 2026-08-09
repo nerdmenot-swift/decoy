@@ -10,45 +10,21 @@
  *
  * Fills:
  *   en    person.last_name.generic   weighted by 2010 Census counts
- *   en    person.last_name_model     an n-gram trained on the same names, plus a screen
  *
- * The list and the model do different jobs and both are kept. The list is what
- * `lastName()` draws, because its weights are the real population frequencies and no
- * model reproduces those. The model is what `novelLastName()` draws, because every name
- * in the list belongs to a real person and no name from the model does — measured over
- * ten thousand draws, 9,499 against 0.
- *
- * The original argument for the model was unique-rule capacity, and it did not survive
- * measurement: `en`'s surname pattern compounds two names 5% of the time, so the list
- * fills a 400,000-row unique column without complaint. That argument only holds in
- * locales whose patterns do not compound.
- *
- * The model does *not* save space here, and the strategy doc used to claim it would.
- * Measured: at order 3 the model is 89 KB against the list's 182 KB but the output
- * degrades to `Rumboneczor` and `Garsterrever`; at order 4, where it produces `Newcomb`
- * and `Sigmann`, it is comparable to or larger than the list.
- *
- * The order is no longer chosen here. `orderFor` picks it from the size of the list, and
- * this list — the largest in the corpus by a wide margin — is the only one that gets
- * order 4. See lib/ngram.mjs for the measurements behind the rule.
+ * The model trained on these names is *not* built here. It used to be, and having two
+ * producers writing under `person.last_name_model` cost an afternoon: this adapter wrote
+ * the model at the node and the pipeline stage wrote one at `.generic` beneath it, so the
+ * compiler found `__model` on the outer object, emitted that, and silently dropped the
+ * inner one. Models are trained in lib/models.mjs, after the merge, for every locale at
+ * once — which is also the only place that can see which adapter's list actually won.
  */
 
-import { readdir, readFile } from 'node:fs/promises'
+import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
-import { blocklistFilter, bloomFilter, train } from '../lib/ngram.mjs'
 
 export const id = 'us-surnames'
 export const source = 'us-census-surnames'
-
-/**
- * A second source, and not one whose words ever appear in the corpus.
- *
- * The Census list is the training data; this is the screen over what the model produces.
- * Only hashes of it ship — see `blocklistFilter` — so nothing from it reaches the binary
- * as text.
- */
-export const sources = ['us-census-surnames', 'ldnoobw']
 
 /**
  * Surnames borne by at least this many people in the 2010 Census.
@@ -80,18 +56,6 @@ function titleCase(name) {
 }
 
 export async function run({ artifacts }) {
-  // A GitHub tarball unpacks under `<repo>-<sha>/`, so the language files sit one level
-  // down. Read rather than hard-coded, so re-pinning to a new commit does not silently
-  // break the screen — which would fail open, and a screen that fails open is worse than
-  // no screen because nobody looks at it again.
-  const [wordsRoot] = await readdir(artifacts.words)
-  const blocked = (await readFile(join(artifacts.words, wordsRoot, 'en'), 'utf8'))
-    .split('\n')
-    .filter(Boolean)
-  if (blocked.length < 100) {
-    throw new Error(`blocklist yielded only ${blocked.length} terms — verify before re-pinning`)
-  }
-
   const csv = await readFile(
     join(artifacts.surnames, 'Names_2010Census.csv'),
     'utf8',
@@ -132,27 +96,6 @@ export async function run({ artifacts }) {
     throw new Error(`Census file yielded only ${values.length} surnames — verify before re-pinning`)
   }
 
-  // Trained on the names as types, one vote each. See lib/ngram.mjs for why the Census
-  // counts are deliberately not used as training weights.
-  const trained = train(values)
-  const filter = bloomFilter(values, { falsePositiveRate: 0.01 })
-  // Far tighter than the training filter, and the rate is budgeted per *word*: screening
-  // one name means dozens of substring lookups, so a per-lookup 0.1% compounds to about
-  // 7.5% per name. It showed up exactly there — 1.4% of real Census surnames rejected by
-  // a filter configured for 0.1%. A Bloom filter grows with the log of the rate, so
-  // buying four more orders of magnitude costs a few hundred bytes.
-  const screen = blocklistFilter(blocked, { falsePositiveRate: 1e-6 })
-  const model = {
-    ...trained,
-    blockHashCount: screen.hashCount,
-    blockMinLength: screen.minLength,
-    blockBits: Buffer.from(screen.bits).toString('base64'),
-    filterHashCount: filter.hashCount,
-    // Base64: the filter is 29 KB of bytes, which would be 100 KB of decimal digits and
-    // commas in the intermediate JSON.
-    filterBits: Buffer.from(filter.bits).toString('base64'),
-  }
-
   return {
     // `en` rather than `en_US`: this is where faker's equivalent list lived, and `en` is
     // the chain every locale without its own surnames falls through to. Those locales
@@ -163,16 +106,12 @@ export async function run({ artifacts }) {
           value,
           weight: weights[i],
         })),
-        'person.last_name_model': { __model: model },
       },
     },
     stats: {
       surnames: values.length,
       belowThreshold: dropped,
       mostCommon: `${values[0]} (${weights[0].toLocaleString('en-US')})`,
-      blockedTerms: blocked.length - screen.dropped,
-      modelContexts: model.contexts.length,
-      modelTransitions: model.contexts.reduce((n, c) => n + c.transitions.length, 0),
     },
   }
 }

@@ -38,10 +38,14 @@
 /// ```
 ///
 /// The context key is packed into a `u64` rather than stored as a variable-length symbol
-/// run so the index keeps a fixed stride and can be binary-searched. That caps the
-/// alphabet at 255 symbols and the order at 8, which is far past anything useful: an
-/// order-4 model of English surnames already reproduces its training distribution
-/// closely, and a larger one mostly memorises.
+/// run so the index keeps a fixed stride and can be binary-searched. Three 16-bit symbols
+/// and a length byte fit exactly, which caps the order at 4 and the alphabet at 65,535.
+///
+/// The first version used 8-bit symbols for a 255-character alphabet and an order of 8.
+/// Both halves of that were wrong. Nothing ever wants order 8 — an order-4 model already
+/// tracks its training distribution and a longer context memorises — and 255 characters
+/// is not an alphabet, it is a Latin-script assumption: the first Chinese locale to reach
+/// the trainer had 980 distinct characters in its name lists.
 ///
 /// Weights are cumulative rather than individual so sampling is one binary search
 /// instead of a running sum, matching how weighted string tables already draw.
@@ -89,8 +93,8 @@ public struct NGramModel: Sendable {
     static let endSymbol: UInt16 = 0
 
     /// Caps implied by packing a context into one `u64`.
-    static let maxAlphabet = 255
-    static let maxOrder = 8
+    static let maxAlphabet = 65_535
+    static let maxOrder = 4
 
     init(reader: ByteReader, arena: Arena, at offset: Int) throws {
         self.reader = reader
@@ -106,7 +110,8 @@ public struct NGramModel: Sendable {
             throw CorpusError.malformed("model order \(order) outside 2...\(Self.maxOrder)")
         }
         guard alphabetCount >= 1, alphabetCount <= Self.maxAlphabet else {
-            throw CorpusError.malformed("model alphabet \(alphabetCount) outside 1...255")
+            throw CorpusError.malformed(
+                "model alphabet \(alphabetCount) outside 1...\(Self.maxAlphabet)")
         }
 
         let alphabetAt = offset + 20
@@ -186,7 +191,7 @@ public struct NGramModel: Sendable {
     static func key(_ symbols: ArraySlice<UInt16>) -> UInt64 {
         var packed = UInt64(symbols.count) << 56
         for (offset, symbol) in symbols.enumerated() {
-            packed |= UInt64(symbol & 0xFF) << (UInt64(offset) * 8)
+            packed |= UInt64(symbol) << (UInt64(offset) * 16)
         }
         return packed
     }

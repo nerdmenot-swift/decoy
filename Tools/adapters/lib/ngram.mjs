@@ -68,9 +68,101 @@ export const MINIMUM_TRAINING_VALUES = 100
  * Order 2 clears the bar everywhere and is never chosen: one character of context is not
  * a language model, it is a letter-frequency table, and its output reads like one.
  */
-export function orderFor(count) {
+export function orderFor(count, typicalLength = Infinity) {
   if (count < MINIMUM_TRAINING_VALUES) return null
-  return count > 5000 ? 4 : 3
+
+  // The context has to be a *fragment* of a word, not the whole of one. Japanese given
+  // names are two characters; at order 3 the two-character context spans the entire name,
+  // so the model can only reproduce pairs it has already seen, every candidate is a
+  // training-set member, the Bloom filter rejects all of them and the generator returns
+  // nothing at all. That is exactly what it did.
+  //
+  // Order n means a context of n-1, so capping the order at the typical word length
+  // leaves at least one character for the model to decide.
+  const byLength = Math.max(2, Math.floor(typicalLength))
+  const bySize = count > 5000 ? 4 : 3
+  return Math.min(bySize, byLength, 4)
+}
+
+/** The median length of `words`, which is what `orderFor` needs and the mean is not. */
+export function typicalLength(words) {
+  if (words.length === 0) return 0
+  const lengths = words.map((w) => [...w].length).sort((a, b) => a - b)
+  return lengths[Math.floor(lengths.length / 2)]
+}
+
+/**
+ * Draws from a trained model, mirroring `Faker.draw(fromModel:)`.
+ *
+ * Here so the trainer can check its own work before shipping it — see `isViable`. It is a
+ * second implementation of the sampler and therefore a place the two can drift, which is
+ * why `NGramSamplerParityTests` trains a model here and compares draws against Swift.
+ */
+export function sample(model, next32, { maxLength = 64 } = {}) {
+  const byKey = new Map(model.contexts.map((c) => [c.key, c.transitions]))
+  const keyOf = (symbols) => {
+    let packed = BigInt(symbols.length) << 56n
+    symbols.forEach((symbol, offset) => {
+      packed |= BigInt(symbol) << BigInt(offset * 16)
+    })
+    return packed.toString()
+  }
+
+  const history = new Array(model.order - 1).fill(END)
+  let word = ''
+  for (let step = 0; step < maxLength; step++) {
+    let transitions = null
+    for (let length = model.order - 1; length >= 1 && !transitions; length--) {
+      transitions = byKey.get(keyOf(history.slice(history.length - length)))
+    }
+    if (!transitions) break
+    const total = transitions.reduce((sum, t) => sum + t.weight, 0)
+    let roll = next32() % total
+    let picked = transitions[transitions.length - 1]
+    for (const transition of transitions) {
+      if (roll < transition.weight) {
+        picked = transition
+        break
+      }
+      roll -= transition.weight
+    }
+    if (picked.symbol === END) break
+    word += model.alphabet[picked.symbol]
+    history.push(picked.symbol)
+  }
+  return word
+}
+
+/**
+ * Whether a trained model can actually generate, rather than only recite.
+ *
+ * The backstop, and the reason it exists is that I cannot reason about every script. The
+ * order rules above are derived from English surnames; Japanese broke them in a way no
+ * amount of staring at the rule would have predicted, and something else will break them
+ * again. So the trainer draws from its own model and refuses to ship one that cannot
+ * produce novel output — a model whose every candidate is rejected by the Bloom filter is
+ * not a conservative model, it is a generator that returns nothing.
+ */
+export function isViable(model, words, { draws = 400, minimumNovel = 0.5 } = {}) {
+  const known = new Set(words)
+  const lengths = words.map((w) => [...w].length)
+  const min = Math.min(...lengths)
+  const max = Math.max(...lengths)
+
+  let state = 20260809n
+  const MASK = (1n << 64n) - 1n
+  const next32 = () => {
+    state = (state * 6364136223846793005n + 1442695040888963407n) & MASK
+    return Number((state >> 32n) & 0xffffffffn)
+  }
+
+  let usable = 0
+  for (let i = 0; i < draws; i++) {
+    const word = sample(model, next32)
+    const length = [...word].length
+    if (word && length >= min && length <= max && !known.has(word)) usable += 1
+  }
+  return { novel: usable / draws, viable: usable / draws >= minimumNovel }
 }
 
 /**
@@ -93,14 +185,15 @@ export function minCountFor(count) {
  */
 export function train(words, options = {}) {
   const distinct = [...new Set(words)]
-  const order = options.order ?? orderFor(distinct.length)
+  const order = options.order ?? orderFor(distinct.length, typicalLength(distinct))
   const minCount = options.minCount ?? minCountFor(distinct.length)
   if (order === null) {
     throw new Error(
       `${distinct.length} values is below MINIMUM_TRAINING_VALUES (${MINIMUM_TRAINING_VALUES})`,
     )
   }
-  if (order < 2 || order > 8) throw new Error(`order must be 2...8, got ${order}`)
+  // Three 16-bit symbols and a length byte are what a u64 context key holds.
+  if (order < 2 || order > 4) throw new Error(`order must be 2...4, got ${order}`)
   words = distinct
 
   // Alphabet in first-appearance order, so a re-run over the same list is byte-identical.
@@ -114,9 +207,9 @@ export function train(words, options = {}) {
       }
     }
   }
-  if (alphabet.length > 255) {
+  if (alphabet.length > 65535) {
     throw new Error(
-      `${alphabet.length} distinct characters exceeds the 255 a packed context key allows`,
+      `${alphabet.length} distinct characters exceeds the 65,535 a packed context key allows`,
     )
   }
 
@@ -155,7 +248,7 @@ export function train(words, options = {}) {
     const symbols = key === '' ? [] : key.split(',').map(Number)
     let packed = BigInt(symbols.length) << 56n
     symbols.forEach((symbol, offset) => {
-      packed |= BigInt(symbol & 0xff) << BigInt(offset * 8)
+      packed |= BigInt(symbol) << BigInt(offset * 16)
     })
 
     const transitions = [...row.entries()]
