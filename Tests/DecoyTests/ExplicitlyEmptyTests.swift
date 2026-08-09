@@ -90,8 +90,10 @@ struct ExplicitlyEmptyTests {
             var faker = Faker(seed: 1337, locale: locale)
             _ = faker.person.suffix()
             _ = faker.person.prefix()
-            _ = faker.location.cityPrefix()
-            _ = faker.location.citySuffix()
+            // `cityPrefix()`/`citySuffix()` used to be probed here too — pt_PT, sk and th
+            // declare them empty. They were retired with the rest of the city-composition
+            // API, so the mechanism is now covered by the honorifics and the postcode,
+            // which is where the trap was first found in any case.
             _ = faker.location.postcode()
         }
     }

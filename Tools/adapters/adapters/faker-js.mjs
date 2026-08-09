@@ -176,8 +176,16 @@ const SUPERSEDED = new Set([
   // City composition, superseded by the gazetteer. `city()` draws a real city where the
   // locale has one, which is seventy-four of seventy-six, so a prefix/suffix pattern only
   // shadows better data. GeoNames gives Osnabrück; this gave "Lake Jenniferville".
+  //
+  // The parts go with the pattern that consumed them. Nothing composes a city any more, so
+  // a `cityPrefix()` returning "Söder" on its own fills no column -- it existed because
+  // faker builds cities out of pieces, and Decoy does not. Dutch shows what the field had
+  // become in any case: 2,501 "prefixes" that are entire towns, `Aalden` and
+  // `'s-Gravenvoeren` among them.
   'location.city_pattern',
   'location.city_infix',
+  'location.city_prefix',
+  'location.city_suffix',
 ])
 
 /**

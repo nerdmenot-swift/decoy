@@ -59,8 +59,6 @@ struct GeneratorSmokeTests {
         check("streetAddress(full:)", &f) { $0.location.streetAddress(full: true) }
         check("secondaryAddress", &f) { $0.location.secondaryAddress() }
         check("city", &f) { $0.location.city() }
-        check("cityPrefix", &f) { $0.location.cityPrefix() }
-        check("citySuffix", &f) { $0.location.citySuffix() }
         check("county", &f) { $0.location.county() }
         check("state", &f) { $0.location.state() }
         check("stateAbbreviation", &f) { $0.location.stateAbbreviation() }
