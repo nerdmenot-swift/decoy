@@ -26,8 +26,11 @@
  * The model does *not* save space here, and the strategy doc used to claim it would.
  * Measured: at order 3 the model is 89 KB against the list's 182 KB but the output
  * degrades to `Rumboneczor` and `Garsterrever`; at order 4, where it produces `Newcomb`
- * and `Sigmann`, it is comparable to or larger than the list. Order 4 with `minCount: 2`
- * is the chosen point — the smallest model whose output reads as English surnames.
+ * and `Sigmann`, it is comparable to or larger than the list.
+ *
+ * The order is no longer chosen here. `orderFor` picks it from the size of the list, and
+ * this list — the largest in the corpus by a wide margin — is the only one that gets
+ * order 4. See lib/ngram.mjs for the measurements behind the rule.
  */
 
 import { readdir, readFile } from 'node:fs/promises'
@@ -131,7 +134,7 @@ export async function run({ artifacts }) {
 
   // Trained on the names as types, one vote each. See lib/ngram.mjs for why the Census
   // counts are deliberately not used as training weights.
-  const trained = train(values, { order: 4, minCount: 2 })
+  const trained = train(values)
   const filter = bloomFilter(values, { falsePositiveRate: 0.01 })
   // Far tighter than the training filter, and the rate is budgeted per *word*: screening
   // one name means dozens of substring lookups, so a per-lookup 0.1% compounds to about

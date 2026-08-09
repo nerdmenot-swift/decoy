@@ -32,14 +32,76 @@
 export const END = 0
 
 /**
+ * Below this many distinct values, a model is not worth building.
+ *
+ * At 50 values an order-3 model reproduces its input a third of the time and an order-2
+ * one — novel but with a single character of context — generates noise. There is no
+ * setting at which 50 names teach a machine what a name looks like, and shipping a model
+ * that mostly echoes its training data is worse than shipping the list: same values, more
+ * bytes, and a false claim of novelty attached.
+ */
+export const MINIMUM_TRAINING_VALUES = 100
+
+/**
+ * Picks the n-gram order from how much there is to learn from.
+ *
+ * A fixed order was the first mistake here, and it was invisible: order 4 on the 24,889
+ * Census surnames gives 73% novel output, and the same order on a 200-name list gives
+ * 33%. Two thirds of what a small-locale model produced would have been its own training
+ * data handed back, rejected by the Bloom filter, and redrawn — so the model would have
+ * looked like it worked while quietly having nothing to say.
+ *
+ * The rule is the highest order that still clears roughly 70% novel output, because
+ * higher order means closer fidelity to the language and lower order means more
+ * invention. Measured over the Census list subsampled from 50 to 24,889:
+ *
+ * ```
+ * size    order 2   order 3   order 4   order 5
+ *   50      100%       67%       17%        0%
+ *  200      100%       89%       33%        4%
+ *  800       99%       95%       57%       13%
+ * 3200       96%       93%       67%       27%
+ * 6400       94%       91%       74%       31%
+ * 24889      85%       83%       73%       45%
+ * ```
+ *
+ * Order 2 clears the bar everywhere and is never chosen: one character of context is not
+ * a language model, it is a letter-frequency table, and its output reads like one.
+ */
+export function orderFor(count) {
+  if (count < MINIMUM_TRAINING_VALUES) return null
+  return count > 5000 ? 4 : 3
+}
+
+/**
+ * Pruning threshold, likewise from size.
+ *
+ * Dropping transitions seen once halves a large model and guts a small one — at 200
+ * values almost every transition is a singleton, and pruning them leaves a model that
+ * can only produce the handful of sequences it saw twice.
+ */
+export function minCountFor(count) {
+  return count > 5000 ? 2 : 1
+}
+
+/**
  * Counts every (context, next-symbol) pair in `words`.
  *
  * @param {string[]} words       distinct training words
  * @param {number}   order       context length is order - 1
  * @param {number}   minCount    transitions seen fewer times than this are dropped
  */
-export function train(words, { order = 4, minCount = 1 } = {}) {
+export function train(words, options = {}) {
+  const distinct = [...new Set(words)]
+  const order = options.order ?? orderFor(distinct.length)
+  const minCount = options.minCount ?? minCountFor(distinct.length)
+  if (order === null) {
+    throw new Error(
+      `${distinct.length} values is below MINIMUM_TRAINING_VALUES (${MINIMUM_TRAINING_VALUES})`,
+    )
+  }
   if (order < 2 || order > 8) throw new Error(`order must be 2...8, got ${order}`)
+  words = distinct
 
   // Alphabet in first-appearance order, so a re-run over the same list is byte-identical.
   const symbolOf = new Map()
