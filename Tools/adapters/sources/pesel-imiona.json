@@ -1,0 +1,44 @@
+{
+  "id": "pesel-imiona",
+  "name": "Lista imion występujących w rejestrze PESEL (Ministerstwo Cyfryzacji)",
+  "license": "CC0-1.0",
+  "copyright": "",
+  "url": "https://dane.gov.pl/pl/dataset/1667",
+  "version": "2026-01",
+  "retrieved": "2026-08-10",
+  "note": [
+    "Every first name in the Polish population register, with how many people bear it.",
+    "PIOTR is borne by 682,516 men and ANNA by 1,063,756 women, and that weighting is the",
+    "point: a list of names produces uniform draws, and a register produces the collision",
+    "rates a real database has.",
+    "",
+    "CC0, declared by dane.gov.pl's API with every licence condition field left empty --",
+    "checked directly rather than read off the portal page. So there is nothing to",
+    "reconcile with Apache-2.0 and no attribution obligation; NOTICE names it regardless,",
+    "for the same reason it names Wikidata.",
+    "",
+    "Names with fewer than two bearers are already excluded upstream, which is the register",
+    "protecting individuals rather than a sampling decision. The adapter's own threshold",
+    "sits far above that.",
+    "",
+    "Two files because the register publishes men and women separately. The PŁEĆ column",
+    "repeats the distinction inside each, so the split is redundant, but taking the files",
+    "as published means the sex never has to be inferred."
+  ],
+  "artifacts": [
+    {
+      "name": "polish-male",
+      "format": "file",
+      "filename": "imiona-meskie.csv",
+      "url": "https://api.dane.gov.pl/resources/1159669/csv",
+      "integrity": "sha512-A8+ysxRISafO0FMADm64qs7B3DzKnUW7dnOysCJYm2zmdTXON860caI7A1nrH7+vWuGfGjXBntDh+ZlEw3XgeQ=="
+    },
+    {
+      "name": "polish-female",
+      "format": "file",
+      "filename": "imiona-zenskie.csv",
+      "url": "https://api.dane.gov.pl/resources/1159670/csv",
+      "integrity": "sha512-NNxctmXqfFzOQudJgDAcL6l1KYgjFpxlqZbOi2ithM3mZTuiVUubLWzJZvNbHxJZ4a+WgJADmI9T14IOsDjzXg=="
+    }
+  ]
+}

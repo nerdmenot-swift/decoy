@@ -78,6 +78,7 @@ const PATHS = {
 const DEFERRED = {
   en: ['female', 'male', 'surname'], // Gender-by-Name, then US Census for the surnames.
   fr: ['female', 'male'], // INSEE. Surnames are published commercially only, so not here.
+  pl: ['female', 'male'], // PESEL. Surnames are not published; the register covers given names.
 }
 
 /**

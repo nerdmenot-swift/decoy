@@ -1,0 +1,27 @@
+The Polish open data portal publishes this dataset under the Creative
+Commons CC0 1.0 Universal Public Domain Dedication.
+
+Confirmed from the portal's own API rather than from its web page:
+
+    GET https://api.dane.gov.pl/1.4/datasets/1667
+
+    "license_name": "CC0 1.0"
+    "license_condition_custom_description": ""
+    "license_condition_default_cc40": false
+    "license_condition_db_or_copyrighted": ""
+    "license_condition_personal_data": null
+
+Every licence-condition field is empty, which is dane.gov.pl's way of
+recording that the publisher attached no further terms.
+
+Full text: https://creativecommons.org/publicdomain/zero/1.0/
+
+CC0 waives copyright and related rights to the fullest extent permitted by
+law. There is no attribution condition and no share-alike condition, so
+nothing here constrains distributing Decoy under Apache-2.0.
+
+Decoy names the Ministry of Digital Affairs in NOTICE regardless of that,
+because the provenance records exist to answer where a value came from
+rather than only to discharge obligations.
+
+Source: https://dane.gov.pl/pl/dataset/1667
