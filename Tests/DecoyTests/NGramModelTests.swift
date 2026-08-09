@@ -201,8 +201,34 @@ struct SurnameModelTests {
         #expect(emitted.isEmpty, "emitted \(emitted.count) real surnames: \(emitted.prefix(5))")
     }
 
-    /// The reason the model exists: a list of 24,889 names cannot fill a unique column
-    /// past 24,889 rows, and a model has no such ceiling.
+    /// The measurement the whole feature is justified on, pinned so it cannot quietly
+    /// stop being true.
+    ///
+    /// `lastName()` returns a real person's surname almost always — it draws from a list
+    /// of 24,889 real Americans. `novelLastName()` never does. If that gap ever closes,
+    /// the model has stopped earning the 300 KB it costs.
+    @Test("the list returns real people and the model does not")
+    func theDifferenceThatJustifiesIt() throws {
+        let locale = try english()
+        let real = censusNames(locale)
+
+        var listFaker = Faker(seed: 5, locale: locale)
+        var fromList = 0
+        for _ in 0..<10_000 where real.contains(listFaker.person.lastName()) { fromList += 1 }
+
+        var modelFaker = Faker(seed: 5, locale: locale)
+        var fromModel = 0
+        for _ in 0..<10_000 where real.contains(modelFaker.person.novelLastName()) {
+            fromModel += 1
+        }
+
+        #expect(fromList > 9_000, "lastName() should be drawing real surnames; got \(fromList)")
+        #expect(fromModel == 0, "novelLastName() emitted \(fromModel) real surnames")
+    }
+
+    /// Capacity is real, but it was not the reason to build this — see the doc comment on
+    /// `novelLastName()` for why the original unique-exhaustion argument did not survive
+    /// measurement against `en`, whose surname pattern compounds.
     @Test("draws stay overwhelmingly distinct")
     func staysDistinct() throws {
         var faker = Faker(seed: 1337, locale: try english())

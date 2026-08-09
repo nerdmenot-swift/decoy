@@ -45,22 +45,30 @@ public struct PersonFaker {
         return gendered("person.middle_name", gender)
     }
 
-    /// Returns a surname that no real person is recorded as having.
+    /// Returns a surname no real person is recorded as having.
     ///
-    /// Drawn from a trained n-gram rather than a list, which is the difference that
-    /// matters under a `unique` rule: `en` carries 24,889 surnames, so a unique column
-    /// runs dry at 24,889 rows and a hundred thousand-row fixture cannot be generated at
-    /// all. A model does not run out.
+    /// **This is the difference, and it is the only one worth choosing on.** Measured
+    /// over ten thousand draws: ``lastName(_:)`` returns a real Census surname 9,499
+    /// times, because it draws from a list of 24,889 real American surnames. This returns
+    /// one zero times. Every candidate is checked against the training set and redrawn on
+    /// a hit — see ``NGramModel/wasTrainedOn(_:)`` for why that check is safe to rely on.
     ///
-    /// Every candidate is checked against the training set and redrawn on a hit, so a
-    /// generated surname is never one of the Census names it learned from. See
-    /// ``NGramModel/wasTrainedOn(_:)`` for why that check is safe to rely on and what it
-    /// costs.
+    /// It matters wherever fixtures escape the machine that made them: a support ticket,
+    /// a screenshot in a bug report, a staging database somebody exports. "Jennifer
+    /// Williams" in a demo is a real person somewhere, and `Bednardt` is not.
     ///
-    /// The distribution is deliberately *not* realistic — the model is trained on each
-    /// name once regardless of how many people bear it. Use ``lastName(_:)`` when the
-    /// shape of the distribution matters, which is most reporting and analytics work;
-    /// use this when you need more distinct names than exist.
+    /// Two things it is *not* better at, despite being the obvious guesses:
+    ///
+    /// - **Not unique-rule capacity.** That was the original argument and it does not
+    ///   survive measurement here: `en`'s surname pattern produces a double-barrelled
+    ///   form 5% of the time, so the list's effective pool is 24,889 plus its own square,
+    ///   and it fills a 400,000-row unique column without complaint. The capacity
+    ///   argument only bites in locales whose patterns do not compound.
+    /// - **Not distribution.** The model is trained on each name once regardless of how
+    ///   many people bear it, so its output is not Zipf-distributed and real collision
+    ///   rates do not occur. ``lastName(_:)`` carries the true Census weights and is the
+    ///   right choice for anything measuring shape — deduplication logic, analytics,
+    ///   fuzzy matching.
     ///
     /// Falls back to ``lastName(_:)`` in locales with no model, which is every locale but
     /// `en` today. A caller that must know the difference should check

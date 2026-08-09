@@ -234,9 +234,18 @@ real surname, all of them recognisably English.
 
 Three of the four claims below held up when measured. One did not.
 
-- **Infinite non-repeating values**, which dissolves `unique` rule exhaustion. Ten
-  thousand draws give 8,939 distinct names and the model has no ceiling, where the list
-  runs out at 24,889 rows.
+- **No output is a real person's name.** Measured over ten thousand draws: `lastName()`
+  returns a real Census surname 9,499 times and `novelLastName()` returns one zero times.
+  This is the benefit that survived measurement, and it is the one that matters wherever
+  fixtures escape the machine that made them — a support ticket, a screenshot, an exported
+  staging database.
+- ~~**Infinite non-repeating values**, which dissolves `unique` rule exhaustion~~ —
+  **overstated.** The model does have unbounded capacity: 400,000 draws give 194,924
+  distinct names and it is still climbing. But the list it replaces is not the 24,889-name
+  ceiling the argument assumed — `en`'s surname pattern compounds two names 5% of the
+  time, so the list fills a 400,000-row unique column without complaint either. The
+  capacity argument only bites in locales whose patterns do not compound, which is most of
+  them, but not the one this was first measured against.
 - ~~A **smaller** binary footprint than the list it was trained on~~ — **false at usable
   quality.** Measured: order 3 is 89 KB against the list's 182 KB, but its output degrades
   to `Rumboneczor` and `Garsterrever`. Order 4 with pruning, which is where the output

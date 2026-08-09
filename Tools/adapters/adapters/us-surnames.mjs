@@ -14,9 +14,14 @@
  *
  * The list and the model do different jobs and both are kept. The list is what
  * `lastName()` draws, because its weights are the real population frequencies and no
- * model reproduces those. The model is what `lastName(novel:)` draws, because a list of
- * 24,889 names runs out under a `unique` rule at 24,889 rows and a model does not run out
- * at all.
+ * model reproduces those. The model is what `novelLastName()` draws, because every name
+ * in the list belongs to a real person and no name from the model does — measured over
+ * ten thousand draws, 9,499 against 0.
+ *
+ * The original argument for the model was unique-rule capacity, and it did not survive
+ * measurement: `en`'s surname pattern compounds two names 5% of the time, so the list
+ * fills a 400,000-row unique column without complaint. That argument only holds in
+ * locales whose patterns do not compound.
  *
  * The model does *not* save space here, and the strategy doc used to claim it would.
  * Measured: at order 3 the model is 89 KB against the list's 182 KB but the output
