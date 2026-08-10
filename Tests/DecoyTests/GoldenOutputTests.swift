@@ -95,7 +95,7 @@ struct GoldenOutputTests {
                 "Siemer, Goebel und Kostner",
                 "jochen.wode@example.com",
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/177.0",
-                "Bespoke Silk Knife",
+                "Ergonomische Mützen aus Beton",
                 "GB54YXOW09174811822294",
                 "5560-2520-6625-3715",
                 "sconce",
