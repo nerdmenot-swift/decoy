@@ -92,7 +92,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — twenty-five adapters plus the faker-js bootstrap, thirty-nine sources:
+**Built so far** — twenty-eight adapters plus the faker-js bootstrap, fifty sources:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -120,6 +120,20 @@ someone else's package should not itself require a package manager.
 | `phone-formats` | libphonenumber 9.0.36 | Apache-2.0 | `phone_number.format.{national,human,international}` in 74 locales |
 | `emoji` | Unicode Emoji 16.0 | Unicode-3.0 | `internet.emoji.*` — 3,780 sequences across 10 categories |
 | `airports` | airport-data 1.0.1 (OpenFlights) | Unlicense | `airline.airport` (composite) — 5,614 IATA-coded airports |
+| `wikidata-names` | Wikidata | CC0 | `person.first_name.*`, `person.last_name.generic` in 34 locales |
+| `wikidata-colours` | Wikidata | CC0 | `color.human` in 27 locales |
+| `wikidata-terms` | Wikidata | CC0 | compass points, zodiac signs and `person.sex` in 52–60 locales |
+| `legal-entities` | GLEIF ISO 20275 register | public facts | `company.legal_entity_type` in 55 locales, per jurisdiction |
+| `civil-names` (PL) | PESEL register, Ministry of Digital Affairs | CC0 | Polish given names, weighted — Anna by 1,063,756 |
+| `civil-names` (ES) | INE census | CC BY 4.0 | Spanish given names, weighted — Maria Carmen by 618,622 |
+| `civil-names` (FI) | DVV | CC BY 4.0 | Finnish given names, weighted, first-name sheets only |
+| `civil-names` (SE) | SCB | CC BY 4.0 | Swedish given names *and* 4,457 surnames — the only register found with both |
+| `civil-names` (GB) | ONS baby names | OGL v3 | English given names for `en_GB`, a birth cohort rather than a population |
+| `civil-names` (NO) | SSB, via PxWeb | CC BY 4.0 | Norwegian given names, weighted |
+| `civil-names` (SI) | SURS, via PxWeb | CC BY 4.0 | Slovene given names, weighted |
+| `civil-names` (AZ) | Ministry of Justice register | CC0 | Azerbaijani given names and surnames, unweighted |
+| `civil-names` (TW) | Ministry of the Interior | OGDL Taiwan 1.0 | 441 Taiwanese surnames, weighted — 陳 by 2.6 million |
+| `civil-names` (IL) | CBS | data.gov.il terms | Hebrew given names, weighted, all four population groups merged |
 | `faker-js` | @faker-js/faker 10.5.0 | MIT | everything not yet covered, at lowest precedence |
 
 **faker-js is an adapter like any other, and the lowest-precedence one.** It is fetched
@@ -166,17 +180,30 @@ language-neutral `base`:
 
 | | |
 |---|---|
-| Median native coverage | 36% |
-| Locales under 30% native | 25 of 74 |
-| `ta_IN` | 12% (12 paths against `en`'s 99) |
-| `yo_NG` | 17% (17 paths) |
+| Median native coverage | 39% |
+| Locales under 30% native | 8 of 74 |
+| `ta_IN` | 28% (27 paths) |
+| `dv` | 29% (34 paths) |
 
-**Around a third of what the median non-English locale produces is its own**, and the
+**Around two-fifths of what the median non-English locale produces is its own**, and the
 rest is English falling through the chain. That is the "Tamil records named Jennifer
-Williams" failure, and at the bottom of the table it is still most of the output.
+Williams" failure, and in the worst locales it is still most of the output.
+
+There is a ceiling here that is a property of the metric rather than of the data, and it
+is worth stating so nobody chases it. Coverage counts paths holding native values, and a
+growing share of paths are deliberately English-only — marketing adjectives, job
+descriptors, department names, none of which any registry publishes in any language.
+Every locale falls back for those by design, so no locale but `en` can approach 100%.
 
 These numbers have moved twice, and both reasons are worth recording because both look
 like progress or regress and are neither.
+
+A third move took it from 35% to 39%, with locales under 30% falling from 25 to 8. That
+one is real sourcing rather than a corrected measurement: national name registries for
+nine countries, Wikidata names, colours and compass terms across thirty-odd locales, and
+street composition for ten languages. `ta_IN` more than doubled, from 12% to 28%, without
+a single new Tamil source — it inherited the terms and compass points that landed
+everywhere at once.
 
 The first measurement put the median at 26% with 48 locales under 30%. Most of that gap
 was a shadowing bug — a source claiming a path in `en` suppressed every other locale's
@@ -454,7 +481,7 @@ not stored, so they cannot drift.
 format, no validation, and no documented path. While faker is still a producer this is
 survivable, because the corpus is regenerated wholesale. It stops being survivable the
 moment faker is deleted, because contribution then becomes the *only* way the corpus
-grows — with 48 locales under 30% native coverage.
+grows — with 8 locales under 30% native coverage.
 
 The intended shape, unchanged from the original design:
 
@@ -508,7 +535,7 @@ All six are representable in format v2. Four are in use.
 |---|---|---|
 | Weights | A weight column alongside string tables | **In use** — faker-derived patterns, and real Census frequencies for English surnames |
 | Composite records | Heterogeneous field tuples, not parallel lists | **In use** — countries, languages, currencies |
-| Provenance | A source/license table, referenced by ID | **In use** — 39 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
+| Provenance | A source/license table, referenced by ID | **In use** — 50 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
 | Generative models | A model chunk type, not only string tables | Chunk kind reserved; nothing emits one |
 | Corpus version + compatibility | Header fields, checked on load | **In use** |
 | Cross-locale dedup | A shared string arena (21.2% redundancy measured) | **In use** |

@@ -49,6 +49,28 @@ struct LicenseIntegrityTests {
         }
     }()
 
+    /// Pins the source count, so the documented figure cannot quietly stop being true.
+    ///
+    /// It already had. The README and `corpus-strategy.md` both said thirty-nine sources
+    /// while fifty were shipping — the number was correct when written and nothing was
+    /// watching it afterwards. That is precisely the failure `SurfaceCountTests` was added
+    /// for when the generator count drifted three times, and this is the same fix applied
+    /// to the same class of claim.
+    ///
+    /// A literal rather than a lower bound: a bound would let the documented figure drift
+    /// upward unnoticed, which is the direction it drifts.
+    @Test("the source count matches what the documentation claims")
+    func sourceCountPinned() {
+        #expect(
+            Self.descriptors.count == 50,
+            """
+            \(Self.descriptors.count) source descriptors, expected 50.
+            If that is intentional, update this literal, README.md and \
+            docs/corpus-strategy.md together — they drifted apart once already.
+            """
+        )
+    }
+
     @Test("every source descriptor names a licence")
     func licenceDeclared() throws {
         try #require(!Self.descriptors.isEmpty, "no source descriptors found")
