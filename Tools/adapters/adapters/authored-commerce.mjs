@@ -132,6 +132,8 @@ const LANGUAGES = {
     ],
     cardinalAbbr: ['N', 'O', 'S', 'W'],
     ordinalAbbr: ['NO', 'NW', 'SO', 'SW'],
+    prefixFemale: ['Frau', 'Dr.', 'Prof.'],
+    prefixMale: ['Herr', 'Dr.', 'Prof.'],
   },
   nl: {
     plural: true,
@@ -196,6 +198,8 @@ const LANGUAGES = {
     ],
     cardinalAbbr: ['N', 'O', 'Z', 'W'],
     ordinalAbbr: ['NO', 'NW', 'ZO', 'ZW'],
+    prefixFemale: ['Mevr.', 'Dr.'],
+    prefixMale: ['Dhr.', 'Dr.'],
   },
   fr: {
     pattern: '{{commerce.product}} {{commerce.productAdjective}} en {{commerce.productMaterial}}',
@@ -260,6 +264,8 @@ const LANGUAGES = {
     ],
     cardinalAbbr: ['N', 'E', 'S', 'O'],
     ordinalAbbr: ['NE', 'NO', 'SE', 'SO'],
+    prefixFemale: ['Mme', 'Mlle', 'Dr'],
+    prefixMale: ['M.', 'Dr'],
   },
   es: {
     pattern: '{{commerce.product}} {{commerce.productAdjective}} de {{commerce.productMaterial}}',
@@ -325,6 +331,8 @@ const LANGUAGES = {
     ],
     cardinalAbbr: ['N', 'E', 'S', 'O'],
     ordinalAbbr: ['NE', 'NO', 'SE', 'SO'],
+    prefixFemale: ['Sra.', 'Srta.', 'Dra.'],
+    prefixMale: ['Sr.', 'Dr.'],
   },
   it: {
     pattern: '{{commerce.product}} {{commerce.productAdjective}} in {{commerce.productMaterial}}',
@@ -511,8 +519,10 @@ export async function run({ locales }) {
         'location.direction.ordinal_abbr': spec.ordinalAbbr,
         ...(spec.prefixFemale
           ? {
-              // Italian shipped an empty prefix node and Portuguese none at all, so both
-              // were addressing people as `Mr.` and `Mrs.`.
+              // Honorifics came from faker for every one of these, so deleting it left
+              // German addressing people as `Mrs.` and French as `Dr.` — English titles on
+              // names that are otherwise entirely local. Italian had shipped an empty node
+              // and Portuguese none at all even before that.
               'person.prefix.female': spec.prefixFemale,
               'person.prefix.male': spec.prefixMale,
             }

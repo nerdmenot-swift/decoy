@@ -241,7 +241,7 @@ const STREET_SUFFIXES = [
  * nothing about house numbering, because there is nothing to say — no country publishes a
  * rule for it. `####` is a four-digit number, which is what the masks elsewhere mean.
  */
-const BUILDING_NUMBER = ['###', '####', '#####', '##']
+const BUILDING_NUMBER = ['%##', '%###', '%####', '%#']
 
 /**
  * How other languages build a street name, for the languages where that is settled.
@@ -370,7 +370,7 @@ function streetPatternFor(language) {
  * restarts per street, so one to three digits is the range.
  */
 const NUMBER_LEADS = new Set(['fr', 'en_GB'])
-const EUROPEAN_BUILDING_NUMBER = ['#', '##', '###']
+const EUROPEAN_BUILDING_NUMBER = ['%', '%#', '%##']
 
 function streetAddressFor(language) {
   if (NUMBER_LEADS.has(language)) {
@@ -708,7 +708,7 @@ const JOB_TYPES = [
  */
 const JAPANESE = {
   // `#` is filled by the same substitution that turns `###` into a house number.
-  'location.building_number': ['#丁目#番#号', '##丁目#番#号', '#丁目##番#号'],
+  'location.building_number': ['%丁目%番%号', '%#丁目%番%号', '%丁目%#番%号'],
   'location.street_address': {
     normal: ['{{location.buildingNumber}}'],
     full: ['{{location.buildingNumber}} {{location.secondaryAddress}}'],
@@ -724,6 +724,10 @@ const JAPANESE = {
   // sector list produced 谷田部Telecommunications合同会社 — a company name that is Japanese
   // at both ends and English in the middle. The trade names of Japanese firms carry these
   // words, which is why the pattern wants one.
+  // Japanese has no prefixed honorific — さん and 様 follow the name — so the field is
+  // declared empty rather than left to inherit `Dr.` from English. `null` is how a locale
+  // says the concept does not exist here, and it blocks the fallback.
+  'person.prefix': null,
   'company.category': [
     '情報', '保険', '建設', '商事', '運輸', '電機', '化学', '製薬', '食品', '銀行',
     '証券', '不動産', '印刷', '鉄鋼', '物流', '電力', '通信', '出版', '観光', '倉庫',
@@ -740,13 +744,16 @@ const JAPANESE = {
  * faker gone the declaration went too, so `az` walked the chain and found nothing to walk
  * to.
  *
- * `generic` carries the two that are not gendered, so a caller who asks for no gender gets
- * `Dr.` rather than a coin-flip between `Mr.` and `Mrs.`
+ * No `generic` list, deliberately. `gendered()` prefers `generic` over the gendered lists,
+ * so an English one was inherited by every locale that has honorifics of its own but no
+ * generic — German has `Herr` and `Frau` and produced `Dr.` every single time, and so did
+ * French, Spanish and Italian. The ungendered call now picks a sex and draws, which is what
+ * it does for given names and for the same reason. `Dr.` and `Prof.` sit in both lists, so
+ * nothing is lost by having no third one.
  */
 const NAME_PREFIXES = {
   female: ['Miss', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'],
   male: ['Mr.', 'Dr.', 'Prof.'],
-  generic: ['Dr.', 'Prof.'],
 }
 
 /**

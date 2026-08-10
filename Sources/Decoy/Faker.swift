@@ -246,8 +246,14 @@ public struct Faker: Sendable {
         substitute(pattern, digits: nil, letters: "?", either: nil)
     }
 
-    /// Replaces `#` with a digit, `!` with a digit `2-9`, `?` with an uppercase
-    /// letter, and `*` with either a digit or a letter.
+    /// Replaces `#` with a digit, `%` with a digit `1-9`, `!` with a digit `2-9`, `?` with
+    /// an uppercase letter, and `*` with either a digit or a letter.
+    ///
+    /// `%` exists for the leading position of anything counted from one. A house number is
+    /// the case that produced it: `###` yields `0` about one time in a thousand and
+    /// `Kobelstraße 0` is not an address, and a Japanese block written `0番` is not one
+    /// either. `!` was already here for NANP area codes, which cannot begin with 0 *or* 1 —
+    /// a different constraint that would wrongly forbid house number 1.
     ///
     /// The workhorse for postcodes, SKUs, licence plates and phone numbers:
     /// `f.bothify("??-####")` → `"KJ-8813"`.
@@ -268,6 +274,8 @@ public struct Faker: Sendable {
                 out.append(randomDigit())
             } else if character == "!" {
                 out.append(randomDigit(from: 2))
+            } else if character == "%" {
+                out.append(randomDigit(from: 1))
             } else if let letters, character == letters {
                 out.append(randomLetter())
             } else if let either, character == either {
