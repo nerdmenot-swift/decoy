@@ -66,6 +66,45 @@ async function exists(path) {
 }
 
 /**
+ * Fetches an artifact, retrying the failures that are the network rather than the server.
+ *
+ * There was no retry here at all, which made every build as reliable as the least reliable
+ * host in the source list on the day it ran. Azerbaijan's Ministry of Justice endpoint is
+ * what exposed it: it answers in under a second most of the time and occasionally does not
+ * answer within Node's ten-second connect timeout, so a build that had worked all week
+ * failed once and would have looked like a broken pin rather than a blip.
+ *
+ * A 4xx is not retried. That is the server saying the request is wrong -- a moved file, a
+ * revoked dataset -- and asking again four times only delays the report. 5xx and transport
+ * failures are, because those are the ones that come right on their own.
+ *
+ * The integrity hash still decides whether what arrives is correct. This only decides how
+ * many times to ask.
+ */
+async function fetchWithRetry(url, attempts = 4) {
+  let lastError = null
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    try {
+      const response = await fetch(url)
+      if (response.ok) return Buffer.from(await response.arrayBuffer())
+      if (response.status >= 400 && response.status < 500) {
+        throw new Error(`${url} returned HTTP ${response.status}`)
+      }
+      lastError = new Error(`${url} returned HTTP ${response.status}`)
+    } catch (error) {
+      if (error instanceof Error && /returned HTTP 4/.test(error.message)) throw error
+      lastError = error
+    }
+    if (attempt < attempts - 1) {
+      await new Promise((resolve) => setTimeout(resolve, 3000 * (attempt + 1)))
+    }
+  }
+  throw new Error(
+    `${url} failed after ${attempts} attempts — ${lastError?.message ?? 'no response'}`,
+  )
+}
+
+/**
  * Downloads an artifact, or reuses the cached copy when it still matches its hash.
  *
  * A cached file is re-verified rather than trusted: a corrupted or tampered cache would
@@ -90,11 +129,7 @@ async function acquire(sourceId, artifact) {
   }
 
   process.stderr.write(`  fetching ${artifact.url}\n`)
-  const response = await fetch(artifact.url)
-  if (!response.ok) {
-    throw new Error(`${artifact.url} returned HTTP ${response.status}`)
-  }
-  const buffer = Buffer.from(await response.arrayBuffer())
+  const buffer = await fetchWithRetry(artifact.url)
 
   const actual = contentDigest(buffer)
   if (actual !== expected) {

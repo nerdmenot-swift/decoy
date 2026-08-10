@@ -108,6 +108,9 @@ CC-BY-4.0
 
 CC0-1.0
 -------
+  az-adlar — version 2026-08-10, retrieved 2026-08-10
+    https://opendata.az/dataset/azerbaycan-adlari
+    Full licence: LICENSES/az-adlar.txt
   pesel-imiona — version 2026-01, retrieved 2026-08-10
     https://dane.gov.pl/pl/dataset/1667
     Full licence: LICENSES/pesel-imiona.txt
@@ -128,6 +131,13 @@ LicenseRef-DanNet-1.0
     Copyright 2009-12 by University of Copenhagen and Society for Danish Language and Literature
     https://omwn.org/
     Full licence: LICENSES/omw-da.txt
+
+LicenseRef-DataGovIL-1.0
+------------------------
+  cbs-shemot — version 2025, retrieved 2026-08-10
+    State of Israel, Central Bureau of Statistics
+    https://www.cbs.gov.il/he/mediarelease/Pages/2025/391.aspx
+    Full licence: LICENSES/cbs-shemot.txt
 
 LicenseRef-EtalabOpenLicence-2.0
 --------------------------------
@@ -156,6 +166,13 @@ LicenseRef-NWN
     Copyright 2011-12 by The Norwegian Language Bank, The University of Copenhagen and The Society for Danish Language and Literature
     https://omwn.org/
     Full licence: LICENSES/omw-nb.txt
+
+LicenseRef-OGDL-Taiwan-1.0
+--------------------------
+  moi-surnames — version 112, retrieved 2026-08-10
+    內政部 (Ministry of the Interior), Taiwan
+    https://data.gov.tw/dataset/126774
+    Full licence: LICENSES/moi-surnames.txt
 
 LicenseRef-OGL-3.0
 ------------------

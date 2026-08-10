@@ -1,0 +1,25 @@
+Copyright 內政部 (Ministry of the Interior), Taiwan.
+
+Published under the Open Government Data License, Taiwan, version 1.0,
+stated at https://data.gov.tw/license:
+
+    "Open Government Data License, version 1.0 ... is compatible with the
+     Creative Commons Attribution License 4.0 International"
+
+The licence grants the right to reproduce, adapt, distribute and publicly
+transmit the data, for commercial and non-commercial purposes, and to
+sublicense. The condition is attribution: the source and the licence must
+be named.
+
+There is no share-alike and no non-commercial term, so it is compatible
+with distributing Decoy under Apache-2.0. The attribution is discharged by
+naming the Ministry of the Interior in NOTICE with the licence and the URL
+the data came from.
+
+Carried in the source descriptor as `LicenseRef-OGDL-Taiwan-1.0` because
+the Open Government Data License has no SPDX short identifier.
+
+Decoy modifies the data: the per-age-bracket rows are summed to a single
+population per surname, and surnames below the threshold are dropped.
+
+Source: https://data.gov.tw/dataset/126774

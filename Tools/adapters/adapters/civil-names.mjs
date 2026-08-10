@@ -72,6 +72,9 @@ export const sources = [
   'ons-baby-names',
   'ssb-fornavn',
   'surs-imena',
+  'az-adlar',
+  'moi-surnames',
+  'cbs-shemot',
 ]
 
 /**
@@ -123,6 +126,135 @@ const REGISTRIES = [
         if (!Number.isFinite(bearers) || bearers <= 0) continue
         const sex = gender === 'M' ? 'male' : gender === 'F' ? 'female' : null
         if (sex) rows.push({ name, sex, count: bearers })
+      }
+      return rows
+    },
+  },
+  {
+    country: 'AZ',
+    locales: ['az'],
+    source: 'az-adlar',
+    files: ['azerbaijani-names'],
+    format: 'json',
+    // A register of permitted names, not a count of bearers. See `applyRegistry`.
+    weighted: false,
+    minimumRows: 2000,
+    /**
+     * The Ministry of Justice's list of names that may be registered, each with an
+     * etymology. `kişi` is male and `qadın` female.
+     *
+     * Given names and surnames share the file and are told apart by the etymology, which
+     * opens `familiya,` for a family name. That is a prose field being used as a flag,
+     * which is fragile -- so the count of each is asserted below rather than trusted, and a
+     * change in how the Ministry writes its descriptions fails the build instead of
+     * silently reclassifying 1,385 surnames as given names.
+     *
+     * Two spellings of one name are written `Abbas // Abas`, and feminine surname forms as
+     * `Abbasov (a)`. The first variant is taken and the suffix marker dropped; keeping
+     * either would put punctuation in a fixture.
+     */
+    parse(text) {
+      const records = JSON.parse(text)
+      if (!Array.isArray(records)) throw new Error('AZ register is not a JSON array')
+      const rows = []
+      let surnames = 0
+      for (const record of records) {
+        const raw = record.personName ?? ''
+        const name = raw.split('//')[0].replace(/\(.*?\)/g, '').trim()
+        if (!name) continue
+        const isSurname = /familiya/i.test(record.meaningOfName ?? '')
+        if (isSurname) surnames += 1
+        const sex = isSurname
+          ? 'surname'
+          : record.gender === 'kişi'
+            ? 'male'
+            : record.gender === 'qadın'
+              ? 'female'
+              : null
+        if (sex) rows.push({ name, sex, count: 1 })
+      }
+      if (surnames < 500) {
+        throw new Error(
+          `AZ register flagged only ${surnames} rows as 'familiya' — the description ` +
+            `wording has changed and surnames are being read as given names`,
+        )
+      }
+      return rows
+    },
+  },
+  {
+    country: 'TW',
+    locales: ['zh_TW'],
+    source: 'moi-surnames',
+    files: ['taiwanese-surnames'],
+    // 441 surnames clear the threshold, and that is the whole truth rather than a
+    // truncation: Chinese surnames are a closed set of a few hundred covering nearly
+    // everybody. 陳 alone is held by 2.6 million people.
+    minimumRows: 300,
+    /**
+     * `年度,ranking,lastname,age,人口數` -- one row per surname per age bracket, so the
+     * brackets are summed to get the population holding each name.
+     *
+     * Surnames only. Taiwan publishes given-name statistics as a 376-page PDF whose fonts
+     * carry no usable ToUnicode mapping, so it extracts as mojibake; `zh_TW` given names
+     * stay where they were.
+     */
+    parse(text) {
+      const lines = text.replace(/^\uFEFF/, '').split('\n')
+      const header = lines[0]?.trim()
+      if (!header?.includes('lastname') || !header.includes('人口數')) {
+        throw new Error(`MOI header is '${header}' — the schema has changed`)
+      }
+      const totals = new Map()
+      for (const line of lines.slice(1)) {
+        const parts = line.split(',')
+        if (parts.length < 5) continue
+        const name = parts[2]?.trim()
+        const people = Number(parts[4])
+        if (!name || !Number.isFinite(people) || people <= 0) continue
+        totals.set(name, (totals.get(name) ?? 0) + people)
+      }
+      return [...totals].map(([name, count]) => ({ name, sex: 'surname', count }))
+    },
+  },
+  {
+    country: 'IL',
+    locales: ['he'],
+    source: 'cbs-shemot',
+    files: ['israeli-names'],
+    format: 'xlsx',
+    /**
+     * Eight sheets, one per sex and population group, each `given name | total | <year>...`
+     * for births from 1949 to 2024. Only the total is read.
+     *
+     * All four population groups are merged rather than only the largest. The locale is the
+     * Hebrew language, and a Hebrew-language database in Israel holds the names of everyone
+     * in Israel -- so merging is what makes the distribution true, and taking one group
+     * would be a choice about who counts.
+     *
+     * `..` marks a value the CBS withholds, and parses to NaN, which the numeric guard
+     * drops.
+     */
+    parse(bytes) {
+      const sheets = readWorkbook(bytes)
+      const rows = []
+      let seen = 0
+      for (const [sheet, table] of Object.entries(sheets)) {
+        // Sheet names are Hebrew and carry the sex: בנות is girls, בנים boys.
+        const sex = sheet.startsWith('בנות') ? 'female' : sheet.startsWith('בנים') ? 'male' : null
+        if (!sex) continue
+        const header = table.findIndex((row) => row[0] === 'prati1')
+        if (header < 0) continue
+        seen += 1
+        for (const row of table.slice(header + 1)) {
+          const name = row[0]?.trim()
+          const total = Number(row[1])
+          if (!name || !Number.isFinite(total) || total <= 0) continue
+          rows.push({ name, sex, count: total })
+        }
+      }
+      if (seen !== 8) {
+        throw new Error(`CBS workbook had ${seen} name sheets, expected 8 — the shape has changed`)
       }
       return rows
     },
@@ -425,10 +557,27 @@ export async function run({ artifacts, locales }) {
     return committedRows
   }
 
-  /** Thresholds a registry's rows and writes them to every locale it serves. */
+  /**
+   * Thresholds a registry's rows and writes them to every locale it serves.
+   *
+   * Two registries do not fit the default and say so rather than being special-cased here.
+   *
+   * `weighted: false` is for a register that lists which names exist without counting
+   * bearers -- Azerbaijan publishes the names the Ministry of Justice permits, which is a
+   * different kind of fact from how many people hold one. Thresholding it would compare
+   * against a count it does not have, so the threshold is skipped and the values ship
+   * unweighted, which is what the data actually says.
+   *
+   * `minimumRows` is for a register that is legitimately small. The default guard exists to
+   * catch a re-pin that silently yields almost nothing, and 1,000 suits a European given-name
+   * register. Chinese surnames are a closed set of a few hundred covering almost everybody --
+   * Taiwan has 441 above the threshold and that is the whole truth of it, not a truncation.
+   */
   function applyRegistry(registry, rows) {
-    const kept = rows.filter((row) => row.count >= MINIMUM_BEARERS)
-    if (kept.length < 1000) {
+    const kept =
+      registry.weighted === false ? rows : rows.filter((row) => row.count >= MINIMUM_BEARERS)
+    const floor = registry.minimumRows ?? 1000
+    if (kept.length < floor) {
       throw new Error(
         `${registry.source} yielded only ${kept.length} names — verify before re-pinning`,
       )
@@ -444,11 +593,17 @@ export async function run({ artifacts, locales }) {
       for (const kind of ['female', 'male', 'surname']) {
         const path =
           kind === 'surname' ? 'person.last_name.generic' : `person.first_name.${kind}`
-        const forKind = kept
-          .filter((row) => row.sex === kind)
-          .sort((a, b) => b.count - a.count || (a.name < b.name ? -1 : 1))
-          .map((row) => ({ value: titleCase(row.name, code), weight: row.count }))
-        if (forKind.length > 0) contribution[path] = forKind
+        const matching = kept.filter((row) => row.sex === kind)
+        if (matching.length === 0) continue
+        // An unweighted register ships a plain list. Giving every entry the same weight
+        // would encode a uniform draw as though it had been measured, and the corpus would
+        // carry a number that means nothing.
+        contribution[path] =
+          registry.weighted === false
+            ? [...new Set(matching.map((row) => titleCase(row.name, code)))].sort()
+            : matching
+                .sort((a, b) => b.count - a.count || (a.name < b.name ? -1 : 1))
+                .map((row) => ({ value: titleCase(row.name, code), weight: row.count }))
       }
       contributions[code] = contribution
       sourceByLocale[code] = registry.source

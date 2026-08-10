@@ -1,0 +1,32 @@
+{
+  "id": "moi-surnames",
+  "name": "全國姓名統計 — 姓氏排名 (內政部, Ministry of the Interior, Taiwan)",
+  "license": "LicenseRef-OGDL-Taiwan-1.0",
+  "copyright": "內政部 (Ministry of the Interior), Taiwan",
+  "url": "https://data.gov.tw/dataset/126774",
+  "version": "112",
+  "retrieved": "2026-08-10",
+  "note": [
+    "2,731 surnames ranked by the number of people holding them, broken down by age",
+    "bracket. 陳 is held by 2.6 million. 441 clear Decoy's threshold, which is the whole",
+    "truth rather than a truncation -- Chinese surnames are a closed set of a few hundred",
+    "covering nearly everybody.",
+    "",
+    "Open Government Data License, Taiwan, version 1.0. data.gov.tw states it `is compatible",
+    "with the Creative Commons Attribution License 4.0 International` and permits commercial",
+    "use and sublicensing. Carried as `LicenseRef-` because it has no SPDX identifier.",
+    "",
+    "Surnames only. Taiwan publishes given-name statistics as a 376-page PDF whose fonts",
+    "carry no usable ToUnicode mapping, so it extracts as mojibake and is not machine-",
+    "readable by any means short of OCR."
+  ],
+  "artifacts": [
+    {
+      "name": "taiwanese-surnames",
+      "format": "file",
+      "filename": "surnames.csv",
+      "url": "https://opdadm.moi.gov.tw/api/v1/no-auth/resource/api/dataset/5D318346-EDFF-42C7-B914-946665D483F5/resource/E4A6518E-FF4C-4925-8D59-48ECE4401820/download",
+      "integrity": "sha512-xdtJIZovY34rCqq6Sd7UHoHlZiKoQxX5HSOq81V1hkCp/z0JGpBz3QuhAe4F48n0cRzd35xaC/MmNY9LDh2Pig=="
+    }
+  ]
+}

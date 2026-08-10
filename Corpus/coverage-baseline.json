@@ -9,8 +9,8 @@
       "values" : 6653
     },
     "az" : {
-      "paths" : 47,
-      "values" : 2019
+      "paths" : 50,
+      "values" : 9387
     },
     "base" : {
       "paths" : 1052,
@@ -149,8 +149,8 @@
       "values" : 1324
     },
     "he" : {
-      "paths" : 52,
-      "values" : 5846
+      "paths" : 53,
+      "values" : 8199
     },
     "hr" : {
       "paths" : 51,
@@ -298,7 +298,7 @@
     },
     "zh_TW" : {
       "paths" : 39,
-      "values" : 1556
+      "values" : 1897
     },
     "zu_ZA" : {
       "paths" : 32,

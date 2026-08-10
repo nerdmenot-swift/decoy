@@ -1,0 +1,23 @@
+The Azerbaijani open data portal publishes this register under the
+Creative Commons CC0 1.0 Universal Public Domain Dedication.
+
+Confirmed from the portal's own API rather than from its web page:
+
+    GET https://admin.opendata.az/api/3/action/package_show?id=azerbaycan-adlari
+
+    "title": "Azərbaycan adları"
+    "license_id": "cc-zero"
+    "license_title": "Creative Commons CCZero"
+    "organization": { "title": "Azərbaycan Respublikasının Ədliyyə Nazirliyi" }
+
+Full text: https://creativecommons.org/publicdomain/zero/1.0/
+
+CC0 waives copyright and related rights to the fullest extent permitted by
+law. There is no attribution condition and no share-alike condition, so
+nothing here constrains distributing Decoy under Apache-2.0.
+
+Decoy names the Ministry of Justice in NOTICE regardless of that, because
+the provenance records exist to answer where a value came from rather than
+only to discharge obligations.
+
+Source: https://opendata.az/dataset/azerbaycan-adlari

@@ -1,0 +1,29 @@
+Copyright State of Israel, Central Bureau of Statistics
+(הלשכה המרכזית לסטטיסטיקה).
+
+Published under the terms of use of data.gov.il, version 1.0 (3 January
+2016), which state:
+
+    "אתה רשאי לעשות שימוש במידע באופן מסחרי ובאופן שאינו מסחרי"
+
+In English: you may make use of the information commercially and
+non-commercially.
+
+The terms require attribution to the publishing body and impose no
+share-alike and no non-commercial restriction, so they are compatible with
+distributing Decoy under Apache-2.0. The attribution is discharged by
+naming the Central Bureau of Statistics in NOTICE with the source URL.
+
+One nuance stated rather than glossed: the State of Israel retains
+copyright in the data. Decoy is licensed under Apache-2.0 and this data
+travels with it under its own terms — Apache-2.0 governs Decoy's code and
+does not require Decoy to own everything it ships. The data is not
+relabelled Apache-2.0.
+
+Carried in the source descriptor as `LicenseRef-DataGovIL-1.0` because
+these terms have no SPDX short identifier.
+
+Decoy modifies the data: the eight per-group tables are merged, only the
+all-years total is read, and names below the threshold are dropped.
+
+Source: https://www.cbs.gov.il/he/mediarelease/Pages/2025/391.aspx

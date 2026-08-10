@@ -1,0 +1,33 @@
+{
+  "id": "az-adlar",
+  "name": "Azərbaycan adları (Azərbaycan Respublikasının Ədliyyə Nazirliyi)",
+  "license": "CC0-1.0",
+  "copyright": "",
+  "url": "https://opendata.az/dataset/azerbaycan-adlari",
+  "version": "2026-08-10",
+  "retrieved": "2026-08-10",
+  "note": [
+    "The Ministry of Justice's register of names that may be entered in Azerbaijani civil",
+    "records, 5,039 of them, each with an etymology. A register of what is permitted rather",
+    "than a count of who holds what -- so the values ship unweighted, which is what the data",
+    "actually says.",
+    "",
+    "CC0, read from the portal's own CKAN API as `license_id: cc-zero` rather than off the",
+    "page. Nothing to reconcile with Apache-2.0 and no attribution obligation; NOTICE names",
+    "the Ministry regardless.",
+    "",
+    "Given names and surnames share the file and are told apart by the etymology text, which",
+    "opens `familiya,` for a family name. A prose field used as a flag is fragile, so the",
+    "adapter asserts the count instead of trusting it: a change in how the Ministry writes",
+    "its descriptions fails the build rather than silently reclassifying 1,385 surnames."
+  ],
+  "artifacts": [
+    {
+      "name": "azerbaijani-names",
+      "format": "file",
+      "filename": "adlar.json",
+      "url": "https://exidmet.justice.gov.az:7076/Name/json/getNames",
+      "integrity": "sha512-8LlKj4WLU977PR9B+Z04VXdldl+RaqKBhiOxJQBgiYdZW6cpq030vdU3dYu5BGSqMfKknEsqDiAj+F4wtUpVjQ=="
+    }
+  ]
+}

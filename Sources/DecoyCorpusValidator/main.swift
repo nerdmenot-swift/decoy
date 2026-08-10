@@ -263,6 +263,12 @@ let apacheCompatible: [String: String] = [
     "CC-BY-4.0": "attribution only; explicitly one-way compatible with more permissive use",
     "WordNet-3.0": "Princeton's BSD-style grant: any purpose, notice retained",
     "WordNet-3.0 AND CC-BY-3.0": "both halves attribution-only; the stricter governs",
+    "LicenseRef-OGDL-Taiwan-1.0":
+        "Open Government Data License Taiwan v1: attribution only, permits commercial use "
+        + "and sublicensing, and data.gov.tw states its compatibility with CC BY 4.0",
+    "LicenseRef-DataGovIL-1.0":
+        "data.gov.il terms of use v1.0: attribution only, commercial use expressly "
+        + "permitted, no share-alike; Israel retains copyright and the data is not relabelled",
     "LicenseRef-OGL-3.0":
         "UK Open Government Licence v3: attribution only, explicitly permits commercial "
         + "exploitation, and states its own alignment with CC BY 4.0",
@@ -311,7 +317,15 @@ let incompatiblePhrases: [(needle: String, why: String)] = [
 /// clearing sentences that really do impose the term.
 func isNegated(_ text: String, before index: String.Index) -> Bool {
     let start = text.index(index, offsetBy: -32, limitedBy: text.startIndex) ?? text.startIndex
-    let window = text[start..<index]
+    // Whitespace is collapsed first, because a licence file is wrapped prose and the
+    // negation lands wherever the line happens to break. `impose no\nshare-alike` was
+    // reported as a share-alike term by this very check, in a file written to say the
+    // opposite -- the window held "no\n" and the negator was spelled "no ".
+    // A trailing space is appended because the window ends where the phrase begins, so a
+    // negator sitting immediately before it — `impose no share-alike` — would otherwise
+    // have nothing after it to match the space in "no ".
+    let window =
+        text[start..<index].split(whereSeparator: \.isWhitespace).joined(separator: " ") + " "
     let negators = ["no ", "not ", "nor ", "neither ", "without ", "waives ", "free of "]
     return negators.contains { window.contains($0) }
 }

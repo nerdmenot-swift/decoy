@@ -201,7 +201,15 @@ struct LicenseIntegrityTests {
                 let start =
                     lowered.index(hit.lowerBound, offsetBy: -32, limitedBy: lowered.startIndex)
                     ?? lowered.startIndex
-                let before = lowered[start..<hit.lowerBound]
+                // Whitespace collapsed first: a licence file is wrapped prose, so the
+                // negation lands wherever the line breaks. `impose no\nshare-alike` was
+                // read as a share-alike term by this check, in a file saying the opposite.
+                // Trailing space appended: the window ends where the phrase begins, so a
+                // negator immediately before it has nothing after it to match "no ".
+                let before =
+                    lowered[start..<hit.lowerBound]
+                    .split(whereSeparator: \.isWhitespace)
+                    .joined(separator: " ") + " "
                 let negators = ["no ", "not ", "nor ", "neither ", "without ", "waives ", "free of "]
                 if negators.contains(where: before.contains) { continue }
                 let complaint =

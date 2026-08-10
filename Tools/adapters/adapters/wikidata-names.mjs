@@ -85,6 +85,9 @@ const DEFERRED = {
   en_GB: ['female', 'male'], // ONS baby names; surnames still come through `en`.
   nb_NO: ['female', 'male'], // SSB. Norway publishes given names only.
   sl_SI: ['female', 'male'], // SURS. Slovenia publishes given names only.
+  az: ['female', 'male', 'surname'], // Azerbaijan's register covers given names and surnames.
+  he: ['female', 'male'], // Israeli CBS. Surnames are not published; they stay Wikidata's.
+  zh_TW: ['surname'], // Taiwan MOI. Given names are only in an unreadable PDF.
 }
 
 /**

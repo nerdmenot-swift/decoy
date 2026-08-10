@@ -1,0 +1,36 @@
+{
+  "id": "cbs-shemot",
+  "name": "השמות הנוכחיים של ילידי 1949-2024 (הלשכה המרכזית לסטטיסטיקה)",
+  "license": "LicenseRef-DataGovIL-1.0",
+  "copyright": "State of Israel, Central Bureau of Statistics",
+  "url": "https://www.cbs.gov.il/he/mediarelease/Pages/2025/391.aspx",
+  "version": "2025",
+  "retrieved": "2026-08-10",
+  "note": [
+    "Every given name held by someone born in Israel between 1949 and 2024, with counts, in",
+    "eight tables split by sex and population group. 19,884 distinct names.",
+    "",
+    "All four population groups are merged rather than only the largest. The locale is the",
+    "Hebrew language, and a Hebrew-language database in Israel holds the names of everyone in",
+    "Israel -- merging is what makes the distribution true, and taking one group would be a",
+    "choice about who counts.",
+    "",
+    "The data.gov.il terms of use permit commercial and non-commercial reuse with",
+    "attribution and no share-alike, which is compatible with Apache-2.0 distribution.",
+    "Carried as `LicenseRef-` because those terms have no SPDX identifier.",
+    "",
+    "One nuance worth stating rather than glossing: the State of Israel retains copyright in",
+    "the data. Decoy is distributed under Apache-2.0 and the data travels with it under its",
+    "own terms, credited in NOTICE -- Apache-2.0 governs the code and does not require Decoy",
+    "to own what it ships."
+  ],
+  "artifacts": [
+    {
+      "name": "israeli-names",
+      "format": "file",
+      "filename": "shemot.xlsx",
+      "url": "https://www.cbs.gov.il/he/mediarelease/DocLib/2025/391/11_25_391t1.xlsx",
+      "integrity": "sha512-nF930PBheCJw/nR8I6KogObLpFMR8l0+8KcQLoKdW2UVLC7Grmu/JtpgtC9bqqssN2/KgP5bPNFB3+lMi3b1nA=="
+    }
+  ]
+}
