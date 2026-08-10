@@ -1,0 +1,32 @@
+{
+  "id": "ons-baby-names",
+  "name": "Baby names in England and Wales 1996 to 2025 (Office for National Statistics)",
+  "license": "LicenseRef-OGL-3.0",
+  "copyright": "Office for National Statistics, United Kingdom",
+  "url": "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/datasets/babynamesinenglandandwalesfrom1996",
+  "version": "1996-2025",
+  "retrieved": "2026-08-10",
+  "note": [
+    "Every name given to a baby in England and Wales from 1996 to 2025, by sex and year.",
+    "",
+    "Open Government Licence v3.0: attribution only, with no share-alike or non-commercial",
+    "term, and explicitly compatible with CC BY 4.0 by the licence's own statement. Carried",
+    "as `LicenseRef-` because OGL has no SPDX identifier.",
+    "",
+    "A birth cohort rather than a living population, unlike Spain, Poland and Finland. The",
+    "weights describe who is under thirty in England and Wales, which is the right shape for",
+    "most fixtures and the wrong one for anything modelling the whole population.",
+    "",
+    "Serves `en_GB`, which until now inherited the American-weighted list through `en`.",
+    "Counts of one or two are withheld as `[x]` under the personal-information exemption."
+  ],
+  "artifacts": [
+    {
+      "name": "uk-names",
+      "format": "file",
+      "filename": "babynames1996to2025.xlsx",
+      "url": "https://www.ons.gov.uk/file?uri=/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/datasets/babynamesinenglandandwalesfrom1996/1996to2025/babynames1996to2025.xlsx",
+      "integrity": "sha512-x33vdjdCkB9XTZXT2tqycj5A0aj3wL5O2TLA1YofzAHO4FkPDipOgXCQlWs/PCMFEcG76hQ2qwSqUHB8rdODQQ=="
+    }
+  ]
+}

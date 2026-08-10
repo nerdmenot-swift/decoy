@@ -80,6 +80,9 @@ const DEFERRED = {
   fr: ['female', 'male'], // INSEE. Surnames are published commercially only, so not here.
   pl: ['female', 'male'], // PESEL. Surnames are not published; the register covers given names.
   es: ['female', 'male'], // INE. Spanish surnames are published only as a separate paid series.
+  fi: ['female', 'male'], // DVV. Finland publishes given names only.
+  sv: ['female', 'male', 'surname'], // SCB, the one register that publishes family names too.
+  en_GB: ['female', 'male'], // ONS baby names; surnames still come through `en`.
 }
 
 /**

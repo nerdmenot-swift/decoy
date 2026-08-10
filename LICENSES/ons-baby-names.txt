@@ -1,0 +1,36 @@
+Contains public sector information licensed under the Open Government
+Licence v3.0.
+
+Copyright Office for National Statistics, United Kingdom.
+
+The Open Government Licence v3.0 grants a worldwide, royalty-free,
+perpetual, non-exclusive licence to copy, publish, distribute, adapt and
+exploit the information commercially and non-commercially, subject to
+attribution:
+
+    "You are free to: copy, publish, distribute and transmit the
+     Information; adapt the Information; exploit the Information
+     commercially and non-commercially for example, by combining it with
+     other Information, or by including it in your own product or
+     application.
+
+     You must, where you do any of the above: acknowledge the source of
+     the Information in your product or application by including or
+     linking to any attribution statement specified by the Information
+     Provider(s) and, where possible, provide a link to this licence."
+
+The licence further states it is "aligned" and "interoperable" with
+Creative Commons Attribution 4.0 and the Open Data Commons Attribution
+Licence.
+
+There is no share-alike and no non-commercial term, so it is compatible
+with distributing Decoy under Apache-2.0. The attribution is discharged by
+naming the ONS in NOTICE with this statement and a link to the licence.
+
+Carried in the source descriptor as `LicenseRef-OGL-3.0` because the Open
+Government Licence has no SPDX short identifier.
+
+Full licence text:
+http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
+
+Source: https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/datasets/babynamesinenglandandwalesfrom1996

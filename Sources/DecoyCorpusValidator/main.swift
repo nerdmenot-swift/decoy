@@ -263,6 +263,9 @@ let apacheCompatible: [String: String] = [
     "CC-BY-4.0": "attribution only; explicitly one-way compatible with more permissive use",
     "WordNet-3.0": "Princeton's BSD-style grant: any purpose, notice retained",
     "WordNet-3.0 AND CC-BY-3.0": "both halves attribution-only; the stricter governs",
+    "LicenseRef-OGL-3.0":
+        "UK Open Government Licence v3: attribution only, explicitly permits commercial "
+        + "exploitation, and states its own alignment with CC BY 4.0",
     "LicenseRef-DanNet-1.0": "BSD-style grant from Copenhagen; the 'Commercial Use' heading is an invitation, not a restriction",
     "LicenseRef-NWN": "BSD-style grant from the Norwegian Language Bank; same shape as DanNet",
     "LicenseRef-ChineseOpenWordNet": "Princeton's template re-issued by Francis Bond",

@@ -1,0 +1,36 @@
+{
+  "id": "scb-namn",
+  "name": "Namn med minst två bärare (Statistiska centralbyrån), 31 december 2022",
+  "license": "CC-BY-4.0",
+  "copyright": "Statistiska centralbyrån (SCB), Sweden",
+  "url": "https://www.scb.se/hitta-statistik/statistik-efter-amne/befolkning/amnesovergripande-statistik/namnstatistik/",
+  "version": "2022-12-31",
+  "retrieved": "2026-08-10",
+  "note": [
+    "The richest of the registers: every name in the Swedish population with two or more",
+    "bearers. 411,802 family names, and given names split into every name a person holds",
+    "and the one they are addressed by.",
+    "",
+    "The only register found that publishes family names alongside given ones, which is why",
+    "this adapter handles surnames at all. Birth registers are public record almost",
+    "everywhere; family-name frequencies almost nowhere.",
+    "",
+    "CC BY 4.0 for material on scb.se. One wrinkle SCB states explicitly and this respects:",
+    "where the data has been reworked rather than reproduced, the credit must not read",
+    "'Source: SCB' but 'based on data from Statistics Sweden' -- because SCB will not stand",
+    "behind somebody else's arithmetic. Decoy filters and re-weights, so the NOTICE wording",
+    "is the second form.",
+    "",
+    "A 2022 snapshot, and SCB's page marks it `uppdateras ej` -- not updated. So this is a",
+    "final edition rather than a moving target, which suits a pinned build input."
+  ],
+  "artifacts": [
+    {
+      "name": "swedish-names",
+      "format": "file",
+      "filename": "namn-med-minst-tva-barare.xlsx",
+      "url": "https://www.scb.se/contentassets/9fe7dbb460994c72b835163dbc491ef9/namn-med-minst-tva-barare-31-december-2022.xlsx",
+      "integrity": "sha512-UpShjtBiNaNbnDTtWCDJ9n1pa1rB6nBMQjk8vGb/HDf0n7mcUcQL/V4hkzhLG/NcyooopOHbl5Uw0kCGdP3n4g=="
+    }
+  ]
+}

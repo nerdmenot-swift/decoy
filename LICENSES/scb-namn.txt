@@ -1,0 +1,28 @@
+Copyright Statistiska centralbyrån (SCB), Statistics Sweden.
+
+SCB licenses the material on scb.se under Creative Commons Attribution
+4.0 International (CC BY 4.0).
+
+CC BY 4.0 requires attribution and imposes no share-alike or
+non-commercial condition, so it is compatible with distributing Decoy
+under Apache-2.0.
+
+SCB attaches one condition to how the attribution is worded, stated on
+its terms page:
+
+    "Om du själv bearbetar statistik från SCB:s webbplats får du inte
+     ange SCB som källa."
+
+In English: if you rework statistics from SCB's website yourself, you may
+not cite SCB as the source. The reasoning is that SCB will not stand
+behind arithmetic it did not do. The credit in that case should read
+"based on data from Statistics Sweden" rather than "Source: SCB".
+
+Decoy does rework the data — it reads the tilltalsnamn sheets rather than
+the förnamn sheets, drops names with fewer than 200 bearers, title-cases
+them, and re-weights the draw — so the second form is the correct one and
+is what NOTICE carries.
+
+Full licence text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+Source: https://www.scb.se/hitta-statistik/statistik-efter-amne/befolkning/amnesovergripande-statistik/namnstatistik/

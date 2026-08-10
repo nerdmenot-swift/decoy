@@ -73,8 +73,8 @@
       "values" : 8137
     },
     "en_GB" : {
-      "paths" : 31,
-      "values" : 11368
+      "paths" : 35,
+      "values" : 18453
     },
     "en_GH" : {
       "paths" : 38,
@@ -122,7 +122,7 @@
     },
     "fi" : {
       "paths" : 46,
-      "values" : 24391
+      "values" : 25516
     },
     "fr" : {
       "paths" : 48,
@@ -258,7 +258,7 @@
     },
     "sv" : {
       "paths" : 51,
-      "values" : 7409
+      "values" : 14323
     },
     "ta_IN" : {
       "paths" : 27,

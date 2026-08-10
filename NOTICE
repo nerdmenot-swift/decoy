@@ -72,6 +72,10 @@ CC-BY-4.0
     Copyright GeoNames contributors
     https://github.com/lutangar/cities.json
     Full licence: LICENSES/cities-json.txt
+  dvv-etunimet — version 2026-08-04, retrieved 2026-08-10
+    Digi- ja väestötietovirasto (DVV), Finland
+    https://www.avoindata.fi/data/fi/dataset/none
+    Full licence: LICENSES/dvv-etunimet.txt
   gender-by-name — version 591, retrieved 2026-08-09
     Copyright the dataset's contributors, via the UCI Machine Learning Repository
     https://archive.ics.uci.edu/dataset/591/gender+by+name
@@ -88,6 +92,10 @@ CC-BY-4.0
     Copyright National Center for O*NET Development, for the US Department of Labor, Employment and Training Administration
     https://www.onetcenter.org/database.html
     Full licence: LICENSES/onet.txt
+  scb-namn — version 2022-12-31, retrieved 2026-08-10
+    Statistiska centralbyrån (SCB), Sweden
+    https://www.scb.se/hitta-statistik/statistik-efter-amne/befolkning/amnesovergripande-statistik/namnstatistik/
+    Full licence: LICENSES/scb-namn.txt
     Licence: https://creativecommons.org/licenses/by/4.0/
 
 CC0-1.0
@@ -140,6 +148,13 @@ LicenseRef-NWN
     Copyright 2011-12 by The Norwegian Language Bank, The University of Copenhagen and The Society for Danish Language and Literature
     https://omwn.org/
     Full licence: LICENSES/omw-nb.txt
+
+LicenseRef-OGL-3.0
+------------------
+  ons-baby-names — version 1996-2025, retrieved 2026-08-10
+    Office for National Statistics, United Kingdom
+    https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/datasets/babynamesinenglandandwalesfrom1996
+    Full licence: LICENSES/ons-baby-names.txt
 
 LicenseRef-ThaiWordNet
 ----------------------

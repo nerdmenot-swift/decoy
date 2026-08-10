@@ -1,0 +1,31 @@
+{
+  "id": "dvv-etunimet",
+  "name": "Etunimitilasto (Digi- ja väestötietovirasto), Finland",
+  "license": "CC-BY-4.0",
+  "copyright": "Digi- ja väestötietovirasto (DVV), Finland",
+  "url": "https://www.avoindata.fi/data/fi/dataset/none",
+  "version": "2026-08-04",
+  "retrieved": "2026-08-10",
+  "note": [
+    "Every given name in the Finnish population information system with five or more",
+    "bearers, by sex and with counts.",
+    "",
+    "CC BY 4.0, recorded by the avoindata.fi catalogue as `license_id: cc-by-4.0`.",
+    "Attribution-only, so nothing conflicts with Apache-2.0 distribution.",
+    "",
+    "The URL carries the extraction date, so DVV publishing a new edition changes the URL",
+    "rather than the file. That is the good failure: re-pinning is a deliberate act, and a",
+    "stale pin keeps building the corpus it built yesterday instead of silently changing",
+    "everyone's fixtures. The dataset's resource id is stable if the URL ever has to be",
+    "rediscovered: 08c89936-a230-42e9-a9fc-288632e234f5."
+  ],
+  "artifacts": [
+    {
+      "name": "finnish-names",
+      "format": "file",
+      "filename": "etunimitilasto.xlsx",
+      "url": "https://avoindata.suomi.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/08c89936-a230-42e9-a9fc-288632e234f5/download/etunimitilasto-2026-08-04-dvv.xlsx",
+      "integrity": "sha512-WeJDrOnl6oHKVRFlqVqW7XK6S+Ot7I4wNTiR0sespuTpYRLCwqo0IvX+329r6ub5xCtsqsJuiNSrb2H32wpI0Q=="
+    }
+  ]
+}
