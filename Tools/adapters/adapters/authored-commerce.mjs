@@ -98,6 +98,29 @@ const LANGUAGES = {
       'Limousine', 'Kombi', 'Kleinwagen', 'Kompaktwagen', 'Cabrio', 'Coupé', 'SUV',
       'Geländewagen', 'Van', 'Kleintransporter', 'Pick-up', 'Sportwagen',
     ],
+    transactionType: ['Einzahlung', 'Rechnung', 'Zahlung', 'Abhebung'],
+    bicycleType: [
+      'BMX-Rad', 'Lastenrad', 'Cityrad', 'Cruiser', 'Cyclocrossrad', 'E-Bike',
+      'Faltrad', 'Gravelbike', 'Trekkingrad', 'Mountainbike', 'Liegerad', 'Rennrad',
+      'Tandem', 'Tourenrad', 'Bahnrad',
+    ],
+    gender: [
+      'Agender', 'Bigender', 'Weiblich', 'Genderfluid', 'Genderqueer', 'Männlich',
+      'Nicht-binär', 'Transgender',
+    ],
+    preposition: [
+      'an', 'auf', 'aus', 'bei', 'durch', 'für', 'gegen', 'hinter', 'in', 'mit', 'nach',
+      'neben', 'ohne', 'seit', 'über', 'um', 'unter', 'von', 'vor', 'während', 'wegen',
+      'zu', 'zwischen',
+    ],
+    conjunction: [
+      'aber', 'als', 'bevor', 'damit', 'dass', 'denn', 'doch', 'falls', 'nachdem',
+      'obwohl', 'oder', 'sobald', 'sondern', 'sowie', 'und', 'weil', 'wenn', 'während',
+    ],
+    interjection: [
+      'ach', 'aha', 'au', 'bravo', 'hm', 'hoppla', 'huch', 'igitt', 'juhu', 'na',
+      'nanu', 'oh', 'oje', 'pst', 'puh', 'tja', 'uff', 'wow',
+    ],
   },
   nl: {
     plural: true,
@@ -127,6 +150,29 @@ const LANGUAGES = {
     vehicleType: [
       'Sedan', 'Stationwagen', 'Hatchback', 'Cabriolet', 'Coupé', 'SUV', 'Terreinwagen',
       'Bestelwagen', 'Pick-up', 'Sportwagen', 'Stadsauto',
+    ],
+    transactionType: ['Storting', 'Factuur', 'Betaling', 'Opname'],
+    bicycleType: [
+      'BMX-fiets', 'Bakfiets', 'Stadsfiets', 'Cruiser', 'Cyclocrossfiets',
+      'Elektrische fiets', 'Vouwfiets', 'Gravelbike', 'Hybride fiets', 'Mountainbike',
+      'Ligfiets', 'Racefiets', 'Tandem', 'Toerfiets', 'Baanfiets',
+    ],
+    gender: [
+      'Agender', 'Bigender', 'Vrouw', 'Genderfluïde', 'Genderqueer', 'Man',
+      'Non-binair', 'Transgender',
+    ],
+    preposition: [
+      'aan', 'achter', 'bij', 'door', 'in', 'met', 'na', 'naar', 'naast', 'om', 'onder',
+      'op', 'over', 'sinds', 'tegen', 'tijdens', 'tot', 'tussen', 'uit', 'van', 'voor',
+      'zonder',
+    ],
+    conjunction: [
+      'als', 'dat', 'dus', 'en', 'hoewel', 'maar', 'nadat', 'of', 'omdat', 'terwijl',
+      'toen', 'totdat', 'voordat', 'want', 'zodat', 'zodra',
+    ],
+    interjection: [
+      'aha', 'au', 'bah', 'foei', 'hoera', 'hm', 'jee', 'nou', 'oeps', 'oh', 'pff',
+      'sst', 'tja', 'wauw', 'zeg',
     ],
   },
   fr: {
@@ -158,6 +204,29 @@ const LANGUAGES = {
       'Berline', 'Break', 'Citadine', 'Compacte', 'Cabriolet', 'Coupé', 'SUV',
       'Monospace', 'Utilitaire', 'Pick-up', 'Voiture de sport',
     ],
+    transactionType: ['Dépôt', 'Facture', 'Paiement', 'Retrait'],
+    bicycleType: [
+      'BMX', 'Vélo cargo', 'Vélo de ville', 'Cruiser', 'Vélo de cyclo-cross',
+      'Vélo électrique', 'Vélo pliant', 'Gravel', 'Vélo hybride', 'VTT', 'Vélo couché',
+      'Vélo de route', 'Tandem', 'Vélo de randonnée', 'Vélo de piste',
+    ],
+    gender: [
+      'Agenre', 'Bigenre', 'Femme', 'Genre fluide', 'Genderqueer', 'Homme',
+      'Non-binaire', 'Transgenre',
+    ],
+    preposition: [
+      'à', 'après', 'avant', 'avec', 'chez', 'contre', 'dans', 'depuis', 'derrière',
+      'devant', 'entre', 'malgré', 'par', 'parmi', 'pendant', 'pour', 'sans', 'sous',
+      'sur', 'vers',
+    ],
+    conjunction: [
+      'ainsi', 'alors', 'car', 'cependant', 'donc', 'et', 'lorsque', 'mais', 'ni',
+      'or', 'ou', 'pourtant', 'puisque', 'quand', 'quoique', 'si',
+    ],
+    interjection: [
+      'aïe', 'ah', 'bah', 'bravo', 'chut', 'eh', 'hélas', 'hourra', 'hum', 'oh',
+      'ouf', 'oups', 'pff', 'tiens', 'waouh', 'zut',
+    ],
   },
   es: {
     pattern: '{{commerce.product}} {{commerce.productAdjective}} de {{commerce.productMaterial}}',
@@ -187,6 +256,30 @@ const LANGUAGES = {
     vehicleType: [
       'Berlina', 'Familiar', 'Utilitario', 'Compacto', 'Descapotable', 'Cupé', 'SUV',
       'Todoterreno', 'Monovolumen', 'Furgoneta', 'Pick-up', 'Deportivo',
+    ],
+    transactionType: ['Depósito', 'Factura', 'Pago', 'Retirada'],
+    bicycleType: [
+      'BMX', 'Bicicleta de carga', 'Bicicleta urbana', 'Cruiser',
+      'Bicicleta de ciclocrós', 'Bicicleta eléctrica', 'Bicicleta plegable',
+      'Bicicleta gravel', 'Bicicleta híbrida', 'Bicicleta de montaña',
+      'Bicicleta reclinada', 'Bicicleta de carretera', 'Tándem',
+      'Bicicleta de turismo', 'Bicicleta de pista',
+    ],
+    gender: [
+      'Agénero', 'Bigénero', 'Mujer', 'Género fluido', 'Genderqueer', 'Hombre',
+      'No binario', 'Transgénero',
+    ],
+    preposition: [
+      'a', 'ante', 'bajo', 'con', 'contra', 'de', 'desde', 'durante', 'en', 'entre',
+      'hacia', 'hasta', 'mediante', 'para', 'por', 'según', 'sin', 'sobre', 'tras',
+    ],
+    conjunction: [
+      'aunque', 'como', 'cuando', 'mientras', 'ni', 'o', 'pero', 'porque', 'pues',
+      'que', 'si', 'sino', 'y',
+    ],
+    interjection: [
+      'ah', 'anda', 'ay', 'bah', 'bravo', 'caramba', 'eh', 'hala', 'hombre', 'hurra',
+      'oh', 'ojalá', 'ostras', 'uf', 'uy', 'vaya',
     ],
   },
   it: {
@@ -218,6 +311,28 @@ const LANGUAGES = {
       'Berlina', 'Station wagon', 'Utilitaria', 'Compatta', 'Cabriolet', 'Coupé',
       'SUV', 'Fuoristrada', 'Monovolume', 'Furgone', 'Pick-up', 'Sportiva',
     ],
+    transactionType: ['Deposito', 'Fattura', 'Pagamento', 'Prelievo'],
+    bicycleType: [
+      'BMX', 'Bici da carico', 'Bici da città', 'Cruiser', 'Bici da ciclocross',
+      'Bici elettrica', 'Bici pieghevole', 'Gravel', 'Bici ibrida', 'Mountain bike',
+      'Bici reclinata', 'Bici da corsa', 'Tandem', 'Bici da turismo', 'Bici da pista',
+    ],
+    gender: [
+      'Agender', 'Bigender', 'Donna', 'Genere fluido', 'Genderqueer', 'Uomo',
+      'Non binario', 'Transgender',
+    ],
+    preposition: [
+      'a', 'con', 'contro', 'da', 'di', 'dopo', 'durante', 'fra', 'in', 'oltre', 'per',
+      'presso', 'secondo', 'senza', 'sopra', 'sotto', 'su', 'tra', 'verso',
+    ],
+    conjunction: [
+      'anche', 'anzi', 'benché', 'come', 'dunque', 'e', 'invece', 'ma', 'mentre', 'né',
+      'o', 'oppure', 'perché', 'però', 'poiché', 'quando', 'se', 'sebbene',
+    ],
+    interjection: [
+      'ah', 'ahi', 'beh', 'bravo', 'ehi', 'evviva', 'macché', 'mah', 'oh', 'ohi',
+      'ops', 'puah', 'uffa', 'urrà', 'uh', 'wow',
+    ],
   },
   pt: {
     pattern: '{{commerce.product}} {{commerce.productAdjective}} de {{commerce.productMaterial}}',
@@ -246,6 +361,30 @@ const LANGUAGES = {
     vehicleType: [
       'Sedan', 'Carrinha', 'Utilitário', 'Compacto', 'Descapotável', 'Cupé', 'SUV',
       'Todo-o-terreno', 'Monovolume', 'Furgão', 'Pick-up', 'Desportivo',
+    ],
+    transactionType: ['Depósito', 'Fatura', 'Pagamento', 'Levantamento'],
+    bicycleType: [
+      'BMX', 'Bicicleta de carga', 'Bicicleta urbana', 'Cruiser',
+      'Bicicleta de ciclocrosse', 'Bicicleta elétrica', 'Bicicleta dobrável', 'Gravel',
+      'Bicicleta híbrida', 'Bicicleta de montanha', 'Bicicleta reclinada',
+      'Bicicleta de estrada', 'Tandem', 'Bicicleta de cicloturismo',
+      'Bicicleta de pista',
+    ],
+    gender: [
+      'Agénero', 'Bigénero', 'Mulher', 'Género fluido', 'Genderqueer', 'Homem',
+      'Não binário', 'Transgénero',
+    ],
+    preposition: [
+      'a', 'ante', 'após', 'até', 'com', 'contra', 'de', 'desde', 'durante', 'em',
+      'entre', 'para', 'perante', 'por', 'sem', 'sob', 'sobre',
+    ],
+    conjunction: [
+      'contudo', 'e', 'embora', 'enquanto', 'logo', 'mas', 'nem', 'ou', 'porém',
+      'porque', 'pois', 'quando', 'que', 'se', 'todavia',
+    ],
+    interjection: [
+      'ah', 'ai', 'arre', 'bah', 'bravo', 'caramba', 'eh', 'oh', 'olá', 'opa', 'ora',
+      'ufa', 'uh', 'upa', 'viva',
     ],
   },
 }
@@ -282,7 +421,13 @@ export async function run({ locales }) {
         'commerce.product_name.product': spec.product,
         'commerce.department': spec.department,
         'finance.account_type': spec.accountType,
+        'finance.transaction_type': spec.transactionType,
         'vehicle.type': spec.vehicleType,
+        'vehicle.bicycle_type': spec.bicycleType,
+        'person.gender': spec.gender,
+        'word.preposition': spec.preposition,
+        'word.conjunction': spec.conjunction,
+        'word.interjection': spec.interjection,
       }
       taken.push(code)
     }
