@@ -386,12 +386,12 @@ function streetAddressFor(language) {
 }
 
 /**
- * The locales whose street names this file composes, exported for `faker-js.mjs`.
+ * The locales whose street names this file composes.
  *
- * Shared rather than restated, because the two must agree: where a pattern here composes a
- * street from a surname, faker's list of real street names for that locale is compiled and
- * never read. A second copy of this list in the other file would be correct on the day it
- * was written and wrong the first time a language is added here.
+ * Kept as an export after faker-js went, because it was the load-bearing half of removing
+ * faker's street lists: where a pattern here composes a street from a surname, faker's list
+ * of real streets for that locale was compiled and never read, and this was how the other
+ * adapter knew which ones to drop.
  */
 export const STREET_COMPOSED_LOCALES = new Set(Object.values(STREET_LOCALES).flat())
 
@@ -690,6 +690,215 @@ const JOB_TYPES = [
 ]
 
 /**
+ * Japanese addresses and company names, which have no European shape at all.
+ *
+ * Japan does not name its streets. An address narrows by nested area — prefecture, city,
+ * district — and then gives a block, a lot and a building: `9丁目5番7号` is chōme 9, ban 5,
+ * gō 7. There is no street to put a number on, so the English composition of a house
+ * number beside a street name has nothing to attach to, and `ja` addresses came out as
+ * `94 あつこ Well` once faker's patterns went — a Japanese given name with an English
+ * street type.
+ *
+ * `location.postal_address` was already right, because libaddressinput knows the layout
+ * (`〒{{zipCode}}` first, name last). What was missing is the block itself, which faker had
+ * supplied and nothing replaced.
+ *
+ * Company names run the other way from English too: the legal form trails the name rather
+ * than being joined to it, and 株式会社 is written out where English abbreviates to Ltd.
+ */
+const JAPANESE = {
+  // `#` is filled by the same substitution that turns `###` into a house number.
+  'location.building_number': ['#丁目#番#号', '##丁目#番#号', '#丁目##番#号'],
+  'location.street_address': {
+    normal: ['{{location.buildingNumber}}'],
+    full: ['{{location.buildingNumber}} {{location.secondaryAddress}}'],
+  },
+  // `streetName()` requires a pattern, and for Japanese the honest answer to "what is the
+  // street called" is the block designation, which is what an address actually carries.
+  'location.street_pattern': ['{{location.buildingNumber}}'],
+  'company.name_pattern': [
+    { value: '{{person.lastName}}{{company.legal_entity_type}}', weight: 6 },
+    { value: '{{person.lastName}}{{company.category}}{{company.legal_entity_type}}', weight: 4 },
+  ],
+  // The pattern above puts a sector between the surname and the legal form, so an English
+  // sector list produced 谷田部Telecommunications合同会社 — a company name that is Japanese
+  // at both ends and English in the middle. The trade names of Japanese firms carry these
+  // words, which is why the pattern wants one.
+  'company.category': [
+    '情報', '保険', '建設', '商事', '運輸', '電機', '化学', '製薬', '食品', '銀行',
+    '証券', '不動産', '印刷', '鉄鋼', '物流', '電力', '通信', '出版', '観光', '倉庫',
+  ],
+}
+
+/**
+ * English honorifics, which nothing supplied once faker went.
+ *
+ * The gap that `person.prefix()` fell into: English had no prefix of its own, every chain
+ * ends at English, and `require` traps rather than returning empty. Azerbaijani found it
+ * first, which is fitting — `az` declares the field explicitly empty because Azerbaijani
+ * has no honorifics, and that declaration is the reason the mechanism exists at all. With
+ * faker gone the declaration went too, so `az` walked the chain and found nothing to walk
+ * to.
+ *
+ * `generic` carries the two that are not gendered, so a caller who asks for no gender gets
+ * `Dr.` rather than a coin-flip between `Mr.` and `Mrs.`
+ */
+const NAME_PREFIXES = {
+  female: ['Miss', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'],
+  male: ['Mr.', 'Dr.', 'Prof.'],
+  generic: ['Dr.', 'Prof.'],
+}
+
+/**
+ * Issuer prefixes for `creditCardNumber()`, from ISO/IEC 7812.
+ *
+ * The leading digits that identify a card scheme, and the total length each scheme uses,
+ * are published facts: every payment integration guide and the standard itself carry them.
+ * `4` is Visa and always sixteen digits; American Express is `34` or `37` and fifteen.
+ *
+ * A trailing `L` means "append a Luhn check digit", which the generator computes, so each
+ * pattern is one digit shorter than the number it produces. Getting that arithmetic wrong
+ * yields cards of the wrong length that still pass Luhn — valid-looking and rejected by
+ * every real validator, which is exactly the failure a fixture library must not have.
+ */
+const CREDIT_CARDS = {
+  visa: ['4##############L'],
+  mastercard: ['5[1-5]#############L', '2[2-7]#############L'],
+  american_express: ['34############L', '37############L'],
+  discover: ['6011###########L', '65#############L'],
+  diners_club: ['30[0-5]#########L', '36#########L'],
+  jcb: ['35#############L'],
+}
+
+/**
+ * US ZIP ranges by state, and Canadian postcode letters by province.
+ *
+ * `postcode(state:)` exists so an address can be internally coherent rather than pairing
+ * Alaska with a Florida ZIP, and it went dead when faker did.
+ *
+ * The ranges are USPS assignments, which are geographic and published. Patterns are
+ * *derived* from them rather than written out, and only three-digit prefixes wholly inside
+ * the range are kept -- so Alaska yields `996##` to `998##` and not `995##`, whose `##` can
+ * reach 99500 where the state begins at 99501. A prefix only mostly inside would produce a
+ * valid-looking ZIP belonging to no state, which is the failure this generator exists to
+ * prevent.
+ *
+ * Written with `#` rather than as a regex range: `bothify` fills `#` and `?` and knows
+ * nothing about `[0-6]`, so a first attempt shipped a literal bracket into the postcode.
+ *
+ * Canada needs a different care. Its postcodes never use D, F, I, O, Q or U, because those
+ * read as digits -- and `?` draws from the whole alphabet, so the letters are fixed per
+ * pattern rather than substituted. Each province gets one pattern per allowed letter,
+ * trading some variety for every value being real.
+ */
+const US_ZIP_RANGES = {
+  AL: [35004, 36925], AK: [99501, 99950], AZ: [85001, 86556], AR: [71601, 72959],
+  CA: [90001, 96162], CO: [80001, 81658], CT: [6001, 6928], DE: [19701, 19980],
+  DC: [20001, 20799], FL: [32003, 34997], GA: [30002, 31999], HI: [96701, 96898],
+  ID: [83201, 83876], IL: [60001, 62999], IN: [46001, 47997], IA: [50001, 52809],
+  KS: [66002, 67954], KY: [40003, 42788], LA: [70001, 71497], ME: [3901, 4992],
+  MD: [20601, 21930], MA: [1001, 2791], MI: [48001, 49971], MN: [55001, 56763],
+  MS: [38601, 39776], MO: [63001, 65899], MT: [59001, 59937], NE: [68001, 69367],
+  NV: [88901, 89883], NH: [3031, 3897], NJ: [7001, 8989], NM: [87001, 88439],
+  NY: [10001, 14975], NC: [27006, 28909], ND: [58001, 58856], OH: [43001, 45999],
+  OK: [73001, 74966], OR: [97001, 97920], PA: [15001, 19640], RI: [2801, 2940],
+  SC: [29001, 29948], SD: [57001, 57799], TN: [37010, 38589], TX: [75001, 79999],
+  UT: [84001, 84791], VT: [5001, 5907], VA: [20101, 24658], WA: [98001, 99403],
+  WV: [24701, 26886], WI: [53001, 54990], WY: [82001, 83128],
+}
+
+/**
+ * Every prefix whose whole block falls inside the range, at the coarsest width that fits.
+ *
+ * Three digits first, because a wider block gives more variety. Some states are too narrow
+ * for any hundred-block to sit entirely inside them -- Hawaii runs 96701 to 96898, so
+ * `967##` starts one below and `968##` ends one above -- and those fall to four digits and
+ * ten-blocks. Rhode Island is the same shape.
+ *
+ * Returning nothing rather than something slightly outside was the first behaviour, and it
+ * made `postcode(state:)` return nil for two states while claiming to cover all fifty. A
+ * narrower block is the right answer; no block is not.
+ */
+function zipPatternsFor([low, high]) {
+  for (const width of [3, 4]) {
+    const block = 10 ** (5 - width)
+    const patterns = []
+    for (let prefix = Math.ceil(low / block); (prefix + 1) * block - 1 <= high; prefix++) {
+      patterns.push(String(prefix).padStart(width, '0') + '#'.repeat(5 - width))
+    }
+    if (patterns.length > 0) return patterns
+  }
+  throw new Error(`no ZIP prefix fits the range ${low}-${high}`)
+}
+
+const US_POSTCODE_BY_STATE = Object.fromEntries(
+  Object.entries(US_ZIP_RANGES).map(([state, range]) => [state, zipPatternsFor(range)]),
+)
+
+/** The letters each province's postcodes begin with. */
+const CANADIAN_PREFIXES = {
+  NL: ['A'], NS: ['B'], PE: ['C'], NB: ['E'], QC: ['G', 'H', 'J'],
+  ON: ['K', 'L', 'M', 'N', 'P'], MB: ['R'], SK: ['S'], AB: ['T'], BC: ['V'],
+  NT: ['X'], NU: ['X'], YT: ['Y'],
+}
+
+const CANADIAN_LETTERS = [...'ABCEGHJKLMNPRSTVWXYZ']
+
+const CANADIAN_POSTCODE_BY_STATE = Object.fromEntries(
+  Object.entries(CANADIAN_PREFIXES).map(([province, firsts]) => [
+    province,
+    firsts.flatMap((first) =>
+      CANADIAN_LETTERS.map(
+        (letter, index) =>
+          `${first}#${letter} #${CANADIAN_LETTERS[(index + 7) % CANADIAN_LETTERS.length]}#`,
+      ),
+    ),
+  ]),
+)
+
+/**
+ * A sample of real North American area codes and exchange prefixes.
+ *
+ * `areaCode()` documents itself as returning nil rather than a digit-shaped guess, because
+ * "I do not know" and "here is a plausible fiction" are different answers. That reasoning
+ * argues for a short list of codes that are genuinely assigned over a long list padded to
+ * look thorough — every one of these is a real NANP area code, and anybody can check it.
+ *
+ * Exchange prefixes exclude `555`, which is reserved for fiction and would make every
+ * generated number obviously fake, and `911`, `411` and `0`/`1` leading digits, which NANP
+ * does not assign.
+ */
+const NANP_AREA_CODES = [
+  '202', '212', '213', '215', '216', '303', '305', '312', '313', '404', '415', '416',
+  '503', '504', '512', '514', '602', '604', '612', '617', '702', '713', '714', '804',
+  '808', '813', '901', '902', '904', '917',
+]
+const NANP_EXCHANGE_CODES = [
+  '201', '234', '246', '267', '281', '312', '347', '386', '407', '425', '456', '478',
+  '512', '567', '602', '628', '646', '689', '712', '734', '786', '812', '862', '901',
+]
+
+/**
+ * Industry sectors, for `company.category()`.
+ *
+ * English had none of its own: the path existed only in `ja`, `ko`, `uk` and `zh_CN`,
+ * which use it in their company name patterns — 保険 for insurance, 물산 for trading. So a
+ * public generator was reachable in four locales and trapped in the other seventy-two, and
+ * would have trapped everywhere once faker went.
+ *
+ * Sectors rather than adjectives: what an industry is called is closer to a fact than to a
+ * preference, and these are the divisions a stock index or a statistical classification
+ * uses.
+ */
+const COMPANY_CATEGORIES = [
+  'Aerospace', 'Agriculture', 'Automotive', 'Banking', 'Biotechnology', 'Chemicals',
+  'Construction', 'Consulting', 'Defence', 'Education', 'Energy', 'Engineering',
+  'Entertainment', 'Finance', 'Healthcare', 'Hospitality', 'Insurance', 'Logistics',
+  'Manufacturing', 'Media', 'Mining', 'Pharmaceuticals', 'Publishing', 'Retail',
+  'Shipping', 'Software', 'Telecommunications', 'Textiles', 'Transport', 'Utilities',
+]
+
+/**
  * How a company name is assembled, and the remaining patterns nothing else supplies.
  *
  * `company.name_pattern` composes from surnames and legal forms, which is how firms are
@@ -781,12 +990,23 @@ export async function run() {
         'database.engine': DB_ENGINES,
         'database.collation': DB_COLLATIONS,
       },
+      ja: JAPANESE,
+      // Canada's postcodes are letters and its own province set, so they belong to the
+      // Canadian locales rather than to `en`, which carries the US ranges.
+      en_CA: { 'location.postcode_by_state': CANADIAN_POSTCODE_BY_STATE },
+      fr_CA: { 'location.postcode_by_state': CANADIAN_POSTCODE_BY_STATE },
       en: {
         'color.human': COLOURS,
         'vehicle.type': VEHICLE_TYPES,
         'vehicle.bicycle_type': BICYCLE_TYPES,
         'airline.airplane': AIRPLANES,
         'airline.airline': AIRLINES,
+        'company.category': COMPANY_CATEGORIES,
+        'person.prefix': NAME_PREFIXES,
+        'finance.credit_card': CREDIT_CARDS,
+        'location.postcode_by_state': US_POSTCODE_BY_STATE,
+        'phone_number.area_code': NANP_AREA_CODES,
+        'phone_number.exchange_code': NANP_EXCHANGE_CODES,
         'location.street_suffix': STREET_SUFFIXES,
         'location.building_number': BUILDING_NUMBER,
         'location.secondary_address': SECONDARY_ADDRESS,

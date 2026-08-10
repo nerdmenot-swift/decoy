@@ -370,7 +370,12 @@ func coverage(_ directory: URL, against reference: String, gate: URL?, writeGate
     guard FileManager.default.fileExists(atPath: referenceURL.path) else {
         fail("reference locale '\(reference)' not found in \(directory.path)")
     }
-    let referencePaths = Set(try load(referenceURL).paths.map(\.path))
+    // Filtered the same way `LocaleCorpus.nativeCoverage` filters, so the report and the
+    // library cannot disagree about what a locale's coverage is. `postcode_by_state` holds
+    // one digit mask per subdivision and counting fifty-one of them as untranslated fields
+    // put English that far ahead of everybody.
+    let bearsLanguage: (String) -> Bool = { !$0.hasPrefix("location.postcode_by_state.") }
+    let referencePaths = Set(try load(referenceURL).paths.map(\.path).filter(bearsLanguage))
     let referenceNamespaces = Set(referencePaths.map(namespace)).sorted()
 
     print("native coverage against '\(reference)' (\(referencePaths.count) paths)")
@@ -383,7 +388,7 @@ func coverage(_ directory: URL, against reference: String, gate: URL?, writeGate
 
     for file in files {
         let code = file.deletingPathExtension().lastPathComponent
-        let paths = Set(try load(file).paths.map(\.path))
+        let paths = Set(try load(file).paths.map(\.path).filter(bearsLanguage))
         let covered = paths.intersection(referencePaths).count
         let percent = referencePaths.isEmpty
             ? 0 : Int((Double(covered) / Double(referencePaths.count) * 100).rounded())

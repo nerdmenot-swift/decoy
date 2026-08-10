@@ -18,13 +18,15 @@ public struct LocationFaker {
 
     /// A street name from the locale's own pattern.
     ///
-    /// English builds streets from surnames (`"Kowalski Ridge"`); other locales use a
-    /// fixed list. The pattern lives in the corpus so neither is hard-coded.
+    /// Every locale composes now, so there is one path rather than two.
+    ///
+    /// This used to fall back to `location.street_name`, a fixed list of real streets, for
+    /// locales with no pattern. Nothing supplies such a list any more: eleven languages
+    /// compose from their own vocabulary and the rest inherit the English composition, so
+    /// the fallback became unreachable and then, when the lists went, unsatisfiable. A
+    /// `require` on a path nothing fills is a trap waiting at the call site.
     public mutating func streetName() -> String {
-        if let pattern = faker.draw("location.street_pattern") {
-            return faker.expand(pattern)
-        }
-        return faker.require("location.street_name")
+        faker.expand(faker.require("location.street_pattern"))
     }
 
     public mutating func streetAddress(full: Bool = false) -> String {

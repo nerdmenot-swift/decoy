@@ -157,7 +157,7 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
 - [x] Multi-platform package skeleton, Foundation-free core, `swiftLanguageMode(.v6)`
 - [x] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
-- [x] Adapter pipeline: 50 sources, integrity-verified, provenance per path
+- [x] Adapter pipeline: 49 sources, integrity-verified, provenance per path — **no faker-js**
 - [x] [Locale support matrix](docs/locale-support.md) — which fields each of the 76 locales
       supplies itself, and which fall through to English. Generated from the corpus and
       checked in CI, so it cannot describe a corpus that is no longer shipping.

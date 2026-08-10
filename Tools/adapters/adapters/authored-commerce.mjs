@@ -121,6 +121,15 @@ const LANGUAGES = {
       'ach', 'aha', 'au', 'bravo', 'hm', 'hoppla', 'huch', 'igitt', 'juhu', 'na',
       'nanu', 'oh', 'oje', 'pst', 'puh', 'tja', 'uff', 'wow',
     ],
+    companyNamePattern: [
+      { value: '{{person.lastName}} {{company.legal_entity_type}}', weight: 5 },
+      { value: '{{person.lastName}}-{{person.lastName}}', weight: 3 },
+      {
+        value:
+          '{{person.lastName}}, {{person.lastName}} und {{person.lastName}}',
+        weight: 2,
+      },
+    ],
     cardinalAbbr: ['N', 'O', 'S', 'W'],
     ordinalAbbr: ['NO', 'NW', 'SO', 'SW'],
   },
@@ -176,6 +185,15 @@ const LANGUAGES = {
       'aha', 'au', 'bah', 'foei', 'hoera', 'hm', 'jee', 'nou', 'oeps', 'oh', 'pff',
       'sst', 'tja', 'wauw', 'zeg',
     ],
+    companyNamePattern: [
+      { value: '{{person.lastName}} {{company.legal_entity_type}}', weight: 5 },
+      { value: '{{person.lastName}}-{{person.lastName}}', weight: 3 },
+      {
+        value:
+          '{{person.lastName}}, {{person.lastName}} en {{person.lastName}}',
+        weight: 2,
+      },
+    ],
     cardinalAbbr: ['N', 'O', 'Z', 'W'],
     ordinalAbbr: ['NO', 'NW', 'ZO', 'ZW'],
   },
@@ -230,6 +248,15 @@ const LANGUAGES = {
     interjection: [
       'aïe', 'ah', 'bah', 'bravo', 'chut', 'eh', 'hélas', 'hourra', 'hum', 'oh',
       'ouf', 'oups', 'pff', 'tiens', 'waouh', 'zut',
+    ],
+    companyNamePattern: [
+      { value: '{{person.lastName}} {{company.legal_entity_type}}', weight: 5 },
+      { value: '{{person.lastName}}-{{person.lastName}}', weight: 3 },
+      {
+        value:
+          '{{person.lastName}}, {{person.lastName}} et {{person.lastName}}',
+        weight: 2,
+      },
     ],
     cardinalAbbr: ['N', 'E', 'S', 'O'],
     ordinalAbbr: ['NE', 'NO', 'SE', 'SO'],
@@ -287,6 +314,15 @@ const LANGUAGES = {
       'ah', 'anda', 'ay', 'bah', 'bravo', 'caramba', 'eh', 'hala', 'hombre', 'hurra',
       'oh', 'ojalá', 'ostras', 'uf', 'uy', 'vaya',
     ],
+    companyNamePattern: [
+      { value: '{{person.lastName}} {{company.legal_entity_type}}', weight: 5 },
+      { value: '{{person.lastName}}-{{person.lastName}}', weight: 3 },
+      {
+        value:
+          '{{person.lastName}}, {{person.lastName}} y {{person.lastName}}',
+        weight: 2,
+      },
+    ],
     cardinalAbbr: ['N', 'E', 'S', 'O'],
     ordinalAbbr: ['NE', 'NO', 'SE', 'SO'],
   },
@@ -340,6 +376,15 @@ const LANGUAGES = {
     interjection: [
       'ah', 'ahi', 'beh', 'bravo', 'ehi', 'evviva', 'macché', 'mah', 'oh', 'ohi',
       'ops', 'puah', 'uffa', 'urrà', 'uh', 'wow',
+    ],
+    companyNamePattern: [
+      { value: '{{person.lastName}} {{company.legal_entity_type}}', weight: 5 },
+      { value: '{{person.lastName}}-{{person.lastName}}', weight: 3 },
+      {
+        value:
+          '{{person.lastName}}, {{person.lastName}} e {{person.lastName}}',
+        weight: 2,
+      },
     ],
     cardinalAbbr: ['N', 'E', 'S', 'O'],
     ordinalAbbr: ['NE', 'NO', 'SE', 'SO'],
@@ -398,6 +443,15 @@ const LANGUAGES = {
       'ah', 'ai', 'arre', 'bah', 'bravo', 'caramba', 'eh', 'oh', 'olá', 'opa', 'ora',
       'ufa', 'uh', 'upa', 'viva',
     ],
+    companyNamePattern: [
+      { value: '{{person.lastName}} {{company.legal_entity_type}}', weight: 5 },
+      { value: '{{person.lastName}}-{{person.lastName}}', weight: 3 },
+      {
+        value:
+          '{{person.lastName}}, {{person.lastName}} e {{person.lastName}}',
+        weight: 2,
+      },
+    ],
     cardinalAbbr: ['N', 'E', 'S', 'O'],
     ordinalAbbr: ['NE', 'NO', 'SE', 'SO'],
     prefixFemale: ['Sra.', 'Dna.'],
@@ -444,6 +498,11 @@ export async function run({ locales }) {
         'word.preposition': spec.preposition,
         'word.conjunction': spec.conjunction,
         'word.interjection': spec.interjection,
+        // The English company pattern joins three surnames with the English word `and`,
+        // and every locale inherited it once faker's own patterns went — a German firm
+        // came out as `Biber, Gumbel and Happe`. A conjunction is the smallest possible
+        // piece of grammar and the most visible when it is the wrong language.
+        'company.name_pattern': spec.companyNamePattern,
         // English `N, E, S, W` is not merely unlocalised here, it is wrong: German and
         // Dutch abbreviate Ost/Oost to `O`, and the Romance languages abbreviate
         // Oeste/Ouest/Ovest to `O` where English has `W`. Every one of these locales was

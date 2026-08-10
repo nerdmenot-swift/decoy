@@ -92,7 +92,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — twenty-eight adapters plus the faker-js bootstrap, fifty sources:
+**Built so far** — twenty-one adapters, forty-nine sources, and no faker-js:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -134,7 +134,7 @@ someone else's package should not itself require a package manager.
 | `civil-names` (AZ) | Ministry of Justice register | CC0 | Azerbaijani given names and surnames, unweighted |
 | `civil-names` (TW) | Ministry of the Interior | OGDL Taiwan 1.0 | 441 Taiwanese surnames, weighted — 陳 by 2.6 million |
 | `civil-names` (IL) | CBS | data.gov.il terms | Hebrew given names, weighted, all four population groups merged |
-| `faker-js` | @faker-js/faker 10.5.0 | MIT | everything not yet covered, at lowest precedence |
+
 
 **faker-js is an adapter like any other, and the lowest-precedence one.** It is fetched
 as a pinned npm tarball into the gitignored cache and read by importing its ESM entry
@@ -180,8 +180,8 @@ language-neutral `base`:
 
 | | |
 |---|---|
-| Median native coverage | 39% |
-| Locales under 30% native | 8 of 74 |
+| Median native coverage | 35% |
+| Locales under 30% native | 28 of 74 |
 | `ta_IN` | 28% (27 paths) |
 | `dv` | 29% (34 paths) |
 
@@ -197,6 +197,16 @@ Every locale falls back for those by design, so no locale but `en` can approach 
 
 These numbers have moved twice, and both reasons are worth recording because both look
 like progress or regress and are neither.
+
+A fourth move took it back down, from 39% to 35%, with locales under 30% rising from 8 to
+28. That one is the cost of deleting faker-js, and it is real rather than a measurement
+artefact: faker supplied 42,698 values across seventy-six locales, and what it supplied is
+now English for every locale that had no other source. The library generates the same
+fields; more of them arrive through the chain.
+
+Worth reading beside the third move rather than instead of it. The locales that gained
+sourced data kept it — German is 59% and Japanese 45% — and what fell is the long tail that
+had never had anything but faker.
 
 A third move took it from 35% to 39%, with locales under 30% falling from 25 to 8. That
 one is real sourcing rather than a corrected measurement: national name registries for
@@ -535,7 +545,7 @@ All six are representable in format v2. Four are in use.
 |---|---|---|
 | Weights | A weight column alongside string tables | **In use** — faker-derived patterns, and real Census frequencies for English surnames |
 | Composite records | Heterogeneous field tuples, not parallel lists | **In use** — countries, languages, currencies |
-| Provenance | A source/license table, referenced by ID | **In use** — 50 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
+| Provenance | A source/license table, referenced by ID | **In use** — 49 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
 | Generative models | A model chunk type, not only string tables | Chunk kind reserved; nothing emits one |
 | Corpus version + compatibility | Header fields, checked on load | **In use** |
 | Cross-locale dedup | A shared string arena (21.2% redundancy measured) | **In use** |

@@ -1,7 +1,7 @@
 /**
  * Builds the intermediate corpus JSON from adapters.
  *
- * Every source, including the faker-js bootstrap, is a pinned artifact fetched by URL
+ * Every source is a pinned artifact fetched by URL
  * and verified against an integrity hash. Nothing is installed, nothing is vendored, and
  * there is no package manifest -- these are plain `.mjs` files node runs directly, which
  * is the whole toolchain.
@@ -155,10 +155,10 @@ async function main() {
 
   // `--without <id>` drops an adapter from the run.
   //
-  // Built for one question: does the corpus still work with `faker-js` gone? While faker
-  // supplies anything, "we could remove it" is a claim rather than a fact, and the way to
-  // turn it into a fact is to remove it and look. The answer is measured in
-  // `docs/corpus-strategy.md` rather than asserted.
+  // Built for one question — does the corpus still work with `faker-js` gone? — which is
+  // now answered permanently, since faker-js is gone. It stays because the question
+  // generalises: any adapter can be pulled and the result measured rather than argued
+  // about, which is how the street and vocabulary decisions were settled.
   const excluded = new Set()
   for (let i = 0; i < process.argv.length - 1; i++) {
     if (process.argv[i] === '--without') excluded.add(process.argv[i + 1])
@@ -172,17 +172,21 @@ async function main() {
     process.stderr.write(`excluded        : ${[...excluded].join(', ')}\n`)
   }
 
-  // Load every adapter before running any, so fallbacks can be ordered last regardless
-  // of filename. `faker-js.mjs` sorts near the front alphabetically and must not.
+  // Load every adapter before running any, so a `fallback` adapter is ordered last
+  // regardless of filename. Nothing declares `fallback` now that faker-js is gone — the
+  // ordering stays because the mechanism is what let faker be removed one path at a time
+  // rather than all at once.
   const adapters = []
   for (const file of adapterFiles) {
     adapters.push(await import(join(here, 'adapters', file)))
   }
   adapters.sort((a, b) => (a.fallback ? 1 : 0) - (b.fallback ? 1 : 0))
 
-  // Chains are derived once and handed to adapters: the faker adapter checks them
-  // against faker's own resolution, which is the only independent confirmation the rule
-  // has while faker-js is still a source.
+  // Chains are derived once and handed to the adapters that need them.
+  //
+  // Worth recording what went with faker-js: its adapter checked every derived chain
+  // against faker's own resolution, and that was the only independent confirmation the
+  // rule was right. The chain rule is now asserted by its own tests and by nothing else.
   const chains = Object.fromEntries(locales.map((c) => [c, fallbackChain(c, rosterSet)]))
 
   const merged = {}       // code -> nested definitions

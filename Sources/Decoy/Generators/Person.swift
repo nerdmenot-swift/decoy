@@ -36,13 +36,23 @@ public struct PersonFaker {
 
     /// Returns a middle name, optionally constrained to a gender.
     ///
-    /// Honours a locale's middle-name pattern where it has one, the same way
-    /// ``lastName(_:)`` does — `ku_ckb` carries one and it was unreachable.
+    /// A middle name, which is a given name.
+    ///
+    /// No locale carries a separate middle-name list any more. faker did, for a handful,
+    /// and `person.middle_name` went with it — so this drew on a path nothing filled, and
+    /// `require` traps rather than returning empty.
+    ///
+    /// Drawing from the given names is not a workaround for that, it is what a middle name
+    /// is: English, German and French middle names come from the same stock as first names,
+    /// and a separate list would be the same names typed twice. The consequence is that
+    /// `firstName()` and `middleName()` can return the same value in one row, which happens
+    /// to real people and is not worth suppressing.
+    ///
+    /// It also means middle names inherit every registry improvement automatically — they
+    /// are weighted by INSEE and the Spanish census like given names, which the old
+    /// separate list never was.
     public mutating func middleName(_ gender: Gender? = nil) -> String {
-        if gender == nil, let pattern = faker.draw("person.middle_name_pattern.generic") {
-            return faker.expand(pattern)
-        }
-        return gendered("person.middle_name", gender)
+        gendered("person.first_name", gender)
     }
 
     /// Returns a surname no real person is recorded as having.
@@ -93,24 +103,15 @@ public struct PersonFaker {
         // a generic one. Reading `.generic` alone left twenty gendered patterns compiled
         // and unreachable, which `decoy-validate` reports as exactly that.
         //
-        // The gendered pattern is preferred when a gender was asked for, and the generic
-        // one is used only when none was — its tokens point at
-        // `person.last_name.generic`, so honouring it under a gender request would
-        // quietly discard the constraint.
-        switch gender {
-        case .female:
-            if let pattern = faker.draw("person.last_name_pattern.female") {
-                return faker.expand(pattern)
-            }
-        case .male:
-            if let pattern = faker.draw("person.last_name_pattern.male") {
-                return faker.expand(pattern)
-            }
-        case nil:
-            if let pattern = faker.draw("person.last_name_pattern.generic") {
-                return faker.expand(pattern)
-            }
-        }
+        // `person.last_name_pattern` used to be consulted here, per gender, so that a
+        // locale could compose a double-barrelled surname. Only faker supplied those
+        // patterns — in `en`, `de` and `ja` — and the paths went with it, so all three
+        // branches read something nothing fills.
+        //
+        // What is lost is worth naming rather than dropping quietly: German surnames can
+        // no longer come out as `Dittmer-Kick`. Composing them again wants a rule per
+        // language about which surnames hyphenate and in what order, which is the same
+        // grammar problem as the inflecting street names, not a list.
         return gendered("person.last_name", gender)
     }
 
@@ -193,11 +194,11 @@ public struct PersonFaker {
     public mutating func zodiacSign() -> String { faker.require("person.western_zodiac_sign") }
 
     public mutating func bio() -> String {
+        // The plural spelling `person.bio_parts` used to be read here too, because
+        // `uz_UZ_latin` used it. That was a faker locale's spelling and went with faker,
+        // so reading it now is a `require` on a path nothing fills.
         guard let pattern = faker.draw("person.bio_pattern") else {
-            // `uz_UZ_latin` spells it `bio_parts`. One locale out of seventy-six using the
-            // plural is not worth a rule about naming; it is worth reading both.
-            if let part = faker.draw("person.bio_part") { return part }
-            return faker.require("person.bio_parts")
+            return faker.require("person.bio_part")
         }
         return faker.expand(pattern)
     }

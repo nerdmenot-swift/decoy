@@ -132,13 +132,31 @@ public struct LocaleCorpus: Sendable {
     /// A single-corpus chain has no language-neutral tail to exclude, so it is all of it.
     var languageBearingPaths: [String] {
         get throws {
-            guard chain.count > 1 else { return try paths.map(\.path) }
+            guard chain.count > 1 else { return try paths.map(\.path).filter(Self.bearsLanguage) }
             var seen = Set<String>()
             for corpus in chain.dropLast() {
-                for entry in try corpus.paths { seen.insert(entry.path) }
+                for entry in try corpus.paths where Self.bearsLanguage(entry.path) {
+                    seen.insert(entry.path)
+                }
             }
             return seen.sorted()
         }
+    }
+
+    /// Whether a path is a field a locale could translate, rather than a key in a table.
+    ///
+    /// `location.postcode_by_state` holds one entry per subdivision — fifty-one for the
+    /// United States alone — and every one is a digit mask rather than a word. Counting
+    /// them as fifty-one fields a locale has failed to translate put English 51 paths ahead
+    /// of everybody and pushed every other locale's coverage down by a sixth, for a feature
+    /// no other country even has.
+    ///
+    /// The same correction the `__keys` tables needed, and it moves the number the same
+    /// way: down for English, up for everyone else, and closer to what the reader thinks it
+    /// means. The postcode feature is still measured — `location.postcode` is one path, and
+    /// a locale either has its own mask or does not.
+    static func bearsLanguage(_ path: String) -> Bool {
+        !path.hasPrefix("location.postcode_by_state.")
     }
 
     /// How many paths a locale in this chain could meaningfully define. The

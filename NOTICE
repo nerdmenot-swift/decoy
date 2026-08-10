@@ -197,10 +197,6 @@ LicenseRef-WhitakersWords
 
 MIT
 ---
-  faker-js — version 10.5.0, retrieved 2026-08-07
-    Copyright (c) 2022-2025 Faker contributors
-    https://github.com/faker-js/faker
-    Full licence: LICENSES/faker-js.txt
   linguist — version 9.4.0, retrieved 2026-08-07
     Copyright (c) Ika <ikatyang@gmail.com>; language data from GitHub Linguist contributors
     https://github.com/github-linguist/linguist
