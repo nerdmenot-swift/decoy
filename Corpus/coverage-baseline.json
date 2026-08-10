@@ -29,20 +29,20 @@
       "values" : 11300
     },
     "da" : {
-      "paths" : 51,
-      "values" : 5073
+      "paths" : 50,
+      "values" : 4915
     },
     "de" : {
-      "paths" : 48,
-      "values" : 24439
+      "paths" : 47,
+      "values" : 23408
     },
     "de_AT" : {
-      "paths" : 39,
-      "values" : 5781
+      "paths" : 38,
+      "values" : 5583
     },
     "de_CH" : {
-      "paths" : 37,
-      "values" : 4024
+      "paths" : 36,
+      "values" : 3993
     },
     "dv" : {
       "paths" : 35,
@@ -53,8 +53,8 @@
       "values" : 9106
     },
     "en" : {
-      "paths" : 99,
-      "values" : 127166
+      "paths" : 98,
+      "values" : 126417
     },
     "en_AU" : {
       "paths" : 35,
@@ -113,8 +113,8 @@
       "values" : 45633
     },
     "es_MX" : {
-      "paths" : 48,
-      "values" : 22220
+      "paths" : 47,
+      "values" : 22181
     },
     "fa" : {
       "paths" : 51,
@@ -205,8 +205,8 @@
       "values" : 1900
     },
     "nb_NO" : {
-      "paths" : 51,
-      "values" : 8218
+      "paths" : 50,
+      "values" : 8185
     },
     "ne" : {
       "paths" : 33,
@@ -257,8 +257,8 @@
       "values" : 3491
     },
     "sv" : {
-      "paths" : 51,
-      "values" : 14323
+      "paths" : 50,
+      "values" : 14296
     },
     "ta_IN" : {
       "paths" : 27,
@@ -269,8 +269,8 @@
       "values" : 14330
     },
     "tr" : {
-      "paths" : 48,
-      "values" : 14821
+      "paths" : 47,
+      "values" : 14781
     },
     "uk" : {
       "paths" : 54,

@@ -373,6 +373,16 @@ function streetAddressFor(language) {
   }
 }
 
+/**
+ * The locales whose street names this file composes, exported for `faker-js.mjs`.
+ *
+ * Shared rather than restated, because the two must agree: where a pattern here composes a
+ * street from a surname, faker's list of real street names for that locale is compiled and
+ * never read. A second copy of this list in the other file would be correct on the day it
+ * was written and wrong the first time a language is added here.
+ */
+export const STREET_COMPOSED_LOCALES = new Set(Object.values(STREET_LOCALES).flat())
+
 /** Builds the per-locale street contributions from the tables above. */
 function streetContributions() {
   const out = {}

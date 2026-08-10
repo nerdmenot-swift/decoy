@@ -22,6 +22,8 @@
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
+import { STREET_COMPOSED_LOCALES } from './authored.mjs'
+
 export const id = 'faker-js'
 export const source = 'faker-js'
 
@@ -284,6 +286,33 @@ const INHERITS_NAMES = new Set([
   'pt_PT',
 ])
 
+/**
+ * Street-name lists that no pattern will draw from.
+ *
+ * `streetName()` prefers `location.street_pattern` and only falls back to the list. Where
+ * `authored.mjs` composes a street from a surname -- German, French, Swedish and seven more
+ * -- faker's list for that locale is compiled into the corpus and never read. English is
+ * the same case for the same reason: its authored pattern composes, so its 749 street names
+ * have never appeared in a fixture.
+ *
+ * Not all of them, and the distinction matters. Twenty locales keep their lists because
+ * faker's own pattern for them is literally `{{location.street_name}}` -- Czech alone
+ * reaches 7,526 real street names that way. Those are live data, and an earlier version of
+ * this reasoning claimed otherwise and was corrected by `decoy-validate` within a minute.
+ *
+ * The locale set is imported rather than restated so the two files cannot drift apart.
+ */
+function withoutDeadStreetNames(code, location) {
+  // `en` exactly, not the English family. `en_GB`, `en_US` and `en_AU_ocker` carry faker
+  // patterns of their own that *are* `{{location.street_name}}`, so dropping their lists
+  // would leave the pattern expanding to nothing — the hole this adapter has punched twice
+  // before.
+  if (!STREET_COMPOSED_LOCALES.has(code) && code !== 'en') return location
+  if (!('street_name' in location)) return location
+  const { street_name: _dropped, ...rest } = location
+  return Object.keys(rest).length > 0 ? rest : undefined
+}
+
 /** Name fields dropped for those locales, so the chain resolves them from the parent. */
 const INHERITED_NAME_FIELDS = ['first_name', 'last_name', 'middle_name', 'prefix', 'suffix']
 
@@ -430,7 +459,9 @@ export async function run({ artifacts, locales, chains }) {
       if (kept === undefined) continue
       const cleaned = withoutBrokenPatterns(kept, dropped)
       if (cleaned === undefined) continue
-      const final = category === 'person' ? withoutInheritedNames(code, cleaned) : cleaned
+      let final = cleaned
+      if (category === 'person') final = withoutInheritedNames(code, final)
+      else if (category === 'location') final = withoutDeadStreetNames(code, final)
       if (final === undefined) continue
       perLocale[category] = final
       categories += 1
