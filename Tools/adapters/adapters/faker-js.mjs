@@ -208,6 +208,40 @@ const SUPERSEDED = new Set([
   // patterns for those two locales. `authored.mjs` now supplies their patterns, so nothing
   // draws these any more -- reported by `decoy-validate` as an orphan the moment the
   // patterns landed, which is the check doing precisely its job.
+  // The residual tail: paths where English is authored or sourced and the remaining
+  // locales carry only a translation of it. Same reasoning as the vocabulary bucket, and
+  // the same measured basis — each of these is already English in the large majority of
+  // locales, so the few holding a copy are the inconsistency.
+  //
+  // Deliberately narrow. Four neighbours that look like they belong here do not, because
+  // English's value is a *fact about somewhere else* rather than a neutral default:
+  //
+  //   `location.county`    — he and ro_MD would get Alabama and Acadia Parish.
+  //   `location.postcode`  — en_CA and en_GB would get the US `#####` mask, and a Canadian
+  //                          postcode is not five digits. These are exactly the countries
+  //                          libaddressinput could not reduce to a mask.
+  //   `company.legal_entity_type` — eleven jurisdictions ISO 20275 does not cover would be
+  //                          told their companies are LLCs.
+  //   `location.state`     — one locale's three subdivisions would become fifty-one states.
+  //   `company.name_pattern` — the English pattern contains the English word "and". It was
+  //                          in this list until the golden output showed a Japanese company
+  //                          called `丸野, 岩倉 and 草皆`, where it had been 丸野情報合資会社.
+  //                          A composition rule is a fact about a language, like the street
+  //                          patterns in `authored.mjs`, and superseding it exports English
+  //                          grammar. `company.prefix`, `company.company_name` and
+  //                          `company.suffix` came back with it, since they are reachable
+  //                          only through those patterns.
+  //
+  // Falling back is only safe where the English value is not a claim about America.
+  'airline.airplane',
+  'airline.airline',
+  'finance.federal_reserve_routing_symbol',
+  'finance.transaction_description_pattern',
+  'color.human',
+  'person.suffix',
+  'system.directory_path',
+  'internet.user_agent_pattern',
+  'location.direction.ordinal',
   'location.common_street_suffix',
   // Translated vocabulary, dropped so every locale uses the English set `authored.mjs`
   // supplies. The same move already made for `word.noun`, and made here for a reason that
