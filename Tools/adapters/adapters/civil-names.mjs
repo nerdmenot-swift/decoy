@@ -24,6 +24,24 @@
  * family names with counts — so the adapter handles them where a register has them and
  * expects not to find them.
  *
+ * **Never a list of identifiable people.** A register counts how many people hold a name;
+ * a roster names them. The distinction matters more here than almost anywhere, because
+ * `lastName()` exists alongside a generator whose entire purpose is returning surnames no
+ * real person is recorded as having — a fixture set that escapes onto a screenshot or a
+ * support ticket should not be naming somebody.
+ *
+ * It has to be said explicitly because the tempting sources are exactly the wrong ones.
+ * Election candidate registers, company director filings and academic author lists are
+ * open, machine-readable, often CC BY, and full of names — and every one of them is a list
+ * of real people, usually public figures, frequently attached to a political affiliation.
+ * Pakistan's Gallup election database was offered for `ur` on precisely those grounds and
+ * refused on this one. What is wanted is the count without the roster.
+ *
+ * **Never a transliteration where the locale expects its own script.** `ur` writes
+ * `اقدس`, not `Aqdas`. Serbian is converted because Serbia is officially digraphic and the
+ * alphabets are a bijection; Urdu, Russian and Bulgarian romanisations are one convention
+ * among several, and picking one is authoring rather than reading.
+ *
  * **Year is discarded.** The files carry a name's count per birth year, which would give
  * `firstName(bornIn: 1950)` — a genuinely better generator and a different feature. The
  * counts are summed across every year instead.
