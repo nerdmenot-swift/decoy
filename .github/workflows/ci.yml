@@ -59,6 +59,16 @@ jobs:
           git diff --exit-code -- NOTICE \
             || { echo "::error::NOTICE is stale. Regenerate with decoy-inspect --notice --licenses LICENSES and commit."; exit 1; }
 
+      # The matrix tells a user which fields their locale actually supplies before they
+      # pick it, so it is only useful if it is true. Generated from the corpus and diffed
+      # for the same reason NOTICE is: the source count in the README was correct the day
+      # it was written and wrong for months afterwards.
+      - name: Locale support matrix is current
+        run: |
+          swift run -c release decoy-inspect --matrix Corpus/binary > docs/locale-support.md
+          git diff --exit-code -- docs/locale-support.md \
+            || { echo "::error::docs/locale-support.md is stale. Regenerate with decoy-inspect --matrix and commit."; exit 1; }
+
       # --strict, because the report is clean. A check that always prints ten warnings
       # has no signal in it — the eleventh, the one somebody just introduced, is
       # invisible in the noise, which is the exact failure this whole tool exists to

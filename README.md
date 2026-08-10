@@ -158,6 +158,9 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
 - [x] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
 - [x] Adapter pipeline: 50 sources, integrity-verified, provenance per path
+- [x] [Locale support matrix](docs/locale-support.md) — which fields each of the 76 locales
+      supplies itself, and which fall through to English. Generated from the corpus and
+      checked in CI, so it cannot describe a corpus that is no longer shipping.
 - [x] JSON → binary corpus format + Swift reader
 - [x] 197 generators across 18 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
 - [x] All 76 locales compile; `en`, `de`, `ja` ship as importable Swift modules

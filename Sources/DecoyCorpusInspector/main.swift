@@ -25,6 +25,7 @@ enum Command {
     case values(URL, path: String)
     case coverage(URL, against: String, gate: URL?, writeGate: URL?)
     case notice(URL, licenses: URL?)
+    case matrix(URL)
 }
 
 func fail(_ message: String) -> Never {
@@ -42,6 +43,7 @@ let usage = """
       decoy-inspect --coverage <dir> --write-gate <f>  record the current state as baseline
       decoy-inspect --notice <dir> [--licenses LICENSES]
                                                       attribution for every source shipped
+      decoy-inspect --matrix <dir>                    locale x data type support, as Markdown
     """
 
 func parse() -> Command {
@@ -50,6 +52,7 @@ func parse() -> Command {
     var singlePath: String?
     var coverageDirectory: URL?
     var noticeDirectory: URL?
+    var matrixDirectory: URL?
     var licensesDirectory: URL?
     var gate: URL?
     var writeGate: URL?
@@ -76,6 +79,10 @@ func parse() -> Command {
         case "--coverage":
             guard i + 1 < args.count else { fail("--coverage needs a directory") }
             coverageDirectory = URL(fileURLWithPath: args[i + 1])
+            i += 2
+        case "--matrix":
+            guard i + 1 < args.count else { fail("--matrix needs a directory") }
+            matrixDirectory = URL(fileURLWithPath: args[i + 1])
             i += 2
         case "--notice":
             guard i + 1 < args.count else { fail("--notice needs a directory") }
@@ -127,6 +134,7 @@ func parse() -> Command {
             + "directory, not a file")
     }
 
+    if let directory = matrixDirectory { return .matrix(directory) }
     if let directory = noticeDirectory { return .notice(directory, licenses: licensesDirectory) }
     if let directory = coverageDirectory {
         return .coverage(directory, against: against, gate: gate, writeGate: writeGate)
@@ -497,6 +505,84 @@ func writeBaseline(_ baselineURL: URL, over files: [URL]) throws {
 /// licence, **and an indication that the material was modified**. Decoy's corpus is
 /// unambiguously modified — filtered, re-encoded into a binary format and deduplicated
 /// across locales — so that statement is stated once, prominently, rather than implied.
+/// Emits a locale-by-data-type support matrix as Markdown.
+///
+/// The question this answers is the one a user asks before choosing a locale, and which
+/// nothing here could answer before: *if I generate Thai records, which fields will
+/// actually be Thai?* The coverage report gives a single percentage per locale, which says
+/// how much is native without saying which parts — and "46% native" is no help at all when
+/// what you need to know is whether the names are.
+///
+/// Generated from the compiled corpus rather than written by hand, for the reason the
+/// source count in the README stopped being true: a table maintained by remembering to
+/// maintain it is correct on the day it is written.
+///
+/// A cell is marked native when the locale's own blob holds the path, and inherited when it
+/// resolves through the chain to somewhere else — which is the distinction that matters,
+/// since an inherited value is somebody else's language.
+func matrix(_ directory: URL) throws {
+    /// The groups a user actually chooses a locale for, and the paths each depends on.
+    ///
+    /// Grouped rather than listed per path because there are 1,231 paths and nobody reads
+    /// that. Each group names the paths whose absence would be felt: `person.first_name`
+    /// and `last_name` are what make a name look local, and a group is only as native as
+    /// its weakest member.
+    let groups: [(String, [String])] = [
+        ("Given names", ["person.first_name.female", "person.first_name.male"]),
+        ("Surnames", ["person.last_name.generic", "person.last_name.male"]),
+        ("Cities", ["location.city_name"]),
+        ("Streets", ["location.street_pattern", "location.street_name"]),
+        ("Postcodes", ["location.postcode"]),
+        ("Addresses", ["location.postal_address"]),
+        ("Phone numbers", ["phone_number.format.national"]),
+        ("Subdivisions", ["location.state"]),
+        ("Countries", ["location.country"]),
+        ("Colours", ["color.human"]),
+        ("Compass", ["location.direction.cardinal"]),
+        ("Zodiac", ["person.western_zodiac_sign"]),
+        ("Company forms", ["company.legal_entity_type"]),
+        ("Products", ["commerce.product_name.product"]),
+        ("Departments", ["commerce.department"]),
+        ("Job titles", ["person.job_title"]),
+        ("Vocabulary", ["word.noun"]),
+    ]
+
+    let blobs = try FileManager.default
+        .contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)
+        .filter { $0.pathExtension == "decoy" }
+        .sorted { $0.lastPathComponent < $1.lastPathComponent }
+
+    var own: [String: Set<String>] = [:]
+    for blob in blobs {
+        let code = blob.deletingPathExtension().lastPathComponent
+        let corpus = try Corpus(bytes: [UInt8](try Data(contentsOf: blob)))
+        own[code] = Set(try corpus.paths.map(\.path))
+    }
+
+    print("<!-- Generated by `decoy-inspect --matrix Corpus/binary`. Do not edit by hand. -->")
+    print("")
+    print("# Locale support matrix")
+    print("")
+    print("`N` — the locale supplies this itself.  ")
+    print("`·` — it resolves through the fallback chain, so the values are another language's.")
+    print("")
+    print("A field marked `·` still generates: it produces English. That is the point of")
+    print("publishing this — so the fallback is something you chose rather than something you")
+    print("discovered in your test data.")
+    print("")
+
+    print("| Locale | " + groups.map(\.0).joined(separator: " | ") + " |")
+    print("|---|" + String(repeating: "---|", count: groups.count))
+
+    for code in own.keys.sorted() where code != "base" {
+        let paths = own[code] ?? []
+        let cells = groups.map { _, wanted in
+            wanted.contains(where: { paths.contains($0) }) ? "N" : "·"
+        }
+        print("| `\(code)` | " + cells.joined(separator: " | ") + " |")
+    }
+}
+
 func notice(_ directory: URL, licenses licensesDirectory: URL?) throws {
     // Which sources have their full text committed. MIT, the WordNet family and Unicode
     // all require the text itself to travel with the distribution, so a link is not
@@ -635,4 +721,5 @@ case .values(let url, let path): try values(url, path: path)
 case .coverage(let directory, let reference, let gate, let writeGate):
     try coverage(directory, against: reference, gate: gate, writeGate: writeGate)
 case .notice(let directory, let licenses): try notice(directory, licenses: licenses)
+case .matrix(let directory): try matrix(directory)
 }
