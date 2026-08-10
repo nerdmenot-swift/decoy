@@ -298,6 +298,15 @@ const STREET_TYPES = {
   pt: ['Rua', 'Avenida', 'Travessa', 'Praça', 'Largo', 'Alameda', 'Estrada'],
   // Turkish: the type trails, as its own word.
   tr: ['Sokak', 'Caddesi', 'Bulvarı', 'Meydanı', 'Yolu'],
+  // British English, which trails its type the same way and draws on a different set from
+  // American English. The USPS list `en` uses is a postal standard with `Stravenue`,
+  // `Trafficway` and `Turnpike` in it; none of those is a British street type, and Britain
+  // has `Close`, `Crescent`, `Mews` and `Gardens`, which the USPS set lacks.
+  en_GB: [
+    'Road', 'Street', 'Lane', 'Avenue', 'Close', 'Drive', 'Way', 'Crescent', 'Gardens',
+    'Grove', 'Place', 'Court', 'Terrace', 'Rise', 'View', 'Walk', 'Hill', 'Park', 'Row',
+    'Mews', 'Square', 'Green',
+  ],
 }
 
 /** Which locales take which language's street formation. */
@@ -312,10 +321,13 @@ const STREET_LOCALES = {
   it: ['it'],
   pt: ['pt_BR', 'pt_PT'],
   tr: ['tr'],
+  en_GB: ['en_GB'],
 }
 
 const COMPOUNDING = new Set(['de', 'nl', 'sv', 'da', 'nb'])
-const TYPE_TRAILS = new Set(['tr'])
+// English and Turkish both put the type last as a separate word: `Yıldırım Bulvarı`,
+// `Bramson Road`.
+const TYPE_TRAILS = new Set(['tr', 'en_GB'])
 
 /**
  * The pattern that composes a street name in one language.
@@ -357,7 +369,7 @@ function streetPatternFor(language) {
  * elsewhere produced `Simonring 38722`, which is not a German address. European numbering
  * restarts per street, so one to three digits is the range.
  */
-const NUMBER_LEADS = new Set(['fr'])
+const NUMBER_LEADS = new Set(['fr', 'en_GB'])
 const EUROPEAN_BUILDING_NUMBER = ['#', '##', '###']
 
 function streetAddressFor(language) {
