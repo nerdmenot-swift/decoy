@@ -252,6 +252,52 @@ const SUPERSEDED = new Set([
 ])
 
 /**
+ * Regional locales that should inherit their parent's names instead of carrying their own.
+ *
+ * `de_AT` resolves through `de`, which holds 5,377 Wikidata names -- but faker writes a
+ * separate Austrian list at `de_AT`, and a locale's own data shadows its parent's. So an
+ * Austrian fixture was served an unattributable list while a sourced one sat one link up
+ * the chain. Nine locales were in that position, worth about 8,600 values.
+ *
+ * A list rather than a rule, because the obvious rule is wrong. "Drop names for any locale
+ * with a region" would take `en_IN`, `en_ZA`, `en_NG` and `en_GH` with it, and there the
+ * region is the whole point: Indian, South African, Nigerian and Ghanaian English draw on
+ * genuinely different name stocks, and replacing them with the American list would be a
+ * regression rather than a licence tidy-up. `en_AU` likewise.
+ *
+ * These nine are the cases where the region marks a *dialect* rather than a different
+ * population of names -- Austrian and Swiss German, Belgian and Swiss French, Flemish,
+ * Moldovan Romanian. Austrians and Germans draw on the same given names. Where that is
+ * less obviously true the locale is not here: `es_MX` and `fr_CA` are left alone, because
+ * Mexican and Quebecois naming diverge from Spain and France in ways this project has no
+ * standing to wave away.
+ */
+const INHERITS_NAMES = new Set([
+  'de_AT',
+  'de_CH',
+  'fr_BE',
+  'fr_CH',
+  'fr_LU',
+  'fr_SN',
+  'nl_BE',
+  'ro_MD',
+  'pt_PT',
+])
+
+/** Name fields dropped for those locales, so the chain resolves them from the parent. */
+const INHERITED_NAME_FIELDS = ['first_name', 'last_name', 'middle_name', 'prefix', 'suffix']
+
+function withoutInheritedNames(code, person) {
+  if (!INHERITS_NAMES.has(code)) return person
+  const out = {}
+  for (const [key, value] of Object.entries(person)) {
+    if (INHERITED_NAME_FIELDS.includes(key)) continue
+    out[key] = value
+  }
+  return Object.keys(out).length > 0 ? out : undefined
+}
+
+/**
  * Drops a `generic` name list that is a unisex subset rather than the general pool.
  *
  * The two projects mean different things by the same word. In faker a `generic` list
@@ -384,7 +430,9 @@ export async function run({ artifacts, locales, chains }) {
       if (kept === undefined) continue
       const cleaned = withoutBrokenPatterns(kept, dropped)
       if (cleaned === undefined) continue
-      perLocale[category] = cleaned
+      const final = category === 'person' ? withoutInheritedNames(code, cleaned) : cleaned
+      if (final === undefined) continue
+      perLocale[category] = final
       categories += 1
     }
 
