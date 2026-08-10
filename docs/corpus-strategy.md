@@ -603,6 +603,69 @@ Counts are not the quality bar.
 
 ---
 
+## Where personal names come from, and where they stop — **Closed**
+
+The longest thread in the project, closed here so it is not reopened by somebody assuming
+it was merely abandoned.
+
+**Twelve civil registries are in**, each a country's own statistics office or population
+register, each pinned and licence-checked:
+
+| | |
+|---|---|
+| CC0 | Poland (PESEL), Azerbaijan (Ministry of Justice) |
+| CC BY 4.0 | Spain (INE), Finland (DVV), Sweden (SCB), Norway (SSB), Slovenia (SURS), France (INSEE) |
+| Open Government Licence v3 | United Kingdom (ONS) |
+| Public facts | Taiwan (MOI), Israel (CBS) |
+| CC BY 4.0 | United States and the anglosphere (Gender-by-Name, US Census surnames) |
+
+Sweden is the only one that publishes **family** names as well as given names — 411,802 of
+them. Birth registers are public record almost everywhere; family-name frequencies almost
+nowhere.
+
+Wikidata fills in around them, unweighted, for another two dozen languages. **42 of 75
+locales carry some native name data.**
+
+### The remaining 21, and why the road ends
+
+Afrikaans, Dhivehi, Esperanto, Indonesian, Kurdish (both scripts), Mongolian, Nepali,
+Tamil, Thai, Urdu, Uzbek, Vietnamese, Yoruba, Zulu and the two Chinese locales still draw
+English given names. **Two independent research passes found no openly-licensed registry
+for any of them**, and the negatives are worth recording so nobody searches twice:
+
+- Denmark has no bulk name dataset at all — its statistics bank exposes a per-name lookup
+  and nothing to download.
+- The Netherlands has none in StatLine; the Meertens name bank is the real source and
+  serves 403 to every programmatic client.
+- `data.gov.za` is dead at DNS level. Pakistan's portal 404s, its election commission
+  times out, NADRA returns 403.
+- Uzbekistan's two open-data hosts refuse connections.
+- Taiwan publishes given-name statistics only as a 376-page PDF whose fonts carry no
+  usable ToUnicode mapping, so it extracts as mojibake.
+
+### Two kinds of source that will keep being offered, and must keep being refused
+
+**Rosters of real people.** Election candidate registers, company director filings and
+academic author lists are open, machine-readable, frequently CC BY, and full of names —
+and every one is a list of identifiable individuals, usually public figures, often with a
+political affiliation attached. Pakistan's Gallup election database was offered for `ur` on
+exactly those grounds. A register counts how many people hold a name; a roster names them,
+and `lastName()` sits beside a generator whose entire purpose is returning surnames nobody
+is recorded as having.
+
+**Third-party corpora with a licence file.** A repository's LICENSE states what its owner
+grants, not where the data came from. Of the scraped name corpora surveyed, one Apache-2.0
+set is built from the 533-million-account Facebook breach, one Dhivehi list self-describes
+as extracted from leaked election data, and one CC0 dataset is Wikipedia-derived, which is
+CC BY-SA laundering. Three known-bad in one small survey is the base rate, not bad luck.
+
+### What would reopen this
+
+A country publishing an open name register that does not exist today. That is the only
+thing — the mechanism is built and adding a country is a descriptor plus a parser, which
+the twelve above demonstrate. What is missing is data nobody has published, and no amount
+of engineering produces it.
+
 ## Sequencing
 
 1. ~~Binary format with all six requirements representable~~ — **done** (format v2)
