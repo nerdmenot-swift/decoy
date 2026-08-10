@@ -1,0 +1,31 @@
+{
+  "id": "ssb-fornavn",
+  "name": "Navn, etter fornavn (Statistisk sentralbyrå), table 10501",
+  "license": "CC-BY-4.0",
+  "copyright": "Statistisk sentralbyrå (SSB), Norway",
+  "version": "2025",
+  "retrieved": "2026-08-10",
+  "authored": true,
+  "url": "https://www.ssb.no/statbank/table/10501",
+  "note": [
+    "Every first name held by 200 or more people in Norway, with the count. Anne is held",
+    "by 55,625. The 200 floor is SSB protecting individuals rather than a sampling choice,",
+    "and it happens to sit exactly where this adapter's own threshold does.",
+    "",
+    "CC BY 4.0, stated at https://www.ssb.no/en/diverse/lisens, explicitly including",
+    "commercial reuse.",
+    "",
+    "Marked `authored` because there is no artifact and no integrity hash: SSB publishes",
+    "through PxWeb, which answers a POST rather than serving a file. So there is nothing to",
+    "pin. `fetch-statistics-names.mjs` runs by hand and its output is committed beside the",
+    "query, which is re-runnable and diffable instead of hashed.",
+    "",
+    "Queried as json-stat2 rather than CSV, and not for taste: the CSV form mangles `Ø` to",
+    "`Z2` and `Å` to `Z3`, which would silently corrupt every Norwegian name holding one.",
+    "",
+    "The sex is encoded as the first character of each name's code -- `1EMMA` is female and",
+    "`2JAKOB` male -- and nothing in the response says so. Confirmed against known names",
+    "before relying on it."
+  ],
+  "artifacts": []
+}

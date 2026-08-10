@@ -83,6 +83,8 @@ const DEFERRED = {
   fi: ['female', 'male'], // DVV. Finland publishes given names only.
   sv: ['female', 'male', 'surname'], // SCB, the one register that publishes family names too.
   en_GB: ['female', 'male'], // ONS baby names; surnames still come through `en`.
+  nb_NO: ['female', 'male'], // SSB. Norway publishes given names only.
+  sl_SI: ['female', 'male'], // SURS. Slovenia publishes given names only.
 }
 
 /**

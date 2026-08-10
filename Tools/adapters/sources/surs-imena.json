@@ -1,0 +1,27 @@
+{
+  "id": "surs-imena",
+  "name": "Prva imena (Statistični urad Republike Slovenije), tables 05X1005S and 05X1010S",
+  "license": "CC-BY-4.0",
+  "copyright": "Statistični urad Republike Slovenije (SURS)",
+  "version": "2026",
+  "retrieved": "2026-08-10",
+  "authored": true,
+  "url": "https://pxweb.stat.si/SiStat/en/Podrocja/Index/100/prebivalstvo",
+  "note": [
+    "Every Slovene first name the register publishes, by sex, with how many people hold it",
+    "now. Marija is held by 41,402.",
+    "",
+    "CC BY 4.0, recorded for SURS on podatki.gov.si; SURS's own copyright page authorises",
+    "commercial use and incorporation into other products, requiring the source to be cited",
+    "and modifications to be marked. Both are done in NOTICE and in LICENSES/surs-imena.txt.",
+    "",
+    "Marked `authored` for the same reason as SSB: PxWeb answers a POST, so there is no file",
+    "to hash. Two tables, one per sex, unlike Norway's single table with the sex folded into",
+    "the code.",
+    "",
+    "The latest year is taken rather than summed across years. SURS publishes a stock -- how",
+    "many people hold the name now -- once per year, so adding the years together would",
+    "count the same living person once for every year they were alive."
+  ],
+  "artifacts": []
+}

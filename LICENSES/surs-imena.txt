@@ -1,0 +1,23 @@
+Copyright Statistični urad Republike Slovenije (SURS), the Statistical
+Office of the Republic of Slovenia.
+
+SURS publishes its data under Creative Commons Attribution 4.0
+International (CC BY 4.0), recorded for its datasets on the Slovenian
+open data portal podatki.gov.si as "Priznanje avtorstva (CC BY 4.0)".
+
+SURS's own copyright statement authorises reuse including commercial use
+and incorporation into other products, on two conditions: that the source
+is cited, and that modifications are marked.
+
+Both are met. NOTICE names SURS as the source with the licence identifier
+and URL, and Decoy modifies the data — the most recent year is taken
+rather than the full series, names below the threshold are dropped, they
+are title-cased, and the draw is re-weighted.
+
+CC BY 4.0 requires attribution and imposes no share-alike or
+non-commercial condition, so it is compatible with distributing Decoy
+under Apache-2.0.
+
+Full licence text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+Source: https://pxweb.stat.si/SiStatData/api/v1/en/Data/05X1005S.px

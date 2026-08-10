@@ -36,7 +36,10 @@
  */
 
 import { readFile, readdir } from 'node:fs/promises'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const here = dirname(fileURLToPath(import.meta.url))
 
 import { readWorkbook } from '../lib/xlsx.mjs'
 
@@ -49,6 +52,8 @@ export const sources = [
   'dvv-etunimet',
   'scb-namn',
   'ons-baby-names',
+  'ssb-fornavn',
+  'surs-imena',
 ]
 
 /**
@@ -103,6 +108,20 @@ const REGISTRIES = [
       }
       return rows
     },
+  },
+  {
+    country: 'NO',
+    locales: ['nb_NO'],
+    source: 'ssb-fornavn',
+    // Neither an artifact nor a file: PxWeb answers a POST, so there is nothing to pin.
+    // `fetch-statistics-names.mjs` runs by hand and its output is committed.
+    committed: 'NO',
+  },
+  {
+    country: 'SI',
+    locales: ['sl_SI'],
+    source: 'surs-imena',
+    committed: 'SI',
   },
   {
     country: 'FI',
@@ -371,13 +390,74 @@ function titleCase(name, locale) {
 export async function run({ artifacts, locales }) {
   const contributions = {}
   const stats = {}
-  // Per-locale, because this adapter reads two registries and neither is "the primary".
+  // Per-locale, because this adapter reads several registries and none is "the primary".
   // English names come from Gender-by-Name and French from INSEE, and crediting both to
   // whichever happens to be first in `sources` would put a French statistics office's
   // name on a list of American given names.
   const sourceByLocale = {}
 
+  // Loaded once and only if something needs it, so a checkout without the committed query
+  // results still builds every registry that ships a file.
+  let committedRows = null
+  async function committed() {
+    if (committedRows === null) {
+      const raw = await readFile(join(here, '..', 'data', 'statistics-names.json'), 'utf8')
+      committedRows = JSON.parse(raw).countries
+    }
+    return committedRows
+  }
+
+  /** Thresholds a registry's rows and writes them to every locale it serves. */
+  function applyRegistry(registry, rows) {
+    const kept = rows.filter((row) => row.count >= MINIMUM_BEARERS)
+    if (kept.length < 1000) {
+      throw new Error(
+        `${registry.source} yielded only ${kept.length} names — verify before re-pinning`,
+      )
+    }
+
+    for (const code of registry.locales) {
+      if (!locales.includes(code)) continue
+      const contribution = {}
+      // `surname` alongside the two sexes, because one register publishes them. The note
+      // at the top of this file said surnames were not here, and that was true of France
+      // and stayed true through Poland and Spain — Sweden is the exception that made it
+      // false, publishing 411,802 family names with counts beside its given names.
+      for (const kind of ['female', 'male', 'surname']) {
+        const path =
+          kind === 'surname' ? 'person.last_name.generic' : `person.first_name.${kind}`
+        const forKind = kept
+          .filter((row) => row.sex === kind)
+          .sort((a, b) => b.count - a.count || (a.name < b.name ? -1 : 1))
+          .map((row) => ({ value: titleCase(row.name, code), weight: row.count }))
+        if (forKind.length > 0) contribution[path] = forKind
+      }
+      contributions[code] = contribution
+      sourceByLocale[code] = registry.source
+      stats[code] = Object.entries(contribution)
+        .map(([path, values]) => `${path.split('.').at(-1)}=${values.length}`)
+        .join(' ')
+    }
+  }
+
   for (const registry of REGISTRIES) {
+    // A committed query result rather than a fetched file. Norway and Slovenia publish
+    // through PxWeb, which answers a POST — there is no file to hash and no version to
+    // pin, so the query is run by hand and its output committed beside it. Same reasoning
+    // as the Wikidata data files, and the same trade: re-runnable and diffable instead of
+    // hashed.
+    if (registry.committed) {
+      const rows = (await committed())[registry.committed]
+      if (!rows) {
+        throw new Error(
+          `${registry.source}: no '${registry.committed}' in data/statistics-names.json — ` +
+            `run Tools/adapters/fetch-statistics-names.mjs`,
+        )
+      }
+      applyRegistry(registry, rows)
+      continue
+    }
+
     // Two shapes, because registries publish in two shapes. Most ship a zip holding one
     // CSV whose filename carries the edition year, so the name is read rather than
     // hard-coded and re-pinning to a newer edition does not silently stop finding the
@@ -407,35 +487,7 @@ export async function run({ artifacts, locales }) {
         registry.format === 'xlsx' ? await readFile(path) : await readFile(path, 'utf8')
       rows = rows.concat(registry.parse(contents))
     }
-    const kept = rows.filter((row) => row.count >= MINIMUM_BEARERS)
-    if (kept.length < 1000) {
-      throw new Error(
-        `${registry.source} yielded only ${kept.length} names — verify before re-pinning`,
-      )
-    }
-
-    for (const code of registry.locales) {
-      if (!locales.includes(code)) continue
-      const contribution = {}
-      // `surname` alongside the two sexes, because one register publishes them. The note
-      // at the top of this file said surnames were not here, and that was true of France
-      // and stayed true through Poland and Spain — Sweden is the exception that made it
-      // false, publishing 411,802 family names with counts beside its given names.
-      for (const kind of ['female', 'male', 'surname']) {
-        const path =
-          kind === 'surname' ? 'person.last_name.generic' : `person.first_name.${kind}`
-        const forSex = kept
-          .filter((row) => row.sex === kind)
-          .sort((a, b) => b.count - a.count || (a.name < b.name ? -1 : 1))
-          .map((row) => ({ value: titleCase(row.name, code), weight: row.count }))
-        if (forSex.length > 0) contribution[path] = forSex
-      }
-      contributions[code] = contribution
-      sourceByLocale[code] = registry.source
-      stats[code] = Object.entries(contribution)
-        .map(([path, values]) => `${path.split('.').at(-1)}=${values.length}`)
-        .join(' ')
-    }
+    applyRegistry(registry, rows)
   }
 
   return { contributions, sourceByLocale, stats }

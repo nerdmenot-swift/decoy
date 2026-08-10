@@ -1,0 +1,23 @@
+Copyright Statistisk sentralbyrå (SSB), Statistics Norway.
+
+SSB states its licence at https://www.ssb.no/en/diverse/lisens:
+
+    "Statistics Norway's data are licensed under the Creative Commons
+     Attribution 4.0 International licence (CC BY 4.0). This means that
+     you can use, share and further process the material freely, even
+     commercially, provided that you credit Statistics Norway as the
+     source."
+
+CC BY 4.0 requires attribution and imposes no share-alike or
+non-commercial condition, so it is compatible with distributing Decoy
+under Apache-2.0. The attribution is discharged by naming Statistics
+Norway in NOTICE, alongside the licence identifier and the source URL.
+
+Full licence text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+Decoy modifies the data: names are title-cased, those below the threshold
+are dropped, and the draw is re-weighted. CC BY 4.0 §3(a)(1)(B) requires
+modification to be indicated, which the corpus provenance records and
+this paragraph states.
+
+Source: https://www.ssb.no/statbank/table/10501
