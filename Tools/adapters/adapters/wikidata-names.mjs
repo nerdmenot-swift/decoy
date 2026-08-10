@@ -124,6 +124,39 @@ function scriptOf(code) {
 }
 
 /**
+ * Serbian Cyrillic to Gaj's Latin alphabet.
+ *
+ * Serbia is officially digraphic, and the two alphabets are a *bijection* rather than an
+ * approximation: every Cyrillic letter has exactly one Latin counterpart and the mapping
+ * is defined by orthography, not chosen by transliterators. Serbs write the same name
+ * either way and read both without noticing. That is what makes this a conversion rather
+ * than a guess, and why it is safe in a way that transliterating Russian or Bulgarian
+ * would not be -- neither of those has an official Latin form, so a Latin rendering of a
+ * Russian name is one romanisation among several competing ones.
+ *
+ * Without it, Wikidata's Serbian names are simply unavailable to `sr_RS_latin`: the list
+ * is mixed, the script filter keeps only the handful already typed in Latin, and one
+ * female name survives out of fifty-two. With it, all three hundred are usable.
+ *
+ * Three letters map to digraphs -- љ, њ and џ -- so the table is applied by longest key
+ * first and the capital forms are spelled `Lj`, `Nj` and `Dž` rather than `LJ`, because
+ * these appear at the start of a capitalised name and nowhere else here.
+ */
+const SERBIAN_LATIN = {
+  А: 'A', Б: 'B', В: 'V', Г: 'G', Д: 'D', Ђ: 'Đ', Е: 'E', Ж: 'Ž', З: 'Z', И: 'I',
+  Ј: 'J', К: 'K', Л: 'L', Љ: 'Lj', М: 'M', Н: 'N', Њ: 'Nj', О: 'O', П: 'P', Р: 'R',
+  С: 'S', Т: 'T', Ћ: 'Ć', У: 'U', Ф: 'F', Х: 'H', Ц: 'C', Ч: 'Č', Џ: 'Dž', Ш: 'Š',
+  а: 'a', б: 'b', в: 'v', г: 'g', д: 'd', ђ: 'đ', е: 'e', ж: 'ž', з: 'z', и: 'i',
+  ј: 'j', к: 'k', л: 'l', љ: 'lj', м: 'm', н: 'n', њ: 'nj', о: 'o', п: 'p', р: 'r',
+  с: 's', т: 't', ћ: 'ć', у: 'u', ф: 'f', х: 'h', ц: 'c', ч: 'č', џ: 'dž', ш: 'š',
+}
+
+/** Locales whose Wikidata names arrive in a script the locale does not use. */
+const TRANSLITERATE = {
+  sr_RS_latin: (value) => [...value].map((character) => SERBIAN_LATIN[character] ?? character).join(''),
+}
+
+/**
  * Whether an ancestor in this locale's chain already receives the same language's names.
  *
  * `de_AT` resolves through `de`, which has German names, so writing them into `de_AT` as
@@ -169,6 +202,10 @@ export async function run({ locales, chains }) {
       if (deferred.includes(kind)) continue
       let list = sets[kind]
       if (!Array.isArray(list)) continue
+      // Converted before filtering, not instead of it. The filter still runs, so anything
+      // the table does not cover is dropped rather than shipped half-converted.
+      const transliterate = TRANSLITERATE[code]
+      if (transliterate) list = [...new Set(list.map(transliterate))]
       if (script) list = list.filter((value) => script.test(value))
       if (list.length < MINIMUM_NAMES) {
         tooThin.push(`${code}.${kind}(${list.length})`)
