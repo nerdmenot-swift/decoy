@@ -48,13 +48,22 @@ export const id = 'wikidata-names'
 export const source = 'wikidata'
 
 /**
- * Below this, a locale keeps whatever it had.
+ * Below this, a locale falls through to English.
  *
  * Forty names is enough to look like a language and not enough to stop looking like a
- * list — a fixture set of two hundred rows would repeat every name five times. Where
- * Wikidata is this thin, faker's list is usually larger and the trade is not worth making.
+ * list — a fixture set of two hundred rows would repeat every name five times.
+ *
+ * The constant read 60 while faker was here, and the twenty-name margin had a reason: the
+ * alternative to a thin Wikidata list was faker's list for that locale, usually larger, so
+ * a marginal trade was not worth making. faker is gone and the alternative is now *English
+ * names*. Forty-seven Slovak given names beat any number of English ones in a Slovak
+ * fixture, so the margin has no argument behind it any more and the constant matches the
+ * number this paragraph always named.
+ *
+ * Worth being explicit that this is not the threshold being tuned until the answer
+ * improves: the comparison it encodes changed underneath it.
  */
-const MINIMUM_NAMES = 60
+const MINIMUM_NAMES = 40
 
 const PATHS = {
   female: 'person.first_name.female',
