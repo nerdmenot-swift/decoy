@@ -121,6 +121,8 @@ const LANGUAGES = {
       'ach', 'aha', 'au', 'bravo', 'hm', 'hoppla', 'huch', 'igitt', 'juhu', 'na',
       'nanu', 'oh', 'oje', 'pst', 'puh', 'tja', 'uff', 'wow',
     ],
+    cardinalAbbr: ['N', 'O', 'S', 'W'],
+    ordinalAbbr: ['NO', 'NW', 'SO', 'SW'],
   },
   nl: {
     plural: true,
@@ -174,6 +176,8 @@ const LANGUAGES = {
       'aha', 'au', 'bah', 'foei', 'hoera', 'hm', 'jee', 'nou', 'oeps', 'oh', 'pff',
       'sst', 'tja', 'wauw', 'zeg',
     ],
+    cardinalAbbr: ['N', 'O', 'Z', 'W'],
+    ordinalAbbr: ['NO', 'NW', 'ZO', 'ZW'],
   },
   fr: {
     pattern: '{{commerce.product}} {{commerce.productAdjective}} en {{commerce.productMaterial}}',
@@ -227,6 +231,8 @@ const LANGUAGES = {
       'aïe', 'ah', 'bah', 'bravo', 'chut', 'eh', 'hélas', 'hourra', 'hum', 'oh',
       'ouf', 'oups', 'pff', 'tiens', 'waouh', 'zut',
     ],
+    cardinalAbbr: ['N', 'E', 'S', 'O'],
+    ordinalAbbr: ['NE', 'NO', 'SE', 'SO'],
   },
   es: {
     pattern: '{{commerce.product}} {{commerce.productAdjective}} de {{commerce.productMaterial}}',
@@ -281,6 +287,8 @@ const LANGUAGES = {
       'ah', 'anda', 'ay', 'bah', 'bravo', 'caramba', 'eh', 'hala', 'hombre', 'hurra',
       'oh', 'ojalá', 'ostras', 'uf', 'uy', 'vaya',
     ],
+    cardinalAbbr: ['N', 'E', 'S', 'O'],
+    ordinalAbbr: ['NE', 'NO', 'SE', 'SO'],
   },
   it: {
     pattern: '{{commerce.product}} {{commerce.productAdjective}} in {{commerce.productMaterial}}',
@@ -333,6 +341,10 @@ const LANGUAGES = {
       'ah', 'ahi', 'beh', 'bravo', 'ehi', 'evviva', 'macché', 'mah', 'oh', 'ohi',
       'ops', 'puah', 'uffa', 'urrà', 'uh', 'wow',
     ],
+    cardinalAbbr: ['N', 'E', 'S', 'O'],
+    ordinalAbbr: ['NE', 'NO', 'SE', 'SO'],
+    prefixFemale: ['Sig.ra', 'Sig.na'],
+    prefixMale: ['Sig.'],
   },
   pt: {
     pattern: '{{commerce.product}} {{commerce.productAdjective}} de {{commerce.productMaterial}}',
@@ -386,6 +398,10 @@ const LANGUAGES = {
       'ah', 'ai', 'arre', 'bah', 'bravo', 'caramba', 'eh', 'oh', 'olá', 'opa', 'ora',
       'ufa', 'uh', 'upa', 'viva',
     ],
+    cardinalAbbr: ['N', 'E', 'S', 'O'],
+    ordinalAbbr: ['NE', 'NO', 'SE', 'SO'],
+    prefixFemale: ['Sra.', 'Dna.'],
+    prefixMale: ['Sr.'],
   },
 }
 
@@ -428,6 +444,20 @@ export async function run({ locales }) {
         'word.preposition': spec.preposition,
         'word.conjunction': spec.conjunction,
         'word.interjection': spec.interjection,
+        // English `N, E, S, W` is not merely unlocalised here, it is wrong: German and
+        // Dutch abbreviate Ost/Oost to `O`, and the Romance languages abbreviate
+        // Oeste/Ouest/Ovest to `O` where English has `W`. Every one of these locales was
+        // inheriting an abbreviation that names the wrong direction.
+        'location.direction.cardinal_abbr': spec.cardinalAbbr,
+        'location.direction.ordinal_abbr': spec.ordinalAbbr,
+        ...(spec.prefixFemale
+          ? {
+              // Italian shipped an empty prefix node and Portuguese none at all, so both
+              // were addressing people as `Mr.` and `Mrs.`.
+              'person.prefix.female': spec.prefixFemale,
+              'person.prefix.male': spec.prefixMale,
+            }
+          : {}),
       }
       taken.push(code)
     }
