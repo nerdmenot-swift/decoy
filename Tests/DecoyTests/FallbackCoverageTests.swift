@@ -121,9 +121,18 @@ struct FallbackCoverageTests {
     /// The assertion this API is shaped for, written the way a user would write it.
     ///
     /// The threshold is a caller's judgement rather than a quality bar, and the number
-    /// here is chosen to sit below where the shipped non-English locales actually land:
-    /// English is 100% by construction, and German, French, Japanese and Spanish cluster
-    /// between 46% and 53%.
+    /// here is chosen to sit below where the shipped non-English locales actually land.
+    ///
+    /// It has moved down twice, and both times for the same structural reason rather than
+    /// because a locale lost anything: English-only content was added, which raises the
+    /// denominator for everybody else. The `whimsy`, `sport` and `beverage` namespaces cost
+    /// Japanese ten points on their own.
+    ///
+    /// Those paths are deliberately *not* excluded from the count, unlike the per-state
+    /// postcode masks. A postcode mask is digits and bears no language; an invented pub
+    /// name is English words, and a Japanese caller who reaches for one really does get
+    /// English. Excluding it would be choosing which English-only paths are allowed to
+    /// count, which is the tuning this comment exists to refuse.
     ///
     /// That band is a property of the metric as much as of the data. Coverage counts paths
     /// with native values, and a growing share of paths are deliberately English-only --
@@ -133,6 +142,6 @@ struct FallbackCoverageTests {
     /// be measuring the wrong thing.
     @Test("a caller can assert on coverage in their own tests")
     func usableAsAnAssertion() throws {
-        #expect(try DecoyLocaleJA.locale.nativeCoverage > 0.4)
+        #expect(try DecoyLocaleJA.locale.nativeCoverage > 0.3)
     }
 }

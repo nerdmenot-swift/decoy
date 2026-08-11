@@ -5,6 +5,12 @@
  *   en  whimsy.adjective, whimsy.creature, whimsy.object, whimsy.place
  *   en  whimsy.codename_pattern, whimsy.band_pattern, whimsy.room, whimsy.ssid
  *   en  whimsy.excuse, whimsy.talk_pattern, whimsy.buzz_topic
+ *   en  sport.club_pattern, sport.venue_pattern, sport.trophy_pattern, sport.discipline
+ *   en  beverage.beer_pattern, beverage.whisky_pattern, beverage.wine_pattern, ...
+ *
+ * The word pools are shared across all three namespaces rather than duplicated. They are
+ * this project's stock of ordinary evocative English, and a football club, a brewery and a
+ * project codename all want the same thing from them.
  *
  * ## Why this is allowed where an animal list was not
  *
@@ -182,6 +188,184 @@ const BUZZ_TOPICS = [
   'Immutable Infrastructure', 'Chaos Testing', 'Zero-Downtime Cutovers', 'Backpressure',
 ]
 
+/**
+ * Football club naming, which is a small and very well-defined grammar.
+ *
+ * British clubs are `{place} {suffix}` almost without exception, and the suffix set is
+ * closed enough that a supporter could recite it. The places come from the invented
+ * landscape pool rather than from real towns, which is what keeps `Fjord Rovers` from
+ * colliding with anybody's actual club — the pattern is authentic and the input is not.
+ */
+const CLUB_SUFFIXES = [
+  'United', 'City', 'Rovers', 'Wanderers', 'Athletic', 'Albion', 'Town', 'County',
+  'Rangers', 'Thistle', 'Harriers', 'Casuals', 'Academicals', 'Victoria',
+]
+
+const CLUB_PATTERNS = [
+  { value: '{{whimsy.place}} {{sport.club_suffix}}', weight: 5 },
+  { value: '{{whimsy.creature}} {{sport.club_suffix}}', weight: 3 },
+  { value: '{{whimsy.adjective}} {{whimsy.place}} FC', weight: 2 },
+  { value: '{{whimsy.place}} {{whimsy.creature}}s', weight: 2 },
+]
+
+const VENUE_PATTERNS = [
+  'The {{whimsy.object}} Ground',
+  '{{whimsy.place}} Park',
+  '{{whimsy.adjective}} {{whimsy.place}} Stadium',
+  'The {{whimsy.place}} Arena',
+]
+
+const TROPHY_PATTERNS = [
+  'The {{whimsy.object}} Cup',
+  'The {{whimsy.adjective}} {{whimsy.object}} Trophy',
+  'The {{whimsy.place}} Shield',
+]
+
+/**
+ * Sports themselves, which are a factual list rather than an invented one.
+ *
+ * The same category as `vehicle.type` and `finance.transaction_type`: short, closed, and
+ * checkable by anybody reading it. Football is a sport in the way a saloon is a body style,
+ * and neither is a trademark.
+ */
+const DISCIPLINES = [
+  'Football', 'Cricket', 'Rugby Union', 'Rugby League', 'Basketball', 'Ice Hockey',
+  'Field Hockey', 'Athletics', 'Cycling', 'Rowing', 'Netball', 'Handball', 'Volleyball',
+  'Sailing', 'Fencing', 'Archery', 'Judo', 'Swimming', 'Badminton', 'Squash',
+]
+
+/**
+ * Drinks, split the same way everything else here is: the *style* is a fact and the
+ * *name* is an invention.
+ *
+ * An IPA is a style of beer and a Merlot is a grape, in the way that a saloon is a body
+ * style — generic terms anybody can check, carried for the same reason `vehicle.type` is.
+ * What is composed is the brand on the label, because a list of real breweries is a list of
+ * real trademarks and that is precisely what got `music` and `book` cut from this project.
+ */
+const BEER_STYLES = [
+  'IPA', 'Pale Ale', 'Stout', 'Porter', 'Lager', 'Pilsner', 'Saison', 'Gose', 'Bitter',
+  'Wheat Beer', 'Amber Ale', 'Barleywine', 'Dubbel', 'Tripel', 'Sour', 'Helles', 'Bock',
+  'Brown Ale', 'Kölsch', 'Mild',
+]
+
+const BEER_PATTERNS = [
+  { value: '{{whimsy.adjective}} {{whimsy.creature}} {{beverage.beer_style}}', weight: 5 },
+  { value: '{{whimsy.creature}} {{beverage.beer_style}}', weight: 2 },
+  { value: '{{whimsy.place}} {{beverage.beer_style}}', weight: 2 },
+]
+
+const BREWERY_PATTERNS = [
+  '{{whimsy.place}} Brewing Co.',
+  '{{whimsy.creature}} & Sons',
+  'The {{whimsy.adjective}} {{whimsy.object}} Brewery',
+]
+
+/**
+ * Whisky, where the naming convention is itself the joke — `Glen` is simply Gaelic for
+ * valley, and half of Speyside is named that way.
+ */
+const AGE_STATEMENTS = [
+  '10 Year Old', '12 Year Old', '15 Year Old', '18 Year Old', '21 Year Old',
+  '25 Year Old', 'Small Batch', 'Cask Strength', 'Single Cask', 'Sherry Finish',
+]
+
+const WHISKY_PATTERNS = [
+  { value: 'Glen {{whimsy.place}} {{beverage.age_statement}}', weight: 4 },
+  { value: '{{whimsy.place}} {{beverage.age_statement}}', weight: 3 },
+  // `Reserve` rather than `Cask`, because two of the age statements are `Cask Strength`
+  // and `Single Cask` and the pair produced `Bittern's Cask Single Cask`.
+  { value: '{{whimsy.creature}}\'s Reserve {{beverage.age_statement}}', weight: 2 },
+]
+
+/** Grape varieties, a factual list for the same reason the beer styles are. */
+const GRAPES = [
+  'Merlot', 'Syrah', 'Riesling', 'Chardonnay', 'Pinot Noir', 'Sauvignon Blanc',
+  'Cabernet Sauvignon', 'Grenache', 'Tempranillo', 'Nebbiolo', 'Sangiovese', 'Malbec',
+  'Viognier', 'Gewürztraminer', 'Chenin Blanc', 'Barbera', 'Carménère', 'Albariño',
+]
+
+const WINE_PATTERNS = [
+  '{{whimsy.adjective}} {{whimsy.place}} {{beverage.grape}}',
+  '{{whimsy.place}} Estate {{beverage.grape}}',
+  '{{whimsy.creature}} Ridge {{beverage.grape}}',
+]
+
+const COCKTAIL_PATTERNS = [
+  'The {{whimsy.adjective}} {{whimsy.object}}',
+  'The {{whimsy.creature}}',
+  '{{whimsy.adjective}} {{whimsy.place}}',
+  'The {{whimsy.object}} Sour',
+]
+
+/**
+ * Pubs, which have the richest naming grammar in this file and one of the oldest.
+ *
+ * A British pub is `The {noun} & {noun}` or `The {adjective} {creature}`, and the form
+ * predates literacy — the sign had to be describable by someone who could not read it.
+ * That is why the compositions here are concrete: a crimson heron can be painted, and
+ * `The Abstract Synergy` cannot.
+ */
+const PUB_PATTERNS = [
+  { value: 'The {{whimsy.creature}} & {{whimsy.object}}', weight: 4 },
+  { value: 'The {{whimsy.adjective}} {{whimsy.creature}}', weight: 4 },
+  { value: 'The {{whimsy.object}} & Crown', weight: 2 },
+  { value: 'The Old {{whimsy.object}}', weight: 2 },
+  { value: 'The {{whimsy.creature}}s Arms', weight: 2 },
+]
+
+/**
+ * Board games: an invented title and a factual mechanic.
+ *
+ * `Worker Placement` is a category of game the way `IPA` is a category of beer — a term of
+ * art anybody can check, and not anybody's property. The titles compose, because a list of
+ * real board games is a list of trademarks.
+ */
+const GAME_MECHANICS = [
+  'Deck-Building', 'Worker Placement', 'Area Control', 'Tile Placement', 'Roll and Write',
+  'Set Collection', 'Push Your Luck', 'Hidden Role', 'Engine Building', 'Drafting',
+  'Cooperative', 'Legacy', 'Trick-Taking', 'Auction', 'Route Building', 'Deduction',
+]
+
+const BOARD_GAME_PATTERNS = [
+  { value: 'The {{whimsy.place}} Expedition', weight: 3 },
+  { value: '{{whimsy.adjective}} {{whimsy.object}}', weight: 3 },
+  { value: '{{whimsy.creature}} & {{whimsy.object}}', weight: 2 },
+  { value: 'Rise of the {{whimsy.creature}}s', weight: 2 },
+  { value: '{{whimsy.place}}: {{whimsy.adjective}} {{whimsy.object}}', weight: 1 },
+]
+
+/**
+ * Racehorses, which are named under a real constraint worth honouring: eighteen characters
+ * and no duplicates of a horse still competing. Short evocative pairs are what the rule
+ * produces, and it is why the naming reads the way it does.
+ */
+const HORSE_PATTERNS = [
+  '{{whimsy.adjective}} {{whimsy.object}}',
+  '{{whimsy.adjective}} {{whimsy.place}}',
+  '{{whimsy.creature}} Song',
+  '{{whimsy.adjective}} Dancer',
+]
+
+/**
+ * Paint and nail-varnish colours, a genre built on the joke that the name says nothing
+ * about the colour. `Restless Tundra` could be any shade at all, which is the point.
+ */
+const PAINT_PATTERNS = [
+  '{{whimsy.adjective}} {{whimsy.place}}',
+  '{{whimsy.adjective}} {{whimsy.object}}',
+  '{{whimsy.creature}} Feather',
+  '{{whimsy.adjective}} Morning',
+]
+
+/** Ships, in the naval register and the merchant one. */
+const SHIP_PATTERNS = [
+  'HMS {{whimsy.object}}',
+  'The {{whimsy.adjective}} {{whimsy.creature}}',
+  'The {{whimsy.object}} of {{whimsy.place}}',
+  'The {{whimsy.adjective}} {{whimsy.place}}',
+]
+
 export async function run({ locales }) {
   if (!locales.includes('en')) throw new Error('authored-whimsy needs the `en` locale')
   return {
@@ -198,6 +382,27 @@ export async function run({ locales }) {
         'whimsy.buzz_topic': BUZZ_TOPICS,
         'whimsy.ssid': SSIDS,
         'whimsy.excuse': EXCUSES,
+        'whimsy.pub_pattern': PUB_PATTERNS,
+        'whimsy.board_game_pattern': BOARD_GAME_PATTERNS,
+        'whimsy.game_mechanic': GAME_MECHANICS,
+        'whimsy.horse_pattern': HORSE_PATTERNS,
+        'whimsy.paint_pattern': PAINT_PATTERNS,
+        'whimsy.ship_pattern': SHIP_PATTERNS,
+
+        'sport.club_suffix': CLUB_SUFFIXES,
+        'sport.club_pattern': CLUB_PATTERNS,
+        'sport.venue_pattern': VENUE_PATTERNS,
+        'sport.trophy_pattern': TROPHY_PATTERNS,
+        'sport.discipline': DISCIPLINES,
+
+        'beverage.beer_style': BEER_STYLES,
+        'beverage.beer_pattern': BEER_PATTERNS,
+        'beverage.brewery_pattern': BREWERY_PATTERNS,
+        'beverage.age_statement': AGE_STATEMENTS,
+        'beverage.whisky_pattern': WHISKY_PATTERNS,
+        'beverage.grape': GRAPES,
+        'beverage.wine_pattern': WINE_PATTERNS,
+        'beverage.cocktail_pattern': COCKTAIL_PATTERNS,
       },
     },
     stats: {

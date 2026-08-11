@@ -162,7 +162,7 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
       supplies itself, and which fall through to English. Generated from the corpus and
       checked in CI, so it cannot describe a corpus that is no longer shipping.
 - [x] JSON → binary corpus format + Swift reader
-- [x] 208 generators across 19 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
+- [x] 227 generators across 21 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
 - [x] All 76 locales compile; `en`, `de`, `ja` ship as importable Swift modules
 - [x] `decoy-inspect`: enumeration, coverage, generated attribution
 - [ ] CI actually run — this repository has no remote, so every step in `ci.yml`

@@ -180,8 +180,8 @@ language-neutral `base`:
 
 | | |
 |---|---|
-| Median native coverage | 35% |
-| Locales under 30% native | 28 of 74 |
+| Median native coverage | 27% |
+| Locales under 30% native | 53 of 74 |
 | `ta_IN` | 28% (27 paths) |
 | `dv` | 29% (34 paths) |
 
@@ -197,6 +197,16 @@ Every locale falls back for those by design, so no locale but `en` can approach 
 
 These numbers have moved twice, and both reasons are worth recording because both look
 like progress or regress and are neither.
+
+A fifth move took it down again when the `whimsy`, `sport` and `beverage` namespaces
+landed. Those are invented English content by design — nobody will ever author German pub
+names — so they raise the denominator for every locale that is not English and lower every
+number in this table without any locale losing a thing. It cost Japanese ten points.
+
+That is a genuine weakness of the measure rather than of the data, and the honest reading
+is that this column answers "how much of what Decoy *can* generate is native here", not
+"how good is this locale". A locale with native names, cities, addresses and vocabulary is
+a good locale whatever the percentage says.
 
 A fourth move took it back down, from 39% to 35%, with locales under 30% rising from 8 to
 28. That one is the cost of deleting faker-js, and it is real rather than a measurement
@@ -669,8 +679,8 @@ of engineering produces it.
 ## Sequencing
 
 1. ~~Binary format with all six requirements representable~~ — **done** (format v2)
-2. ~~Core generators against the faker-derived corpus~~ — **done** (208 methods across 19
-   namespaces; 190 across 18 without Foundation, which gates the `date` namespace)
+2. ~~Core generators against the faker-derived corpus~~ — **done** (227 methods across 21
+   namespaces; 209 across 20 without Foundation, which gates the `date` namespace)
 3. ~~Corpus discoverability and coverage measurement~~ — **done** (`Corpus.paths`, `decoy-inspect`)
 4. Authoritative reference adapters replacing factual fields — **done for everything
    with a pinnable registry**. Migrated: ISO 3166-1 and 3166-2, ISO 639, ISO 4217, IANA

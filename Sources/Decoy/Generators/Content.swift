@@ -405,6 +405,47 @@ public struct WhimsyFaker {
     /// stops being useful for judging how the column looks when it is full.
     public mutating func excuse() -> String { faker.require("whimsy.excuse") }
 
+    /// A pub name, in the oldest naming grammar here.
+    ///
+    /// The form predates literacy: a sign had to be describable by somebody who could not
+    /// read it, which is why these compose concrete things. A crimson heron can be painted
+    /// on a board; `The Abstract Synergy` cannot.
+    public mutating func pubName() -> String {
+        faker.expand(faker.require("whimsy.pub_pattern"))
+    }
+
+    /// A board game title.
+    public mutating func boardGame() -> String {
+        faker.expand(faker.require("whimsy.board_game_pattern"))
+    }
+
+    /// How a board game plays — worker placement, deck-building, trick-taking.
+    ///
+    /// A factual term of art rather than an invention, the way `IPA` is a style of beer.
+    /// The titles compose because a list of real board games is a list of trademarks; the
+    /// mechanics are a category anybody can check and nobody owns.
+    public mutating func gameMechanic() -> String { faker.require("whimsy.game_mechanic") }
+
+    /// A racehorse name.
+    ///
+    /// Named under a real constraint worth honouring: eighteen characters, and no
+    /// duplicate of a horse still running. Short evocative pairs are what that rule
+    /// produces, and it is why the naming reads the way it does.
+    public mutating func horseName() -> String {
+        faker.expand(faker.require("whimsy.horse_pattern"))
+    }
+
+    /// A paint or nail-varnish colour, a genre built on the name saying nothing about the
+    /// colour. `Restless Tundra` could be any shade, which is the joke.
+    public mutating func paintColour() -> String {
+        faker.expand(faker.require("whimsy.paint_pattern"))
+    }
+
+    /// A ship name, naval or merchant.
+    public mutating func shipName() -> String {
+        faker.expand(faker.require("whimsy.ship_pattern"))
+    }
+
     public mutating func adjective() -> String { faker.require("whimsy.adjective") }
     public mutating func creature() -> String { faker.require("whimsy.creature") }
     public mutating func object() -> String { faker.require("whimsy.object") }
@@ -435,4 +476,91 @@ public struct WhimsyFaker {
         guard !matching.isEmpty else { return "\(adjective()) \(animal)" }
         return "\(faker.pick(matching)) \(animal)"
     }
+}
+
+
+// MARK: - Sport
+
+extension Faker {
+    public var sport: SportFaker {
+        get { SportFaker(faker: self) }
+        set { self = newValue.faker }
+    }
+
+    public var beverage: BeverageFaker {
+        get { BeverageFaker(faker: self) }
+        set { self = newValue.faker }
+    }
+}
+
+/// Clubs, grounds and competitions, invented rather than listed.
+///
+/// Football club naming is a small and very well-defined grammar — British clubs are
+/// `{place} {suffix}` almost without exception, and the suffix set is closed enough that a
+/// supporter could recite it. What makes composing them safe is that the places come from
+/// this project's invented landscape pool rather than from real towns: the pattern is
+/// authentic and the input is not, so `Fjord Rovers` cannot collide with anybody's club.
+///
+/// A list of real clubs would be a list of trademarks, which is exactly what removed the
+/// `team` namespace from this project in the first place.
+public struct SportFaker {
+    var faker: Faker
+
+    public mutating func club() -> String {
+        faker.expand(faker.require("sport.club_pattern"))
+    }
+
+    public mutating func venue() -> String {
+        faker.expand(faker.require("sport.venue_pattern"))
+    }
+
+    public mutating func trophy() -> String {
+        faker.expand(faker.require("sport.trophy_pattern"))
+    }
+
+    /// The sport itself, which is a fact rather than an invention — football is a sport in
+    /// the way a saloon is a body style, and neither is anybody's property.
+    public mutating func discipline() -> String { faker.require("sport.discipline") }
+
+    /// The suffix alone, for a caller assembling a club name their own way.
+    public mutating func clubSuffix() -> String { faker.require("sport.club_suffix") }
+}
+
+// MARK: - Beverage
+
+/// Drinks, split the way everything else here is: the **style** is a fact and the **name**
+/// is an invention.
+///
+/// An IPA is a style of beer and a Merlot is a grape, in the way a saloon is a body style —
+/// generic terms anybody can check, carried for the same reason `vehicle.type` is. What
+/// composes is the brand on the label, because a list of real breweries is a list of real
+/// trademarks, and that is what got `music` and `book` cut from this project.
+public struct BeverageFaker {
+    var faker: Faker
+
+    public mutating func beer() -> String {
+        faker.expand(faker.require("beverage.beer_pattern"))
+    }
+
+    public mutating func brewery() -> String {
+        faker.expand(faker.require("beverage.brewery_pattern"))
+    }
+
+    /// Whisky, where the naming convention is itself the joke — `Glen` is simply Gaelic
+    /// for valley, and half of Speyside is named that way.
+    public mutating func whisky() -> String {
+        faker.expand(faker.require("beverage.whisky_pattern"))
+    }
+
+    public mutating func wine() -> String {
+        faker.expand(faker.require("beverage.wine_pattern"))
+    }
+
+    public mutating func cocktail() -> String {
+        faker.expand(faker.require("beverage.cocktail_pattern"))
+    }
+
+    public mutating func beerStyle() -> String { faker.require("beverage.beer_style") }
+    public mutating func grape() -> String { faker.require("beverage.grape") }
+    public mutating func ageStatement() -> String { faker.require("beverage.age_statement") }
 }
