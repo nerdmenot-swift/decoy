@@ -1,9 +1,5 @@
 {
   "locales" : {
-    "af_ZA" : {
-      "paths" : 27,
-      "values" : 2924
-    },
     "ar" : {
       "paths" : 35,
       "values" : 6623
@@ -43,10 +39,6 @@
     "de_CH" : {
       "paths" : 52,
       "values" : 4180
-    },
-    "dv" : {
-      "paths" : 19,
-      "values" : 420
     },
     "el" : {
       "paths" : 40,
@@ -103,10 +95,6 @@
     "en_ZA" : {
       "paths" : 25,
       "values" : 2920
-    },
-    "eo" : {
-      "paths" : 19,
-      "values" : 990
     },
     "es" : {
       "paths" : 61,
@@ -184,14 +172,6 @@
       "paths" : 32,
       "values" : 5490
     },
-    "ku_ckb" : {
-      "paths" : 26,
-      "values" : 6842
-    },
-    "ku_kmr_latin" : {
-      "paths" : 27,
-      "values" : 6999
-    },
     "lv" : {
       "paths" : 35,
       "values" : 5692
@@ -200,17 +180,9 @@
       "paths" : 29,
       "values" : 1574
     },
-    "mn_MN_cyrl" : {
-      "paths" : 24,
-      "values" : 1860
-    },
     "nb_NO" : {
       "paths" : 43,
       "values" : 8156
-    },
-    "ne" : {
-      "paths" : 28,
-      "values" : 1193
     },
     "nl" : {
       "paths" : 59,
@@ -260,14 +232,6 @@
       "paths" : 44,
       "values" : 14275
     },
-    "ta_IN" : {
-      "paths" : 27,
-      "values" : 15612
-    },
-    "th" : {
-      "paths" : 33,
-      "values" : 10581
-    },
     "tr" : {
       "paths" : 41,
       "values" : 14678
@@ -275,14 +239,6 @@
     "uk" : {
       "paths" : 34,
       "values" : 12809
-    },
-    "ur" : {
-      "paths" : 27,
-      "values" : 2223
-    },
-    "uz_UZ_latin" : {
-      "paths" : 26,
-      "values" : 1581
     },
     "vi" : {
       "paths" : 29,
@@ -299,10 +255,6 @@
     "zh_TW" : {
       "paths" : 30,
       "values" : 1770
-    },
-    "zu_ZA" : {
-      "paths" : 25,
-      "values" : 2908
     }
   }
 }

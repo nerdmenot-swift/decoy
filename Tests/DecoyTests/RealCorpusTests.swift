@@ -15,10 +15,10 @@ import Testing
 /// get wrong — an earlier revision of this comment documented a version that produced a
 /// corpus failing the assertion twenty lines below it.
 ///
-/// Loading from disk is what makes these tests span all seventy-six locales. Shipping
+/// Loading from disk is what makes these tests span all sixty-four locales. Shipping
 /// code does not do this — `DecoyLocaleEN` and its siblings embed their corpus as a
 /// base64 `StaticString`, so a built binary carries no files. Only four locales have
-/// modules, and reading the blobs directly is how the other seventy-two get tested.
+/// modules, and reading the blobs directly is how the other sixty get tested.
 enum RealCorpus {
     static let directory = URL(fileURLWithPath: #filePath)
         .deletingLastPathComponent()  // DecoyTests
@@ -136,22 +136,49 @@ struct RealCorpusTests {
         #expect(weights.contains { $0 != weights[0] }, "weights should not all be equal")
     }
 
-    /// Documents a real coverage gap rather than asserting the data is fine.
+    /// The invariant that replaced a documented gap.
     ///
-    /// `ta_IN` is a locale with no person names at all, so a Tamil-locale record
-    /// currently falls through to English. This test exists to fail loudly on the day
-    /// someone fixes it, and to keep the gap visible until then.
-    @Test("known gap: ta_IN has no person names")
-    func tamilCoverageGap() throws {
-        let taIN = try RealCorpus.locale("ta_IN", chain: ["ta_IN", "en", "base"])
-        let taOnly = try RealCorpus.locale("ta_IN", chain: ["ta_IN"])
+    /// This used to be a test asserting `ta_IN` had no person names, kept so the gap stayed
+    /// visible. The roster cut removed `ta_IN` and eleven others on exactly that criterion,
+    /// so the gap is now empty and can be enforced instead of merely recorded.
+    ///
+    /// A *language root* is a locale with no same-language ancestor to inherit from, so
+    /// whatever it does not supply comes from English. A root with no names of its own
+    /// generates English people wearing its postcode — the "Tamil records named Jennifer
+    /// Williams" failure the fallback-coverage gate exists to catch, and the one thing a
+    /// caller cannot discover from the type system.
+    ///
+    /// Regional variants are deliberately exempt: `en_US` and `de_AT` supply no names
+    /// either, but they inherit from `en` and `de`, which is their own language.
+    ///
+    /// Surnames alone satisfy this — `vi`, `zh_CN`, `zh_TW`, `id_ID` and `yo_NG` supply
+    /// those and inherit given names. That mixing is a known wart, not a silent one.
+    @Test("every language root supplies personal names of its own")
+    func everyLanguageRootHasNames() throws {
+        let codes = try RealCorpus.availableCodes().filter { $0 != "base" }
+        let roster = Set(codes)
+        let roots = codes.filter { code in
+            let language = String(code.prefix(while: { $0 != "_" }))
+            return language == code || !roster.contains(language)
+        }
 
-        #expect(
-            taOnly.has("person.first_name.female") == false,
-            "if this now passes, ta_IN gained names — delete this test"
-        )
-        // With the chain it silently resolves, which is exactly the problem.
-        #expect(taIN.has("person.first_name.female"))
+        #expect(roots.count > 30, "sanity: the root set should be most of the roster")
+
+        for code in roots {
+            let own = try RealCorpus.locale(code, chain: [code])
+            let hasNames =
+                own.has("person.first_name.female") || own.has("person.first_name.male")
+                || own.has("person.last_name.generic") || own.has("person.last_name.male")
+                || own.has("person.last_name.female")
+            #expect(
+                hasNames,
+                """
+                '\(code)' is a language root with no personal names of its own, so every \
+                person it generates is English. Either give it a name source or drop it \
+                from Tools/adapters/locales.json — see the roster comment there.
+                """
+            )
+        }
     }
 
     @Test("every locale compiles to a loadable corpus")
@@ -162,7 +189,7 @@ struct RealCorpusTests {
         )
         .filter { $0.pathExtension == "decoy" }
 
-        #expect(files.count == 76)
+        #expect(files.count == 64)
         for file in files {
             let corpus = try Corpus(bytes: [UInt8](try Data(contentsOf: file)))
             #expect(corpus.stringCount > 0, "\(file.lastPathComponent) is empty")

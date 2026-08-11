@@ -74,7 +74,7 @@ let orders = Forge<Order>("order") { Order() }
 
 Locales are compiled into the binary as ordinary Swift source, so there is no resource
 loading at runtime and nothing to ship alongside your executable. One module per
-locale means importing `DecoyLocaleDE` costs you `de`, `en` and `base` — not all 76.
+locale means importing `DecoyLocaleDE` costs you `de`, `en` and `base` — not all 64.
 
 **Always import a locale.** `Faker`'s default corpus is a ten-path smoke-test stub, so
 most generators trap against it; `base` is language-neutral data every chain ends at and
@@ -157,13 +157,13 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
 - [x] Multi-platform package skeleton, Foundation-free core, `swiftLanguageMode(.v6)`
 - [x] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
-- [x] Adapter pipeline: 49 sources, integrity-verified, provenance per path — **no faker-js**
-- [x] [Locale support matrix](docs/locale-support.md) — which fields each of the 76 locales
+- [x] Adapter pipeline: 48 sources, integrity-verified, provenance per path — **no faker-js**
+- [x] [Locale support matrix](docs/locale-support.md) — which fields each of the 64 locales
       supplies itself, and which fall through to English. Generated from the corpus and
       checked in CI, so it cannot describe a corpus that is no longer shipping.
 - [x] JSON → binary corpus format + Swift reader
 - [x] 227 generators across 21 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
-- [x] All 76 locales compile; `en`, `de`, `ja` ship as importable Swift modules
+- [x] All 64 locales compile; `en`, `de`, `ja` ship as importable Swift modules
 - [x] `decoy-inspect`: enumeration, coverage, generated attribution
 - [ ] CI actually run — this repository has no remote, so every step in `ci.yml`
       has been executed locally instead, and none of it on Windows
@@ -173,7 +173,7 @@ host-executed and historically awkward under cross-compilation) and rule sets.
 
 ## Embedding another locale
 
-All 76 compile to `.decoy`; four ship as Swift modules. The rest are emitted on request,
+All 64 compile to `.decoy`; four ship as Swift modules. The rest are emitted on request,
 in two steps and in this order:
 
 ```
@@ -198,9 +198,9 @@ The array order is the fallback chain, most specific first. `LocaleModuleTests` 
 against the locale roster, because getting it wrong is silent: a module with a short chain
 resolves fewer paths and reads as missing data rather than as a manifest error.
 
-**Why not embed all 76?** Not build time — measured, and SwiftPM compiles only the locale
+**Why not embed all 64?** Not build time — measured, and SwiftPM compiles only the locale
 targets a consumer actually depends on: an app importing `DecoyLocaleDE` builds `DE`, `EN`
-and `Base` and never touches the other 73. The cost is the checkout. SwiftPM clones the
+and `Base` and never touches the other 61. The cost is the checkout. SwiftPM clones the
 whole repository, so ~14 MB of base64 string literals would land in every consumer's
 `.build/checkouts` whether or not a single one is compiled, and in every CI cache that
 carries it.

@@ -80,13 +80,12 @@ struct ExplicitlyEmptyTests {
 
     @Test("every shipped locale survives the generators that used to trap")
     func shippedLocalesDoNotTrap() throws {
-        // Thirteen locales declare one of these empty. Reaching the end is the assertion.
-        for code in ["az", "ru", "it", "mk", "pt_PT", "ro_MD", "sk", "th", "pt_BR", "en_HK"]
+        // Each of these declares at least one of the probed paths empty. Reaching the end
+        // is the assertion. `th` was in this list until the roster cut removed it.
+        for code in ["az", "ru", "it", "mk", "pt_PT", "ro_MD", "sk", "pt_BR", "en_HK"]
         where RealCorpus.isAvailable {
-            let chain = ["az", "ru", "it", "mk", "sk", "th"].contains(code)
-                ? [code, "en", "base"]
-                : [code, "en", "base"]
-            guard let locale = try? RealCorpus.locale(code, chain: chain) else { continue }
+            guard let locale = try? RealCorpus.locale(code, chain: [code, "en", "base"])
+            else { continue }
             var faker = Faker(seed: 1337, locale: locale)
             _ = faker.person.suffix()
             _ = faker.person.prefix()

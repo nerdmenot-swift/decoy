@@ -550,6 +550,10 @@ func matrix(_ directory: URL) throws {
         ("Departments", ["commerce.department"]),
         ("Job titles", ["person.job_title"]),
         ("Vocabulary", ["word.noun"]),
+        // The invented namespaces, which no locale but English fills and which the matrix
+        // would otherwise omit entirely — an omission that reads as "not offered" when the
+        // truth is "offered in English to everybody". A whole column of `·` is the point.
+        ("Invented names", ["whimsy.creature", "sport.discipline", "beverage.beer_style"]),
     ]
 
     let blobs = try FileManager.default

@@ -8,27 +8,32 @@
     "",
     "`cldr` maps a Decoy code to its CLDR equivalent where the automatic rule (underscores",
     "to hyphens, then strip trailing segments) gets it wrong. `null` means the locale has",
-    "no CLDR equivalent at all and adapters sourcing from CLDR should skip it."
+    "no CLDR equivalent at all and adapters sourcing from CLDR should skip it.",
+    "",
+    "Twelve locales were removed in the cut recorded in docs/corpus-strategy.md: af_ZA, dv,",
+    "eo, ku_ckb, ku_kmr_latin, mn_MN_cyrl, ne, ta_IN, th, ur, uz_UZ_latin and zu_ZA. Each",
+    "was a language root -- no same-language ancestor to inherit from -- that supplied no",
+    "personal names of its own, so every person it generated was English wearing the",
+    "locale's postcode. A regional variant like en_US or de_AT is thin for the opposite",
+    "reason and is fine: it inherits its own language. The test to re-add one is names,",
+    "not volume; ta_IN carried 15,612 native values and still could not name a person.",
+    "",
+    "Re-adding is an edit here plus a source that supplies person.first_name for it."
   ],
   "locales": [
-    "af_ZA", "ar", "az", "base", "bn_BD", "cs_CZ", "cy", "da", "de", "de_AT",
-    "de_CH", "dv", "el", "en", "en_AU", "en_AU_ocker", "en_BORK", "en_CA", "en_GB",
-    "en_GH", "en_HK", "en_IE", "en_IN", "en_NG", "en_US", "en_ZA", "eo", "es",
-    "es_MX", "fa", "fi", "fr", "fr_BE", "fr_CA", "fr_CH", "fr_LU", "fr_SN", "he",
-    "hr", "hu", "hy", "id_ID", "it", "ja", "ka_GE", "ko", "ku_ckb", "ku_kmr_latin",
-    "lv", "mk", "mn_MN_cyrl", "nb_NO", "ne", "nl", "nl_BE", "pl", "pt_BR", "pt_PT",
-    "ro", "ro_MD", "ru", "sk", "sl_SI", "sr_RS_latin", "sv", "ta_IN", "th", "tr",
-    "uk", "ur", "uz_UZ_latin", "vi", "yo_NG", "zh_CN", "zh_TW", "zu_ZA"
+    "ar", "az", "base", "bn_BD", "cs_CZ", "cy", "da", "de", "de_AT", "de_CH",
+    "el", "en", "en_AU", "en_AU_ocker", "en_BORK", "en_CA", "en_GB", "en_GH",
+    "en_HK", "en_IE", "en_IN", "en_NG", "en_US", "en_ZA", "es", "es_MX", "fa",
+    "fi", "fr", "fr_BE", "fr_CA", "fr_CH", "fr_LU", "fr_SN", "he", "hr", "hu",
+    "hy", "id_ID", "it", "ja", "ka_GE", "ko", "lv", "mk", "nb_NO", "nl", "nl_BE",
+    "pl", "pt_BR", "pt_PT", "ro", "ro_MD", "ru", "sk", "sl_SI", "sr_RS_latin",
+    "sv", "tr", "uk", "vi", "yo_NG", "zh_CN", "zh_TW"
   ],
   "cldr": {
     "base": null,
     "en_BORK": null,
     "en_AU_ocker": "en-AU",
-    "ku_ckb": "ckb",
-    "ku_kmr_latin": "ku",
-    "mn_MN_cyrl": "mn",
     "sr_RS_latin": "sr-Latn",
-    "uz_UZ_latin": "uz-Latn",
     "zh_CN": "zh-Hans",
     "zh_TW": "zh-Hant"
   }

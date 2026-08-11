@@ -210,7 +210,7 @@ a stored kind rather than an omitted entry.
 
 One blob per locale, compiled from the unmerged definitions. Fallback is resolved at
 *lookup* time by walking the chain (`de_AT → de → en → base`) rather than at compile
-time, so a locale's blob stays small and shared data is not duplicated 76 times.
+time, so a locale's blob stays small and shared data is not duplicated 64 times.
 
 A `kind == 0` entry stops the walk. A missing entry continues it.
 

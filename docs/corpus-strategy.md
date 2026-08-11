@@ -555,7 +555,7 @@ All six are representable in format v2. Four are in use.
 |---|---|---|
 | Weights | A weight column alongside string tables | **In use** — faker-derived patterns, and real Census frequencies for English surnames |
 | Composite records | Heterogeneous field tuples, not parallel lists | **In use** — countries, languages, currencies |
-| Provenance | A source/license table, referenced by ID | **In use** — 49 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
+| Provenance | A source/license table, referenced by ID | **In use** — 48 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
 | Generative models | A model chunk type, not only string tables | Chunk kind reserved; nothing emits one |
 | Corpus version + compatibility | Header fields, checked on load | **In use** |
 | Cross-locale dedup | A shared string arena (21.2% redundancy measured) | **In use** |
@@ -633,15 +633,44 @@ Sweden is the only one that publishes **family** names as well as given names �
 them. Birth registers are public record almost everywhere; family-name frequencies almost
 nowhere.
 
-Wikidata fills in around them, unweighted, for another two dozen languages. **42 of 75
-locales carry some native name data.**
+Wikidata fills in around them, unweighted, for another two dozen languages.
 
-### The remaining 21, and why the road ends
+### The twelve that were removed rather than left empty
 
-Afrikaans, Dhivehi, Esperanto, Indonesian, Kurdish (both scripts), Mongolian, Nepali,
-Tamil, Thai, Urdu, Uzbek, Vietnamese, Yoruba, Zulu and the two Chinese locales still draw
-English given names. **Two independent research passes found no openly-licensed registry
-for any of them**, and the negatives are worth recording so nobody searches twice:
+Searching stopped finding registries long before the roster stopped having gaps, and the
+gaps were not harmless. A locale that supplies no names of its own resolves them through
+the chain, so `ta_IN` produced Tamil postcodes attached to people called Jennifer Williams
+— the exact failure the coverage gate was built to detect, arriving silently in a locale
+the caller chose *because* they wanted Tamil data.
+
+So the roster lost twelve: **af_ZA, dv, eo, ku_ckb, ku_kmr_latin, mn_MN_cyrl, ne, ta_IN,
+th, ur, uz_UZ_latin, zu_ZA**. Each was a *language root* — no same-language ancestor to
+inherit from — carrying no personal names at all. That criterion is now enforced by
+`everyLanguageRootHasNames` rather than documented, so a nameless root cannot be added
+back without the test naming it.
+
+Two things the criterion deliberately is not:
+
+- **Not volume.** `ta_IN` shipped 15,612 native values — Tamil month names, Indian cities,
+  postcodes, phone formats — and still could not name a person. Thai carried 10,581.
+  Removing them cost real data; keeping them cost the credibility of every record they
+  produced.
+- **Not thinness.** `en_US` supplies no names either and is fine, because it inherits from
+  `en`, which is its own language. Regional variants are supposed to be thin.
+
+Removing `th` orphaned `omw-th` (Thai WordNet), which no other locale used; source count
+went 49 → 48, locales 76 → 64.
+
+Five locales survive on **surnames alone** — `vi`, `zh_CN`, `zh_TW`, `id_ID`, `yo_NG` —
+and draw given names from English. That is a known wart, not a silent one: `zh_CN` renders
+`ChengAaliyah`, because the Han name pattern correctly omits the separator and the
+inherited given name is Latin script. Fixing it means either sourcing Chinese given names
+or declining to mix scripts; neither is done.
+
+### Why the road ends for the rest
+
+**Two independent research passes found no openly-licensed registry** for the languages
+above, and the negatives are worth recording so nobody searches twice:
 
 - Denmark has no bulk name dataset at all — its statistics bank exposes a per-name lookup
   and nothing to download.

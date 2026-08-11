@@ -38,7 +38,7 @@ const WORDNETS = [
   { source: 'omw-nb', locales: ['nb_NO'] },
   { source: 'omw-pl', locales: ['pl'] },
   { source: 'omw-sv', locales: ['sv'] },
-  { source: 'omw-th', locales: ['th'] },
+  // omw-th went with the `th` locale in the roster cut; no other locale used it.
 ]
 
 export const sources = WORDNETS.map((w) => w.source)
