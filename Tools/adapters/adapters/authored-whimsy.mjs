@@ -171,6 +171,14 @@ const BAND_PATTERNS = [
 ]
 
 /** Conference talks, in the shapes a real programme is full of. */
+/**
+ * Talk titles, which needed a second variable slot.
+ *
+ * The first draft was seven patterns over eighteen topics: 126 possible titles, which fails
+ * the standard the name floor sets elsewhere in this project — a two-hundred-row fixture
+ * would repeat every one of them. Composition only pays when more than one thing varies,
+ * and a template with a single slot is a list wearing a pattern's clothes.
+ */
 const TALK_PATTERNS = [
   '{{whimsy.buzz_topic}} at Scale',
   'Considered Harmful: Rethinking {{whimsy.buzz_topic}}',
@@ -179,6 +187,11 @@ const TALK_PATTERNS = [
   'Stop Doing {{whimsy.buzz_topic}}',
   'The Hidden Cost of {{whimsy.buzz_topic}}',
   '{{whimsy.buzz_topic}} Without the Tears',
+  '{{whimsy.buzz_topic}}: Lessons from {{whimsy.place}}',
+  'From {{whimsy.object}} to {{whimsy.buzz_topic}}',
+  '{{whimsy.buzz_topic}} and the {{whimsy.adjective}} {{whimsy.object}}',
+  'Why We Rewrote {{whimsy.buzz_topic}} in {{whimsy.place}}',
+  'Ten Years of {{whimsy.buzz_topic}}: A {{whimsy.adjective}} Retrospective',
 ]
 
 const BUZZ_TOPICS = [
@@ -186,6 +199,10 @@ const BUZZ_TOPICS = [
   'Schema Migrations', 'Caching', 'Retries', 'Idempotency', 'Blue-Green Deploys',
   'Distributed Tracing', 'Rate Limiting', 'Eventual Consistency', 'Circuit Breakers',
   'Immutable Infrastructure', 'Chaos Testing', 'Zero-Downtime Cutovers', 'Backpressure',
+  'Sharding', 'Message Queues', 'Config Management', 'Dependency Pinning', 'Type Safety',
+  'Code Review', 'Incident Response', 'On-Call Rotations', 'Load Shedding', 'Batch Jobs',
+  'Data Lineage', 'Access Control', 'Secret Rotation', 'Cold Starts', 'Connection Pooling',
+  'Log Aggregation', 'Canary Releases', 'Rollback Strategy', 'Test Fixtures', 'Seed Data',
 ]
 
 /**
