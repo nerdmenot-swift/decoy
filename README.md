@@ -157,12 +157,12 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
 - [x] Multi-platform package skeleton, Foundation-free core, `swiftLanguageMode(.v6)`
 - [x] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
-- [x] Adapter pipeline: 48 sources, integrity-verified, provenance per path — **no faker-js**
+- [x] Adapter pipeline: 49 sources, integrity-verified, provenance per path — **no faker-js**
 - [x] [Locale support matrix](docs/locale-support.md) — which fields each of the 64 locales
       supplies itself, and which fall through to English. Generated from the corpus and
       checked in CI, so it cannot describe a corpus that is no longer shipping.
 - [x] JSON → binary corpus format + Swift reader
-- [x] 227 generators across 21 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
+- [x] 293 generators across 28 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
 - [x] All 64 locales compile; `en`, `de`, `ja` ship as importable Swift modules
 - [x] `decoy-inspect`: enumeration, coverage, generated attribution
 - [ ] CI actually run — this repository has no remote, so every step in `ci.yml`

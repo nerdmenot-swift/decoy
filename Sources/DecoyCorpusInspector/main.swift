@@ -374,12 +374,23 @@ func coverage(_ directory: URL, against reference: String, gate: URL?, writeGate
     // library cannot disagree about what a locale's coverage is. `postcode_by_state` holds
     // one digit mask per subdivision and counting fifty-one of them as untranslated fields
     // put English that far ahead of everybody.
-    let bearsLanguage: (String) -> Bool = { !$0.hasPrefix("location.postcode_by_state.") }
-    let referencePaths = Set(try load(referenceURL).paths.map(\.path).filter(bearsLanguage))
+    //
+    // The invented namespaces are excluded for the reason argued at `bearsLanguage`: they
+    // are content this library authors in English rather than fields a locale translates,
+    // and counting them made every whimsical addition downgrade all sixty-three other
+    // locales. The count is printed rather than dropped quietly, because a denominator
+    // that silently omits a third of the corpus is how a coverage number stops meaning
+    // anything.
+    let bearsLanguage = LocaleCorpus.bearsLanguage
+    let allReference = Set(try load(referenceURL).paths.map(\.path))
+    let referencePaths = Set(allReference.filter(bearsLanguage))
+    let invented = allReference.filter(LocaleCorpus.isInvented).count
     let referenceNamespaces = Set(referencePaths.map(namespace)).sorted()
 
     print("native coverage against '\(reference)' (\(referencePaths.count) paths)")
-    print("percentages are paths a locale defines ITSELF, not what it resolves via fallback.\n")
+    print("percentages are paths a locale defines ITSELF, not what it resolves via fallback.")
+    print("\(invented) invented-namespace paths are excluded — English-only by design, "
+        + "see the matrix's 'Invented names' column.\n")
 
     let width = 14
     print("locale".padding(toLength: width, withPad: " ", startingAt: 0)
@@ -455,7 +466,7 @@ func enforce(_ baselineURL: URL, over files: [URL]) throws {
 
     var measured: [String: LocaleCoverage] = [:]
     for file in files {
-        measured[file.deletingPathExtension().lastPathComponent] = try coverage(of: try load(file))
+        measured[file.deletingPathExtension().lastPathComponent] = try coverage(of: load(file))
     }
 
     let result = compareCoverage(measured: measured, against: baseline)
@@ -489,7 +500,7 @@ func enforce(_ baselineURL: URL, over files: [URL]) throws {
 func writeBaseline(_ baselineURL: URL, over files: [URL]) throws {
     var locales: [String: LocaleCoverage] = [:]
     for file in files {
-        locales[file.deletingPathExtension().lastPathComponent] = try coverage(of: try load(file))
+        locales[file.deletingPathExtension().lastPathComponent] = try coverage(of: load(file))
     }
     let encoder = JSONEncoder()
     encoder.outputFormatting = [.prettyPrinted, .sortedKeys]

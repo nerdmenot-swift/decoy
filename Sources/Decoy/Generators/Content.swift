@@ -328,6 +328,47 @@ public struct SystemFaker {
     public mutating func semver() -> String {
         "\(faker.int(in: 0...9)).\(faker.int(in: 0...20)).\(faker.int(in: 0...30))"
     }
+
+    // MARK: - Errors
+
+    /// An error message from any layer.
+    ///
+    /// These exist because every application has an error column and nothing generates
+    /// one, so they get seeded with lorem — which tells you nothing about how the column
+    /// behaves when something 120 characters long, carrying punctuation and a quoted
+    /// identifier, actually lands in it. That shape is the whole value here.
+    public mutating func errorMessage() -> String {
+        switch faker.int(in: 0...3) {
+        case 0: return databaseError()
+        case 1: return httpError()
+        case 2: return runtimeError()
+        default: return validationError()
+        }
+    }
+
+    /// A database error, phrased the way Postgres and MySQL phrase them.
+    public mutating func databaseError() -> String {
+        faker.bothify(faker.expand(faker.require("system.error_database")))
+    }
+
+    /// An HTTP-layer failure, from the client's side of the wire.
+    public mutating func httpError() -> String {
+        faker.bothify(faker.expand(faker.require("system.error_http")))
+    }
+
+    /// A runtime failure, in the register a stack trace summary uses.
+    public mutating func runtimeError() -> String {
+        faker.bothify(faker.expand(faker.require("system.error_runtime")))
+    }
+
+    /// A validation failure, in the register a form or an API returns to a caller.
+    public mutating func validationError() -> String {
+        faker.bothify(faker.expand(faker.require("system.error_validation")))
+    }
+
+    /// The subsystem an error names — `billing`, `search-indexer`. Generic by design:
+    /// the shape of a service name anywhere, not a real product's module list.
+    public mutating func component() -> String { faker.require("system.error_component") }
 }
 
 // MARK: - Hacker, database, airline, app, team
@@ -476,6 +517,64 @@ public struct WhimsyFaker {
         guard !matching.isEmpty else { return "\(adjective()) \(animal)" }
         return "\(faker.pick(matching)) \(animal)"
     }
+
+    // MARK: - Institutions
+
+    /// A restaurant name.
+    public mutating func restaurantName() -> String {
+        faker.expand(faker.require("whimsy.restaurant_pattern"))
+    }
+
+    /// A cuisine, which is a category rather than a claim — `Lebanese` classifies a
+    /// restaurant the way `IPA` classifies a beer.
+    public mutating func cuisine() -> String { faker.require("whimsy.cuisine") }
+
+    /// A dish, as a menu writes one: a treatment, a thing, and something it sits on.
+    public mutating func dishName() -> String {
+        faker.expand(faker.require("whimsy.dish_pattern"))
+    }
+
+    /// A school name.
+    public mutating func schoolName() -> String {
+        faker.expand(faker.require("whimsy.school_pattern"))
+    }
+
+    /// An academic department, for the column a university admin system has.
+    public mutating func faculty() -> String { faker.require("whimsy.faculty") }
+
+    // MARK: - Invented people and places
+
+    /// A superhero alias.
+    ///
+    /// Composed rather than listed for the reason the whole namespace exists: a list of
+    /// real ones is a list of trademarks belonging to two companies.
+    public mutating func superheroName() -> String {
+        faker.expand(faker.require("whimsy.superhero_pattern"))
+    }
+
+    /// A superpower.
+    public mutating func superpower() -> String { faker.require("whimsy.power") }
+
+    /// A mountain, named the way a survey names one rather than the way a myth does.
+    public mutating func peakName() -> String {
+        faker.bothify(faker.expand(faker.require("whimsy.peak_pattern")))
+    }
+
+    /// A star, in the two registers astronomy uses: a catalogue designation or a
+    /// constellation-and-Bayer form.
+    public mutating func starName() -> String {
+        faker.bothify(faker.expand(faker.require("whimsy.star_pattern")))
+    }
+
+    /// Technobabble — a sentence with the shape of technical advice and no content.
+    ///
+    /// This is the one that came back from the scope cut. `hacker phrases` were excluded
+    /// because faker's were a word list nobody could account for; composed from this
+    /// project's own vocabulary there is nothing to be wrong about, because the sentence
+    /// does not mean anything.
+    public mutating func technobabble() -> String {
+        faker.expand(faker.require("whimsy.technobabble_pattern"))
+    }
 }
 
 
@@ -563,4 +662,17 @@ public struct BeverageFaker {
     public mutating func beerStyle() -> String { faker.require("beverage.beer_style") }
     public mutating func grape() -> String { faker.require("beverage.grape") }
     public mutating func ageStatement() -> String { faker.require("beverage.age_statement") }
+
+    /// A coffee, as a roaster labels one.
+    public mutating func coffee() -> String {
+        faker.expand(faker.require("beverage.coffee_pattern"))
+    }
+
+    /// A tea blend.
+    public mutating func tea() -> String {
+        faker.expand(faker.require("beverage.tea_pattern"))
+    }
+
+    public mutating func roast() -> String { faker.require("beverage.roast") }
+    public mutating func teaBase() -> String { faker.require("beverage.tea_base") }
 }

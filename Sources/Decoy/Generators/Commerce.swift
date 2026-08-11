@@ -73,6 +73,26 @@ public struct CommerceFaker {
         faker.expand(faker.require("commerce.product_description"))
     }
 
+    /// A product review.
+    ///
+    /// Weighted the way real ratings distribute rather than evenly. Review corpora are
+    /// J-shaped — mostly positive, a tail of very negative, little in between — so a
+    /// fixture that splits 50/50 makes any dashboard built on it look wrong.
+    public mutating func review() -> String {
+        faker.expand(faker.require("commerce.review_pattern"))
+    }
+
+    /// The one-line headline above a review.
+    public mutating func reviewTitle() -> String {
+        faker.expand(faker.require("commerce.review_title_pattern"))
+    }
+
+    /// What a review is about — reviews praise or fault one aspect at a time, and that
+    /// specificity is what makes the text read as real rather than generated.
+    public mutating func reviewAspect() -> String {
+        faker.require("commerce.review_aspect")
+    }
+
     /// A price as a fixed-point decimal string.
     ///
     /// Formatted by hand rather than through `String(format:)` so the core module

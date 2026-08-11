@@ -92,7 +92,7 @@ install** anywhere in the toolchain — every source, faker-js included, is a pi
 tarball fetched into the gitignored cache. The mechanism for removing a dependency on
 someone else's package should not itself require a package manager.
 
-**Built so far** — twenty-one adapters, forty-nine sources, and no faker-js:
+**Built so far** — thirty-two adapters, forty-nine sources, and no faker-js:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
@@ -555,7 +555,7 @@ All six are representable in format v2. Four are in use.
 |---|---|---|
 | Weights | A weight column alongside string tables | **In use** — faker-derived patterns, and real Census frequencies for English surnames |
 | Composite records | Heterogeneous field tuples, not parallel lists | **In use** — countries, languages, currencies |
-| Provenance | A source/license table, referenced by ID | **In use** — 48 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
+| Provenance | A source/license table, referenced by ID | **In use** — 49 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
 | Generative models | A model chunk type, not only string tables | Chunk kind reserved; nothing emits one |
 | Corpus version + compatibility | Header fields, checked on load | **In use** |
 | Cross-locale dedup | A shared string arena (21.2% redundancy measured) | **In use** |
@@ -708,8 +708,8 @@ of engineering produces it.
 ## Sequencing
 
 1. ~~Binary format with all six requirements representable~~ — **done** (format v2)
-2. ~~Core generators against the faker-derived corpus~~ — **done** (227 methods across 21
-   namespaces; 209 across 20 without Foundation, which gates the `date` namespace)
+2. ~~Core generators against the faker-derived corpus~~ — **done** (293 methods across 28
+   namespaces; 275 across 27 without Foundation, which gates the `date` namespace)
 3. ~~Corpus discoverability and coverage measurement~~ — **done** (`Corpus.paths`, `decoy-inspect`)
 4. Authoritative reference adapters replacing factual fields — **done for everything
    with a pinnable registry**. Migrated: ISO 3166-1 and 3166-2, ISO 639, ISO 4217, IANA

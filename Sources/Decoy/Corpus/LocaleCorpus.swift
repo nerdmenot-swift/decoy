@@ -155,8 +155,44 @@ public struct LocaleCorpus: Sendable {
     /// way: down for English, up for everyone else, and closer to what the reader thinks it
     /// means. The postcode feature is still measured — `location.postcode` is one path, and
     /// a locale either has its own mask or does not.
-    static func bearsLanguage(_ path: String) -> Bool {
-        !path.hasPrefix("location.postcode_by_state.")
+    ///
+    /// ## The invented namespaces, and a reversal
+    ///
+    /// `whimsy`, `sport` and `beverage` were deliberately *left in* this count when they
+    /// landed, on the reasoning that a Japanese caller reaching for a pub name really does
+    /// get English, so it should show up as a gap. The threshold moved down twice to
+    /// accommodate that, and when `system.error_*` and `commerce.review_*` arrived it would
+    /// have moved a third time — Japanese fell to 28% having lost nothing.
+    ///
+    /// That reasoning contradicted this function's own contract, which is *a field a locale
+    /// could translate*. An invented pub name is not a field anybody translates; it is
+    /// content this library authors, in English, and no registry will ever publish a
+    /// Japanese equivalent because there is nothing to publish. Counting it meant every
+    /// whimsical addition silently downgraded all sixty-three other locales, so the number
+    /// measured how much invention had been added rather than how local a locale was.
+    ///
+    /// A locale that reaches for these still gets English, and that is worth knowing — but
+    /// it belongs in the matrix, which has an `Invented names` column showing exactly one
+    /// native locale, rather than in a ratio it distorts. `decoy-inspect --coverage` prints
+    /// the excluded count so the exclusion is visible rather than silent.
+    public static func bearsLanguage(_ path: String) -> Bool {
+        if path.hasPrefix("location.postcode_by_state.") { return false }
+        return !isInvented(path)
+    }
+
+    /// Namespaces holding content Decoy invents rather than sources.
+    ///
+    /// A prefix list rather than a corpus flag because the corpus format has no room for
+    /// one without a version bump, and because the boundary is a naming decision this
+    /// project already makes: these namespaces exist precisely because no registry covers
+    /// them. Adding a namespace here is a deliberate act, and the matrix keeps the
+    /// English-only reality visible either way.
+    public static func isInvented(_ path: String) -> Bool {
+        for prefix in ["whimsy.", "sport.", "beverage.", "system.error_", "commerce.review_"]
+        where path.hasPrefix(prefix) {
+            return true
+        }
+        return false
     }
 
     /// How many paths a locale in this chain could meaningfully define. The

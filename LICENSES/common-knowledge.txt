@@ -1,0 +1,73 @@
+No licence text exists for this source, and that is a recorded conclusion
+rather than an omission.
+
+This source covers the categories every faker library ships and Decoy
+refused for months: animals, birds, dog and cat breeds, fruit and
+vegetables, cheeses, dishes, mountains, rivers, trees, flowers,
+gemstones, book titles and authors, genres, instruments, philosophers,
+scientists, composers, artists, explorers, a small set of living public
+figures, three groups of trademarked brands, and universities, football
+clubs and museums.
+
+## Why there is no grant to reproduce
+
+Nobody owns these facts. That an otter is an animal, that Kilimanjaro is
+a mountain, that Vermeer painted, that Ajax is a football club -- none of
+these is anyone's authorship, and no licence is needed to state them.
+
+What can be owned is a particular *compilation*: somebody's selection and
+arrangement of facts, which is why this project refuses Wikipedia-derived
+datasets that arrive relabelled as CC0. No such compilation was copied
+here. The lists were written from general knowledge for this project, and
+their selection and arrangement are Decoy's own, covered by the Apache
+License, Version 2.0 in LICENSE at the root of this repository.
+
+## What is being given up
+
+Every other source in this corpus is fetched from a pinned URL and
+verified against an integrity hash, so an upstream that changes silently
+fails the build. This one cannot be. There is no upstream, so there is
+nothing to hash and nothing to re-verify, and the accuracy of the content
+rests on having been written carefully rather than on having been
+checked.
+
+That is a weaker guarantee than anything else here offers, and it is the
+reason this is a separate source rather than more rows under
+`decoy-authored`. `decoy-authored` claims to be original content that
+cannot be wrong because there is no fact of the matter -- an invented pub
+name is neither correct nor incorrect. These lists are the opposite: they
+are entirely facts, so they can be wrong, and no part of this pipeline
+would notice if one were.
+
+Errors here are expected to be rare and cosmetic. They are also fixable
+in a diff, which is the same guarantee `decoy-authored` offers and a
+better one than a hash over somebody else's server.
+
+## Trademarks
+
+Camera, phone and appliance manufacturers appear by name, as do
+universities, football clubs and museums. Naming a trademark to refer to
+the thing it names is nominative use, and is not what trademark law
+restricts -- the restriction is on using a mark so as to suggest
+endorsement, sponsorship or affiliation, or to cause confusion in trade.
+A fixture generator does none of that. Decoy is not affiliated with, and
+claims no endorsement from, any organisation named in this source.
+
+## Living people
+
+`notable.actor`, `notable.musician` and `notable.athlete` name people who
+are alive. Decoy refuses rosters of real people, and declined a national
+election-candidate database on exactly that ground, so the distinction
+being drawn is worth stating.
+
+That database identifies private individuals: ordinary people, listed
+with a constituency and a party affiliation, most of whom are not public
+figures in any meaningful sense. These lists name people whose names are
+already universally known, and pair them with nothing -- no address, no
+date of birth, no employer -- so no generated record resembles a record
+*about* the person named. The lists are kept short for the same reason;
+the volume in this namespace is in the historical figures, who raise no
+such question at all.
+
+Anyone named here who would rather not be may have the entry removed on
+request.

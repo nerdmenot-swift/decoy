@@ -123,23 +123,22 @@ struct FallbackCoverageTests {
     /// The threshold is a caller's judgement rather than a quality bar, and the number
     /// here is chosen to sit below where the shipped non-English locales actually land.
     ///
-    /// It has moved down twice, and both times for the same structural reason rather than
-    /// because a locale lost anything: English-only content was added, which raises the
-    /// denominator for everybody else. The `whimsy`, `sport` and `beverage` namespaces cost
-    /// Japanese ten points on their own.
+    /// It moved down twice, both times because English-only content was added rather than
+    /// because a locale lost anything, and the third time it would have moved the reasoning
+    /// was reversed instead. `LocaleCorpus.bearsLanguage` now excludes the invented
+    /// namespaces, on the grounds that its own contract is *a field a locale could
+    /// translate* and an invented pub name is not one. Japanese went from 28% to 46%
+    /// without gaining a byte, which is the measure of how much the old denominator was
+    /// distorting.
     ///
-    /// Those paths are deliberately *not* excluded from the count, unlike the per-state
-    /// postcode masks. A postcode mask is digits and bears no language; an invented pub
-    /// name is English words, and a Japanese caller who reaches for one really does get
-    /// English. Excluding it would be choosing which English-only paths are allowed to
-    /// count, which is the tuning this comment exists to refuse.
+    /// The threshold has stayed at 0.3 since, and the value of leaving it there is that it
+    /// now means something: a locale below it really is mostly somebody else's language,
+    /// rather than mostly this library's jokes.
     ///
-    /// That band is a property of the metric as much as of the data. Coverage counts paths
-    /// with native values, and a growing share of paths are deliberately English-only --
-    /// marketing adjectives, job descriptors and department names, which no registry
-    /// publishes in any language. Every locale falls back for those by design, so no
-    /// locale but English can approach 100%, and a threshold set as though one could would
-    /// be measuring the wrong thing.
+    /// A ceiling still exists, and it is smaller than it was. Job descriptors, department
+    /// names and marketing adjectives remain English-only and still count, because those
+    /// *are* fields a locale could translate and no registry has. So no locale but English
+    /// reaches 100%, and a threshold set as though one could would still be wrong.
     @Test("a caller can assert on coverage in their own tests")
     func usableAsAnAssertion() throws {
         #expect(try DecoyLocaleJA.locale.nativeCoverage > 0.3)
