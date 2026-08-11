@@ -61,8 +61,8 @@ struct SurfaceCountTests {
         let counts = try Self.namespaceMethods()
         let total = counts.values.reduce(0, +)
 
-        // 18 namespaces and 197 methods. `DateFaker` is compiled only where Foundation
-        // is, so a build without it has 17 and 179 — both figures are in the README and
+        // 19 namespaces and 208 methods. `DateFaker` is compiled only where Foundation
+        // is, so a build without it has 18 and 190 — both figures are in the README and
         // in docs/corpus-strategy.md, and both have to move together.
         //
         // It went down rather than up for the first time when `cityPrefix()` and
@@ -73,13 +73,13 @@ struct SurfaceCountTests {
         // `stateAndPostcode()` and `placeAndPostcode()` each failed it on the way in,
         // which is the whole point.
         #expect(
-            counts.count == 18,
-            "namespaces: expected 18, found \(counts.count) — \(counts.keys.sorted())"
+            counts.count == 19,
+            "namespaces: expected 19, found \(counts.count) — \(counts.keys.sorted())"
         )
         #expect(
-            total == 197,
+            total == 208,
             """
-            generator methods: expected 197, found \(total).
+            generator methods: expected 208, found \(total).
             If that is intentional, update this literal, README.md and \
             docs/corpus-strategy.md together — they have drifted apart three times.
             Per namespace: \(counts.sorted { $0.key < $1.key })
@@ -87,7 +87,7 @@ struct SurfaceCountTests {
         )
 
         let withoutDate = total - (counts["DateFaker"] ?? 0)
-        #expect(withoutDate == 179, "without Foundation: expected 179, found \(withoutDate)")
+        #expect(withoutDate == 190, "without Foundation: expected 190, found \(withoutDate)")
     }
 
     /// The corpus suites skip rather than fail when the blobs are absent, which is right

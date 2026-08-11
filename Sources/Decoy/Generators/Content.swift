@@ -341,3 +341,98 @@ public struct DatabaseFaker {
     public mutating func engine() -> String { faker.require("database.engine") }
 }
 
+
+// MARK: - Whimsy
+
+extension Faker {
+    public var whimsy: WhimsyFaker {
+        get { WhimsyFaker(faker: self) }
+        set { self = newValue.faker }
+    }
+}
+
+/// Invented things, for the columns a schema has and no registry describes.
+///
+/// The one namespace in Decoy with nothing to verify, and it is worth being precise about
+/// why that is allowed rather than treating it as a relaxation.
+///
+/// Everywhere else, a value answers to something: a German street type is right or wrong, a
+/// Polish name frequency is right or wrong, `AG` either is Antigua's ISO code or it is not.
+/// The whole apparatus of pinned sources and integrity hashes exists so those can be
+/// checked, and the price of it is that data nobody publishes cannot ship.
+///
+/// Here there is no fact of the matter. `The Amber Cartographers` is not a correct or an
+/// incorrect band name; `Operation Silent Meridian` is not a mis-transcription of anything.
+/// No speaker can find an error, no registry can contradict it, no upstream can change
+/// underneath it. The verification machinery has nothing to bite on, and its absence
+/// therefore costs nothing.
+///
+/// That licence is narrower than "amusing content is fine". A list of real animals is a
+/// factual claim and wants a source; a list of real bands is somebody's trademark and wants
+/// a lawyer. What is free is *composition* — ordinary English words assembled by a pattern
+/// into something that did not exist before.
+public struct WhimsyFaker {
+    var faker: Faker
+
+    /// A project codename, in the military register or the shy one.
+    public mutating func codename() -> String {
+        faker.expand(faker.require("whimsy.codename_pattern"))
+    }
+
+    /// A band name.
+    public mutating func bandName() -> String {
+        faker.expand(faker.require("whimsy.band_pattern"))
+    }
+
+    /// A meeting room, named the way offices actually name them.
+    public mutating func roomName() -> String {
+        faker.expand(faker.require("whimsy.room_pattern"))
+    }
+
+    /// A conference talk title.
+    public mutating func talkTitle() -> String {
+        faker.expand(faker.require("whimsy.talk_pattern"))
+    }
+
+    /// A Wi-Fi network name.
+    ///
+    /// The one whole-string list here rather than a composition, because the humour is in
+    /// the specific pun and a generator would reproduce the shape without the joke.
+    public mutating func ssid() -> String { faker.require("whimsy.ssid") }
+
+    /// Why the incident happened, for the ticket and postmortem columns every internal
+    /// tool has. Plausible rather than absurd: a fixture that reads as obviously fake
+    /// stops being useful for judging how the column looks when it is full.
+    public mutating func excuse() -> String { faker.require("whimsy.excuse") }
+
+    public mutating func adjective() -> String { faker.require("whimsy.adjective") }
+    public mutating func creature() -> String { faker.require("whimsy.creature") }
+    public mutating func object() -> String { faker.require("whimsy.object") }
+    public mutating func place() -> String { faker.require("whimsy.place") }
+
+    /// An alliterative release name, in the manner of `Feral Falcon`.
+    ///
+    /// The alliteration is the point, and it is a property of this function rather than of
+    /// any list: a creature is drawn first, then an adjective sharing its initial. That
+    /// ordering matters — drawing the adjective first and hunting for a creature to match
+    /// fails on the letters with no creature at all, where this way every creature has at
+    /// least one adjective waiting.
+    ///
+    /// Falls back to an unmatched pair rather than trapping. A letter with no adjective is
+    /// a gap in two authored lists, not a reason to crash somebody's fixture run, and
+    /// `Feral Wombat` is a worse release name rather than a wrong one.
+    public mutating func releaseName() -> String {
+        let animal = creature()
+        guard let initial = animal.first,
+            let pool = faker.locale.strings("whimsy.adjective")
+        else { return "\(adjective()) \(animal)" }
+
+        var matching: [String] = []
+        for index in 0..<pool.count {
+            guard let word = try? pool.string(at: index) else { continue }
+            if word.first == initial { matching.append(word) }
+        }
+        guard !matching.isEmpty else { return "\(adjective()) \(animal)" }
+        return "\(faker.pick(matching)) \(animal)"
+    }
+}
