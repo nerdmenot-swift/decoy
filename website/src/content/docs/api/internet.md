@@ -14,25 +14,25 @@ faker.internet.domainSuffix()
 
 | Method | Example output |
 |---|---|
-| `domainSuffix()` | `luxe`<br />`grainger`<br />`nba` |
-| `domainWord()` | `stewart`<br />`gray`<br />`kim` |
-| `domainName()` | `currie.tk`<br />`owen.gy`<br />`abbott.cd` |
-| `url(secure: Bool = true)` | `https://stephens.football`<br />`https://worthy.xn--gckr3f0f`<br />`https://alva.schmidt` |
-| `email(firstName: String? = nil, lastName: String? = nil, domain: String? = nil)` | `theodore.mello@example.com`<br />`river.spruill@example.net`<br />`melanie.sinclair@example.com` |
-| `freeEmail()` | `sandra.barker@icloud.com`<br />`brittney.guion@hotmail.com`<br />`charles.graves@yahoo.com` |
-| `username()` | `sandra4634`<br />`jenette9014`<br />`jeffrey4295` |
-| `password(length: Int = 16)` | `49$$IFtIxmJm1Nn3`<br />`o2pi*w*yYXHuu8Gr`<br />`Jue1hyyYhw1Gr2T%` |
-| `ipv4()` | `89.193.159.167`<br />`128.57.79.114`<br />`72.199.164.222` |
-| `ipv6()` | `86fc:e26a:9646:a9b0:ec74:87e6:9f3e:c44e`<br />`8067:8d7a:84c4:0fc7:a12d:4e96:450f:8300`<br />`2cca:f346:2290:08b6:7fac:a0c2:f962:088e` |
-| `macAddress()` | `f9:4d:b9:1c:70:be`<br />`4e:cc:e7:81:54:61`<br />`4f:1d:fe:ff:58:4e` |
-| `port()` | `34724`<br />`53189`<br />`8949` |
-| `httpMethod()` | `DELETE`<br />`OPTIONS`<br />`DELETE` |
-| `gamertag()` | `ForgetfulCrooning3967`<br />`GoneRatafia849`<br />`RopyEmbassy8667` |
-| `httpStatusCode(_ category: HTTPStatusCategory? = nil)` | `505`<br />`500`<br />`207` |
-| `userAgent()` | `Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/198.0.0.0 Sa`<br />`Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) V`<br />`Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like G` |
-| `jwtAlgorithm()` | `Ed25519`<br />`PS256`<br />`RS256` |
-| `emoji(_ category: String? = nil)` | `🥌`<br />`✋🏼`<br />`👉🏿` |
-| `hexColor()` | `#8cc026`<br />`#02c490`<br />`#1eca6d` |
+| `domainSuffix()` | `sharp`<br />`cbn`<br />`se` |
+| `domainWord()` | `biermann`<br />`dodd`<br />`browning` |
+| `domainName()` | `flynn.tci`<br />`chinchilla.bz`<br />`ash.travel` |
+| `url(secure: Bool = true)` | `https://welborn.events`<br />`https://smith.theatre`<br />`https://hunter.allfinanz` |
+| `email(firstName: String? = nil, lastName: String? = nil, domain: String? = nil)` | `angelo.diaz@example.com`<br />`todd.leon@example.net`<br />`margaret.kaul@example.net` |
+| `freeEmail()` | `richard.hudson@outlook.com`<br />`brad.tarango@gmail.com`<br />`kasey.stinnett@hotmail.com` |
+| `username()` | `gary2059`<br />`katelyn272`<br />`austin2290` |
+| `password(length: Int = 16)` | `nIMLiXH4*7C2WF&K`<br />`y8#d^xfxwr$kt#Of`<br />`L!H&aYjW6hBd4Wdg` |
+| `ipv4()` | `66.99.201.75`<br />`164.72.138.73`<br />`125.152.232.233` |
+| `ipv6()` | `70b6:7f19:9a5f:b091:c141:5e75:f138:99fa`<br />`d578:a4c1:0a15:81f2:06cf:649b:0896:289d`<br />`3310:c757:07df:3b05:2980:5f4d:ba59:1426` |
+| `macAddress()` | `27:3c:09:85:32:f2`<br />`b0:75:8c:0f:b9:83`<br />`8b:00:fe:ae:78:f4` |
+| `port()` | `1099`<br />`5570`<br />`3537` |
+| `httpMethod()` | `POST`<br />`DELETE`<br />`HEAD` |
+| `gamertag()` | `UnadjustedSpear8870`<br />`GushingParty`<br />`PluralTelepathist67` |
+| `httpStatusCode(_ category: HTTPStatusCategory? = nil)` | `416`<br />`302`<br />`200` |
+| `userAgent()` | `Mozilla/5.0 (iPhone; CPU iPhone OS 11_9 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like G`<br />`Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like G`<br />`Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) V` |
+| `jwtAlgorithm()` | `ES256`<br />`A192KW`<br />`ECDH-ES+A192KW` |
+| `emoji(_ category: String? = nil)` | `🎿`<br />`🌑`<br />`🔸` |
+| `hexColor()` | `#d10490`<br />`#acf399`<br />`#9ed2ce` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

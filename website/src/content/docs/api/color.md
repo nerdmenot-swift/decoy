@@ -14,11 +14,11 @@ faker.color.human()
 
 | Method | Example output |
 |---|---|
-| `human()` | `pink`<br />`brown`<br />`thistle` |
-| `space()` | `RGB`<br />`LAB`<br />`HSV` |
-| `hex()` | `#077866`<br />`#3eb9a0`<br />`#821fe8` |
-| `rgb()` | `(red: 92, green: 66, blue: 34)`<br />`(red: 61, green: 141, blue: 85)`<br />`(red: 9, green: 206, blue: 8)` |
-| `cssRGB()` | `rgb(27, 13, 167)`<br />`rgb(7, 37, 48)`<br />`rgb(235, 32, 93)` |
+| `human()` | `coral`<br />`maroon`<br />`salmon` |
+| `space()` | `YIQ`<br />`HSB`<br />`LCH` |
+| `hex()` | `#96b4e7`<br />`#942f00`<br />`#418566` |
+| `rgb()` | `(red: 177, green: 113, blue: 196)`<br />`(red: 216, green: 231, blue: 0)`<br />`(red: 54, green: 133, blue: 251)` |
+| `cssRGB()` | `rgb(248, 139, 3)`<br />`rgb(16, 115, 9)`<br />`rgb(117, 138, 135)` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

@@ -18,16 +18,16 @@ faker.media.bookTitle()
 
 | Method | Example output |
 |---|---|
-| `bookTitle()` | `David Copperfield`<br />`Walden`<br />`The Adventures of Tom Sawyer` |
-| `bookAuthor()` | `Sophocles`<br />`Mikhail Bulgakov`<br />`Mikhail Bulgakov` |
-| `bookGenre()` | `Gothic`<br />`Reference`<br />`Utopian` |
-| `filmGenre()` | `War`<br />`Science Fiction`<br />`Mockumentary` |
-| `musicGenre()` | `Bhangra`<br />`Progressive Rock`<br />`Baroque` |
-| `instrument()` | `French Horn`<br />`Balalaika`<br />`Double Bass` |
-| `filmTitle()` | `The Maltese Falcon`<br />`Apocalypse Now`<br />`Cinema Paradiso` |
-| `songTitle()` | `Purple Rain`<br />`Giant Steps`<br />`My Favourite Things` |
-| `artMovement()` | `Suprematism`<br />`Neoclassicism`<br />`Impressionism` |
-| `book()` | `(title: "David Copperfield", author: "Victor Hugo", genre: "Drama")`<br />`(title: "Twenty Thousand Leagues Under the Sea", author: "Emily Dickinson", genre: "Autobi`<br />`(title: "The Metamorphosis", author: "Joseph Conrad", genre: "Poetry")` |
+| `bookTitle()` | `The House of Mirth`<br />`Dead Souls`<br />`The Mill on the Floss` |
+| `bookAuthor()` | `Victor Hugo`<br />`Franz Kafka`<br />`Laurence Sterne` |
+| `bookGenre()` | `Thriller`<br />`Popular Science`<br />`Detective Fiction` |
+| `filmGenre()` | `Road Movie`<br />`Neo-Noir`<br />`Coming-of-Age` |
+| `musicGenre()` | `Salsa`<br />`Samba`<br />`Soca` |
+| `instrument()` | `Oud`<br />`Concertina`<br />`Accordion` |
+| `filmTitle()` | `Tokyo Story`<br />`Fitzcarraldo`<br />`Taxi Driver` |
+| `songTitle()` | `Greensleeves`<br />`Canon in D`<br />`Hey Jude` |
+| `artMovement()` | `Mannerism`<br />`Suprematism`<br />`Early Renaissance` |
+| `book()` | `(title: "Mansfield Park", author: "Henry James", genre: "Horror")`<br />`(title: "The Scarlet Letter", author: "Johann Wolfgang von Goethe", genre: "Western")`<br />`(title: "Twenty Thousand Leagues Under the Sea", author: "Franz Kafka", genre: "Philosophy` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

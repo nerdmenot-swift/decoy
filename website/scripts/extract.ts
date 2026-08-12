@@ -91,6 +91,23 @@ func s<T>(_ v: T) -> String {
     return String(describing: v)
 }
 func mk(_ seed: UInt64) -> Faker { Faker(seed: seed, locale: load("en", ["en", "base"])) }
+
+/// Up to three *distinct* values, where the pool allows it.
+///
+/// Three consecutive seeds and whatever falls out put visible duplicates through the whole
+/// reference -- firstName() showing "Mary, Mary, Janet" reads as a bug rather than as a
+/// small pool. Fewer than three is returned honestly when the pool really is that small,
+/// which is information rather than an omission.
+func distinct(_ seed: UInt64, _ body: (inout Faker) -> String) -> [String] {
+    var out: [String] = []
+    for k in 0..<24 {
+        var f = mk(seed &+ UInt64(k))
+        let v = body(&f)
+        if !out.contains(v) { out.append(v) }
+        if out.count == 3 { break }
+    }
+    return out
+}
 var api: [String: [String]] = [:]
 ${probes}
 
@@ -143,9 +160,9 @@ do {
 struct Prov: Encodable { let path: String, source: String, license: String, version: String, retrieved: String }
 var prov: [String: [String: Prov]] = [:]
 let COLUMNS = [
-    ("name", "person.last_name.generic"), ("city", "location.city_name"),
-    ("company", "company.name_pattern"), ("job", "person.job_title"),
-    ("phone", "phone_number.format.national"),
+    ("name", "person.last_name.generic"), ("address", "location.street_address.normal"),
+    ("city", "location.city_name"), ("company", "company.name_pattern"),
+    ("job", "person.job_title"), ("phone", "phone_number.format.national"),
 ]
 
 func provenance(_ loc: LocaleCorpus) -> [String: Prov] {
@@ -186,11 +203,11 @@ let probeSeed = 1000
 const probes = surface
   .filter((m) => m.callable)
   .map((m) => {
-    const lines = [`api["${key(m)}"] = []`]
-    for (let i = 0; i < 3; i++)
-      lines.push(`api["${key(m)}"]?.append(s({ var f = mk(${probeSeed + i}); return ${call(m)} }()))`)
-    probeSeed += 3
-    return lines.join('\n')
+    const line = `api["${key(m)}"] = distinct(${probeSeed}) { f in s(${call(m)}) }`
+    // Stride wider than the three values wanted, so the dedup window of one generator
+    // cannot overlap the seeds of the next.
+    probeSeed += 24
+    return line
   })
   .join('\n')
 writeFileSync(join(tmp, 'Sources', 'extract', 'main.swift'), SWIFT(locales, probes))
@@ -213,7 +230,6 @@ const json = await $`swift run -c release --package-path ${tmp} extract`.quiet()
 
 mkdirSync(OUT, { recursive: true })
 const payload = JSON.parse(json)
-writeFileSync(join(OUT, 'samples.json'), JSON.stringify(payload, null, 2))
 console.log(
   `  extract: ${Object.keys(payload.locales).length} locales × 3 seeds, ` +
     `${Object.keys(payload.fun).length} whimsy generators`
@@ -403,6 +419,11 @@ publisher.
 
 function writeMatrix() {
   const md = readFileSync(join(REPO, 'docs', 'locale-support.md'), 'utf8')
+  const table = md.slice(md.indexOf('| Locale |'))
+  // Data rows only: the header and its separator both start with a pipe too.
+  const locales = table
+    .split('\n')
+    .filter((l) => l.startsWith('|') && !/^\|\s*(Locale|[-: ]+\|)/.test(l)).length
   writeFileSync(join(DOCS, 'reference', 'locale-matrix.md'),
 `---
 title: Locale matrix
@@ -417,16 +438,31 @@ generates English.
 
 Check this before picking a locale. Generated from the compiled corpus and diffed in CI.
 
-${md.slice(md.indexOf('| Locale |'))}
+${table}
 
 The last two columns are English-only by design and excluded from coverage percentages.
 They are shown because a caller reaching for an animal name really does get English.
 `)
+  return locales
 }
 
 const apiStats = writeApiPages(payload.api ?? {})
 const srcCount = writeSources()
-writeMatrix()
+const localeCount = writeMatrix()
+
+// The counts ship as data rather than as prose anybody has to remember to update. Three
+// different generator totals were live on the site at once -- 319 on the reference index,
+// 316 in the landing page headline, 315 in the README -- because each was typed by hand
+// at a different time. `api` alone cannot supply it: it holds only the methods that
+// produced a sample, so counting its keys silently understates the library by however many
+// generators take required arguments.
+payload.stats = {
+  generators: apiStats.total,
+  namespaces: apiStats.count,
+  sources: srcCount,
+  locales: localeCount,
+}
+writeFileSync(join(OUT, 'samples.json'), JSON.stringify(payload, null, 2))
 console.log(
   `  extract: ${apiStats.total} methods / ${apiStats.count} namespaces, ` +
     `${srcCount} sources, matrix`

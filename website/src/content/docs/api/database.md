@@ -14,10 +14,10 @@ faker.database.column()
 
 | Method | Example output |
 |---|---|
-| `column()` | `first_name`<br />`title`<br />`first_name` |
-| `type()` | `text`<br />`date`<br />`date` |
-| `collation()` | `cp1250_general_ci`<br />`utf8mb4_bin`<br />`utf8mb4_unicode_ci` |
-| `engine()` | `CSV`<br />`CSV`<br />`MyISAM` |
+| `column()` | `updated_at`<br />`title`<br />`phone` |
+| `type()` | `json`<br />`datetime`<br />`float` |
+| `collation()` | `utf8mb4_general_ci`<br />`utf8mb4_bin`<br />`cp1250_general_ci` |
+| `engine()` | `ARCHIVE`<br />`BLACKHOLE`<br />`MEMORY` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

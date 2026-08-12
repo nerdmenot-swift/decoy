@@ -18,18 +18,18 @@ faker.beverage.beer()
 
 | Method | Example output |
 |---|---|
-| `beer()` | `Copper Nightjar Wheat Beer`<br />`Sable Marmot Stout`<br />`Immense Kingfisher Stout` |
-| `brewery()` | `Escarpment Brewing Co.`<br />`Gecko & Sons`<br />`The Sable Lantern Brewery` |
-| `whisky()` | `Glen Basin 18 Year Old`<br />`Tapir's Reserve Single Cask`<br />`Reef 12 Year Old` |
-| `wine()` | `Hollow Thicket Sangiovese`<br />`Escarpment Estate Riesling`<br />`Falcon Ridge Chardonnay` |
-| `cocktail()` | `The Spindle Sour`<br />`The Hedgehog`<br />`The Ermine` |
-| `beerStyle()` | `Dubbel`<br />`Pilsner`<br />`Lager` |
-| `grape()` | `Riesling`<br />`Chardonnay`<br />`Nebbiolo` |
-| `ageStatement()` | `Sherry Finish`<br />`12 Year Old`<br />`Single Cask` |
-| `coffee()` | `Ledger Washed`<br />`Patient Lagoon Medium Roast`<br />`The Twilight Gecko Anaerobic` |
-| `tea()` | `Earnest Causeway White Tea`<br />`Delta Morning Yerba Mate`<br />`Noble Magpie Green Tea` |
-| `roast()` | `Natural`<br />`Medium Roast`<br />`Decaf` |
-| `teaBase()` | `Green Tea`<br />`White Tea`<br />`Herbal Infusion` |
+| `beer()` | `Auburn Osprey Tripel`<br />`Jovial Umbrette Barleywine`<br />`Lucid Sturgeon Helles` |
+| `brewery()` | `Kestrel & Sons`<br />`The Idle Ledger Brewery`<br />`Cairn Brewing Co.` |
+| `whisky()` | `Glen Shoal Small Batch`<br />`Glen Basin 21 Year Old`<br />`Glen Delta Single Cask` |
+| `wine()` | `Hedgehog Ridge Cabernet Sauvignon`<br />`Egret Ridge Viognier`<br />`Quarry Estate Cabernet Sauvignon` |
+| `cocktail()` | `Jovial Estuary`<br />`The Iguana`<br />`Keen Reef` |
+| `beerStyle()` | `Dubbel`<br />`Pale Ale`<br />`Lager` |
+| `grape()` | `Sangiovese`<br />`Tempranillo`<br />`Chardonnay` |
+| `ageStatement()` | `18 Year Old`<br />`12 Year Old`<br />`Single Cask` |
+| `coffee()` | `The Muted Curlew Honey Process`<br />`Meridian Medium Roast`<br />`Distant Reef Anaerobic` |
+| `tea()` | `Ledger Matcha`<br />`Turnstile Pu-erh`<br />`Rampart Matcha` |
+| `roast()` | `Medium Roast`<br />`Light Roast`<br />`Honey Process` |
+| `teaBase()` | `Yerba Mate`<br />`Green Tea`<br />`Chai` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

@@ -14,10 +14,10 @@ faker.uuid()
 
 | Method | Example output |
 |---|---|
-| `uuid()` | `eb6a6fd6-05d6-453d-a6eb-d48076ce3e82`<br />`ab5a3b0d-bab0-4af6-bbe6-f3452720d6b2`<br />`27bfeebf-cf1d-4ec5-ada6-efff31e66950` |
-| `uuidV7()` | `019b76da-a800-768b-a223-5f6fda903906`<br />`019b76da-a800-7694-8fba-93eaadd1a4b2`<br />`019b76da-a800-703e-a2dc-de948b884ad2` |
-| `uuidValue()` | `50C8E69F-C66F-4243-9A01-34B1782C6885`<br />`8D57A623-CB45-4F9A-9082-52F467F6F7F2`<br />`AD74D664-F78F-4EEF-BC75-B3E8BB70B9CA` |
-| `uuidV7Value()` | `019B76DA-A800-7A99-B971-EBB58D4B802A`<br />`019B76DA-A800-7EB8-B694-29574F80CC17`<br />`019B76DA-A800-7290-8320-BC6C758B81D9` |
+| `uuid()` | `cc8e8d7f-f107-4a5d-bf16-6b2e923176db`<br />`ccb7306f-587b-4529-af92-fc138f1ba1bd`<br />`ba3f622b-8fa2-46f3-b8b7-26442a72554b` |
+| `uuidV7()` | `019b76da-a800-78f2-b293-39eb48164c49`<br />`019b76da-a800-7ee1-8a0e-29bf82a037a9`<br />`019b76da-a800-7adc-b9f6-a8e4e3bb95e6` |
+| `uuidValue()` | `0CDB0C65-0415-46E1-A051-67F797EEEF2E`<br />`47850383-CE48-4C7A-9CE3-AF9D86E0F315`<br />`0C94AA11-F3F8-4272-B5FA-14DC33A397F1` |
+| `uuidV7Value()` | `019B76DA-A800-7600-91AD-A5ABA65F2402`<br />`019B76DA-A800-77C6-B1F7-4FB38EF95763`<br />`019B76DA-A800-78F2-9527-A1A1F599292E` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

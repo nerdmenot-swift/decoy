@@ -18,17 +18,17 @@ faker.food.fruit()
 
 | Method | Example output |
 |---|---|
-| `fruit()` | `Melon`<br />`Mandarin`<br />`Greengage` |
-| `vegetable()` | `Beef Tomato`<br />`Sweetcorn`<br />`Yam` |
-| `herbOrSpice()` | `Chilli Flakes`<br />`Turmeric`<br />`Long Pepper` |
-| `cheese()` | `Havarti`<br />`Manchego`<br />`Livarot` |
-| `dish()` | `Injera`<br />`Bigos`<br />`Soba` |
-| `dessert()` | `Canelé`<br />`Pavlova`<br />`Profiterole` |
-| `grainOrPulse()` | `Oats`<br />`Spelt`<br />`Split Pea` |
-| `nutOrSeed()` | `Sesame Seed`<br />`Pumpkin Seed`<br />`Peanut` |
-| `seafood()` | `Spider Crab`<br />`Razor Clam`<br />`Cockle` |
-| `bread()` | `Injera`<br />`Naan`<br />`Barbari` |
-| `ingredient()` | `Mussel`<br />`Satsuma`<br />`Brazil Nut` |
+| `fruit()` | `Banana`<br />`Mulberry`<br />`Mandarin` |
+| `vegetable()` | `Artichoke`<br />`Iceberg Lettuce`<br />`Romanesco` |
+| `herbOrSpice()` | `Smoked Paprika`<br />`Basil`<br />`Nutmeg` |
+| `cheese()` | `Paneer`<br />`Cottage Cheese`<br />`Emmental` |
+| `dish()` | `Saltimbocca`<br />`Osso Buco`<br />`Tom Yum` |
+| `dessert()` | `Granita`<br />`Bread and Butter Pudding`<br />`Pastel de Nata` |
+| `grainOrPulse()` | `Rye`<br />`Sorghum`<br />`Mung Bean` |
+| `nutOrSeed()` | `Almond`<br />`Hazelnut`<br />`Chia Seed` |
+| `seafood()` | `Prawn`<br />`Brown Crab`<br />`Clam` |
+| `bread()` | `Cottage Loaf`<br />`Paratha`<br />`Chapati` |
+| `ingredient()` | `Hemp Seed`<br />`Brie`<br />`Lotus Root` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

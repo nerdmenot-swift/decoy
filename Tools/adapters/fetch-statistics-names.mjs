@@ -34,7 +34,7 @@ import { fileURLToPath } from 'node:url'
 
 const here = dirname(fileURLToPath(import.meta.url))
 
-const AGENT = 'DecoyCorpusBuild/1.0 (https://github.com/NerdMeNot/decoy)'
+const AGENT = 'DecoyCorpusBuild/1.0 (https://github.com/nerdmenot-swift/decoy)'
 
 /** The most recent year each source publishes, asked for explicitly so a re-run is stable. */
 const NORWAY_YEAR = '2025'

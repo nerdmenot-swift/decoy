@@ -14,19 +14,19 @@ faker.finance.accountType()
 
 | Method | Example output |
 |---|---|
-| `accountType()` | `Auto Loan`<br />`Investment`<br />`Savings` |
-| `transactionType()` | `withdrawal`<br />`payment`<br />`deposit` |
-| `transactionDescription()` | `invoice transaction at Spencer corp. using card ending with 9665 for 994.89`<br />`deposit transaction at Elliott-Cruz using card ending with 3314 for 796.48`<br />`payment transaction at Pittman, Henn and Barboza using card ending with 6866 for 331.78` |
-| `accountNumber(digits: Int = 8)` | `96070510`<br />`33224553`<br />`59326041` |
-| `routingNumber()` | `0918`<br />`0724`<br />`0113` |
-| `currency()` | `["code": "TOP", "name": "Tongan Paʻanga", "numericCode": "776", "symbol": "TOP"]`<br />`["code": "STN", "name": "São Tomé & Príncipe Dobra", "numericCode": "930", "symbol": "STN"`<br />`["code": "CUP", "name": "Cuban Peso", "numericCode": "192", "symbol": "CUP"]` |
-| `currencyName()` | `Japanese Yen`<br />`Qatari Riyal`<br />`Swedish Krona` |
-| `currencyCode()` | `HTG`<br />`DOP`<br />`HTG` |
-| `currencySymbol()` | `KGS`<br />`CUP`<br />`HNL` |
-| `creditCardNumber(issuer: String? = nil)` | `6504313472756266`<br />`361014942847`<br />`3519564758117413` |
-| `iban(country: String = "GB")` | `GB88RBKT99449561959272`<br />`GB61YTYM61964652991849`<br />`GB06ZMJO57342059846302` |
-| `bitcoinAddress()` | `15Tf6qujaZgtt8ydJ9hujxUbyVzhscssTM`<br />`1CF5UrdM9R51yx276fxkqQ14vUheLCqfSk`<br />`1JYCRgP1rB8F67f469hDqfm1y6dMmaacvR` |
-| `ein()` | `85-7822253`<br />`38-7806802`<br />`90-3294207` |
+| `accountType()` | `Home Loan`<br />`Credit Card`<br />`Investment` |
+| `transactionType()` | `invoice`<br />`withdrawal`<br />`payment` |
+| `transactionDescription()` | `deposit transaction at Reed PLLC using card ending with 4982 for 241.40`<br />`deposit transaction at Mcdowell CORP using card ending with 6734 for 115.65`<br />`deposit transaction at Battle, Wilder and Gosselin using card ending with 2996 for 295.45` |
+| `accountNumber(digits: Int = 8)` | `73788508`<br />`89595393`<br />`82885223` |
+| `routingNumber()` | `0514`<br />`0650`<br />`1010` |
+| `currency()` | `["code": "VUV", "name": "Vanuatu Vatu", "numericCode": "548", "symbol": "VUV"]`<br />`["code": "AZN", "name": "Azerbaijani Manat", "numericCode": "944", "symbol": "AZN"]`<br />`["code": "FJD", "name": "Fijian Dollar", "numericCode": "242", "symbol": "FJD"]` |
+| `currencyName()` | `New Zealand Dollar`<br />`Liberian Dollar`<br />`Omani Rial` |
+| `currencyCode()` | `XAF`<br />`LBP`<br />`EUR` |
+| `currencySymbol()` | `CFPF`<br />`MAD`<br />`LKR` |
+| `creditCardNumber(issuer: String? = nil)` | `6586093369993658`<br />`341011644098118`<br />`3014753238920` |
+| `iban(country: String = "GB")` | `GB14OFCI94368810097049`<br />`GB63NOZG46701700074781`<br />`GB27IOUT34909215275068` |
+| `bitcoinAddress()` | `1JYzRY6zjJHXqQpybZGW6rxozC8PkJegmM`<br />`1BbDTEFyHn9TFcXd1yJzscMfzCijWE8Y3q`<br />`1H3nJpNKAydjNuw5JqXziuie9QJz2ugtnJ` |
+| `ein()` | `23-7010264`<br />`81-8772345`<br />`03-3126324` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

@@ -16,16 +16,16 @@ everyone's fixtures.
 | `cbs-shemot` | [השמות הנוכחיים של ילידי 1949-2024 (הלשכה המרכזית לסטטיסטיקה)](https://www.cbs.gov.il/he/mediarelease/Pages/2025/391.aspx) | `LicenseRef-DataGovIL-1.0` | 2026-08-10 |
 | `cities-json` | [cities.json 1.1.61 (GeoNames-derived)](https://github.com/lutangar/cities.json) | `CC-BY-4.0` | 2026-08-07 |
 | `cldr-48` | [Unicode CLDR 48.2.0](https://github.com/unicode-org/cldr-json) | `Unicode-3.0` | 2026-08-06 |
-| `common-knowledge` | [Widely-known facts, recorded without a single citable registry](https://github.com/NerdMeNot/decoy) | `public-facts` | 2026-08-12 |
-| `decoy-authored` | [Decoy's own data](https://github.com/NerdMeNot/decoy) | `Apache-2.0` | 2026-08-09 |
-| `dvv-etunimet` | [Etunimitilasto (Digi- ja väestötietovirasto), Finland](https://www.avoindata.fi/data/fi/dataset/none) | `CC-BY-4.0` | 2026-08-10 |
+| `common-knowledge` | [Widely-known facts, recorded without a single citable registry](https://github.com/nerdmenot-swift/decoy) | `public-facts` | 2026-08-12 |
+| `decoy-authored` | [Decoy's own data](https://github.com/nerdmenot-swift/decoy) | `Apache-2.0` | 2026-08-09 |
+| `dvv-etunimet` | [Etunimitilasto (Digi- ja väestötietovirasto), Finland](https://avoindata.suomi.fi/data/fi/dataset/none) | `CC-BY-4.0` | 2026-08-10 |
 | `gender-by-name` | [Gender by Name (UCI Machine Learning Repository)](https://archive.ics.uci.edu/dataset/591/gender+by+name) | `CC-BY-4.0` | 2026-08-09 |
 | `gleif-elf` | [ISO 20275 Entity Legal Forms code list (GLEIF), version 1.6](https://www.gleif.org/en/about-lei/code-lists/iso-20275-entity-legal-forms-code-list) | `public-facts` | 2026-08-10 |
 | `iana-http-status` | [IANA HTTP Status Code Registry](https://www.iana.org/assignments/http-status-codes) | `public-facts` | 2026-08-09 |
 | `iana-jose` | [IANA JSON Object Signing and Encryption (JOSE) Algorithms](https://www.iana.org/assignments/jose) | `public-facts` | 2026-08-09 |
 | `iana-tld` | [IANA Root Zone Database](https://www.iana.org/domains/root/db) | `public-facts` | 2026-08-08 |
 | `iana-tzdb` | [IANA Time Zone Database 2026b](https://www.iana.org/time-zones) | `public-domain` | 2026-08-06 |
-| `ine-nombres` | [Nombres por edad media (Instituto Nacional de Estadística), census 01/01/2025](https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177009) | `CC-BY-4.0` | 2026-08-10 |
+| `ine-nombres` | [Nombres por edad media (Instituto Nacional de Estadística), census 01/01/2025](https://www.ine.es/daco/daco42/nombyapel/nombyapel2.htm) | `CC-BY-4.0` | 2026-08-10 |
 | `insee-prenoms` | [INSEE — Fichier des prénoms depuis 1900](https://www.insee.fr/fr/statistiques/7633685) | `LicenseRef-EtalabOpenLicence-2.0` | 2026-08-09 |
 | `iso-4217-six` | [ISO 4217 currency list (SIX Group), published 2026-01-01](https://www.six-group.com/en/products-services/financial-information/data-standards.html) | `public-facts` | 2026-08-06 |
 | `ldnoobw` | [List of Dirty, Naughty, Obscene and Otherwise Bad Words](https://github.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words) | `CC-BY-4.0` | 2026-08-09 |
@@ -53,7 +53,7 @@ everyone's fixtures.
 | `ons-baby-names` | [Baby names in England and Wales 1996 to 2025 (Office for National Statistics)](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/livebirths/datasets/babynamesinenglandandwalesfrom1996) | `LicenseRef-OGL-3.0` | 2026-08-10 |
 | `pesel-imiona` | [Lista imion występujących w rejestrze PESEL (Ministerstwo Cyfryzacji)](https://dane.gov.pl/pl/dataset/1667) | `CC0-1.0` | 2026-08-10 |
 | `pubchem` | [PubChem periodic table (NCBI/NIH)](https://pubchem.ncbi.nlm.nih.gov/periodic-table/) | `public-domain` | 2026-08-07 |
-| `scb-namn` | [Namn med minst två bärare (Statistiska centralbyrån), 31 december 2022](https://www.scb.se/hitta-statistik/statistik-efter-amne/befolkning/amnesovergripande-statistik/namnstatistik/) | `CC-BY-4.0` | 2026-08-10 |
+| `scb-namn` | [Namn med minst två bärare (Statistiska centralbyrån), 31 december 2022](https://www.scb.se/hitta-statistik/statistik-efter-amne/befolkning-och-levnadsforhallanden/ovrigt/namnstatistik/) | `CC-BY-4.0` | 2026-08-10 |
 | `ssb-fornavn` | [Navn, etter fornavn (Statistisk sentralbyrå), table 10501](https://www.ssb.no/statbank/table/10501) | `CC-BY-4.0` | 2026-08-10 |
 | `surs-imena` | [Prva imena (Statistični urad Republike Slovenije), tables 05X1005S and 05X1010S](https://pxweb.stat.si/SiStat/en/Podrocja/Index/100/prebivalstvo) | `CC-BY-4.0` | 2026-08-10 |
 | `unicode-emoji` | [Unicode Emoji 16.0 (emoji-test.txt)](https://www.unicode.org/Public/emoji/16.0/) | `Unicode-3.0` | 2026-08-08 |

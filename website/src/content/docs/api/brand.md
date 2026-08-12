@@ -18,14 +18,14 @@ faker.brand.camera()
 
 | Method | Example output |
 |---|---|
-| `camera()` | `Polaroid`<br />`OM System`<br />`Lomography` |
-| `phone()` | `Oppo`<br />`Tecno`<br />`Google` |
-| `appliance()` | `De’Longhi`<br />`Indesit`<br />`Hotpoint` |
-| `watch()` | `TAG Heuer`<br />`Omega`<br />`Breguet` |
-| `fashion()` | `Fendi`<br />`Yohji Yamamoto`<br />`Paul Smith` |
-| `sportswear()` | `Salewa`<br />`Berghaus`<br />`Hoka` |
-| `motorcycle()` | `Suzuki`<br />`Hero`<br />`Aprilia` |
-| `car()` | `McLaren`<br />`Chevrolet`<br />`Mazda` |
+| `camera()` | `Kodak`<br />`Lomography`<br />`Phase One` |
+| `phone()` | `Huawei`<br />`Xiaomi`<br />`Sony` |
+| `appliance()` | `Siemens`<br />`Miele`<br />`Sage` |
+| `watch()` | `Grand Seiko`<br />`Patek Philippe`<br />`Breitling` |
+| `fashion()` | `Calvin Klein`<br />`Valentino`<br />`Louis Vuitton` |
+| `sportswear()` | `Hoka`<br />`Le Coq Sportif`<br />`Nike` |
+| `motorcycle()` | `Kawasaki`<br />`Norton`<br />`Aprilia` |
+| `car()` | `Toyota`<br />`Hyundai`<br />`Rolls-Royce` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

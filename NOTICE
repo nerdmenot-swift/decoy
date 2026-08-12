@@ -26,7 +26,7 @@ Apache-2.0
 ----------
   decoy-authored — version 1, retrieved 2026-08-09
     Copyright 2026 Srinivas Iyer
-    https://github.com/NerdMeNot/decoy
+    https://github.com/nerdmenot-swift/decoy
     Full licence: LICENSES/decoy-authored.txt
   libaddressinput — version 81eb962, retrieved 2026-08-09
     Copyright 2014 Google Inc.
@@ -74,7 +74,7 @@ CC-BY-4.0
     Full licence: LICENSES/cities-json.txt
   dvv-etunimet — version 2026-08-04, retrieved 2026-08-10
     Digi- ja väestötietovirasto (DVV), Finland
-    https://www.avoindata.fi/data/fi/dataset/none
+    https://avoindata.suomi.fi/data/fi/dataset/none
     Full licence: LICENSES/dvv-etunimet.txt
   gender-by-name — version 591, retrieved 2026-08-09
     Copyright the dataset's contributors, via the UCI Machine Learning Repository
@@ -82,7 +82,7 @@ CC-BY-4.0
     Full licence: LICENSES/gender-by-name.txt
   ine-nombres — version 2025-01-01, retrieved 2026-08-10
     Instituto Nacional de Estadística (INE), Spain
-    https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177009
+    https://www.ine.es/daco/daco42/nombyapel/nombyapel2.htm
     Full licence: LICENSES/ine-nombres.txt
   ldnoobw — version 5faf2ba, retrieved 2026-08-09
     Copyright Shutterstock, Inc.
@@ -94,7 +94,7 @@ CC-BY-4.0
     Full licence: LICENSES/onet.txt
   scb-namn — version 2022-12-31, retrieved 2026-08-10
     Statistiska centralbyrån (SCB), Sweden
-    https://www.scb.se/hitta-statistik/statistik-efter-amne/befolkning/amnesovergripande-statistik/namnstatistik/
+    https://www.scb.se/hitta-statistik/statistik-efter-amne/befolkning-och-levnadsforhallanden/ovrigt/namnstatistik/
     Full licence: LICENSES/scb-namn.txt
   ssb-fornavn — version 2025, retrieved 2026-08-10
     Statistisk sentralbyrå (SSB), Norway
@@ -262,7 +262,7 @@ public-domain
 public-facts
 ------------
   common-knowledge — version 1, retrieved 2026-08-12
-    https://github.com/NerdMeNot/decoy
+    https://github.com/nerdmenot-swift/decoy
     Full licence: LICENSES/common-knowledge.txt
   gleif-elf — version 1.6, retrieved 2026-08-10
     https://www.gleif.org/en/about-lei/code-lists/iso-20275-entity-legal-forms-code-list

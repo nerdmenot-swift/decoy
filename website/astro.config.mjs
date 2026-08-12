@@ -36,9 +36,9 @@ export default defineConfig({
         PageTitle: './src/components/PageTitle.astro',
       },
       social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/NerdMeNot/decoy' },
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/nerdmenot-swift/decoy' },
       ],
-      editLink: { baseUrl: 'https://github.com/NerdMeNot/decoy/edit/main/website/' },
+      editLink: { baseUrl: 'https://github.com/nerdmenot-swift/decoy/edit/main/website/' },
       lastUpdated: true,
       pagination: true,
       head: [

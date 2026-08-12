@@ -79,7 +79,7 @@ b.person.fullName()   // "Penny Syverson"
 
 That guarantee holds against **a corpus version**. Adding data is a minor bump; changing
 or removing an existing value is a major one, because it silently changes every fixture
-anyone has already generated. See [Determinism](/ideas/determinism/).
+anyone has already generated. See [the corpus version](/guides/seeds/#the-corpus-version).
 
 ## Rows that agree with themselves
 
@@ -101,8 +101,7 @@ let state = faker.location.stateRow()
 ```
 
 `city()` and `state()` stay independent, because most rows want one or the other and
-pairing them would halve the variety for no benefit. [Coherent
-records](/ideas/coherence/) explains where the line is.
+pairing them would halve the variety for no benefit. [Forges](/guides/forges/) is where you compose a row that has to agree with itself.
 
 ## Another language
 

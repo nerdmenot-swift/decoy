@@ -35,7 +35,7 @@ import { fileURLToPath } from 'node:url'
 const here = dirname(fileURLToPath(import.meta.url))
 
 const ENDPOINT = 'https://query.wikidata.org/sparql'
-const AGENT = 'DecoyCorpusBuild/1.0 (https://github.com/NerdMeNot/decoy)'
+const AGENT = 'DecoyCorpusBuild/1.0 (https://github.com/nerdmenot-swift/decoy)'
 
 /** Wikidata classes for the three things wanted. */
 const CLASSES = {

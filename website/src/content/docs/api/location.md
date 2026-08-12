@@ -15,34 +15,34 @@ faker.location.buildingNumber()
 | Method | Example output |
 |---|---|
 | `buildingNumber()` | `16`<br />`2581`<br />`72` |
-| `streetSuffix()` | `Station`<br />`Fork`<br />`Rapid` |
-| `streetName()` | `Billie Freeway`<br />`Mary Run`<br />`Strandberg Freeway` |
-| `streetAddress(full: Bool = false)` | `281 Jacklyn Port`<br />`50 Sargent Plain`<br />`385 Backus Landing` |
-| `secondaryAddress()` | `Flat 7`<br />`Floor 0`<br />`Flat 9` |
-| `city()` | `Bangor`<br />`Wabasha`<br />`Cheektowaga` |
-| `place()` | `["city": "Salida", "state": "California", "state_code": "CA"]`<br />`["city": "West Bishop", "state": "California", "state_code": "CA"]`<br />`["city": "Fox Chase", "state": "Pennsylvania", "state_code": "PA"]` |
-| `placeAndPostcode()` | `(city: "Tuckahoe", state: "New York", stateCode: "NY", postcode: "10537")`<br />`(city: "Chevy Chase", state: "Maryland", stateCode: "MD", postcode: "21717")`<br />`(city: "Greenville", state: "Alabama", stateCode: "AL", postcode: "36455")` |
-| `county()` | `Iroquois County`<br />`Nottoway County`<br />`Issaquena County` |
-| `stateRow()` | `["abbr": "IA", "name": "Iowa"]`<br />`["abbr": "MI", "name": "Michigan"]`<br />`["abbr": "NV", "name": "Nevada"]` |
-| `state()` | `Connecticut`<br />`Montana`<br />`Michigan` |
-| `stateAbbreviation()` | `PA`<br />`WA`<br />`KY` |
-| `country()` | `Curaçao`<br />`Brunei`<br />`Togo` |
-| `continent()` | `Antarctica`<br />`Asia`<br />`Asia` |
-| `timeZone()` | `Pacific/Tarawa`<br />`America/Vancouver`<br />`America/Yakutat` |
-| `postcode()` | `02310`<br />`25552`<br />`70177` |
-| `postcode(state abbreviation: String?)` | `02310`<br />`25552`<br />`70177` |
-| `stateAndPostcode()` | `(state: "Indiana", abbr: "IN", postcode: "46678")`<br />`(state: "Oklahoma", abbr: "OK", postcode: "73939")`<br />`(state: "South Dakota", abbr: "SD", postcode: "57721")` |
-| `postalAddress()` | `Austin Castanon 30 Nicholas Walk Corry Florida 18167`<br />`Robert Goff 88983 Washington Underpass Dodson Branch Hawaii 34743`<br />`Karrie Sanders 18537 Wood Hill Suffield Depot Arizona 87567` |
-| `countryCode()` | `["alpha2": "CH", "alpha3": "CHE", "numeric": "756"]`<br />`["alpha2": "MS", "alpha3": "MSR", "numeric": "500"]`<br />`["alpha2": "MN", "alpha3": "MNG", "numeric": "496"]` |
-| `countryCodeAlpha2()` | `YU`<br />`TP`<br />`AN` |
-| `countryCodeAlpha3()` | `SUR`<br />`ARM`<br />`PER` |
-| `language()` | `["alpha2": "en", "alpha3": "eng", "name": "English"]`<br />`["alpha2": "ga", "alpha3": "gle", "name": "Irish"]`<br />`["alpha2": "tn", "alpha3": "tsn", "name": "Tswana"]` |
-| `direction(abbreviated: Bool = false)` | `Southeast`<br />`East`<br />`East` |
-| `cardinalDirection(abbreviated: Bool = false)` | `West`<br />`South`<br />`North` |
-| `ordinalDirection(abbreviated: Bool = false)` | `Southwest`<br />`Southeast`<br />`Southeast` |
-| `latitude()` | `-16.3815`<br />`25.4694`<br />`51.6109` |
-| `longitude()` | `37.2465`<br />`-93.5617`<br />`6.2004` |
-| `coordinate(near origin: (latitude: Double, longitude: Double)? = nil, radiusKm: Double = 10)` | `(latitude: 11.7424, longitude: -147.2878)`<br />`(latitude: 13.0647, longitude: -123.1048)`<br />`(latitude: -29.4436, longitude: 129.7897)` |
+| `streetSuffix()` | `Lock`<br />`Prairie`<br />`Fort` |
+| `streetName()` | `Rice Skyway`<br />`Jane Way`<br />`Donald Estate` |
+| `streetAddress(full: Bool = false)` | `537 Richard Crest`<br />`21544 Budnick Expressway`<br />`47 Sara Green` |
+| `secondaryAddress()` | `Apt. 111`<br />`Flat 9`<br />`Apt. 631` |
+| `city()` | `Parklane`<br />`Choteau`<br />`Talladega` |
+| `place()` | `["city": "Old Saybrook", "state": "Connecticut", "state_code": "CT"]`<br />`["city": "Washington Terrace", "state": "Utah", "state_code": "UT"]`<br />`["city": "Colonie", "state": "New York", "state_code": "NY"]` |
+| `placeAndPostcode()` | `(city: "First Mesa", state: "Arizona", stateCode: "AZ", postcode: "85537")`<br />`(city: "Richmond West", state: "Florida", stateCode: "FL", postcode: "34632")`<br />`(city: "Seneca", state: "Missouri", stateCode: "MO", postcode: "65088")` |
+| `county()` | `Leflore County`<br />`Saratoga County`<br />`Campbell County` |
+| `stateRow()` | `["abbr": "IN", "name": "Indiana"]`<br />`["abbr": "AR", "name": "Arkansas"]`<br />`["abbr": "MD", "name": "Maryland"]` |
+| `state()` | `Michigan`<br />`Maine`<br />`South Dakota` |
+| `stateAbbreviation()` | `PA`<br />`ND`<br />`MA` |
+| `country()` | `Uzbekistan`<br />`Anguilla`<br />`Portugal` |
+| `continent()` | `Oceania`<br />`Africa`<br />`Europe` |
+| `timeZone()` | `Africa/Tripoli`<br />`Asia/Tehran`<br />`America/Hermosillo` |
+| `postcode()` | `08122`<br />`47986`<br />`70561` |
+| `postcode(state abbreviation: String?)` | `08122`<br />`47986`<br />`70561` |
+| `stateAndPostcode()` | `(state: "Oregon", abbr: "OR", postcode: "97689")`<br />`(state: "Illinois", abbr: "IL", postcode: "61925")`<br />`(state: "Wisconsin", abbr: "WI", postcode: "54802")` |
+| `postalAddress()` | `Annie Webb 532 Burns Rapid Olla Texas 91031`<br />`Paul Garcia 15 Haines Crest Fair Oaks Ranch Idaho 83874`<br />`Logan Ross 54670 Vanessa Lodge Westchase Colorado 97010` |
+| `countryCode()` | `["alpha2": "CH", "alpha3": "CHE", "numeric": "756"]`<br />`["alpha2": "KG", "alpha3": "KGZ", "numeric": "417"]`<br />`["alpha2": "KZ", "alpha3": "KAZ", "numeric": "398"]` |
+| `countryCodeAlpha2()` | `LI`<br />`GQ`<br />`AZ` |
+| `countryCodeAlpha3()` | `SGS`<br />`DNK`<br />`ATA` |
+| `language()` | `["alpha2": "es", "alpha3": "spa", "name": "Spanish"]`<br />`["alpha2": "bn", "alpha3": "ben", "name": "Bangla"]`<br />`["alpha2": "tk", "alpha3": "tuk", "name": "Turkmen"]` |
+| `direction(abbreviated: Bool = false)` | `North`<br />`Southeast`<br />`Northwest` |
+| `cardinalDirection(abbreviated: Bool = false)` | `North`<br />`South`<br />`East` |
+| `ordinalDirection(abbreviated: Bool = false)` | `Northeast`<br />`Southeast`<br />`Southwest` |
+| `latitude()` | `40.244`<br />`29.6633`<br />`84.0251` |
+| `longitude()` | `3.2718`<br />`128.548`<br />`-131.0444` |
+| `coordinate(near origin: (latitude: Double, longitude: Double)? = nil, radiusKm: Double = 10)` | `(latitude: 67.3302, longitude: 16.9603)`<br />`(latitude: 83.9858, longitude: -152.6476)`<br />`(latitude: -60.516, longitude: -85.948)` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

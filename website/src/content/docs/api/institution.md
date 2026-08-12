@@ -18,11 +18,11 @@ faker.institution.university()
 
 | Method | Example output |
 |---|---|
-| `university()` | `American University of Beirut`<br />`Leiden University`<br />`Hebrew University of Jerusalem` |
-| `footballClub()` | `Rosenborg`<br />`Gent`<br />`West Ham United` |
-| `museum()` | `Albertina`<br />`Mori Art Museum`<br />`National Palace Museum` |
-| `newspaper()` | `South China Morning Post`<br />`The Hindu`<br />`The Economist` |
-| `orchestra()` | `Staatskapelle Dresden`<br />`City of Birmingham Symphony Orchestra`<br />`Czech Philharmonic` |
+| `university()` | `University of Oslo`<br />`University of Auckland`<br />`Imperial College London` |
+| `footballClub()` | `Bayern Munich`<br />`Flamengo`<br />`San Lorenzo` |
+| `museum()` | `Pergamon Museum`<br />`Tokyo National Museum`<br />`Mori Art Museum` |
+| `newspaper()` | `The Globe and Mail`<br />`The Guardian`<br />`Die Zeit` |
+| `orchestra()` | `Orchestra of the Age of Enlightenment`<br />`Budapest Festival Orchestra`<br />`Bournemouth Symphony Orchestra` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

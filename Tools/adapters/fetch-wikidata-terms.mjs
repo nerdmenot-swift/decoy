@@ -33,7 +33,7 @@ import { fileURLToPath } from 'node:url'
 const here = dirname(fileURLToPath(import.meta.url))
 
 const ENDPOINT = 'https://query.wikidata.org/sparql'
-const AGENT = 'DecoyCorpusBuild/1.0 (https://github.com/NerdMeNot/decoy)'
+const AGENT = 'DecoyCorpusBuild/1.0 (https://github.com/nerdmenot-swift/decoy)'
 
 /**
  * The concept sets, each either an explicit member list or a class to enumerate.

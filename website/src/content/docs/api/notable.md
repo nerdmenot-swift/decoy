@@ -18,18 +18,18 @@ faker.notable.philosopher()
 
 | Method | Example output |
 |---|---|
-| `philosopher()` | `Baruch Spinoza`<br />`Anaxagoras`<br />`Plato` |
-| `scientist()` | `Carl Linnaeus`<br />`Alexander Fleming`<br />`Emmy Noether` |
-| `composer()` | `Bedřich Smetana`<br />`Anton Webern`<br />`Carl Maria von Weber` |
-| `artist()` | `Wassily Kandinsky`<br />`Jean-Auguste-Dominique Ingres`<br />`Raphael` |
-| `explorer()` | `Edmund Hillary`<br />`John Hanning Speke`<br />`Ibn Battuta` |
-| `mathematician()` | `Alexander Grothendieck`<br />`Johann Bernoulli`<br />`Richard Dedekind` |
-| `inventor()` | `Gottlieb Daimler`<br />`Willis Carrier`<br />`Heinrich Hertz` |
-| `architect()` | `Charles Rennie Mackintosh`<br />`Francesco Borromini`<br />`Rem Koolhaas` |
-| `actor()` | `Julianne Moore`<br />`Daniel Day-Lewis`<br />`Idris Elba` |
-| `musician()` | `Paul Simon`<br />`Leonard Cohen`<br />`Luciano Pavarotti` |
-| `athlete()` | `Olga Korbut`<br />`Katie Ledecky`<br />`Mark Spitz` |
-| `historicalFigure()` | `Apollonius of Perga`<br />`Edward Jenner`<br />`Charles Gounod` |
+| `philosopher()` | `Confucius`<br />`Jürgen Habermas`<br />`Johann Gottlieb Fichte` |
+| `scientist()` | `Rachel Carson`<br />`Tycho Brahe`<br />`Marie Curie` |
+| `composer()` | `Richard Strauss`<br />`Gustav Mahler`<br />`Giuseppe Verdi` |
+| `artist()` | `Pablo Picasso`<br />`Sesshū Tōyō`<br />`Bartolomé Esteban Murillo` |
+| `explorer()` | `Francis Drake`<br />`Alexander von Humboldt`<br />`Jean-François de La Pérouse` |
+| `mathematician()` | `André Weil`<br />`Sofia Kovalevskaya`<br />`Leonardo Fibonacci` |
+| `inventor()` | `Robert Fulton`<br />`Chester Carlson`<br />`Robert Noyce` |
+| `architect()` | `Frank Lloyd Wright`<br />`Jørn Utzon`<br />`Donato Bramante` |
+| `actor()` | `Riz Ahmed`<br />`Isabelle Huppert`<br />`Naomie Harris` |
+| `musician()` | `David Bowie`<br />`Caetano Veloso`<br />`Peter Gabriel` |
+| `athlete()` | `Katie Ledecky`<br />`Muhammad Ali`<br />`Fanny Blankers-Koen` |
+| `historicalFigure()` | `Claude Monet`<br />`Georges Seurat`<br />`Alexander Graham Bell` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

@@ -14,24 +14,24 @@ faker.date.past()
 
 | Method | Example output |
 |---|---|
-| `past(years: Double = 1)` | `2025-12-29 09:39:18 +0000`<br />`2025-06-26 07:29:11 +0000`<br />`2025-10-17 19:25:52 +0000` |
-| `future(years: Double = 1)` | `2026-11-05 05:09:40 +0000`<br />`2026-10-30 17:43:03 +0000`<br />`2026-09-17 07:55:17 +0000` |
-| `recent(days: Int = 1)` | `2025-12-31 04:18:07 +0000`<br />`2025-12-31 01:33:35 +0000`<br />`2025-12-31 17:23:12 +0000` |
-| `soon(days: Int = 1)` | `2026-01-01 20:48:03 +0000`<br />`2026-01-01 11:26:03 +0000`<br />`2026-01-01 08:52:43 +0000` |
+| `past(years: Double = 1)` | `2025-07-29 10:07:16 +0000`<br />`2025-08-27 00:56:41 +0000`<br />`2025-11-27 03:22:28 +0000` |
+| `future(years: Double = 1)` | `2026-10-09 12:08:10 +0000`<br />`2026-02-13 00:57:11 +0000`<br />`2026-07-19 19:39:27 +0000` |
+| `recent(days: Int = 1)` | `2025-12-31 02:42:08 +0000`<br />`2025-12-31 05:34:29 +0000`<br />`2025-12-31 21:10:28 +0000` |
+| `soon(days: Int = 1)` | `2026-01-01 17:50:28 +0000`<br />`2026-01-01 10:45:21 +0000`<br />`2026-01-01 12:42:22 +0000` |
 | `between(_ start: Date, _ end: Date)` | _needs arguments_ |
-| `birthdate(minAge: Int = 18, maxAge: Int = 80)` | `1960-10-25 09:24:34 +0000`<br />`1978-01-13 15:56:39 +0000`<br />`1978-12-25 23:15:26 +0000` |
-| `monthName(abbreviated: Bool = false)` | `October`<br />`October`<br />`December` |
-| `weekdayName(abbreviated: Bool = false)` | `Wednesday`<br />`Sunday`<br />`Friday` |
-| `timeZone()` | `Pacific/Noumea`<br />`America/Port-au-Prince`<br />`Asia/Bishkek` |
-| `year(in range: ClosedRange<Int>? = nil)` | `2020`<br />`2011`<br />`2004` |
-| `month()` | `8`<br />`11`<br />`7` |
-| `dayOfMonth()` | `16`<br />`8`<br />`11` |
-| `dayOfWeek()` | `4`<br />`5`<br />`3` |
-| `hour()` | `23`<br />`8`<br />`18` |
-| `minute()` | `5`<br />`46`<br />`49` |
-| `amPm()` | `AM`<br />`PM`<br />`PM` |
-| `unix(years: Double = 30)` | `952071975`<br />`1317911448`<br />`1433892168` |
-| `century()` | `II`<br />`XVI`<br />`XII` |
+| `birthdate(minAge: Int = 18, maxAge: Int = 80)` | `1960-07-27 01:33:31 +0000`<br />`1972-10-01 21:24:23 +0000`<br />`1996-12-03 09:53:27 +0000` |
+| `monthName(abbreviated: Bool = false)` | `September`<br />`November`<br />`June` |
+| `weekdayName(abbreviated: Bool = false)` | `Wednesday`<br />`Friday`<br />`Thursday` |
+| `timeZone()` | `Asia/Manila`<br />`Asia/Riyadh`<br />`Europe/Simferopol` |
+| `year(in range: ClosedRange<Int>? = nil)` | `1955`<br />`1988`<br />`1964` |
+| `month()` | `5`<br />`7`<br />`9` |
+| `dayOfMonth()` | `26`<br />`7`<br />`2` |
+| `dayOfWeek()` | `3`<br />`2`<br />`5` |
+| `hour()` | `5`<br />`23`<br />`3` |
+| `minute()` | `52`<br />`41`<br />`56` |
+| `amPm()` | `PM`<br />`AM` |
+| `unix(years: Double = 30)` | `1164549670`<br />`1358519491`<br />`877448296` |
+| `century()` | `VI`<br />`XVII`<br />`XII` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

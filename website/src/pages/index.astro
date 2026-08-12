@@ -25,7 +25,34 @@ const LOCALES: Record<string, string> = {
   ja: 'Japanese', ru: 'Russian', pl: 'Polish', tr: 'Turkish', he: 'Hebrew',
   zh_CN: 'Chinese', vi: 'Vietnamese',
 }
-const COLUMNS = ['name', 'city', 'company', 'job', 'phone'] as const
+/** The register's columns.
+ *
+ * `address` earns its place: it is the column that proves the claim underneath the table,
+ * because the shape moves rather than the vocabulary — `56 Williams Well` in English,
+ * `Mariastellaweg 9` in German, `2丁目19番9号` in Japanese. It was being extracted and
+ * then not shown, so the page asserted something it was already holding the evidence for.
+ *
+ * `job` came out to make room. It is the one column identical in every locale, which is
+ * true and worth knowing but is the locale matrix's job, not this table's.
+ */
+const COLUMNS = ['name', 'address', 'city', 'company', 'phone'] as const
+
+/** Generated values that no source could own, for the section that says so. */
+const SPECIMENS: [string, string][] = [
+  ['whimsy.pubName', 'pubName'],
+  ['whimsy.bandName', 'bandName'],
+  ['whimsy.codename', 'codename'],
+  ['whimsy.superheroName', 'superheroName'],
+  ['beverage.beer', 'beer'],
+  ['sport.club', 'club'],
+  ['whimsy.ssid', 'ssid'],
+  ['whimsy.boardGame', 'boardGame'],
+]
+const LONG_SPECIMENS: [string, string][] = [
+  ['whimsy.talkTitle', 'talkTitle'],
+  ['whimsy.technobabble', 'technobabble'],
+  ['system.databaseError', 'databaseError'],
+]
 
 /** Namespaces, with a line each and the methods worth leading with. */
 const NAMESPACES: [string, string, string[]][] = [
@@ -73,7 +100,53 @@ const cards = NAMESPACES.map(([ns, blurb, methods]) => ({
     .filter((x) => x.values.length),
 }))
 
-const totalMethods = Object.keys(api).length
+/** Counts, read out of the build rather than typed.
+ *
+ * Three different generator totals were live on the site at once — 319 on the reference
+ * index, 316 in this page's headline, 315 in the README — because each was written by hand
+ * at a different time. The headline had the smallest of them: `Object.keys(api).length`
+ * counts only the generators that produced a sample, so every generator taking a required
+ * argument was quietly missing from the number.
+ *
+ * The locale count was wrong for a different reason. Sixty-four `.decoy` files ship, but
+ * one is `base` — the language-neutral data every chain ends at, and not a locale anybody
+ * can generate a person from. Sixty-three is the number that means something.
+ */
+const stats = samples.stats as {
+  generators: number
+  namespaces: number
+  sources: number
+  locales: number
+}
+const fun = samples.fun as Record<string, string[]>
+
+/** The rail is two columns, so its row count and any filler follow from the roster size.
+ *
+ * Both were hardcoded to 15, which happened to be right for 29 namespaces and left one
+ * empty cell painted in the divider colour — a visible grey notch in the corner of the
+ * grid. Adding a thirtieth namespace would have silently started a third column. */
+const railRows = Math.ceil(cards.length / 2)
+const railFillers = railRows * 2 - cards.length
+
+/** The hero's example output, read from the same extraction as everything else.
+ *
+ * These five comments were typed by hand, so they drifted from what the library returns
+ * the moment sampling changed — on a page whose claim is that nothing on it is written by
+ * hand, in the first code block anybody reads. */
+const HERO_CALLS = [
+  ['faker.person.fullName()', 'person.fullName'],
+  ['faker.location.streetAddress()', 'location.streetAddress'],
+  ['faker.company.name()', 'company.name'],
+  ['faker.internet.email()', 'internet.email'],
+  ['faker.person.jobTitle()', 'person.jobTitle'],
+] as const
+// The gutter is part of the padding rather than a literal space in the markup: JSX strips
+// a space sitting between an expression and the next element, so the longest line — the one
+// that sets the column — lost its gap and ran straight into its own comment.
+const heroWidth = Math.max(...HERO_CALLS.map(([call]) => call.length)) + 1
+const heroLines = HERO_CALLS.map(
+  ([call, path]) => [call.padEnd(heroWidth), `// "${api[path]?.[0] ?? ''}"`] as const
+)
 ---
 
 <html lang="en" data-theme="light">
@@ -83,7 +156,7 @@ const totalMethods = Object.keys(api).length
     <title>Decoy — seeded fake data for Swift</title>
     <meta
       name="description"
-      content="319 generators across 29 namespaces and 64 locales. Seeded, so the same number gives the same rows every time — and every value can name the source it came from."
+      content={`${stats.generators} generators across ${stats.namespaces} namespaces and ${stats.locales} locales. Seeded, so the same number gives the same rows every time — and every value can name the source it came from.`}
     />
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/icon-32.png" sizes="32x32" />
@@ -108,7 +181,7 @@ const totalMethods = Object.keys(api).length
         <a href="/start/install/">Install</a>
         <a href="/start/cheatsheet/">Cheatsheet</a>
         <a href="/api/">Generators</a>
-        <a href="https://github.com/NerdMeNot/decoy">GitHub</a>
+        <a href="https://github.com/nerdmenot-swift/decoy">GitHub</a>
         <ThemeToggle />
       </nav>
     </header>
@@ -119,8 +192,9 @@ const totalMethods = Object.keys(api).length
           <p class="doc-label">Swift 6 · Apache-2.0 · no dependencies</p>
           <h1>Fake data you can<br />generate twice.</h1>
           <p class="voice">
-            {totalMethods} generators across 29 namespaces and 64 locales. Pick a number
-            and you get the same people every time — on any machine, on any day.
+            {stats.generators} generators across {stats.namespaces} namespaces and{' '}
+            {stats.locales} locales. Pick a number and you get the same people every time —
+            on any machine, on any day.
           </p>
           <div class="cta">
             <a class="btn" href="/start/quick-start/">Quick start</a>
@@ -136,64 +210,34 @@ const totalMethods = Object.keys(api).length
 <span class="k">import</span> DecoyLocaleEN
 
 <span class="k">var</span> faker = Faker(seed: <span class="n">1337</span>, locale: DecoyLocaleEN.locale)
-
-faker.person.fullName()        <span class="c">// "Riley Bonneau"</span>
-faker.location.streetAddress() <span class="c">// "12289 Seaman Divide"</span>
-faker.company.name()           <span class="c">// "Crosslin inc."</span>
-faker.internet.email()         <span class="c">// "david.paul@example.net"</span>
-faker.person.jobTitle()        <span class="c">// "Implemented frame Designer"</span></code></pre>
+{'\n'}{heroLines.map(([call, out]) => (
+  <Fragment>{call}<span class="c">{out}</span>{'\n'}</Fragment>
+))}</code></pre>
         </div>
       </section>
 
-      <!-- The breadth, which is what somebody evaluating the library is really asking
-           about. Every value in every card was generated during this build. -->
-      <section class="reg">
-        <p class="doc-label">Everything it generates</p>
-        <h2>{totalMethods} generators</h2>
-        <p class="voice">
-          Pick a namespace to see real output, or open its page for every method it has.
-        </p>
-        <!-- Two panes rather than a grid of cards over a floating panel. The panel was
-             sticky at the top of the viewport while the card that drove it could be most
-             of a screen below, so the output changed where nobody was looking; and it grew
-             and shrank with each namespace, shunting the whole page. Here the roster sits
-             beside its own output at a fixed height, so choosing is a local act and nothing
-             below ever moves. -->
-        <div class="browser">
-          <div class="rail">
-            {cards.map((c, i) => (
-              <button
-                class:list={['rail-item', { on: i === 0 }]}
-                data-ns={c.ns}
-                aria-pressed={i === 0 ? 'true' : 'false'}
-              >
-                <code>{c.ns}</code><span class="rail-n">{c.count}</span>
-              </button>
-            ))}
-          </div>
-          <div class="pane">
-            <div class="pane-head">
-              <code id="pane-ns">faker.person</code>
-              <span id="pane-blurb">Names, honorifics, jobs</span>
-              <a id="pane-link" href="/api/person/">all 19 &rarr;</a>
-            </div>
-            <dl id="pane-body"></dl>
-          </div>
-        </div>
-      </section>
-
-      <!-- Kept because it is the one thing here nobody else has: every column able to
-           name the source it came from. -->
+      <!-- The two paragraphs are two columns because they describe the two controls
+           directly beneath them: one knob for which people you get, one for what shape
+           they take. The locale claim used to trail the table in grey, which put the
+           assertion after its own evidence and at the smallest size on the page. -->
       <section class="reg">
         <p class="doc-label">The same number, the same people</p>
-        <h2>What a seed is</h2>
-        <p class="voice">
-          A <strong>seed</strong> is just a number you choose. Decoy's randomness is
-          deterministic, so the same number always makes the same choices — seed 1337
-          gives you these six people today, next year, on your laptop and in CI. Change
-          the number, get a different six. That is what makes generated fixtures safe to
-          rely on.
-        </p>
+        <h2>Two knobs</h2>
+        <div class="knobs">
+          <p>
+            A <strong>seed</strong> is just a number you choose. Decoy's randomness is
+            deterministic, so the same number always makes the same choices — seed 1337
+            gives you these six people today, next year, on your laptop and in CI. Change
+            the number, get a different six. That is what makes generated fixtures safe to
+            rely on.
+          </p>
+          <p>
+            A <strong>locale</strong> changes the shape, not just the vocabulary. Watch the
+            address column: English puts the number first, German puts it last, Japanese
+            uses no spaces at all. Some locales fall back to English for some fields — the{' '}
+            <a href="/reference/locale-matrix/">locale matrix</a> says exactly which.
+          </p>
+        </div>
 
         <div class="rig">
           <span class="rig-label">seed</span>
@@ -206,7 +250,6 @@ faker.person.jobTitle()        <span class="c">// "Implemented frame Designer"</
             label="Locale"
             options={Object.entries(LOCALES).map(([value, label]) => ({ value, label, hint: value }))}
           />
-          <span class="rig-hint">click a row to see where each value came from</span>
         </div>
 
         <div class="sheet-wrap">
@@ -218,48 +261,132 @@ faker.person.jobTitle()        <span class="c">// "Implemented frame Designer"</
           </table>
         </div>
 
+        <p class="sheet-hint">
+          Click any row — every value can name the licensed source it was drawn from.
+        </p>
+
         <div class="stamp" id="stamp" hidden>
           <span class="stamp-head">where these came from</span>
           <dl id="stamp-body"></dl>
         </div>
+      </section>
 
-        <p class="caption">
-          Switch the locale and the shape changes, not just the words — German addresses
-          put the number last, Japanese names have no space. Some locales fall back to
-          English for names; the <a href="/reference/locale-matrix/">locale matrix</a>
-          says which.
+      <!-- The breadth, which is what somebody evaluating the library is really asking
+           about. Every value in every pane was generated during this build. -->
+      <section class="reg">
+        <p class="doc-label">Everything it generates</p>
+        <h2>{stats.generators} generators</h2>
+        <p class="voice">
+          Pick a namespace to see real output, or open its page for every method it has.
         </p>
+        <!-- Two panes rather than a grid of cards over a floating panel. The panel was
+             sticky at the top of the viewport while the card that drove it could be most
+             of a screen below, so the output changed where nobody was looking; and it grew
+             and shrank with each namespace, shunting the whole page. Here the roster sits
+             beside its own output at a fixed height, so choosing is a local act and nothing
+             below ever moves. -->
+        <div class="browser" style={`--rail-rows: ${railRows}`}>
+          <div class="rail">
+            {cards.map((c, i) => (
+              <button
+                class:list={['rail-item', { on: i === 0 }]}
+                data-ns={c.ns}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+              >
+                <code>{c.ns}</code><span class="rail-n">{c.count}</span>
+              </button>
+            ))}
+            {Array.from({ length: railFillers }, () => (
+              <span class="rail-item rail-fill" aria-hidden="true"></span>
+            ))}
+          </div>
+          <div class="pane">
+            <div class="pane-head">
+              <code id="pane-ns">faker.person</code>
+              <span id="pane-blurb">Names, honorifics, jobs</span>
+              <a id="pane-link" href="/api/person/">all 17 &rarr;</a>
+            </div>
+            <dl id="pane-body"></dl>
+          </div>
+        </div>
+      </section>
+
+      <!-- The distinction the rest of the page cannot make: everything above is drawn from
+           a licensed, pinned list and can name it. These are built from patterns instead,
+           so no real pub, band or person is being named. Both are honest; they are honest
+           about different things, and the difference is the reason the corpus records
+           provenance at all. -->
+      <section class="reg reg-invented">
+        <p class="doc-label">Invented, not sourced</p>
+        <h2>Nobody owns these</h2>
+        <p class="voice">
+          Some namespaces are assembled from patterns rather than drawn from a real-world
+          list, so the output is plausible without belonging to anyone. There is no pub
+          called The Gecko &amp; Atlas. That is the point: a fixture, a screenshot or a demo
+          can use these without naming a business that has to live with it.
+        </p>
+
+        <div class="specimens">
+          {SPECIMENS.map(([label, k]) => (
+            <div class="spec">
+              <code>{label}()</code>
+              <ul>{fun[k]?.slice(0, 4).map((v) => <li>{v}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+        <div class="specimens specimens-long">
+          {LONG_SPECIMENS.map(([label, k]) => (
+            <div class="spec">
+              <code>{label}()</code>
+              <ul>{fun[k]?.slice(0, 2).map((v) => <li>{v}</li>)}</ul>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section class="reg">
         <div class="ends">
-          <div>
+          <a class="end" href="/guides/seeding-a-database/">
             <h3>Seed a database</h3>
-            <p>A million coherent rows, split across tasks or resumed after a failure.</p>
-            <a href="/guides/seeding-a-database/">Guide &rarr;</a>
-          </div>
-          <div>
+            <p>
+              A million coherent rows. Rows are independent, so a run splits across tasks
+              and resumes after a failure at the row it stopped on.
+            </p>
+            <span class="end-go">Guide &rarr;</span>
+          </a>
+          <a class="end" href="/guides/testing/">
             <h3>Use it in tests</h3>
-            <p>Reproducible fixtures without making your suite flaky.</p>
-            <a href="/guides/testing/">Guide &rarr;</a>
-          </div>
-          <div>
+            <p>
+              Fixtures that read like real records and never change under you. When one
+              fails, the seed in the message reproduces it exactly.
+            </p>
+            <span class="end-go">Guide &rarr;</span>
+          </a>
+          <a class="end" href="/guides/forges/">
             <h3>Describe a type once</h3>
-            <p>Rules, traits, uniqueness and relationships with <code>Forge</code>.</p>
-            <a href="/guides/forges/">Guide &rarr;</a>
-          </div>
+            <p>
+              <code>Forge</code> maps generators onto your own struct with key paths, and
+              carries traits, uniqueness and one-to-many children.
+            </p>
+            <span class="end-go">Guide &rarr;</span>
+          </a>
         </div>
       </section>
     </main>
 
     <footer>
       <span>Apache-2.0 · Swift 6 · Foundation-free core</span>
-      <span class="tabular">64 locales · {totalMethods} generators · 49 pinned sources</span>
+      <span class="tabular">
+        {stats.locales} locales · {stats.generators} generators ·{' '}
+        {stats.sources} pinned sources
+      </span>
     </footer>
 
-    <script define:vars={{ samples, cards }}>
+    <script define:vars={{ samples, cards, COLS: COLUMNS }}>
       const $ = (s) => document.querySelector(s)
-      const COLS = ['name', 'city', 'company', 'job', 'phone']
+      // COLS comes from the same COLUMNS the <thead> is built from. It used to be a second
+      // literal here, so adding `address` to one list moved the heading and left the cells
+      // where they were — a table whose columns lie about their contents.
       const state = { seed: '1337', locale: 'en', open: null }
       const esc = (s) =>
         String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c])

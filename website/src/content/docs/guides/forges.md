@@ -176,5 +176,4 @@ users
 
 `novelNames()` swaps the weighted register lists for character-level models trained on
 them. Off by default, because the registers carry real frequency data and turning that
-off silently would throw away the realism it was built for. See [What we
-refused](/ideas/refusals/).
+off silently would throw away the realism it was built for. See [what was declined](/reference/design-notes/#what-was-declined).

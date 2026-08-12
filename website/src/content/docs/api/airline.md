@@ -14,13 +14,13 @@ faker.airline.airline()
 
 | Method | Example output |
 |---|---|
-| `airline()` | `["iataCode": "KL", "name": "KLM"]`<br />`["iataCode": "VN", "name": "Vietnam Airlines"]`<br />`["iataCode": "BA", "name": "British Airways"]` |
-| `airport()` | `["iataCode": "QCY", "name": "RAF Coningsby"]`<br />`["iataCode": "PNA", "name": "Pamplona Airport"]`<br />`["iataCode": "TLH", "name": "Tallahassee Regional Airport"]` |
-| `airplane()` | `["iataTypeCode": "747", "name": "Boeing 747"]`<br />`["iataTypeCode": "330", "name": "Airbus A330"]`<br />`["iataTypeCode": "CR7", "name": "Bombardier CRJ700"]` |
-| `aircraftType()` | `Embraer E175`<br />`Boeing 747`<br />`Bombardier CRJ900` |
-| `flightNumber(digits: Int = 4)` | `8389`<br />`9316`<br />`7287` |
-| `seat()` | `37D`<br />`20D`<br />`60E` |
-| `recordLocator()` | `TEAAVJ`<br />`KOPTIX`<br />`XACBXL` |
+| `airline()` | `["iataCode": "CX", "name": "Cathay Pacific"]`<br />`["iataCode": "AS", "name": "Alaska Airlines"]`<br />`["iataCode": "EK", "name": "Emirates"]` |
+| `airport()` | `["iataCode": "ABF", "name": "Abaiang Airport"]`<br />`["iataCode": "GRQ", "name": "Eelde Airport"]`<br />`["iataCode": "LIX", "name": "Likoma Island Airport"]` |
+| `airplane()` | `["iataTypeCode": "777", "name": "Boeing 777"]`<br />`["iataTypeCode": "350", "name": "Airbus A350"]`<br />`["iataTypeCode": "787", "name": "Boeing 787"]` |
+| `aircraftType()` | `Boeing 777`<br />`Airbus A319`<br />`ATR 42` |
+| `flightNumber(digits: Int = 4)` | `4180`<br />`6247`<br />`5200` |
+| `seat()` | `20A`<br />`54A`<br />`8D` |
+| `recordLocator()` | `GOUIWD`<br />`UJDCJV`<br />`EGICEJ` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

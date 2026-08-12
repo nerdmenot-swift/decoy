@@ -18,15 +18,15 @@ faker.nature.mountain()
 
 | Method | Example output |
 |---|---|
-| `mountain()` | `Mount Etna`<br />`Teide`<br />`Carrauntoohil` |
-| `river()` | `Fraser`<br />`Arno`<br />`Mekong` |
-| `tree()` | `Willow`<br />`Poplar`<br />`Willow` |
-| `flower()` | `Sunflower`<br />`Hibiscus`<br />`Fritillary` |
-| `gemstone()` | `Sapphire`<br />`Coral`<br />`Peridot` |
-| `lake()` | `Lake Vättern`<br />`Lake Taupo`<br />`Lake Vänern` |
-| `island()` | `Islay`<br />`Sardinia`<br />`Bermuda` |
-| `desert()` | `Sonoran Desert`<br />`Negev`<br />`Rub’ al Khali` |
-| `weather()` | `Sleet`<br />`Hurricane`<br />`Fair` |
+| `mountain()` | `Illimani`<br />`Mount Shasta`<br />`Mount Elbrus` |
+| `river()` | `Rhine`<br />`Seine`<br />`Paraguay` |
+| `tree()` | `Willow`<br />`Larch`<br />`Judas Tree` |
+| `flower()` | `Tiger Lily`<br />`Honeysuckle`<br />`Clematis` |
+| `gemstone()` | `Imperial Topaz`<br />`Chalcedony`<br />`Obsidian` |
+| `lake()` | `Lake Neuchâtel`<br />`Lake Taupo`<br />`Lake Maracaibo` |
+| `island()` | `Mauritius`<br />`Easter Island`<br />`Hispaniola` |
+| `desert()` | `Tanami Desert`<br />`Antarctic Desert`<br />`Great Basin` |
+| `weather()` | `Heatwave`<br />`Showers`<br />`Cloudy` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

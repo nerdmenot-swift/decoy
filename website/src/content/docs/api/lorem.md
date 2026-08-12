@@ -14,14 +14,14 @@ faker.lorem.word()
 
 | Method | Example output |
 |---|---|
-| `word()` | `vas`<br />`contatio`<br />`maxume` |
-| `words(_ count: Int = 3)` | `circuitio substitutio laute`<br />`civis principaliter gausapes`<br />`interea mollitudo adulescens` |
-| `sentence(words count: Int? = nil)` | `Fors ovis comiter quatenus virgo cunctatio frater.`<br />`Apex paropsis assensio fraglans adfinis singulariter egregie.`<br />`Eques attice plato baro utiliter.` |
-| `sentences(_ count: Int = 3)` | `Fideliter salax demisse quin comprehensio auctio plebes. Conprehensio videlicet apis chary`<br />`Allex fatigatio laqueare plebs contans. Chors honos huc haudquaquam expositio palumbes spe`<br />`Comparatio deliberatio onyx. Facinus comissatio sinciput comprehensio nequando frequens de` |
-| `paragraph(sentences count: Int? = nil)` | `Antidea adfectatio colos cumulate benivolens conjuratio fideliter puxis apex. Frons integr`<br />`Jus labos contumaciter exsistimatio adgnomen quojas confluens. Probabiliter aemulatio mani`<br />`Porro lubenter congruens. Flagrans praeceps benevolens vorsus. Crus adspiratio vituperatio` |
-| `paragraphs(_ count: Int = 3, separator: String = "\n\n")` | `Contumaciter segniter exhortatio morio humilitas ardens creatrix. Perfectio calamitas alpi`<br />`Contamen ante paulisper nuper infans coturnix existumatio aviditas cupido derivatio. Tiber`<br />`Certo aratio fraus continuatio aemulatio parapsis. Acus quorsus paullulo comperte haeredit` |
-| `slug(words count: Int = 3)` | `hau-nondum-collectio`<br />`dispositio-quotiescunque-singillatim`<br />`possessio-vorsus-plebes` |
-| `text(maxLength: Int = 200)` | `Mors aedilitas altrix femur pignus societas. Fidis volucris qui demens conpages absis requ`<br />`Senex credens humilitas fornax communio. Huccine seges continuo alicubi quamvis. Iens tant`<br />`Retro adolescens attamen aspis persecutio malignans quocunque haereditas anceps compressio` |
+| `word()` | `cognitio`<br />`pellex`<br />`amoenitas` |
+| `words(_ count: Int = 3)` | `absolute aedes codex`<br />`tegmen pariter regio`<br />`commutatio september densitas` |
+| `sentence(words count: Int? = nil)` | `Digne magnale nuper fascis.`<br />`Volucris adplicatio quocumque contemplatio hippomanes quoiquoimodi tellus amministratio.`<br />`Agmen gigans pristis mare.` |
+| `sentences(_ count: Int = 3)` | `Arquitenens maxume flamen. Sorbitio biceps callide antistes sero longe. Municeps constans `<br />`Lubenter licenter existumatio amnis. Undiquesecus conploratio certo aquilo latenter intern`<br />`Obedientio ceterum satis comessatio. Paene ideo insitio dux intensio beate comitas scholar` |
+| `paragraph(sentences count: Int? = nil)` | `Sectio felix tegmen claritudo paullum. Bifariam frequens commoditas abominatio gratis. Abd`<br />`Delectatio non caesim conprensio coercitio funus necessitudo aratio plene assumptio. Moder`<br />`Ultro suavitas aliquandiu deformatio pelex. Lux laete apparatio audenter appellatio ensis ` |
+| `paragraphs(_ count: Int = 3, separator: String = "\n\n")` | `Illusio matrix adseveratio crinis inutiliter pollens perduellio chlamis. Apparatio merx re`<br />`Magnas facultas malevolens. Pietas adversum contra. Robur acus pristis berbex communio app`<br />`Dulciter crinis conpos vindicatio contemptim veritas fortassis mors cognitio. Scelus dicta` |
+| `slug(words count: Int = 3)` | `acumen-assignatio-foedus`<br />`quare-aviditas-totalitas`<br />`civiliter-stibis-radix` |
+| `text(maxLength: Int = 200)` | `Dimicatio cunctanter communio auceps copo. Sobrie rus suptilitas. Apstinens conservatio ti`<br />`Abolitio colluctatio usquam inmortalitas. Coeleste lis aviditas cucumis aries femen inlusi`<br />`Subtum juglans atheniensis adprime. Mars voluptas plato comans perseveranter traductio pra` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

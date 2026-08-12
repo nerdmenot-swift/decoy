@@ -14,14 +14,14 @@ faker.word.adjective()
 
 | Method | Example output |
 |---|---|
-| `adjective()` | `immeasurable`<br />`unlucky`<br />`stuck` |
-| `adverb()` | `weightily`<br />`abroad`<br />`directly` |
-| `conjunction()` | `whereas`<br />`nor`<br />`either` |
-| `interjection()` | `bravo`<br />`huh`<br />`huh` |
-| `noun()` | `maturity`<br />`dole`<br />`twill` |
-| `preposition()` | `against`<br />`on`<br />`outside` |
-| `verb()` | `bandy`<br />`ensnare`<br />`cure` |
-| `words(_ count: Int = 3)` | `defense meditation future`<br />`roundel nylon feller`<br />`stuffing changer autonomy` |
+| `adjective()` | `outside`<br />`mellow`<br />`grandiloquent` |
+| `adverb()` | `carelessly`<br />`significantly`<br />`hardly` |
+| `conjunction()` | `because`<br />`neither`<br />`than` |
+| `interjection()` | `hmm`<br />`whoa`<br />`aha` |
+| `noun()` | `goldbrick`<br />`blowhole`<br />`carambola` |
+| `preposition()` | `underneath`<br />`up`<br />`through` |
+| `verb()` | `oppose`<br />`acquit`<br />`border` |
+| `words(_ count: Int = 3)` | `radiator whoreson settee`<br />`mercury conventicle sandpit`<br />`weir chigger introduction` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

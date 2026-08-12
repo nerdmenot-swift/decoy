@@ -14,8 +14,8 @@ faker.science.chemicalElement()
 
 | Method | Example output |
 |---|---|
-| `chemicalElement()` | `["atomicNumber": "14", "name": "Silicon", "symbol": "Si"]`<br />`["atomicNumber": "39", "name": "Yttrium", "symbol": "Y"]`<br />`["atomicNumber": "93", "name": "Neptunium", "symbol": "Np"]` |
-| `unit()` | `["name": "square miles", "symbol": "mi²"]`<br />`["name": "pinches", "symbol": "pn"]`<br />`["name": "g-force", "symbol": "Gs"]` |
+| `chemicalElement()` | `["atomicNumber": "48", "name": "Cadmium", "symbol": "Cd"]`<br />`["atomicNumber": "103", "name": "Lawrencium", "symbol": "Lr"]`<br />`["atomicNumber": "75", "name": "Rhenium", "symbol": "Re"]` |
+| `unit()` | `["name": "miles per Imp. gallon", "symbol": "m/gUK"]`<br />`["name": "dots per inch", "symbol": "dpi"]`<br />`["name": "metric cups", "symbol": "mc"]` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

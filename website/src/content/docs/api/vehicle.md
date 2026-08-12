@@ -14,14 +14,14 @@ faker.vehicle.manufacturer()
 
 | Method | Example output |
 |---|---|
-| `manufacturer()` | `Land Rover`<br />`Saab`<br />`Chrysler` |
-| `model()` | `Escape`<br />`Discovery`<br />`Escape` |
-| `type()` | `Pickup Truck`<br />`Pickup Truck`<br />`Passenger Van` |
-| `fuel()` | `Hybrid`<br />`Gasoline`<br />`Biodiesel` |
-| `bicycleType()` | `Mountain Bicycle`<br />`Tandem Bicycle`<br />`Touring Bicycle` |
-| `name()` | `Saab Land Cruiser`<br />`Mazda Mustang`<br />`Seat Land Cruiser` |
-| `vin()` | `HRAHK9SYAPPN02DFR`<br />`DRZRY3LSXNAU7NRWX`<br />`6YFJ3VFL11E4DR0SD` |
-| `registrationPlate()` | `TD-908-BX`<br />`UH-786-XJ`<br />`JU-755-XI` |
+| `manufacturer()` | `Opel`<br />`Mazda`<br />`Audi` |
+| `model()` | `Alpina`<br />`Explorer`<br />`Civic` |
+| `type()` | `Saloon`<br />`Pickup Truck`<br />`Minivan` |
+| `fuel()` | `Compressed Natural Gas`<br />`Hydrogen`<br />`Liquefied Petroleum Gas` |
+| `bicycleType()` | `Folding Bike`<br />`Touring Bicycle`<br />`Hybrid Bicycle` |
+| `name()` | `Alfa Romeo Focus`<br />`Bugatti Jetta`<br />`Dacia Tucson` |
+| `vin()` | `V182XBAVYMTMZD0YF`<br />`2GMFPL7HY2UYXLLSJ`<br />`E019U0ZLFVYGL8RY5` |
+| `registrationPlate()` | `FU-571-VJ`<br />`VA-890-ZK`<br />`EI-626-RF` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

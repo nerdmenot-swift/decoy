@@ -14,10 +14,10 @@ faker.phone.number()
 
 | Method | Example output |
 |---|---|
-| `number(_ style: Style = .human)` | `(657) 915-6037`<br />`(465) 768-3438`<br />`(519) 442-7387` |
-| `areaCode()` | `713`<br />`504`<br />`617` |
-| `exchangeCode()` | `312`<br />`646`<br />`901` |
-| `imei()` | `785138788887205`<br />`973056810514070`<br />`605874956023524` |
+| `number(_ style: Style = .human)` | `(260) 468-5667`<br />`(967) 405-4379`<br />`(545) 995-0195` |
+| `areaCode()` | `813`<br />`904`<br />`808` |
+| `exchangeCode()` | `386`<br />`628`<br />`407` |
+| `imei()` | `654819117681843`<br />`625416785586630`<br />`598371236616366` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

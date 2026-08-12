@@ -18,33 +18,33 @@ faker.whimsy.codename()
 
 | Method | Example output |
 |---|---|
-| `codename()` | `Operation Auburn Prism`<br />`Project Prudent Isthmus`<br />`Project Mottled Moor` |
-| `bandName()` | `Brittle Ravine`<br />`Jovial Ravine`<br />`The Anvils` |
-| `roomName()` | `Feral Fjord`<br />`Idle Cairn`<br />`The Magpie` |
-| `talkTitle()` | `Stop Doing Idempotency`<br />`Considered Harmful: Rethinking Test Fixtures`<br />`Canary Releases Without the Tears` |
-| `ssid()` | `Tell My WiFi Love Her`<br />`Get Off My LAN`<br />`Get Off My LAN` |
-| `excuse()` | `a config flag was set in staging and not in production`<br />`the disk filled with logs about the disk filling`<br />`the clock on one node drifted` |
-| `pubName()` | `The Gannet & Thimble`<br />`The Egrets Arms`<br />`The Dippers Arms` |
-| `boardGame()` | `Rise of the Wombats`<br />`Rise of the Herons`<br />`Grateful Turnstile` |
-| `gameMechanic()` | `Trick-Taking`<br />`Legacy`<br />`Engine Building` |
-| `horseName()` | `Crimson Dancer`<br />`Amber Delta`<br />`Frosted Dancer` |
-| `paintColour()` | `Iguana Feather`<br />`Pewter Morning`<br />`Sable Cairn` |
-| `shipName()` | `The Northern Tapir`<br />`The Signal of Ravine`<br />`The Frosted Zebu` |
-| `adjective()` | `Keen`<br />`Lucid`<br />`Dappled` |
-| `creature()` | `Stoat`<br />`Umbrette`<br />`Lemur` |
-| `object()` | `Turnstile`<br />`Meridian`<br />`Lattice` |
-| `place()` | `Headland`<br />`Cairn`<br />`Cairn` |
-| `releaseName()` | `Tidal Tern`<br />`Vivid Vole`<br />`Sable Sturgeon` |
-| `restaurantName()` | `The Marsh Kitchen`<br />`The Old Quarry`<br />`The Drifting Thimble` |
-| `cuisine()` | `Gujarati`<br />`Yucatecan`<br />`Vietnamese` |
-| `dishName()` | `Fennel Tartare with green peppercorn`<br />`Cured Beetroot with burnt butter`<br />`Griddled Squash with green peppercorn` |
-| `schoolName()` | `Narrows Preparatory School`<br />`The Lagoon Grammar School`<br />`The Steppe Academy` |
-| `faculty()` | `Architecture`<br />`Archaeology`<br />`Engineering` |
-| `superheroName()` | `The Bitter Quokka`<br />`The Distant Roebuck`<br />`The Frosted Lapwing` |
-| `superpower()` | `Invisibility`<br />`Density Control`<br />`Sonic Scream` |
-| `peakName()` | `Bitter Crag`<br />`Northern Crag`<br />`Frosted Crag` |
-| `starName()` | `Causeway Borealis`<br />`Mortar Majoris`<br />`Basin Borealis` |
-| `technobabble()` | `Try to copy the protocol, maybe it will generate the digital driver`<br />`You cannot copy the card without parsing the back-end monitor`<br />`You cannot override the card without compressing the redundant matrix` |
+| `codename()` | `Project Bellows`<br />`Operation Frosted Magpie`<br />`Project Lucid Cove` |
+| `bandName()` | `The Velvet Kingfishers`<br />`The Mottled Dunlins`<br />`The Prudent Magpies` |
+| `roomName()` | `Opaline Cove`<br />`The Vole`<br />`The Atlas` |
+| `talkTitle()` | `The Hidden Cost of Config Management`<br />`What I Learned Migrating Monorepos`<br />`Ten Years of Blue-Green Deploys: A Opaline Retrospective` |
+| `ssid()` | `Winternet Is Coming`<br />`Panic at the Cisco`<br />`Hide Yo Kids Hide Yo WiFi` |
+| `excuse()` | `a config flag was set in staging and not in production`<br />`the certificate expired again`<br />`someone rotated the key without telling anyone` |
+| `pubName()` | `The Old Pennant`<br />`The Hollow Zebu`<br />`The Magpie & Cipher` |
+| `boardGame()` | `Rise of the Ospreys`<br />`Crimson Compass`<br />`Zesty Prism` |
+| `gameMechanic()` | `Push Your Luck`<br />`Route Building`<br />`Engine Building` |
+| `horseName()` | `Auburn Crucible`<br />`Marmot Song`<br />`Zebu Song` |
+| `paintColour()` | `Amber Hollow`<br />`Bitter Morning`<br />`Orbital Morning` |
+| `shipName()` | `The Compass of Headland`<br />`The Twilight Cove`<br />`HMS Vessel` |
+| `adjective()` | `Tireless`<br />`Willing`<br />`Muted` |
+| `creature()` | `Curlew`<br />`Zebu`<br />`Yak` |
+| `object()` | `Anvil`<br />`Rampart`<br />`Spindle` |
+| `place()` | `Marsh`<br />`Causeway`<br />`Steppe` |
+| `releaseName()` | `Keen Kestrel`<br />`Keen Kingfisher`<br />`Luminous Lapwing` |
+| `restaurantName()` | `The Brazen Stoat`<br />`Headland & Cipher`<br />`The Frosted Tessera` |
+| `cuisine()` | `Sicilian`<br />`Turkish`<br />`Gujarati` |
+| `dishName()` | `Confit Leek with toasted hazelnut`<br />`Blackened Lentil, pickled walnut`<br />`Blackened Squash with sea buckthorn` |
+| `schoolName()` | `Basin Community School`<br />`Nimble Causeway Community School`<br />`Marsh Academy` |
+| `faculty()` | `Comparative Literature`<br />`Architecture`<br />`Archaeology` |
+| `superheroName()` | `Captain Pennant`<br />`Captain Lattice`<br />`The Meridian of Harbour` |
+| `superpower()` | `Shapeshifting`<br />`Sonic Scream`<br />`Invisibility` |
+| `peakName()` | `Earnest Estuary`<br />`The Terns Tooth`<br />`Orbital Reef` |
+| `starName()` | `HD 171825`<br />`HD 165657`<br />`HD 142565` |
+| `technobabble()` | `Try to bypass the protocol, maybe it will index the virtual panel`<br />`If we copy the monitor, we can get to the back-end feed through the solid-state matrix`<br />`Try to copy the bandwidth, maybe it will reboot the back-end feed` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

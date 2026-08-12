@@ -14,23 +14,23 @@ faker.person.firstName()
 
 | Method | Example output |
 |---|---|
-| `firstName(_ gender: Gender? = nil)` | `Mary`<br />`Mary`<br />`Janet` |
-| `middleName(_ gender: Gender? = nil)` | `Connie`<br />`Paul`<br />`Kieran` |
-| `novelLastName()` | `Titz`<br />`Roacht`<br />`Mountagnolds` |
-| `lastName(_ gender: Gender? = nil)` | `Szymanski`<br />`Shumate`<br />`Alvarez` |
-| `prefix(_ gender: Gender? = nil)` | `Miss`<br />`Prof.`<br />`Dr.` |
-| `suffix()` | `PhD`<br />`DDS`<br />`IV` |
-| `bloodType()` | `A+`<br />`B+`<br />`B+` |
-| `ssn()` | `570-08-7268`<br />`483-21-0411`<br />`668-60-1347` |
-| `fullName(_ gender: Gender? = nil)` | `John Wilkes`<br />`Adrian Johnson`<br />`Carol Contreras` |
-| `sex()` | `female`<br />`female`<br />`female` |
-| `gender()` | `Genderqueer`<br />`Non-binary`<br />`Non-binary` |
-| `jobTitle()` | `De-engineered challenge Supervisor`<br />`Centralized array Designer`<br />`Extended analyzer Coordinator` |
-| `jobDescriptor()` | `Front-line`<br />`Business-focused`<br />`Innovative` |
-| `jobArea()` | `circuit`<br />`capability`<br />`approach` |
-| `jobType()` | `Engineer`<br />`Supervisor`<br />`Facilitator` |
-| `zodiacSign()` | `Scorpio`<br />`Cancer`<br />`Taurus` |
-| `bio()` | `baker, coffee enthusiast`<br />`cyclist 🇹🇼`<br />`guitarist` |
+| `firstName(_ gender: Gender? = nil)` | `Zygmunt`<br />`Jomar`<br />`Jeremy` |
+| `middleName(_ gender: Gender? = nil)` | `Mary`<br />`Kelly`<br />`Lonnie` |
+| `novelLastName()` | `Slabada`<br />`Kirkholder`<br />`Leflette` |
+| `lastName(_ gender: Gender? = nil)` | `Aguilar`<br />`Baldwin`<br />`Heard` |
+| `prefix(_ gender: Gender? = nil)` | `Mrs.`<br />`Prof.`<br />`Dr.` |
+| `suffix()` | `Jr.`<br />`IV`<br />`V` |
+| `bloodType()` | `B+`<br />`A-`<br />`B-` |
+| `ssn()` | `275-83-8116`<br />`510-61-0448`<br />`834-72-9226` |
+| `fullName(_ gender: Gender? = nil)` | `Ms. Marguerite Ledesma`<br />`Dr. Savannah Garcia`<br />`Tessa Booker` |
+| `sex()` | `male`<br />`female` |
+| `gender()` | `Male`<br />`Non-binary`<br />`Genderqueer` |
+| `jobTitle()` | `Intuitive capability Producer`<br />`Compatible emulation Representative`<br />`Distributed emulation Producer` |
+| `jobDescriptor()` | `Enterprise-wide`<br />`Managed`<br />`Ameliorated` |
+| `jobArea()` | `archive`<br />`encryption`<br />`forecast` |
+| `jobType()` | `Officer`<br />`Consultant`<br />`Representative` |
+| `zodiacSign()` | `Gemini`<br />`Taurus`<br />`Aries` |
+| `bio()` | `entrepreneur ✈️`<br />`creator, chocolate lover`<br />`optimist` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

@@ -14,14 +14,14 @@ faker.crypto.bitcoinAddress()
 
 | Method | Example output |
 |---|---|
-| `bitcoinAddress()` | `1942HDSfTAMs5Fj9hFzmo3mynuUe62SuNq`<br />`18gMuXkk8sY8mDsM1BFx6usuGWmhMVjUQ9`<br />`17KfuRP9RTRNznDRLmo1q37CzyycWR2rP9` |
-| `p2shAddress()` | `3JygFNDLzHkssp7huB6wALFyxEwBpjxbsf`<br />`33NtHtcoydSHfXF2zez8sMLLLe4VXCcyvB`<br />`3DGBQHKXob61RQYDsPWiu9P5xbEKoNF9ji` |
-| `bech32Address()` | `bc1qz38xamnmm38fdln0knh6rqrx6uaq3lcyakafht`<br />`bc1q83k3347a7sdulect42ppd8t8z93uv8yczl09uk`<br />`bc1qj9cwg9jfpdcf9kemp56xa37wtxmcn24lkclkh9` |
-| `ethereumAddress()` | `0xac38495abc120deb3fa2d6aeec7795a7ebd6f6a7`<br />`0xe1ce683b5d88514d581aa2b16a6e0809083d2269`<br />`0x2df581cae1e0e3ee83b1c2bfce53774b6ca498c8` |
-| `sha256()` | `7df924c186ab96c0dc599b33efc0eb6ec53458da6822f24fd65281f8932484f6`<br />`8aa85d1327c0646d66d13894b9ccd69e64761c85b24fba59af21f5348c0d9d27`<br />`b89b95594761738296b3e22030f6503c7197d8063e30f17082bfb528d33e77b9` |
-| `sha512()` | `c87947017304449b2816880ddde247918f4cd3983d5a5b21500507b6f7922cab18ac346c2248f1bfda51ae1005`<br />`7f85ea4948c18340a78957f546a8b520271f4ab6487f31a1adaba725ae475d5f04350f11b75d199ecdac365ea4`<br />`c4a8902759ed62ae392fd608e200b8bd4f166b32e8dd81bd18cde7913851d32f19d02fe9e52607cdbd99d776b9` |
-| `sha1()` | `e8d44bf53d04abbb20e2c0e59d625eb20c4d1e57`<br />`fa19f8c49e63ac0d4528d334b609e13ef13b2288`<br />`a1e82c25462ae2aec86859ce31b39c1843226e84` |
-| `md5()` | `839c2bd8182a837e9b8b7a03ee5c3cda`<br />`32349d583f612235b647fdcde9abfa69`<br />`14650af2e1c44f6bb6f883c11794166f` |
+| `bitcoinAddress()` | `1BvCr9WgBNpiDn84PvTwToXqpXj17tZ1CQ`<br />`12ycSmdWt5bFQ9g9j85v4RSsXpxZ3amTJ2`<br />`1FR75tHEeCAJgS6QvipWH2a589J458YY2K` |
+| `p2shAddress()` | `33PQZNo7A3DMQ6VUDjRLqd2CqKKtQUnqTv`<br />`38sBU6CA7rmJf9nhd5HpMBQDduVZbLqm3W`<br />`3DVekVQibWLeVpG79oV1z21gK5gs9qz95s` |
+| `bech32Address()` | `bc1qrhgrvqr4wxlalykr7yxdl45xkcupkqszley8al`<br />`bc1qk3psewupjjwfr2htjxcqhkq9md5hpz8kxg5v4k`<br />`bc1qdewrts6ss2whzg704m4x2mypegs69gpvj9vva5` |
+| `ethereumAddress()` | `0xfeba976ec0029f50355ce5fb7ce2877dd24ee90b`<br />`0x7a8c5d3361923d5dfa7104f8dd833b1f5a8aaa96`<br />`0x6a73281e208797884cda78d6118ac008a9ec4e3e` |
+| `sha256()` | `306289ac9136578373bab053992d21568f5ec1a01210ac613485fd914759cbf4`<br />`097c4580e98a89e11dbeebb1754fe35001c0b3845f4cc6061bff5be62e4c526c`<br />`ef1b8e8d8784ff42774e18639b971ac787635cca9e37b5212170ac02a0270766` |
+| `sha512()` | `9d351dea176a033f3db32ec972b0583c8a96f3b09317a14b030d5177367e7718549bf70e1433de687cea577c73`<br />`bae0f1faa5063f5392519679e0fc75c9d5d1f0e343aca531831821d3b0d0d25ba7e056ff359c68e0037cd76fe8`<br />`327a443b6b8d1efe1df99686953050f00f213a8b1d0bed11dd331cdb127f6303fc9fc06c061a362bc8a99934af` |
+| `sha1()` | `b5583552ac4ceb08fadfaed38541b27807028049`<br />`ceaf419dc3074dd72bb3b43fc92724026b422f27`<br />`42d4e57f24f67782b54fdb687b2963361750daf4` |
+| `md5()` | `01880c8230697bf2fc4cd8934aad0d97`<br />`cf6035a0edb5dc47ea108e4f0208d66e`<br />`2d4250cfd9f2bdcb875f4e2b16eed844` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

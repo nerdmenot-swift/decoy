@@ -14,17 +14,17 @@ faker.company.name()
 
 | Method | Example output |
 |---|---|
-| `name()` | `Penaloza-Floyd`<br />`Strickland corporation`<br />`Griffin-Ding` |
-| `adjective()` | `Sharable`<br />`Stand-alone`<br />`Managed` |
-| `descriptor()` | `executive`<br />`maximized`<br />`dynamic` |
-| `noun()` | `parallelism`<br />`knowledge user`<br />`access` |
-| `legalEntityType()` | `C.A.`<br />`inc.`<br />`Coop.` |
-| `buzzPhrase()` | `drive cutting-edge metrics`<br />`leverage out-of-the-box niches`<br />`generate wireless mindshare` |
-| `buzzVerb()` | `enhance`<br />`grow`<br />`monetize` |
-| `buzzAdjective()` | `turn-key`<br />`dot-com`<br />`one-to-one` |
-| `buzzNoun()` | `platforms`<br />`mindshare`<br />`ROI` |
-| `catchPhrase()` | `Universal non-volatile product`<br />`Horizontal background hub`<br />`Enhanced heuristic pricing structure` |
-| `category()` | `Insurance`<br />`Insurance`<br />`Engineering` |
+| `name()` | `Hardy Corp`<br />`Summers N.A.`<br />`Harrington P.L.L.P` |
+| `adjective()` | `Quality-focused`<br />`Customer-focused`<br />`Fundamental` |
+| `descriptor()` | `background`<br />`empowering`<br />`bandwidth-monitored` |
+| `noun()` | `open system`<br />`conglomeration`<br />`implementation` |
+| `legalEntityType()` | `Corporation`<br />`Partnership`<br />`SF` |
+| `buzzPhrase()` | `incentivize revolutionary initiatives`<br />`incentivize sticky vortals`<br />`extend interactive relationships` |
+| `buzzVerb()` | `enhance`<br />`deliver`<br />`architect` |
+| `buzzAdjective()` | `killer`<br />`open-source`<br />`holistic` |
+| `buzzNoun()` | `architectures`<br />`portals`<br />`ROI` |
+| `catchPhrase()` | `Operative discrete open system`<br />`Synergistic modular matrices`<br />`Grass-roots object-oriented framework` |
+| `category()` | `Aerospace`<br />`Publishing`<br />`Biotechnology` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

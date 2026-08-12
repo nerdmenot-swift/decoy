@@ -18,11 +18,11 @@ faker.sport.club()
 
 | Method | Example output |
 |---|---|
-| `club()` | `Causeway United`<br />`Nightjar Casuals`<br />`Glacial Shoal FC` |
-| `venue()` | `Foothill Park`<br />`The Basin Arena`<br />`Moor Park` |
-| `trophy()` | `The Silent Lattice Trophy`<br />`The Narrows Shield`<br />`The Narrows Shield` |
-| `discipline()` | `Badminton`<br />`Netball`<br />`Swimming` |
-| `clubSuffix()` | `Thistle`<br />`Wanderers`<br />`United` |
+| `club()` | `Zebu Victoria`<br />`Quilted Quarry FC`<br />`Tern Albion` |
+| `venue()` | `Cove Park`<br />`The Crucible Ground`<br />`The Steppe Arena` |
+| `trophy()` | `The Ravine Shield`<br />`The Atlas Cup`<br />`The Turnstile Cup` |
+| `discipline()` | `Sailing`<br />`Cricket`<br />`Ice Hockey` |
+| `clubSuffix()` | `Harriers`<br />`Albion`<br />`Thistle` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

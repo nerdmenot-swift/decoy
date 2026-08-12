@@ -14,18 +14,18 @@ faker.commerce.department()
 
 | Method | Example output |
 |---|---|
-| `department()` | `Books`<br />`Toys`<br />`Clothing` |
-| `product()` | `Towels`<br />`Salad`<br />`Pants` |
-| `productAdjective()` | `Luxurious`<br />`Bespoke`<br />`Small` |
-| `productMaterial()` | `Cotton`<br />`Bamboo`<br />`Metal` |
-| `productName()` | `Small Soft Fish`<br />`Tasty Bronze Bacon`<br />`Incredible Rubber Soap` |
-| `productDescription()` | `Andy shoes are designed to keeping in mind durability as well as trends`<br />`New ABC 13 9370, 13.3, 5th Gen CoreA5-8250U, 8GB RAM, 256GB SSD, power UHD Graphics`<br />`The beautiful range of Apple Natural is a distinctive coffee blend` |
-| `review()` | `Mixed: the build quality is a noticeable step up but the weight is not as described.`<br />`Does the job — the instructions is genuinely excellent, though the grip could be better.`<br />`Mixed: the weight is exactly as described but the noise is a let-down for the money.` |
-| `reviewTitle()` | `Good, with one caveat`<br />`Good, with one caveat`<br />`Save your money` |
-| `reviewAspect()` | `the packaging`<br />`the packaging`<br />`the price` |
-| `price(in range: ClosedRange<Double> = 1...1_000, decimals: Int = 2)` | `171.62`<br />`359.87`<br />`352.15` |
-| `ean13()` | `0745318112594`<br />`0787611384759`<br />`0438485397887` |
-| `sku()` | `BH-8442-TZ`<br />`ME-8260-AE`<br />`PO-8867-TV` |
+| `department()` | `Jewelery`<br />`Clothing`<br />`Sports` |
+| `product()` | `Bench`<br />`Tuna`<br />`Bacon` |
+| `productAdjective()` | `Electronic`<br />`Gorgeous`<br />`Practical` |
+| `productMaterial()` | `Plastic`<br />`Bamboo`<br />`Bronze` |
+| `productName()` | `Recycled Cotton Bacon`<br />`Unbranded Soft Sausages`<br />`Small Steel Cheese` |
+| `productDescription()` | `The Football Is Good For Training And Recreational Purposes`<br />`The Great Granite Chair has a comfortable seat and a sturdy frame`<br />`Ergonomic executive chair upholstered in bonded black leather and PVC padded seat` |
+| `review()` | `Does the job — the grip is better than I expected, though the weight could be better.`<br />`Arrived early and the size is worth every penny.`<br />`Does the job — the finish is better than I expected, though the grip could be better.` |
+| `reviewTitle()` | `Exactly what I wanted`<br />`Does what it says`<br />`Not for me` |
+| `reviewAspect()` | `the stitching`<br />`the fit`<br />`the colour` |
+| `price(in range: ClosedRange<Double> = 1...1_000, decimals: Int = 2)` | `202.17`<br />`6.53`<br />`945.20` |
+| `ean13()` | `6776849552669`<br />`6938991051890`<br />`2807591210317` |
+| `sku()` | `PS-2846-MW`<br />`ER-4389-DE`<br />`ZJ-9824-EW` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

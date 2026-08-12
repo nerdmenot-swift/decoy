@@ -89,6 +89,7 @@ h2 {
 }
 h3 { font-size: .95rem; margin: 0 0 .3rem; font-weight: 650; }
 .caption { margin: 0; font-size: .85rem; color: var(--decoy-faint); max-width: 66ch; }
+.reg .voice { max-width: 64ch; }
 .caption a { color: var(--decoy-accent); }
 
 /* The namespace browser.
@@ -125,8 +126,10 @@ h3 { font-size: .95rem; margin: 0 0 .3rem; font-weight: 650; }
   font-family: var(--decoy-mono); font-size: .66rem; color: var(--decoy-faint);
   font-variant-numeric: tabular-nums;
 }
-.rail-item:hover { background: var(--decoy-card); }
-.rail-item:hover code { color: var(--decoy-ink); }
+/* Pads the grid out to a whole number of rows so no cell shows the divider colour. */
+.rail-fill { pointer-events: none; }
+.rail-item:not(.rail-fill):hover { background: var(--decoy-card); }
+.rail-item:not(.rail-fill):hover code { color: var(--decoy-ink); }
 .rail-item.on {
   background: var(--decoy-card); box-shadow: inset 3px 0 0 var(--decoy-accent);
 }
@@ -172,6 +175,51 @@ h3 { font-size: .95rem; margin: 0 0 .3rem; font-weight: 650; }
     border-right: 0; border-bottom: 1px solid var(--decoy-rule);
   }
   #pane-body { max-height: 22rem; }
+}
+
+/* Two paragraphs, side by side, because they describe the two controls below them. */
+.knobs {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+  gap: var(--space-3) clamp(1.5rem, 4vw, 3.5rem);
+}
+.knobs p { margin: 0; color: var(--decoy-muted); max-width: 58ch; }
+.knobs strong { color: var(--decoy-ink); }
+.knobs a { color: var(--decoy-accent); }
+
+/* Sits under the table it refers to and above the panel it opens, rather than pushed to
+   the far right of the control row where it read as decoration. */
+.sheet-hint {
+  margin: 0; font-size: .8rem; color: var(--decoy-faint);
+}
+
+/* Invented values. The band background is the whole point of the section: everything above
+   it is drawn from a pinned source and can name it, and these are not, so they should not
+   look like they are. */
+.reg-invented {
+  background: var(--decoy-band); border: 1px solid var(--decoy-rule);
+  padding: var(--space-4) clamp(1rem, 3vw, 2rem);
+}
+.specimens {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1px; background: var(--decoy-rule); border: 1px solid var(--decoy-rule);
+}
+/* Three across, so the row fills. At minmax(22rem) the third wrapped alone and left an
+   empty cell painted in the divider colour. */
+.specimens-long {
+  margin-top: 1px; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+.spec { background: var(--decoy-card); padding: .7rem .8rem; min-width: 0; }
+.spec code {
+  display: block; font-family: var(--decoy-mono); font-size: .72rem;
+  color: var(--decoy-accent); margin-bottom: .4rem;
+}
+.spec ul { margin: 0; padding: 0; list-style: none; display: flex;
+  flex-direction: column; gap: .18rem; }
+.spec li {
+  font-size: .82rem; color: var(--decoy-ink); overflow-wrap: anywhere;
+}
+.specimens-long .spec li {
+  font-size: .78rem; color: var(--decoy-muted); line-height: 1.5;
 }
 
 .rig { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; }
@@ -247,10 +295,22 @@ h3 { font-size: .95rem; margin: 0 0 .3rem; font-weight: 650; }
   display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
   gap: 1px; background: var(--decoy-rule); border: 1px solid var(--decoy-rule);
 }
-.ends > div { background: var(--decoy-card); padding: .9rem 1rem; }
-.ends p { margin: 0 0 .4rem; font-size: .85rem; color: var(--decoy-muted); }
-.ends a {
-  font-size: .82rem; text-decoration: none; font-weight: 600; color: var(--decoy-accent);
+/* The whole card is the link. Three cards each ending in an identical "Guide →" made the
+   only clickable thing the smallest and most repeated element on the row. */
+.end {
+  display: flex; flex-direction: column; gap: .35rem;
+  background: var(--decoy-card); padding: .9rem 1rem;
+  text-decoration: none; color: inherit;
+}
+.end:hover { background: var(--decoy-accent-soft); }
+.end:hover h3 { color: var(--decoy-accent); }
+.ends p { margin: 0; font-size: .82rem; color: var(--decoy-muted); line-height: 1.55; }
+.ends code {
+  font-family: var(--decoy-mono); font-size: .78rem; color: var(--decoy-ink);
+}
+.end-go {
+  margin-top: auto; padding-top: .3rem;
+  font-size: .8rem; font-weight: 600; color: var(--decoy-accent);
 }
 
 footer {

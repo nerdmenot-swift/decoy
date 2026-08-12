@@ -11,7 +11,7 @@ let package = Package(
     name: "MyApp",
     // 1. Where to fetch it from.
     dependencies: [
-        .package(url: "https://github.com/NerdMeNot/decoy", from: "1.0.0"),
+        .package(url: "https://github.com/nerdmenot-swift/decoy", from: "1.0.0"),
     ],
     targets: [
         // 2. Which of your targets uses it, and which products they use.
@@ -57,7 +57,7 @@ state. Hold one per test, or let a [forge](/guides/forges/) hold it for you.
 
 Three locales ship as importable modules today — `DecoyLocaleEN`, `DecoyLocaleDE` and
 `DecoyLocaleJA`. Sixty-four compile; the rest are emitted on request, which is two
-commands and a line in `Package.swift`. See [Locales and fallback](/ideas/locales/).
+commands and a line in `Package.swift`. See [Locales](/guides/locales/).
 
 ## Why a module and not a resource file
 

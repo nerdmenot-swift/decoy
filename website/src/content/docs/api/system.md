@@ -14,21 +14,21 @@ faker.system.mimeType()
 
 | Method | Example output |
 |---|---|
-| `mimeType()` | `application/epub+zip`<br />`application/x-dtbncx+xml`<br />`application/vnd.intergeo` |
-| `programmingLanguage()` | `["color": "#384d54", "extension": ".just", "name": "Just"]`<br />`["color": "#f34b7d", "extension": ".cpp", "name": "C++"]`<br />`["color": "#6a5acd", "extension": ".metta", "name": "MeTTa"]` |
-| `programmingLanguageName()` | `eC`<br />`Qt Script`<br />`KCL` |
-| `variableName(_ style: NamingStyle = .camelCase)` | `contrivedConvoy`<br />`deliciousConsumerism`<br />`lightweightFlexure` |
-| `fileExtension()` | `tmo`<br />`plb`<br />`emotionml` |
-| `directoryPath()` | `/home/user/dir`<br />`/srv`<br />`/mnt` |
-| `fileName()` | `assignatio-casualiter.dxp`<br />`fortitudo-abundanter.stl`<br />`corbis-gratanter.xfdl` |
-| `filePath()` | `/var/spool/cunctanter-adparate.rm`<br />`/etc/defaults/catervatim-care.flx`<br />`/usr/ferox-claritudo.ttc` |
-| `semver()` | `8.2.4`<br />`7.1.26`<br />`7.11.16` |
-| `errorMessage()` | `file exceeds the 25MB limit`<br />`panic recovered in session-store: send on closed channel`<br />`password must be at least 12 characters` |
-| `databaseError()` | `connection to server was lost during query execution`<br />`null value in column "tenant_id" violates not-null constraint`<br />`insert or update on table "sessions" violates foreign key constraint "users_email_key"` |
-| `httpError()` | `too many redirects following gateway callback`<br />`connection reset by peer while reading response body`<br />`rate limit exceeded: retry after 64 seconds` |
-| `runtimeError()` | `unmarshalling failed: unexpected token at position 266`<br />`goroutine leak detected: 433 routines blocked on the same mutex`<br />`context deadline exceeded` |
-| `validationError()` | `email must be a valid address`<br />`this field is required`<br />`email must be a valid address` |
-| `component()` | `export-worker`<br />`billing`<br />`scheduler` |
+| `mimeType()` | `application/java-archive`<br />`application/vnd.dece.ttml+xml`<br />`application/wspolicy+xml` |
+| `programmingLanguage()` | `["color": "#aace60", "extension": ".hlsl", "name": "HLSL"]`<br />`["color": "#2f1f49", "extension": ".nr", "name": "Noir"]`<br />`["color": "#384d54", "extension": ".just", "name": "Just"]` |
+| `programmingLanguageName()` | `Cypher`<br />`Harbour`<br />`Pawn` |
+| `variableName(_ style: NamingStyle = .camelCase)` | `ingloriousSplashing`<br />`determinateAvulsion`<br />`civicFelon` |
+| `fileExtension()` | `hvp`<br />`mp3`<br />`wgsl` |
+| `directoryPath()` | `/bin`<br />`/usr/local/src`<br />`/sys` |
+| `fileName()` | `cicatrix-urbs.ims`<br />`ubi-deorsus.semf`<br />`stellans-clavis.key` |
+| `filePath()` | `/home/user/dir/adfluens-audacter.ggb`<br />`/var/log/reprensio-aedilitas.sv4crc`<br />`/mnt/sobrie-quotienscunque.csh` |
+| `semver()` | `5.6.18`<br />`1.0.21`<br />`2.17.24` |
+| `errorMessage()` | `goroutine leak detected: 477 routines blocked on the same mutex`<br />`deadlock detected while waiting for ShareLock on transaction 49635`<br />`password must be at least 12 characters` |
+| `databaseError()` | `relation "search-indexer" does not exist`<br />`null value in column "tenant_id" violates not-null constraint`<br />`value too long for type character varying(255)` |
+| `httpError()` | `too many redirects following media-pipeline callback`<br />`unexpected content-type "text/html" from export-worker, expected JSON`<br />`unexpected content-type "text/html" from audit-log, expected JSON` |
+| `runtimeError()` | `circular dependency detected while initialising audit-log`<br />`panic recovered in auth-service: send on closed channel`<br />`goroutine leak detected: 477 routines blocked on the same mutex` |
+| `validationError()` | `email must be a valid address`<br />`currency must match the account currency`<br />`a project with this slug already exists` |
+| `component()` | `export-worker`<br />`user-directory`<br />`payments` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your

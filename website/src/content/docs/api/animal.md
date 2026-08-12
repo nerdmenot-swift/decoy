@@ -18,16 +18,16 @@ faker.animal.animal()
 
 | Method | Example output |
 |---|---|
-| `animal()` | `Warthog`<br />`Tamarin`<br />`Numbat` |
-| `bird()` | `Peacock`<br />`Pochard`<br />`Golden Eagle` |
-| `fish()` | `Brown Trout`<br />`Dace`<br />`Tetra` |
-| `insect()` | `Caddisfly`<br />`Bee`<br />`Stick Insect` |
-| `farmAnimal()` | `Hog`<br />`Sow`<br />`Goose` |
-| `dogBreed()` | `Cavalier King Charles Spaniel`<br />`Basset Hound`<br />`Saint Bernard` |
-| `catBreed()` | `Devon Rex`<br />`Birman`<br />`Manx` |
-| `horseBreed()` | `Andalusian`<br />`Connemara Pony`<br />`Clydesdale` |
-| `reptileOrAmphibian()` | `Monitor Lizard`<br />`Bullfrog`<br />`Toad` |
-| `petName()` | `Jasper`<br />`Nibbles`<br />`Mango` |
+| `animal()` | `Walrus`<br />`Skunk`<br />`Fossa` |
+| `bird()` | `Bullfinch`<br />`Pintail`<br />`Dunlin` |
+| `fish()` | `Mahi-Mahi`<br />`Pike`<br />`Carp` |
+| `insect()` | `Midge`<br />`Beetle`<br />`Wasp` |
+| `farmAnimal()` | `Pig`<br />`Sheep`<br />`Drake` |
+| `dogBreed()` | `Schnauzer`<br />`French Bulldog`<br />`Giant Schnauzer` |
+| `catBreed()` | `Highlander`<br />`Toyger`<br />`Devon Rex` |
+| `horseBreed()` | `Dales Pony`<br />`Suffolk Punch`<br />`Icelandic Horse` |
+| `reptileOrAmphibian()` | `Adder`<br />`Crocodile`<br />`Terrapin` |
+| `petName()` | `Comet`<br />`Nala`<br />`Teddy` |
 
 Examples are real output from three different seeds, captured when this page was built,
 using each method's **default** arguments. Where a signature shows parameters, pass your
