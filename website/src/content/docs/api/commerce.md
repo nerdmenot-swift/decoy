@@ -23,8 +23,10 @@ faker.commerce.department()
 | `review()` | `Mixed: the build quality is a noticeable step up but the weight is not as described.`<br />`Does the job — the instructions is genuinely excellent, though the grip could be better.`<br />`Mixed: the weight is exactly as described but the noise is a let-down for the money.` |
 | `reviewTitle()` | `Good, with one caveat`<br />`Good, with one caveat`<br />`Save your money` |
 | `reviewAspect()` | `the packaging`<br />`the packaging`<br />`the price` |
-| `price()`<br /><span class="sig">in range: ClosedRange<Double> = 1...1_000, decimals: Int = 2</span> | `171.62`<br />`359.87`<br />`352.15` |
+| `price(in range: ClosedRange<Double> = 1...1_000, decimals: Int = 2)` | `171.62`<br />`359.87`<br />`352.15` |
 | `ean13()` | `0745318112594`<br />`0787611384759`<br />`0438485397887` |
 | `sku()` | `BH-8442-TZ`<br />`ME-8260-AE`<br />`PO-8867-TV` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

@@ -17,15 +17,17 @@ faker.finance.accountType()
 | `accountType()` | `Auto Loan`<br />`Investment`<br />`Savings` |
 | `transactionType()` | `withdrawal`<br />`payment`<br />`deposit` |
 | `transactionDescription()` | `invoice transaction at Spencer corp. using card ending with 9665 for 994.89`<br />`deposit transaction at Elliott-Cruz using card ending with 3314 for 796.48`<br />`payment transaction at Pittman, Henn and Barboza using card ending with 6866 for 331.78` |
-| `accountNumber()`<br /><span class="sig">digits: Int = 8</span> | `96070510`<br />`33224553`<br />`59326041` |
+| `accountNumber(digits: Int = 8)` | `96070510`<br />`33224553`<br />`59326041` |
 | `routingNumber()` | `0918`<br />`0724`<br />`0113` |
-| `currency()` | `["code": "TOP", "name": "Tongan Paʻanga", "symbol": "TOP", "numericCode": "776"]`<br />`["code": "STN", "name": "São Tomé & Príncipe Dobra", "symbol": "STN", "numericCode": "930"`<br />`["code": "CUP", "name": "Cuban Peso", "symbol": "CUP", "numericCode": "192"]` |
+| `currency()` | `["name": "Tongan Paʻanga", "numericCode": "776", "symbol": "TOP", "code": "TOP"]`<br />`["name": "São Tomé & Príncipe Dobra", "numericCode": "930", "symbol": "STN", "code": "STN"`<br />`["name": "Cuban Peso", "numericCode": "192", "symbol": "CUP", "code": "CUP"]` |
 | `currencyName()` | `Japanese Yen`<br />`Qatari Riyal`<br />`Swedish Krona` |
 | `currencyCode()` | `HTG`<br />`DOP`<br />`HTG` |
 | `currencySymbol()` | `KGS`<br />`CUP`<br />`HNL` |
-| `creditCardNumber()`<br /><span class="sig">issuer: String? = nil</span> | `6504313472756266`<br />`361014942847`<br />`3519564758117413` |
-| `iban()`<br /><span class="sig">country: String = "GB"</span> | `GB88RBKT99449561959272`<br />`GB61YTYM61964652991849`<br />`GB06ZMJO57342059846302` |
+| `creditCardNumber(issuer: String? = nil)` | `6504313472756266`<br />`361014942847`<br />`3519564758117413` |
+| `iban(country: String = "GB")` | `GB88RBKT99449561959272`<br />`GB61YTYM61964652991849`<br />`GB06ZMJO57342059846302` |
 | `bitcoinAddress()` | `15Tf6qujaZgtt8ydJ9hujxUbyVzhscssTM`<br />`1CF5UrdM9R51yx276fxkqQ14vUheLCqfSk`<br />`1JYCRgP1rB8F67f469hDqfm1y6dMmaacvR` |
 | `ein()` | `85-7822253`<br />`38-7806802`<br />`90-3294207` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

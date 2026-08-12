@@ -3,6 +3,30 @@ title: Quick start
 description: Generating values, and why the same seed gives you the same people forever.
 ---
 
+## If you do not care about seeds
+
+Then do not pass one.
+
+```swift
+var faker = Faker(locale: DecoyLocaleEN.locale)
+
+faker.person.fullName()   // a different name every run
+```
+
+You get plausible data and nothing to think about. The same works for forges —
+`users.generate(100)`.
+
+One thing worth knowing: the seed still exists, it was just chosen for you, and you can
+read it back.
+
+```swift
+print(faker.seed)   // 14086741927554889
+```
+
+That matters the first time generated data turns up something surprising — a name that
+breaks a layout, a row that trips a validator. Print the seed, pass it to
+`Faker(seed:)`, and you have the exact run again to show somebody.
+
 ## What a seed is
 
 A **seed** is just a number you choose.

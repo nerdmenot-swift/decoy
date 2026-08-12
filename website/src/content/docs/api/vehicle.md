@@ -23,4 +23,6 @@ faker.vehicle.manufacturer()
 | `vin()` | `HRAHK9SYAPPN02DFR`<br />`DRZRY3LSXNAU7NRWX`<br />`6YFJ3VFL11E4DR0SD` |
 | `registrationPlate()` | `TD-908-BX`<br />`UH-786-XJ`<br />`JU-755-XI` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

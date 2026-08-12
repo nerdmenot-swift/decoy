@@ -196,12 +196,13 @@
   border: 1px solid var(--sl-color-hairline);
 }
 
-/* Method signatures in the generator tables. */
-.sl-markdown-content .sig {
-  font-family: var(--decoy-mono);
-  font-size: 0.72rem;
-  color: var(--decoy-faint);
+/* The generator tables put the whole signature in the first column, so give it room
+   and keep the example column from being squeezed to nothing. */
+.sl-markdown-content table td:first-child code {
+  font-size: 0.76rem;
+  white-space: normal;
 }
+.sl-markdown-content table td:first-child { width: 45%; }
 .sl-markdown-content td code {
   border: 0;
   background: var(--sl-color-gray-7);

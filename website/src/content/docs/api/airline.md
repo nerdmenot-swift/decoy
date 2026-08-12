@@ -16,10 +16,12 @@ faker.airline.airline()
 |---|---|
 | `airline()` | `["iataCode": "KL", "name": "KLM"]`<br />`["iataCode": "VN", "name": "Vietnam Airlines"]`<br />`["iataCode": "BA", "name": "British Airways"]` |
 | `airport()` | `["iataCode": "QCY", "name": "RAF Coningsby"]`<br />`["iataCode": "PNA", "name": "Pamplona Airport"]`<br />`["iataCode": "TLH", "name": "Tallahassee Regional Airport"]` |
-| `airplane()` | `["name": "Boeing 747", "iataTypeCode": "747"]`<br />`["name": "Airbus A330", "iataTypeCode": "330"]`<br />`["name": "Bombardier CRJ700", "iataTypeCode": "CR7"]` |
+| `airplane()` | `["iataTypeCode": "747", "name": "Boeing 747"]`<br />`["iataTypeCode": "330", "name": "Airbus A330"]`<br />`["iataTypeCode": "CR7", "name": "Bombardier CRJ700"]` |
 | `aircraftType()` | `Embraer E175`<br />`Boeing 747`<br />`Bombardier CRJ900` |
-| `flightNumber()`<br /><span class="sig">digits: Int = 4</span> | `8389`<br />`9316`<br />`7287` |
+| `flightNumber(digits: Int = 4)` | `8389`<br />`9316`<br />`7287` |
 | `seat()` | `37D`<br />`20D`<br />`60E` |
 | `recordLocator()` | `TEAAVJ`<br />`KOPTIX`<br />`XACBXL` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

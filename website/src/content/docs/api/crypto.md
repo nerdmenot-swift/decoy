@@ -23,4 +23,6 @@ faker.crypto.bitcoinAddress()
 | `sha1()` | `e8d44bf53d04abbb20e2c0e59d625eb20c4d1e57`<br />`fa19f8c49e63ac0d4528d334b609e13ef13b2288`<br />`a1e82c25462ae2aec86859ce31b39c1843226e84` |
 | `md5()` | `839c2bd8182a837e9b8b7a03ee5c3cda`<br />`32349d583f612235b647fdcde9abfa69`<br />`14650af2e1c44f6bb6f883c11794166f` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

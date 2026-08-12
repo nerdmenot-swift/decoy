@@ -588,12 +588,13 @@ func matrix(_ directory: URL) throws {
     print("")
     print("# Locale support matrix")
     print("")
-    print("`N` — the locale supplies this itself.  ")
-    print("`·` — it resolves through the fallback chain, so the values are another language's.")
+    print("✓ — the locale supplies this itself.  ")
+    print("✗ — it resolves through the fallback chain, so the values are another language's.")
     print("")
-    print("A field marked `·` still generates: it produces English. That is the point of")
-    print("publishing this — so the fallback is something you chose rather than something you")
-    print("discovered in your test data.")
+    print("A field marked ✗ still **generates** — it produces English. The cross means")
+    print("\"not this language\", not \"not available\". That distinction is the point of")
+    print("publishing the table: the fallback should be something you chose rather than")
+    print("something you discovered in your test data.")
     print("")
 
     print("| Locale | " + groups.map(\.0).joined(separator: " | ") + " |")
@@ -602,7 +603,7 @@ func matrix(_ directory: URL) throws {
     for code in own.keys.sorted() where code != "base" {
         let paths = own[code] ?? []
         let cells = groups.map { _, wanted in
-            wanted.contains(where: { paths.contains($0) }) ? "N" : "·"
+            wanted.contains(where: { paths.contains($0) }) ? "✓" : "✗"
         }
         print("| `\(code)` | " + cells.joined(separator: " | ") + " |")
     }

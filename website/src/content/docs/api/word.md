@@ -21,6 +21,8 @@ faker.word.adjective()
 | `noun()` | `maturity`<br />`dole`<br />`twill` |
 | `preposition()` | `against`<br />`on`<br />`outside` |
 | `verb()` | `bandy`<br />`ensnare`<br />`cure` |
-| `words()`<br /><span class="sig">_ count: Int = 3</span> | `defense meditation future`<br />`roundel nylon feller`<br />`stuffing changer autonomy` |
+| `words(_ count: Int = 3)` | `defense meditation future`<br />`roundel nylon feller`<br />`stuffing changer autonomy` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

@@ -15,9 +15,9 @@ faker.system.mimeType()
 | Method | Example output |
 |---|---|
 | `mimeType()` | `application/epub+zip`<br />`application/x-dtbncx+xml`<br />`application/vnd.intergeo` |
-| `programmingLanguage()` | `["name": "Just", "color": "#384d54", "extension": ".just"]`<br />`["name": "C++", "color": "#f34b7d", "extension": ".cpp"]`<br />`["name": "MeTTa", "color": "#6a5acd", "extension": ".metta"]` |
+| `programmingLanguage()` | `["color": "#384d54", "extension": ".just", "name": "Just"]`<br />`["color": "#f34b7d", "extension": ".cpp", "name": "C++"]`<br />`["color": "#6a5acd", "extension": ".metta", "name": "MeTTa"]` |
 | `programmingLanguageName()` | `eC`<br />`Qt Script`<br />`KCL` |
-| `variableName()`<br /><span class="sig">_ style: NamingStyle = .camelCase</span> | `contrivedConvoy`<br />`deliciousConsumerism`<br />`lightweightFlexure` |
+| `variableName(_ style: NamingStyle = .camelCase)` | `contrivedConvoy`<br />`deliciousConsumerism`<br />`lightweightFlexure` |
 | `fileExtension()` | `tmo`<br />`plb`<br />`emotionml` |
 | `directoryPath()` | `/home/user/dir`<br />`/srv`<br />`/mnt` |
 | `fileName()` | `assignatio-casualiter.dxp`<br />`fortitudo-abundanter.stl`<br />`corbis-gratanter.xfdl` |
@@ -30,4 +30,6 @@ faker.system.mimeType()
 | `validationError()` | `email must be a valid address`<br />`this field is required`<br />`email must be a valid address` |
 | `component()` | `export-worker`<br />`billing`<br />`scheduler` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

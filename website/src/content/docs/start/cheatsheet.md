@@ -10,10 +10,15 @@ Everything below is real output. Start here, then use the
 import Decoy
 import DecoyLocaleEN
 
+// Seeded — the same values every run.
 var faker = Faker(seed: 1337, locale: DecoyLocaleEN.locale)
+
+// Or don't pass one, and get something different each time.
+var faker = Faker(locale: DecoyLocaleEN.locale)
 ```
 
-The seed is any number you pick. The same one always produces the same values — see
+A seed is any number you pick; the same one always produces the same values. Leave it out
+and one is chosen for you — readable afterwards as `faker.seed`. See
 [quick start](/start/quick-start/).
 
 ## People

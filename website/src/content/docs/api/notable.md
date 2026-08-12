@@ -31,4 +31,6 @@ faker.notable.philosopher()
 | `athlete()` | `Olga Korbut`<br />`Katie Ledecky`<br />`Mark Spitz` |
 | `historicalFigure()` | `Apollonius of Perga`<br />`Edward Jenner`<br />`Charles Gounod` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

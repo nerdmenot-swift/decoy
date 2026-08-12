@@ -31,4 +31,6 @@ faker.beverage.beer()
 | `roast()` | `Natural`<br />`Medium Roast`<br />`Decaf` |
 | `teaBase()` | `Green Tea`<br />`White Tea`<br />`Herbal Infusion` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

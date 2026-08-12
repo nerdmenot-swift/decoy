@@ -14,15 +14,15 @@ faker.person.firstName()
 
 | Method | Example output |
 |---|---|
-| `firstName()`<br /><span class="sig">_ gender: Gender? = nil</span> | `Mary`<br />`Mary`<br />`Janet` |
-| `middleName()`<br /><span class="sig">_ gender: Gender? = nil</span> | `Connie`<br />`Paul`<br />`Kieran` |
+| `firstName(_ gender: Gender? = nil)` | `Mary`<br />`Mary`<br />`Janet` |
+| `middleName(_ gender: Gender? = nil)` | `Connie`<br />`Paul`<br />`Kieran` |
 | `novelLastName()` | `Titz`<br />`Roacht`<br />`Mountagnolds` |
-| `lastName()`<br /><span class="sig">_ gender: Gender? = nil</span> | `Szymanski`<br />`Shumate`<br />`Alvarez` |
-| `prefix()`<br /><span class="sig">_ gender: Gender? = nil</span> | `Miss`<br />`Prof.`<br />`Dr.` |
+| `lastName(_ gender: Gender? = nil)` | `Szymanski`<br />`Shumate`<br />`Alvarez` |
+| `prefix(_ gender: Gender? = nil)` | `Miss`<br />`Prof.`<br />`Dr.` |
 | `suffix()` | `PhD`<br />`DDS`<br />`IV` |
 | `bloodType()` | `A+`<br />`B+`<br />`B+` |
 | `ssn()` | `570-08-7268`<br />`483-21-0411`<br />`668-60-1347` |
-| `fullName()`<br /><span class="sig">_ gender: Gender? = nil</span> | `John Wilkes`<br />`Adrian Johnson`<br />`Carol Contreras` |
+| `fullName(_ gender: Gender? = nil)` | `John Wilkes`<br />`Adrian Johnson`<br />`Carol Contreras` |
 | `sex()` | `female`<br />`female`<br />`female` |
 | `gender()` | `Genderqueer`<br />`Non-binary`<br />`Non-binary` |
 | `jobTitle()` | `De-engineered challenge Supervisor`<br />`Centralized array Designer`<br />`Extended analyzer Coordinator` |
@@ -32,4 +32,6 @@ faker.person.firstName()
 | `zodiacSign()` | `Scorpio`<br />`Cancer`<br />`Taurus` |
 | `bio()` | `baker, coffee enthusiast`<br />`cyclist 🇹🇼`<br />`guitarist` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

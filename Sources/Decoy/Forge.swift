@@ -253,7 +253,8 @@ public struct Forge<T>: Sendable {
     /// Traps if a rule throws. Fixtures are development-time tooling, so a loud
     /// failure with a legible message beats error handling nobody writes — use
     /// ``tryGenerate(_:seed:applying:)`` when you genuinely want to recover.
-    public func generate(_ count: Int, seed: UInt64, applying traits: Trait<T>...) -> [T] {
+    public func generate(_ count: Int, seed: UInt64 = Decoy.randomSeed(),
+                         applying traits: Trait<T>...) -> [T] {
         precondition(count >= 0, "count must not be negative")
         return trapping { try runGenerate(rows: 0..<count, seed: seed, traits: traits) }
     }
@@ -261,7 +262,7 @@ public struct Forge<T>: Sendable {
     /// Generates `count` values, throwing on rule failure or unique exhaustion.
     public func tryGenerate(
         _ count: Int,
-        seed: UInt64,
+        seed: UInt64 = Decoy.randomSeed(),
         applying traits: Trait<T>...
     ) throws -> [T] {
         precondition(count >= 0, "count must not be negative")
@@ -282,6 +283,11 @@ public struct Forge<T>: Sendable {
     /// }
     /// ```
     ///
+    /// Unlike the whole-run entry points, this has no default seed. Its purpose is
+    /// reproducing a slice of one particular run, and a per-call default would hand each
+    /// chunk a different seed — silently producing something that is not a slice of
+    /// anything.
+    ///
     /// - Precondition: the forge has no `unique` rules. Uniqueness needs rows to see
     ///   each other, which chunks by definition cannot do — silently allowing it
     ///   would produce duplicate values that only surface as a constraint violation
@@ -300,7 +306,7 @@ public struct Forge<T>: Sendable {
     }
 
     /// Generates a single value.
-    public func one(seed: UInt64, applying traits: Trait<T>...) -> T {
+    public func one(seed: UInt64 = Decoy.randomSeed(), applying traits: Trait<T>...) -> T {
         trapping { try runGenerate(rows: 0..<1, seed: seed, traits: traits)[0] }
     }
 
@@ -315,7 +321,8 @@ public struct Forge<T>: Sendable {
     ///     try await db.insert(user)
     /// }
     /// ```
-    public func stream(seed: UInt64, applying traits: Trait<T>...) -> ForgeSequence<T> {
+    public func stream(seed: UInt64 = Decoy.randomSeed(),
+                       applying traits: Trait<T>...) -> ForgeSequence<T> {
         ForgeSequence(run: makeRun(seed: seed, traits: traits, startingAt: 0))
     }
 

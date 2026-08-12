@@ -20,4 +20,6 @@ faker.color.human()
 | `rgb()` | `(red: 92, green: 66, blue: 34)`<br />`(red: 61, green: 141, blue: 85)`<br />`(red: 9, green: 206, blue: 8)` |
 | `cssRGB()` | `rgb(27, 13, 167)`<br />`rgb(7, 37, 48)`<br />`rgb(235, 32, 93)` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

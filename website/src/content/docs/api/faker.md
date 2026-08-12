@@ -19,4 +19,6 @@ faker.uuid()
 | `uuidValue()` | `50C8E69F-C66F-4243-9A01-34B1782C6885`<br />`8D57A623-CB45-4F9A-9082-52F467F6F7F2`<br />`AD74D664-F78F-4EEF-BC75-B3E8BB70B9CA` |
 | `uuidV7Value()` | `019B76DA-A800-7A99-B971-EBB58D4B802A`<br />`019B76DA-A800-7EB8-B694-29574F80CC17`<br />`019B76DA-A800-7290-8320-BC6C758B81D9` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

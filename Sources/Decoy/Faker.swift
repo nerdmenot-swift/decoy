@@ -74,13 +74,35 @@ public struct Faker: Sendable {
     /// want dates to sit near a particular moment.
     public let reference: Timestamp
 
+    /// The seed this faker was created with.
+    ///
+    /// Worth reading precisely when you did *not* choose it. An unseeded faker takes one
+    /// from the system, and without this the run would be unreproducible — so a fixture
+    /// that turns up something surprising could never be shown to anybody else. Print it
+    /// and pass it back to `Faker(seed:)` to get the same run again.
+    public let seed: UInt64
+
+    /// Creates a faker.
+    ///
+    /// `seed` defaults to a fresh system-drawn value, so callers who only want plausible
+    /// data can ignore seeding entirely:
+    ///
+    /// ```swift
+    /// var faker = Faker(locale: DecoyLocaleEN.locale)
+    /// faker.person.fullName()
+    /// ```
+    ///
+    /// The default is evaluated per call, so two fakers made this way differ. Pass a seed
+    /// when the values need to be the same twice, and read ``seed`` to recover the one
+    /// that was chosen for you.
     public init(
-        seed: UInt64,
+        seed: UInt64 = Decoy.randomSeed(),
         index: Int = 0,
         locale: LocaleCorpus = .builtIn,
         reference: Timestamp = .decoyReference,
         novelNames: Bool = false
     ) {
+        self.seed = seed
         self.rng = Xoshiro256StarStar(seed: seed)
         self.index = index
         self.locale = locale

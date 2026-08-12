@@ -46,4 +46,6 @@ faker.whimsy.codename()
 | `starName()` | `Causeway Borealis`<br />`Mortar Majoris`<br />`Basin Borealis` |
 | `technobabble()` | `Try to copy the protocol, maybe it will generate the digital driver`<br />`You cannot copy the card without parsing the back-end monitor`<br />`You cannot override the card without compressing the redundant matrix` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

@@ -29,4 +29,6 @@ faker.media.bookTitle()
 | `artMovement()` | `Suprematism`<br />`Neoclassicism`<br />`Impressionism` |
 | `book()` | `(title: "David Copperfield", author: "Victor Hugo", genre: "Drama")`<br />`(title: "Twenty Thousand Leagues Under the Sea", author: "Emily Dickinson", genre: "Autobi`<br />`(title: "The Metamorphosis", author: "Joseph Conrad", genre: "Poetry")` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

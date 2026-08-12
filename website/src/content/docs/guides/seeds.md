@@ -3,6 +3,21 @@ title: Seeds and reproducibility
 description: What the same seed guarantees, and the two things that change the answer.
 ---
 
+## You can skip all of this
+
+```swift
+var faker = Faker(locale: DecoyLocaleEN.locale)   // seed drawn for you
+let rows = users.generate(100)                    // same
+```
+
+If reproducibility is not what you came for, pass no seed and read no further. The rest
+of this page is for when it is.
+
+Even then the seed is recoverable — `faker.seed` returns the one that was chosen, so a
+run that turns up something interesting is never lost.
+
+## What a seed is
+
 A **seed** is a number you choose. Decoy's randomness is deterministic, so the same
 number always makes the same choices — which is what turns generated data into something
 you can rely on twice.

@@ -15,12 +15,14 @@ faker.lorem.word()
 | Method | Example output |
 |---|---|
 | `word()` | `vas`<br />`contatio`<br />`maxume` |
-| `words()`<br /><span class="sig">_ count: Int = 3</span> | `circuitio substitutio laute`<br />`civis principaliter gausapes`<br />`interea mollitudo adulescens` |
-| `sentence()`<br /><span class="sig">words count: Int? = nil</span> | `Fors ovis comiter quatenus virgo cunctatio frater.`<br />`Apex paropsis assensio fraglans adfinis singulariter egregie.`<br />`Eques attice plato baro utiliter.` |
-| `sentences()`<br /><span class="sig">_ count: Int = 3</span> | `Fideliter salax demisse quin comprehensio auctio plebes. Conprehensio videlicet apis chary`<br />`Allex fatigatio laqueare plebs contans. Chors honos huc haudquaquam expositio palumbes spe`<br />`Comparatio deliberatio onyx. Facinus comissatio sinciput comprehensio nequando frequens de` |
-| `paragraph()`<br /><span class="sig">sentences count: Int? = nil</span> | `Antidea adfectatio colos cumulate benivolens conjuratio fideliter puxis apex. Frons integr`<br />`Jus labos contumaciter exsistimatio adgnomen quojas confluens. Probabiliter aemulatio mani`<br />`Porro lubenter congruens. Flagrans praeceps benevolens vorsus. Crus adspiratio vituperatio` |
-| `paragraphs()`<br /><span class="sig">_ count: Int = 3, separator: String = "\n\n"</span> | `Contumaciter segniter exhortatio morio humilitas ardens creatrix. Perfectio calamitas alpi`<br />`Contamen ante paulisper nuper infans coturnix existumatio aviditas cupido derivatio. Tiber`<br />`Certo aratio fraus continuatio aemulatio parapsis. Acus quorsus paullulo comperte haeredit` |
-| `slug()`<br /><span class="sig">words count: Int = 3</span> | `hau-nondum-collectio`<br />`dispositio-quotiescunque-singillatim`<br />`possessio-vorsus-plebes` |
-| `text()`<br /><span class="sig">maxLength: Int = 200</span> | `Mors aedilitas altrix femur pignus societas. Fidis volucris qui demens conpages absis requ`<br />`Senex credens humilitas fornax communio. Huccine seges continuo alicubi quamvis. Iens tant`<br />`Retro adolescens attamen aspis persecutio malignans quocunque haereditas anceps compressio` |
+| `words(_ count: Int = 3)` | `circuitio substitutio laute`<br />`civis principaliter gausapes`<br />`interea mollitudo adulescens` |
+| `sentence(words count: Int? = nil)` | `Fors ovis comiter quatenus virgo cunctatio frater.`<br />`Apex paropsis assensio fraglans adfinis singulariter egregie.`<br />`Eques attice plato baro utiliter.` |
+| `sentences(_ count: Int = 3)` | `Fideliter salax demisse quin comprehensio auctio plebes. Conprehensio videlicet apis chary`<br />`Allex fatigatio laqueare plebs contans. Chors honos huc haudquaquam expositio palumbes spe`<br />`Comparatio deliberatio onyx. Facinus comissatio sinciput comprehensio nequando frequens de` |
+| `paragraph(sentences count: Int? = nil)` | `Antidea adfectatio colos cumulate benivolens conjuratio fideliter puxis apex. Frons integr`<br />`Jus labos contumaciter exsistimatio adgnomen quojas confluens. Probabiliter aemulatio mani`<br />`Porro lubenter congruens. Flagrans praeceps benevolens vorsus. Crus adspiratio vituperatio` |
+| `paragraphs(_ count: Int = 3, separator: String = "\n\n")` | `Contumaciter segniter exhortatio morio humilitas ardens creatrix. Perfectio calamitas alpi`<br />`Contamen ante paulisper nuper infans coturnix existumatio aviditas cupido derivatio. Tiber`<br />`Certo aratio fraus continuatio aemulatio parapsis. Acus quorsus paullulo comperte haeredit` |
+| `slug(words count: Int = 3)` | `hau-nondum-collectio`<br />`dispositio-quotiescunque-singillatim`<br />`possessio-vorsus-plebes` |
+| `text(maxLength: Int = 200)` | `Mors aedilitas altrix femur pignus societas. Fidis volucris qui demens conpages absis requ`<br />`Senex credens humilitas fornax communio. Huccine seges continuo alicubi quamvis. Iens tant`<br />`Retro adolescens attamen aspis persecutio malignans quocunque haereditas anceps compressio` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

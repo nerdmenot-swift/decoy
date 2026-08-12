@@ -17,31 +17,33 @@ faker.location.buildingNumber()
 | `buildingNumber()` | `16`<br />`2581`<br />`72` |
 | `streetSuffix()` | `Station`<br />`Fork`<br />`Rapid` |
 | `streetName()` | `Billie Freeway`<br />`Mary Run`<br />`Strandberg Freeway` |
-| `streetAddress()`<br /><span class="sig">full: Bool = false</span> | `281 Jacklyn Port`<br />`50 Sargent Plain`<br />`385 Backus Landing` |
+| `streetAddress(full: Bool = false)` | `281 Jacklyn Port`<br />`50 Sargent Plain`<br />`385 Backus Landing` |
 | `secondaryAddress()` | `Flat 7`<br />`Floor 0`<br />`Flat 9` |
 | `city()` | `Bangor`<br />`Wabasha`<br />`Cheektowaga` |
-| `place()` | `["city": "Salida", "state": "California", "state_code": "CA"]`<br />`["city": "West Bishop", "state": "California", "state_code": "CA"]`<br />`["state_code": "PA", "city": "Fox Chase", "state": "Pennsylvania"]` |
+| `place()` | `["state": "California", "city": "Salida", "state_code": "CA"]`<br />`["city": "West Bishop", "state_code": "CA", "state": "California"]`<br />`["city": "Fox Chase", "state_code": "PA", "state": "Pennsylvania"]` |
 | `placeAndPostcode()` | `(city: "Tuckahoe", state: "New York", stateCode: "NY", postcode: "10537")`<br />`(city: "Chevy Chase", state: "Maryland", stateCode: "MD", postcode: "21717")`<br />`(city: "Greenville", state: "Alabama", stateCode: "AL", postcode: "36455")` |
 | `county()` | `Iroquois County`<br />`Nottoway County`<br />`Issaquena County` |
-| `stateRow()` | `["name": "Iowa", "abbr": "IA"]`<br />`["name": "Michigan", "abbr": "MI"]`<br />`["name": "Nevada", "abbr": "NV"]` |
+| `stateRow()` | `["abbr": "IA", "name": "Iowa"]`<br />`["abbr": "MI", "name": "Michigan"]`<br />`["abbr": "NV", "name": "Nevada"]` |
 | `state()` | `Connecticut`<br />`Montana`<br />`Michigan` |
 | `stateAbbreviation()` | `PA`<br />`WA`<br />`KY` |
 | `country()` | `Curaçao`<br />`Brunei`<br />`Togo` |
 | `continent()` | `Antarctica`<br />`Asia`<br />`Asia` |
 | `timeZone()` | `Pacific/Tarawa`<br />`America/Vancouver`<br />`America/Yakutat` |
 | `postcode()` | `02310`<br />`25552`<br />`70177` |
-| `postcode()`<br /><span class="sig">state abbreviation: String?</span> | `02310`<br />`25552`<br />`70177` |
+| `postcode(state abbreviation: String?)` | `02310`<br />`25552`<br />`70177` |
 | `stateAndPostcode()` | `(state: "Indiana", abbr: "IN", postcode: "46678")`<br />`(state: "Oklahoma", abbr: "OK", postcode: "73939")`<br />`(state: "South Dakota", abbr: "SD", postcode: "57721")` |
 | `postalAddress()` | `Austin Castanon 30 Nicholas Walk Corry Florida 18167`<br />`Robert Goff 88983 Washington Underpass Dodson Branch Hawaii 34743`<br />`Karrie Sanders 18537 Wood Hill Suffield Depot Arizona 87567` |
-| `countryCode()` | `["alpha3": "CHE", "numeric": "756", "alpha2": "CH"]`<br />`["alpha3": "MSR", "numeric": "500", "alpha2": "MS"]`<br />`["alpha3": "MNG", "numeric": "496", "alpha2": "MN"]` |
+| `countryCode()` | `["alpha2": "CH", "alpha3": "CHE", "numeric": "756"]`<br />`["alpha2": "MS", "alpha3": "MSR", "numeric": "500"]`<br />`["alpha2": "MN", "alpha3": "MNG", "numeric": "496"]` |
 | `countryCodeAlpha2()` | `YU`<br />`TP`<br />`AN` |
 | `countryCodeAlpha3()` | `SUR`<br />`ARM`<br />`PER` |
-| `language()` | `["alpha3": "eng", "name": "English", "alpha2": "en"]`<br />`["alpha3": "gle", "name": "Irish", "alpha2": "ga"]`<br />`["alpha3": "tsn", "name": "Tswana", "alpha2": "tn"]` |
-| `direction()`<br /><span class="sig">abbreviated: Bool = false</span> | `Southeast`<br />`East`<br />`East` |
-| `cardinalDirection()`<br /><span class="sig">abbreviated: Bool = false</span> | `West`<br />`South`<br />`North` |
-| `ordinalDirection()`<br /><span class="sig">abbreviated: Bool = false</span> | `Southwest`<br />`Southeast`<br />`Southeast` |
+| `language()` | `["alpha2": "en", "alpha3": "eng", "name": "English"]`<br />`["alpha2": "ga", "alpha3": "gle", "name": "Irish"]`<br />`["alpha2": "tn", "alpha3": "tsn", "name": "Tswana"]` |
+| `direction(abbreviated: Bool = false)` | `Southeast`<br />`East`<br />`East` |
+| `cardinalDirection(abbreviated: Bool = false)` | `West`<br />`South`<br />`North` |
+| `ordinalDirection(abbreviated: Bool = false)` | `Southwest`<br />`Southeast`<br />`Southeast` |
 | `latitude()` | `-16.3815`<br />`25.4694`<br />`51.6109` |
 | `longitude()` | `37.2465`<br />`-93.5617`<br />`6.2004` |
-| `coordinate()`<br /><span class="sig">near origin: (latitude: Double, longitude: Double)? = nil, radiusKm: Double = 10</span> | `(latitude: 11.7424, longitude: -147.2878)`<br />`(latitude: 13.0647, longitude: -123.1048)`<br />`(latitude: -29.4436, longitude: 129.7897)` |
+| `coordinate(near origin: (latitude: Double, longitude: Double)? = nil, radiusKm: Double = 10)` | `(latitude: 11.7424, longitude: -147.2878)`<br />`(latitude: 13.0647, longitude: -123.1048)`<br />`(latitude: -29.4436, longitude: 129.7897)` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

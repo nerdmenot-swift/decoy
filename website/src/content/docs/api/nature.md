@@ -28,4 +28,6 @@ faker.nature.mountain()
 | `desert()` | `Sonoran Desert`<br />`Negev`<br />`Rub’ al Khali` |
 | `weather()` | `Sleet`<br />`Hurricane`<br />`Fair` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

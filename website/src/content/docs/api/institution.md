@@ -24,4 +24,6 @@ faker.institution.university()
 | `newspaper()` | `South China Morning Post`<br />`The Hindu`<br />`The Economist` |
 | `orchestra()` | `Staatskapelle Dresden`<br />`City of Birmingham Symphony Orchestra`<br />`Czech Philharmonic` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.

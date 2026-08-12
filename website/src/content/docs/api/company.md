@@ -26,4 +26,6 @@ faker.company.name()
 | `catchPhrase()` | `Universal non-volatile product`<br />`Horizontal background hub`<br />`Enhanced heuristic pricing structure` |
 | `category()` | `Insurance`<br />`Insurance`<br />`Engineering` |
 
-Examples are real output from three different seeds, captured when this page was built.
+Examples are real output from three different seeds, captured when this page was built,
+using each method's **default** arguments. Where a signature shows parameters, pass your
+own to change the size, gender, length or format.
