@@ -1,0 +1,224 @@
+/*
+ * Decoy's theme, which is mostly the work of not looking like Starlight.
+ *
+ * Starlight's defaults are recognisable at a glance: a cool blue-grey neutral ramp, a
+ * purple accent, system-UI typography and generous rounding. All four are replaced here
+ * rather than tinted, because a themed default still reads as a default.
+ *
+ * The palette is the logo's, reconciled in Assets/build.mjs. Text colours are held to
+ * WCAG AA; the mark's own teal is not among them, since #328191 measures 4.21:1 on
+ * paper — fine for shapes, failing for body text — so links take a darkened sibling.
+ */
+
+:root {
+  --decoy-display: 'Fraunces', 'Iowan Old Style', Palatino, Georgia, serif;
+  --decoy-sans: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --decoy-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --decoy-teal: #328191;
+  --decoy-amber: #e0a029;
+  --decoy-cream: #f2ede1;
+}
+
+/* ---- light ---------------------------------------------------------------- */
+
+:root[data-theme='light'] {
+  --decoy-paper: #f8f8f5;
+  --decoy-card: #ffffff;
+  --decoy-ink: #12171e;
+  --decoy-muted: #5b5f63;
+  --decoy-faint: #6f716d;
+  --decoy-rule: #dedcd5;
+  --decoy-accent: #2c7382;
+  --decoy-accent-soft: #e4eff1;
+  --decoy-caution: #8f6114;
+
+  /* Starlight's own tokens, repointed. Its neutral ramp runs cool grey; ours is warm,
+     which is most of why the two do not look alike even before the type changes. */
+  --sl-color-accent-low: #e4eff1;
+  --sl-color-accent: #2c7382;
+  --sl-color-accent-high: #1f5563;
+  --sl-color-white: #12171e;
+  --sl-color-gray-1: #1b2027;
+  --sl-color-gray-2: #3a3e42;
+  --sl-color-gray-3: #5b5f63;
+  --sl-color-gray-4: #8a8c88;
+  --sl-color-gray-5: #dedcd5;
+  --sl-color-gray-6: #eeece5;
+  --sl-color-gray-7: #f4f2ec;
+  --sl-color-black: #f8f8f5;
+  --sl-color-text: #12171e;
+  --sl-color-text-accent: #2c7382;
+  --sl-color-bg: #f8f8f5;
+  --sl-color-bg-nav: #f8f8f5;
+  --sl-color-bg-sidebar: #f8f8f5;
+  --sl-color-bg-inline-code: #eeece5;
+  --sl-color-hairline: #dedcd5;
+  --sl-color-hairline-light: #e8e6df;
+  --sl-color-hairline-shade: #dedcd5;
+}
+
+/* ---- dark ----------------------------------------------------------------- */
+
+:root[data-theme='dark'] {
+  --decoy-paper: #0f1216;
+  --decoy-card: #171b20;
+  --decoy-ink: #e9e7e2;
+  --decoy-muted: #9ba0a6;
+  --decoy-faint: #7c8086;
+  --decoy-rule: #262b31;
+  --decoy-accent: #5aaec0;
+  --decoy-accent-soft: #17262b;
+  --decoy-caution: #e0a029;
+  /* The mark lifts on dark grounds; #328191 sits too close to #0f1216 to hold an edge. */
+  --decoy-teal: #5aaec0;
+  --decoy-cream: #ede7da;
+
+  --sl-color-accent-low: #17262b;
+  --sl-color-accent: #5aaec0;
+  --sl-color-accent-high: #9ed4e0;
+  --sl-color-white: #f4f3ef;
+  --sl-color-gray-1: #e9e7e2;
+  --sl-color-gray-2: #c3c5c8;
+  --sl-color-gray-3: #9ba0a6;
+  --sl-color-gray-4: #6c7076;
+  --sl-color-gray-5: #363b41;
+  --sl-color-gray-6: #22272c;
+  --sl-color-gray-7: #1a1e23;
+  --sl-color-black: #0f1216;
+  --sl-color-text: #e9e7e2;
+  --sl-color-text-accent: #5aaec0;
+  --sl-color-bg: #0f1216;
+  --sl-color-bg-nav: #0f1216;
+  --sl-color-bg-sidebar: #0f1216;
+  --sl-color-bg-inline-code: #22272c;
+  --sl-color-hairline: #262b31;
+  --sl-color-hairline-light: #2d333a;
+  --sl-color-hairline-shade: #1c2126;
+}
+
+/* ---- typography ----------------------------------------------------------- */
+
+:root {
+  --sl-font: var(--decoy-sans);
+  --sl-font-mono: var(--decoy-mono);
+  --sl-text-h1: 2.6rem;
+  --sl-text-h2: 1.75rem;
+  --sl-text-h3: 1.25rem;
+  --sl-line-height: 1.65;
+  --sl-content-width: 48rem;
+  --sl-nav-height: 4rem;
+}
+
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.sl-markdown-content h4 {
+  font-family: var(--decoy-display);
+  font-variation-settings: 'SOFT' 20, 'WONK' 1;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+/* A rule under h2 rather than extra space above it. Reads as a document with sections
+   instead of a page with headings, which suits a project about record-keeping. */
+.sl-markdown-content h2 {
+  border-bottom: 2px solid var(--sl-color-hairline);
+  padding-bottom: 0.4rem;
+  margin-top: 2.6rem;
+}
+
+.sl-markdown-content a {
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+/* ---- squaring off --------------------------------------------------------- */
+
+/* Starlight rounds nearly everything to 0.5rem. Near-square corners are the single
+   cheapest change that stops it reading as the default. */
+.sl-markdown-content :is(pre, .expressive-code, blockquote, table, img),
+.card,
+.starlight-aside {
+  border-radius: 3px !important;
+}
+
+.sl-markdown-content blockquote {
+  border-inline-start: 3px solid var(--decoy-amber);
+  background: var(--sl-color-gray-7);
+  padding: 0.8rem 1rem;
+  font-style: normal;
+}
+
+.sl-markdown-content table {
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.sl-markdown-content :is(th, td) {
+  border: 1px solid var(--sl-color-hairline);
+  padding: 0.45rem 0.7rem;
+}
+.sl-markdown-content th {
+  font-family: var(--decoy-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--decoy-muted);
+  background: var(--sl-color-gray-7);
+}
+/* Figures line up in columns wherever a table carries counts. */
+.sl-markdown-content td {
+  font-variant-numeric: tabular-nums;
+}
+
+.sl-markdown-content code:not(pre code) {
+  font-size: 0.86em;
+  padding: 0.1em 0.35em;
+  border-radius: 2px;
+  border: 1px solid var(--sl-color-hairline);
+}
+
+/* ---- sidebar -------------------------------------------------------------- */
+
+/* Group labels as small caps against a hairline, rather than Starlight's bold sans.
+   The sidebar is the most-seen surface on a docs site and the most recognisable. */
+.sidebar-content summary,
+.sidebar-content > ul > li > span {
+  font-family: var(--decoy-mono) !important;
+  font-size: 0.68rem !important;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--decoy-faint) !important;
+  font-weight: 500 !important;
+}
+
+.sidebar-content a {
+  border-radius: 2px;
+  font-size: 0.92rem;
+}
+.sidebar-content a[aria-current='page'] {
+  background: var(--decoy-accent-soft);
+  color: var(--sl-color-text-accent);
+  font-weight: 600;
+  box-shadow: inset 2px 0 0 var(--decoy-accent);
+}
+
+/* ---- header --------------------------------------------------------------- */
+
+header.header {
+  border-bottom: 1px solid var(--sl-color-hairline);
+  backdrop-filter: saturate(1.4) blur(6px);
+}
+
+/* ---- reduced motion ------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

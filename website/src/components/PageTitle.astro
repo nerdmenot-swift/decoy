@@ -1,0 +1,22 @@
+---
+// Titles in the display face with an eyebrow drawn from the sidebar group, so a docs
+// page opens like a document rather than like a heading with content stuck under it.
+const { entry } = Astro.locals.starlightRoute
+const group = entry.id.split('/')[0]
+const LABELS: Record<string, string> = {
+  start: 'Start here', ideas: 'The ideas', fun: 'Having fun with it', reference: 'Reference',
+}
+---
+<p class="decoy-eyebrow">{LABELS[group] ?? 'Decoy'}</p>
+<h1 id="_top">{entry.data.title}</h1>
+<style>
+  .decoy-eyebrow {
+    font-family: var(--decoy-mono); font-size: .68rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--decoy-faint); margin: 0 0 .35rem;
+  }
+  h1 {
+    font-family: var(--decoy-display);
+    font-variation-settings: 'SOFT' 30, 'WONK' 1;
+    letter-spacing: -.02em; line-height: 1.08; margin: 0;
+  }
+</style>

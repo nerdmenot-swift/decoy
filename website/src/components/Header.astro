@@ -1,0 +1,30 @@
+---
+// Starlight's own header is one of its loudest tells: centred title lockup, its own
+// spacing, its own social row. This is the site's header instead, so the docs pages
+// and the landing page read as one thing.
+import Search from '@astrojs/starlight/components/Search.astro'
+import ThemeSelect from '@astrojs/starlight/components/ThemeSelect.astro'
+import lockup from './lockup.svg?raw'
+---
+<div class="decoy-header">
+  <a class="decoy-brand" href="/" aria-label="Decoy" set:html={lockup} />
+  <div class="decoy-search"><Search /></div>
+  <nav class="decoy-nav">
+    <a href="/start/install/">Install</a>
+    <a href="/reference/namespaces/">Reference</a>
+    <a href="https://github.com/NerdMeNot/decoy">GitHub</a>
+    <ThemeSelect />
+  </nav>
+</div>
+<style>
+  .decoy-header { display: flex; align-items: center; gap: 1.4rem; width: 100%; }
+  .decoy-brand { display: block; width: 7.5rem; flex: none; }
+  .decoy-brand :global(svg) { width: 100%; height: auto; display: block; }
+  .decoy-search { flex: 1; max-width: 22rem; }
+  .decoy-nav { display: flex; align-items: center; gap: 1.1rem; margin-inline-start: auto; }
+  .decoy-nav a {
+    color: var(--decoy-muted); text-decoration: none; font-size: .88rem; font-weight: 500;
+  }
+  .decoy-nav a:hover { color: var(--decoy-accent); }
+  @media (max-width: 50rem) { .decoy-nav a { display: none; } }
+</style>

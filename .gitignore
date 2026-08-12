@@ -18,3 +18,4 @@ Package.resolved
 
 # proto toolchain install logs
 proto-*.log
+/.website-extract/
