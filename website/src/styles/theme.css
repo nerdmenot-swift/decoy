@@ -11,6 +11,15 @@
  */
 
 :root {
+  /* One spacing scale for the whole site. Sections step by --space-6, blocks within a
+     section by --space-3, and label-to-heading by --space-1. */
+  --space-1: 0.35rem;
+  --space-2: 0.6rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.25rem;
+  --space-6: clamp(3rem, 6vw, 4.5rem);
+
   --decoy-display: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --decoy-sans: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --decoy-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -23,16 +32,16 @@
 /* ---- light ---------------------------------------------------------------- */
 
 :root[data-theme='light'] {
-  --decoy-paper: #f1f2ec;
+  --decoy-paper: #eaebe2;
   --decoy-card: #ffffff;
   --decoy-ink: #12171e;
-  --decoy-muted: #5b5f63;
-  --decoy-faint: #6f716d;
-  --decoy-rule: #d9dcd2;
+  --decoy-muted: #54585c;
+  --decoy-faint: #5f625b;
+  --decoy-rule: #ccd0c1;
   --decoy-accent: #2c7382;
-  --decoy-accent-soft: #e2edef;
-  --decoy-band: #e9ebe2;
-  --decoy-amber-soft: #f7f0dd;
+  --decoy-accent-soft: #dcebee;
+  --decoy-band: #dde1d2;
+  --decoy-amber-soft: #f3e9cf;
   --decoy-caution: #8f6114;
 
   /* Starlight's own tokens, repointed. Its neutral ramp runs cool grey; ours is warm,
@@ -45,17 +54,17 @@
   --sl-color-gray-2: #3a3e42;
   --sl-color-gray-3: #5b5f63;
   --sl-color-gray-4: #8a8c88;
-  --sl-color-gray-5: #dedcd5;
-  --sl-color-gray-6: #eeece5;
-  --sl-color-gray-7: #f4f2ec;
-  --sl-color-black: #f1f2ec;
+  --sl-color-gray-5: #ccd0c1;
+  --sl-color-gray-6: #dde1d2;
+  --sl-color-gray-7: #e3e6da;
+  --sl-color-black: #eaebe2;
   --sl-color-text: #12171e;
   --sl-color-text-accent: #2c7382;
-  --sl-color-bg: #f1f2ec;
-  --sl-color-bg-nav: #f1f2ec;
-  --sl-color-bg-sidebar: #f1f2ec;
-  --sl-color-bg-inline-code: #eeece5;
-  --sl-color-hairline: #dedcd5;
+  --sl-color-bg: #eaebe2;
+  --sl-color-bg-nav: #eaebe2;
+  --sl-color-bg-sidebar: #eaebe2;
+  --sl-color-bg-inline-code: #dde1d2;
+  --sl-color-hairline: #ccd0c1;
   --sl-color-hairline-light: #e8e6df;
   --sl-color-hairline-shade: #dedcd5;
 }

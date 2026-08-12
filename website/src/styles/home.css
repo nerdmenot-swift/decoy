@@ -32,24 +32,25 @@ body {
 
 main {
   max-width: 76rem; margin: 0 auto;
-  padding: clamp(2rem, 4vw, 3rem) clamp(1rem, 5vw, 3.5rem) 4rem;
-  display: flex; flex-direction: column; gap: clamp(2.5rem, 6vw, 4rem);
+  padding: var(--space-5) clamp(1rem, 5vw, 3.5rem) var(--space-6);
+  display: flex; flex-direction: column; gap: var(--space-6);
 }
 
 .hero {
   display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-  gap: clamp(1.5rem, 4vw, 3rem); align-items: center;
+  gap: var(--space-4) clamp(1.5rem, 4vw, 3rem); align-items: start;
 }
-.hero-say { display: flex; flex-direction: column; gap: 1rem; }
+.hero-say { display: flex; flex-direction: column; gap: var(--space-3); }
 .doc-label {
   font-family: var(--decoy-mono); font-size: .68rem; font-weight: 500;
   letter-spacing: .16em; text-transform: uppercase; color: var(--decoy-faint);
-  margin: 0; padding-bottom: .55rem; border-bottom: 1px solid var(--decoy-rule);
+  margin: 0 0 var(--space-1); padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--decoy-rule);
 }
 h1 {
   font-family: var(--decoy-mono); font-weight: 600;
   font-size: clamp(2rem, 4vw, 3rem); line-height: 1.06;
-  letter-spacing: -.035em; margin: .2rem 0 0;
+  letter-spacing: -.035em; margin: 0;
 }
 .voice { margin: 0; color: var(--decoy-muted); max-width: 46ch; }
 .voice strong { color: var(--decoy-ink); }
@@ -70,7 +71,7 @@ h1 {
 .hero-code .n { color: var(--decoy-caution); }
 .hero-code .c { color: var(--decoy-faint); }
 
-.cta { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .3rem; }
+.cta { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-1); }
 .btn {
   display: inline-block; padding: .55rem 1rem; border-radius: 2px;
   background: var(--decoy-ink); color: var(--decoy-paper);
@@ -81,10 +82,10 @@ h1 {
   background: transparent; color: var(--decoy-accent); border-color: var(--decoy-rule);
 }
 
-.reg { display: flex; flex-direction: column; gap: 1rem; }
+.reg { display: flex; flex-direction: column; gap: var(--space-3); }
 h2 {
   font-family: var(--decoy-mono); font-weight: 600;
-  font-size: clamp(1.4rem, 2.6vw, 1.9rem); letter-spacing: -.03em; margin: .2rem 0 0;
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem); letter-spacing: -.03em; margin: 0;
 }
 h3 { font-size: .95rem; margin: 0 0 .3rem; font-weight: 650; }
 .caption { margin: 0; font-size: .85rem; color: var(--decoy-faint); max-width: 66ch; }
@@ -123,7 +124,10 @@ h3 { font-size: .95rem; margin: 0 0 .3rem; font-weight: 650; }
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 
-.detail { border: 1px solid var(--decoy-rule); background: var(--decoy-card); }
+.detail {
+  border: 1px solid var(--decoy-rule); background: var(--decoy-card);
+  position: sticky; top: calc(var(--space-5) + 1.5rem); z-index: 5;
+}
 .detail-head {
   display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
   padding: .5rem .8rem; background: var(--decoy-band);

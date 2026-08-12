@@ -1,0 +1,231 @@
+---
+/**
+ * A listbox that looks like the rest of the site.
+ *
+ * A native `<select>` renders with the operating system's own chrome — rounded, blue,
+ * and completely outside the design — which is jarring next to controls that are square
+ * and teal. This is a button plus a popup, with the keyboard behaviour a select has:
+ * arrows to move, Home/End to jump, Enter or Space to choose, Escape to dismiss, and
+ * type-ahead on printable keys.
+ */
+interface Option {
+  value: string
+  label: string
+  hint?: string
+}
+interface Props {
+  id: string
+  label: string
+  options: Option[]
+  value?: string
+}
+const { id, label, options, value = options[0]?.value } = Astro.props
+const selected = options.find((o) => o.value === value) ?? options[0]
+---
+
+<div class="ds" data-select={id}>
+  <button
+    type="button"
+    class="ds-button"
+    id={`${id}-button`}
+    aria-haspopup="listbox"
+    aria-expanded="false"
+    aria-label={label}
+  >
+    <span class="ds-value">{selected?.label}</span>
+    <svg class="ds-chevron" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M4 6.5 8 10.5 12 6.5" />
+    </svg>
+  </button>
+
+  <div class="ds-popup" role="listbox" tabindex="-1" aria-label={label} hidden>
+    {options.map((o) => (
+      <div
+        class="ds-option"
+        role="option"
+        data-value={o.value}
+        aria-selected={o.value === value ? 'true' : 'false'}
+      >
+        <span class="ds-check" aria-hidden="true">✓</span>
+        <span class="ds-label">{o.label}</span>
+        {o.hint && <span class="ds-hint">{o.hint}</span>}
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  class DecoySelect {
+    constructor(root) {
+      this.root = root
+      this.button = root.querySelector('.ds-button')
+      this.popup = root.querySelector('.ds-popup')
+      this.options = [...root.querySelectorAll('.ds-option')]
+      this.active = Math.max(0, this.options.findIndex((o) => o.ariaSelected === 'true'))
+      this.typed = ''
+      this.typedAt = 0
+
+      this.button.addEventListener('click', () => this.toggle())
+      this.button.addEventListener('keydown', (e) => this.onButtonKey(e))
+      this.popup.addEventListener('keydown', (e) => this.onPopupKey(e))
+      this.options.forEach((o, i) =>
+        o.addEventListener('click', () => {
+          this.active = i
+          this.commit()
+        })
+      )
+      document.addEventListener('click', (e) => {
+        if (!root.contains(e.target)) this.close()
+      })
+    }
+
+    get open() {
+      return !this.popup.hidden
+    }
+
+    toggle() {
+      this.open ? this.close() : this.show()
+    }
+
+    show() {
+      this.popup.hidden = false
+      this.button.ariaExpanded = 'true'
+      this.mark()
+      this.popup.focus()
+    }
+
+    close(focusButton = false) {
+      this.popup.hidden = true
+      this.button.ariaExpanded = 'false'
+      if (focusButton) this.button.focus()
+    }
+
+    mark() {
+      this.options.forEach((o, i) => o.classList.toggle('at', i === this.active))
+      this.options[this.active]?.scrollIntoView({ block: 'nearest' })
+    }
+
+    move(delta) {
+      this.active = (this.active + delta + this.options.length) % this.options.length
+      this.mark()
+    }
+
+    commit() {
+      const chosen = this.options[this.active]
+      this.options.forEach((o) => (o.ariaSelected = String(o === chosen)))
+      this.root.querySelector('.ds-value').textContent =
+        chosen.querySelector('.ds-label').textContent
+      this.close(true)
+      this.root.dispatchEvent(
+        new CustomEvent('change', { detail: chosen.dataset.value, bubbles: true })
+      )
+    }
+
+    onButtonKey(e) {
+      if (['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(e.key)) {
+        e.preventDefault()
+        this.show()
+      }
+    }
+
+    onPopupKey(e) {
+      switch (e.key) {
+        case 'ArrowDown': e.preventDefault(); this.move(1); break
+        case 'ArrowUp': e.preventDefault(); this.move(-1); break
+        case 'Home': e.preventDefault(); this.active = 0; this.mark(); break
+        case 'End': e.preventDefault(); this.active = this.options.length - 1; this.mark(); break
+        case 'Enter':
+        case ' ': e.preventDefault(); this.commit(); break
+        case 'Escape': e.preventDefault(); this.close(true); break
+        case 'Tab': this.close(); break
+        default:
+          if (e.key.length !== 1) return
+          // Type-ahead: repeated keys inside a second extend the search rather than
+          // restarting it, which is what a native select does.
+          const now = Date.now()
+          this.typed = now - this.typedAt < 1000 ? this.typed + e.key : e.key
+          this.typedAt = now
+          const hit = this.options.findIndex((o) =>
+            o.querySelector('.ds-label').textContent.toLowerCase().startsWith(this.typed.toLowerCase())
+          )
+          if (hit >= 0) { this.active = hit; this.mark() }
+      }
+    }
+  }
+
+  for (const el of document.querySelectorAll('[data-select]')) new DecoySelect(el)
+</script>
+
+<style>
+  .ds { position: relative; display: inline-block; }
+
+  .ds-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--decoy-mono);
+    font-size: 0.78rem;
+    padding: 0.26rem 0.45rem 0.26rem 0.55rem;
+    border: 1px solid var(--decoy-rule);
+    border-radius: 2px;
+    background: var(--decoy-card);
+    color: var(--decoy-ink);
+    cursor: pointer;
+    min-width: 9.5rem;
+    justify-content: space-between;
+  }
+  .ds-button:hover { border-color: var(--decoy-accent); }
+  .ds-button[aria-expanded='true'] {
+    border-color: var(--decoy-accent);
+    box-shadow: 0 0 0 2px var(--decoy-accent-soft);
+  }
+  .ds-chevron {
+    width: 0.8rem; height: 0.8rem; flex: none;
+    fill: none; stroke: var(--decoy-faint); stroke-width: 1.5;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  .ds-popup {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: 40;
+    min-width: 100%;
+    max-height: 15rem;
+    overflow-y: auto;
+    padding: 0.2rem;
+    border: 1px solid var(--decoy-rule);
+    border-radius: 3px;
+    background: var(--decoy-card);
+    box-shadow: 0 8px 24px -12px rgb(0 0 0 / 0.35);
+  }
+  .ds-popup:focus-visible { outline: none; }
+
+  .ds-option {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.28rem 0.45rem;
+    border-radius: 2px;
+    font-size: 0.82rem;
+    white-space: nowrap;
+    cursor: pointer;
+    color: var(--decoy-ink);
+  }
+  .ds-option:hover,
+  .ds-option.at { background: var(--decoy-accent-soft); }
+  .ds-check { width: 0.7rem; font-size: 0.7rem; color: var(--decoy-accent); opacity: 0; }
+  .ds-option[aria-selected='true'] .ds-check { opacity: 1; }
+  .ds-option[aria-selected='true'] .ds-label { font-weight: 600; }
+  .ds-hint {
+    font-family: var(--decoy-mono);
+    font-size: 0.7rem;
+    color: var(--decoy-faint);
+    margin-left: auto;
+    padding-left: 0.8rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-popup { transition: none; }
+  }
+</style>

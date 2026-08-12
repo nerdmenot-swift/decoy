@@ -11,9 +11,9 @@
       "[\"iataCode\": \"BA\", \"name\": \"British Airways\"]"
     ],
     "airline.airplane": [
-      "[\"iataTypeCode\": \"747\", \"name\": \"Boeing 747\"]",
-      "[\"iataTypeCode\": \"330\", \"name\": \"Airbus A330\"]",
-      "[\"iataTypeCode\": \"CR7\", \"name\": \"Bombardier CRJ700\"]"
+      "[\"name\": \"Boeing 747\", \"iataTypeCode\": \"747\"]",
+      "[\"name\": \"Airbus A330\", \"iataTypeCode\": \"330\"]",
+      "[\"name\": \"Bombardier CRJ700\", \"iataTypeCode\": \"CR7\"]"
     ],
     "airline.airport": [
       "[\"iataCode\": \"QCY\", \"name\": \"RAF Coningsby\"]",
@@ -491,9 +491,9 @@
       "3519564758117413"
     ],
     "finance.currency": [
-      "[\"code\": \"TOP\", \"name\": \"Tongan Paʻanga\", \"numericCode\": \"776\", \"symbol\": \"TOP\"]",
-      "[\"code\": \"STN\", \"name\": \"São Tomé & Príncipe Dobra\", \"numericCode\": \"930\", \"symbol\": \"STN\"]",
-      "[\"code\": \"CUP\", \"name\": \"Cuban Peso\", \"numericCode\": \"192\", \"symbol\": \"CUP\"]"
+      "[\"code\": \"TOP\", \"name\": \"Tongan Paʻanga\", \"symbol\": \"TOP\", \"numericCode\": \"776\"]",
+      "[\"code\": \"STN\", \"name\": \"São Tomé & Príncipe Dobra\", \"symbol\": \"STN\", \"numericCode\": \"930\"]",
+      "[\"code\": \"CUP\", \"name\": \"Cuban Peso\", \"symbol\": \"CUP\", \"numericCode\": \"192\"]"
     ],
     "finance.currencyCode": [
       "HTG",
@@ -826,9 +826,9 @@
       "Togo"
     ],
     "location.countryCode": [
-      "[\"numeric\": \"756\", \"alpha2\": \"CH\", \"alpha3\": \"CHE\"]",
-      "[\"numeric\": \"500\", \"alpha2\": \"MS\", \"alpha3\": \"MSR\"]",
-      "[\"numeric\": \"496\", \"alpha2\": \"MN\", \"alpha3\": \"MNG\"]"
+      "[\"alpha3\": \"CHE\", \"numeric\": \"756\", \"alpha2\": \"CH\"]",
+      "[\"alpha3\": \"MSR\", \"numeric\": \"500\", \"alpha2\": \"MS\"]",
+      "[\"alpha3\": \"MNG\", \"numeric\": \"496\", \"alpha2\": \"MN\"]"
     ],
     "location.countryCodeAlpha2": [
       "YU",
@@ -851,9 +851,9 @@
       "East"
     ],
     "location.language": [
-      "[\"name\": \"English\", \"alpha2\": \"en\", \"alpha3\": \"eng\"]",
-      "[\"name\": \"Irish\", \"alpha2\": \"ga\", \"alpha3\": \"gle\"]",
-      "[\"name\": \"Tswana\", \"alpha2\": \"tn\", \"alpha3\": \"tsn\"]"
+      "[\"alpha3\": \"eng\", \"name\": \"English\", \"alpha2\": \"en\"]",
+      "[\"alpha3\": \"gle\", \"name\": \"Irish\", \"alpha2\": \"ga\"]",
+      "[\"alpha3\": \"tsn\", \"name\": \"Tswana\", \"alpha2\": \"tn\"]"
     ],
     "location.latitude": [
       "-16.3815",
@@ -872,8 +872,8 @@
     ],
     "location.place": [
       "[\"city\": \"Salida\", \"state\": \"California\", \"state_code\": \"CA\"]",
-      "[\"state\": \"California\", \"state_code\": \"CA\", \"city\": \"West Bishop\"]",
-      "[\"city\": \"Fox Chase\", \"state\": \"Pennsylvania\", \"state_code\": \"PA\"]"
+      "[\"city\": \"West Bishop\", \"state\": \"California\", \"state_code\": \"CA\"]",
+      "[\"state_code\": \"PA\", \"city\": \"Fox Chase\", \"state\": \"Pennsylvania\"]"
     ],
     "location.placeAndPostcode": [
       "(city: \"Tuckahoe\", state: \"New York\", stateCode: \"NY\", postcode: \"10537\")",
@@ -911,9 +911,9 @@
       "(state: \"South Dakota\", abbr: \"SD\", postcode: \"57721\")"
     ],
     "location.stateRow": [
-      "[\"abbr\": \"IA\", \"name\": \"Iowa\"]",
-      "[\"abbr\": \"MI\", \"name\": \"Michigan\"]",
-      "[\"abbr\": \"NV\", \"name\": \"Nevada\"]"
+      "[\"name\": \"Iowa\", \"abbr\": \"IA\"]",
+      "[\"name\": \"Michigan\", \"abbr\": \"MI\"]",
+      "[\"name\": \"Nevada\", \"abbr\": \"NV\"]"
     ],
     "location.streetAddress": [
       "281 Jacklyn Port",
@@ -1236,9 +1236,9 @@
       "(519) 442-7387"
     ],
     "science.chemicalElement": [
-      "[\"symbol\": \"Si\", \"atomicNumber\": \"14\", \"name\": \"Silicon\"]",
-      "[\"symbol\": \"Y\", \"atomicNumber\": \"39\", \"name\": \"Yttrium\"]",
-      "[\"symbol\": \"Np\", \"atomicNumber\": \"93\", \"name\": \"Neptunium\"]"
+      "[\"name\": \"Silicon\", \"atomicNumber\": \"14\", \"symbol\": \"Si\"]",
+      "[\"name\": \"Yttrium\", \"atomicNumber\": \"39\", \"symbol\": \"Y\"]",
+      "[\"name\": \"Neptunium\", \"atomicNumber\": \"93\", \"symbol\": \"Np\"]"
     ],
     "science.unit": [
       "[\"name\": \"square miles\", \"symbol\": \"mi²\"]",
@@ -1316,9 +1316,9 @@
       "application/vnd.intergeo"
     ],
     "system.programmingLanguage": [
-      "[\"extension\": \".just\", \"name\": \"Just\", \"color\": \"#384d54\"]",
-      "[\"extension\": \".cpp\", \"name\": \"C++\", \"color\": \"#f34b7d\"]",
-      "[\"extension\": \".metta\", \"name\": \"MeTTa\", \"color\": \"#6a5acd\"]"
+      "[\"name\": \"Just\", \"color\": \"#384d54\", \"extension\": \".just\"]",
+      "[\"name\": \"C++\", \"color\": \"#f34b7d\", \"extension\": \".cpp\"]",
+      "[\"name\": \"MeTTa\", \"color\": \"#6a5acd\", \"extension\": \".metta\"]"
     ],
     "system.programmingLanguageName": [
       "eC",

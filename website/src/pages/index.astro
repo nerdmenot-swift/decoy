@@ -14,6 +14,7 @@
 import samples from '../data/samples.json'
 import lockup from '../components/lockup.svg?raw'
 import ThemeToggle from '../components/ThemeToggle.astro'
+import Select from '../components/Select.astro'
 import '../styles/theme.css'
 import '../styles/home.css'
 
@@ -152,6 +153,13 @@ faker.person.jobTitle()        <span class="c">// "Implemented frame Designer"</
         <p class="voice">
           Pick a namespace to see real output, or open its page for every method it has.
         </p>
+        <div class="detail">
+          <div class="detail-head">
+            <code id="detail-ns">faker.person</code>
+            <a id="detail-link" href="/api/person/">all methods &rarr;</a>
+          </div>
+          <dl id="detail-body"></dl>
+        </div>
         <div class="grid">
           {cards.map((c, i) => (
             <button class:list={['card', { on: i === 0 }]} data-ns={c.ns}>
@@ -162,13 +170,6 @@ faker.person.jobTitle()        <span class="c">// "Implemented frame Designer"</
               <span class="card-ex">{c.preview.map((v) => <em>{v}</em>)}</span>
             </button>
           ))}
-        </div>
-        <div class="detail">
-          <div class="detail-head">
-            <code id="detail-ns">faker.person</code>
-            <a id="detail-link" href="/api/person/">all methods &rarr;</a>
-          </div>
-          <dl id="detail-body"></dl>
         </div>
       </section>
 
@@ -191,11 +192,11 @@ faker.person.jobTitle()        <span class="c">// "Implemented frame Designer"</
             <button class:list={['pill', { on: i === 0 }]} data-seed={s}>{s}</button>
           ))}
           <span class="rig-label rig-gap">locale</span>
-          <select id="locale">
-            {Object.entries(LOCALES).map(([code, name]) => (
-              <option value={code}>{name} · {code}</option>
-            ))}
-          </select>
+          <Select
+            id="locale"
+            label="Locale"
+            options={Object.entries(LOCALES).map(([value, label]) => ({ value, label, hint: value }))}
+          />
           <span class="rig-hint">click a row to see where each value came from</span>
         </div>
 
@@ -297,8 +298,9 @@ faker.person.jobTitle()        <span class="c">// "Implemented frame Designer"</
           paint()
         })
       )
-      $('#locale').addEventListener('change', (e) => {
-        state.locale = e.target.value
+      // The listbox reports its choice on a CustomEvent rather than through .value.
+      document.querySelector('[data-select="locale"]').addEventListener('change', (e) => {
+        state.locale = e.detail
         paint()
       })
 
