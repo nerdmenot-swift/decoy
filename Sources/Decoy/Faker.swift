@@ -2,12 +2,12 @@
 ///
 /// A `struct`, so it is `Sendable` and a `Forge` can be shared across tasks.
 ///
-/// Rules read like `$0.name.firstName()`, which needs namespaces (`name`,
+/// Rules read like `$0.person.firstName()`, which needs namespaces (`person`,
 /// `internet`, …) to advance a shared RNG. That normally forces a reference type.
 /// The way out is a computed property with both a getter and a setter: Swift
-/// evaluates `$0.name.firstName()` as get-namespace → call mutating method →
+/// evaluates `$0.person.firstName()` as get-namespace → call mutating method →
 /// write namespace back, so the RNG advances through a value type. See
-/// ``Faker/name`` for the pattern each namespace follows.
+/// ``Faker/person`` for the pattern each namespace follows.
 public struct Faker: Sendable {
 
     /// The generator backing every draw. Exposed so custom generators written

@@ -6,19 +6,19 @@
       "Bombardier CRJ900"
     ],
     "airline.airline": [
-      "[\"iataCode\": \"KL\", \"name\": \"KLM\"]",
-      "[\"iataCode\": \"VN\", \"name\": \"Vietnam Airlines\"]",
-      "[\"iataCode\": \"BA\", \"name\": \"British Airways\"]"
+      "[\"name\": \"KLM\", \"iataCode\": \"KL\"]",
+      "[\"name\": \"Vietnam Airlines\", \"iataCode\": \"VN\"]",
+      "[\"name\": \"British Airways\", \"iataCode\": \"BA\"]"
     ],
     "airline.airplane": [
-      "[\"name\": \"Boeing 747\", \"iataTypeCode\": \"747\"]",
-      "[\"name\": \"Airbus A330\", \"iataTypeCode\": \"330\"]",
-      "[\"name\": \"Bombardier CRJ700\", \"iataTypeCode\": \"CR7\"]"
+      "[\"iataTypeCode\": \"747\", \"name\": \"Boeing 747\"]",
+      "[\"iataTypeCode\": \"330\", \"name\": \"Airbus A330\"]",
+      "[\"iataTypeCode\": \"CR7\", \"name\": \"Bombardier CRJ700\"]"
     ],
     "airline.airport": [
-      "[\"iataCode\": \"QCY\", \"name\": \"RAF Coningsby\"]",
-      "[\"iataCode\": \"PNA\", \"name\": \"Pamplona Airport\"]",
-      "[\"iataCode\": \"TLH\", \"name\": \"Tallahassee Regional Airport\"]"
+      "[\"name\": \"RAF Coningsby\", \"iataCode\": \"QCY\"]",
+      "[\"name\": \"Pamplona Airport\", \"iataCode\": \"PNA\"]",
+      "[\"name\": \"Tallahassee Regional Airport\", \"iataCode\": \"TLH\"]"
     ],
     "airline.flightNumber": [
       "8389",
@@ -491,9 +491,9 @@
       "3519564758117413"
     ],
     "finance.currency": [
-      "[\"numericCode\": \"776\", \"symbol\": \"TOP\", \"name\": \"Tongan Paʻanga\", \"code\": \"TOP\"]",
-      "[\"numericCode\": \"930\", \"symbol\": \"STN\", \"name\": \"São Tomé & Príncipe Dobra\", \"code\": \"STN\"]",
-      "[\"numericCode\": \"192\", \"symbol\": \"CUP\", \"name\": \"Cuban Peso\", \"code\": \"CUP\"]"
+      "[\"code\": \"TOP\", \"numericCode\": \"776\", \"name\": \"Tongan Paʻanga\", \"symbol\": \"TOP\"]",
+      "[\"code\": \"STN\", \"numericCode\": \"930\", \"name\": \"São Tomé & Príncipe Dobra\", \"symbol\": \"STN\"]",
+      "[\"code\": \"CUP\", \"numericCode\": \"192\", \"name\": \"Cuban Peso\", \"symbol\": \"CUP\"]"
     ],
     "finance.currencyCode": [
       "HTG",
@@ -826,9 +826,9 @@
       "Togo"
     ],
     "location.countryCode": [
-      "[\"numeric\": \"756\", \"alpha2\": \"CH\", \"alpha3\": \"CHE\"]",
-      "[\"numeric\": \"500\", \"alpha2\": \"MS\", \"alpha3\": \"MSR\"]",
-      "[\"numeric\": \"496\", \"alpha2\": \"MN\", \"alpha3\": \"MNG\"]"
+      "[\"alpha3\": \"CHE\", \"numeric\": \"756\", \"alpha2\": \"CH\"]",
+      "[\"alpha3\": \"MSR\", \"numeric\": \"500\", \"alpha2\": \"MS\"]",
+      "[\"alpha3\": \"MNG\", \"numeric\": \"496\", \"alpha2\": \"MN\"]"
     ],
     "location.countryCodeAlpha2": [
       "YU",
@@ -851,9 +851,9 @@
       "East"
     ],
     "location.language": [
-      "[\"name\": \"English\", \"alpha2\": \"en\", \"alpha3\": \"eng\"]",
-      "[\"name\": \"Irish\", \"alpha2\": \"ga\", \"alpha3\": \"gle\"]",
-      "[\"name\": \"Tswana\", \"alpha2\": \"tn\", \"alpha3\": \"tsn\"]"
+      "[\"alpha3\": \"eng\", \"name\": \"English\", \"alpha2\": \"en\"]",
+      "[\"alpha3\": \"gle\", \"name\": \"Irish\", \"alpha2\": \"ga\"]",
+      "[\"alpha3\": \"tsn\", \"name\": \"Tswana\", \"alpha2\": \"tn\"]"
     ],
     "location.latitude": [
       "-16.3815",
@@ -871,9 +871,9 @@
       "Southeast"
     ],
     "location.place": [
-      "[\"state_code\": \"CA\", \"city\": \"Salida\", \"state\": \"California\"]",
-      "[\"city\": \"West Bishop\", \"state\": \"California\", \"state_code\": \"CA\"]",
-      "[\"state\": \"Pennsylvania\", \"state_code\": \"PA\", \"city\": \"Fox Chase\"]"
+      "[\"state\": \"California\", \"city\": \"Salida\", \"state_code\": \"CA\"]",
+      "[\"city\": \"West Bishop\", \"state_code\": \"CA\", \"state\": \"California\"]",
+      "[\"city\": \"Fox Chase\", \"state_code\": \"PA\", \"state\": \"Pennsylvania\"]"
     ],
     "location.placeAndPostcode": [
       "(city: \"Tuckahoe\", state: \"New York\", stateCode: \"NY\", postcode: \"10537\")",
@@ -1241,9 +1241,9 @@
       "[\"name\": \"Neptunium\", \"symbol\": \"Np\", \"atomicNumber\": \"93\"]"
     ],
     "science.unit": [
-      "[\"symbol\": \"mi²\", \"name\": \"square miles\"]",
-      "[\"symbol\": \"pn\", \"name\": \"pinches\"]",
-      "[\"symbol\": \"Gs\", \"name\": \"g-force\"]"
+      "[\"name\": \"square miles\", \"symbol\": \"mi²\"]",
+      "[\"name\": \"pinches\", \"symbol\": \"pn\"]",
+      "[\"name\": \"g-force\", \"symbol\": \"Gs\"]"
     ],
     "sport.club": [
       "Causeway United",
@@ -1316,9 +1316,9 @@
       "application/vnd.intergeo"
     ],
     "system.programmingLanguage": [
-      "[\"extension\": \".just\", \"color\": \"#384d54\", \"name\": \"Just\"]",
-      "[\"extension\": \".cpp\", \"color\": \"#f34b7d\", \"name\": \"C++\"]",
-      "[\"extension\": \".metta\", \"color\": \"#6a5acd\", \"name\": \"MeTTa\"]"
+      "[\"name\": \"Just\", \"color\": \"#384d54\", \"extension\": \".just\"]",
+      "[\"name\": \"C++\", \"color\": \"#f34b7d\", \"extension\": \".cpp\"]",
+      "[\"name\": \"MeTTa\", \"color\": \"#6a5acd\", \"extension\": \".metta\"]"
     ],
     "system.programmingLanguageName": [
       "eC",

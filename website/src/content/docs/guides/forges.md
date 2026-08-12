@@ -84,7 +84,11 @@ let users = Forge<User>("User") { User() }
 
 `cycle` assigns by row index, so a run of 300 gets exactly 100 of each — useful when you
 need coverage of every case rather than a random spread. `each` generates a nested forge
-with a seed derived from the parent's stream, so children are reproducible too.
+with a seed derived from the parent's stream, so children are reproducible too. Pass a
+plain number for a fixed fan-out: `.each(\.posts, 3, of: posts)`.
+
+The child inherits the parent's locale, reference instant and `novelNames` setting, so
+you configure them once on the parent. A child that sets its own keeps it.
 
 ## Traits
 
@@ -100,6 +104,27 @@ users.generate(10, seed: 1337, applying: admin, banned)
 Traits appear in `ForgeError` messages, which is why they are named: a uniqueness
 failure that only happens under one combination of traits is otherwise very hard to
 reproduce.
+
+Extending `Trait` with static members reads better at the call site:
+
+```swift
+extension Trait where T == User {
+    static var admin: Trait { Trait("admin") { $0.rule(\.role) { _ in .admin } } }
+}
+
+users.generate(10, seed: 1337, applying: .admin)
+```
+
+swift-testing exports a protocol also called `Trait`, so in a test file you need one
+selective import to say which you mean:
+
+```swift
+import Testing
+import struct Decoy.Trait
+import Decoy
+```
+
+Only the `extension` needs it — `applying: .admin` never names the type.
 
 ## Finishing a row
 

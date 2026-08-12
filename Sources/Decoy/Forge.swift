@@ -6,7 +6,7 @@
 /// it away:
 ///
 /// ```swift
-/// let users  = Forge<User> { User() }.rule(\.name) { $0.name.fullName() }
+/// let users  = Forge<User>("user") { User() }.rule(\.name) { $0.person.fullName() }
 /// let admins = users.rule(\.role) { _ in .admin }   // `users` is untouched
 /// ```
 ///
@@ -91,7 +91,7 @@ public struct Forge<T>: Sendable {
     /// name, a `fullName` that matches its parts:
     ///
     /// ```swift
-    /// .rule(\.firstName) { $0.name.firstName() }
+    /// .rule(\.firstName) { $0.person.firstName() }
     /// .rule(\.email) { faker, user in "\(user.firstName.lowercased())@example.com" }
     /// ```
     ///
@@ -195,6 +195,18 @@ public struct Forge<T>: Sendable {
         }
     }
 
+    /// Populates a nested collection with exactly `count` children per parent.
+    ///
+    /// `each(\.posts, 3, of: posts)` rather than `each(\.posts, 3...3, of: posts)`,
+    /// which is the shape a fixture with a fixed fan-out actually wants.
+    public func each<Child>(
+        _ keyPath: any WritableKeyPath<T, [Child]> & Sendable,
+        _ count: Int,
+        of child: Forge<Child>
+    ) -> Forge {
+        each(keyPath, count...count, of: child)
+    }
+
     /// Runs after every rule, for cross-cutting adjustments that do not belong to a
     /// single property.
     public func finish(
@@ -208,7 +220,7 @@ public struct Forge<T>: Sendable {
     /// Returns a copy that generates from the given locale.
     ///
     /// ```swift
-    /// let users = Forge<User> { User() }.locale(german)
+    /// let users = Forge<User>("user") { User() }.locale(german)
     /// ```
     ///
     /// Because a `LocaleCorpus` is just a fallback chain, this is also how you supply
@@ -237,10 +249,6 @@ public struct Forge<T>: Sendable {
         return copy
     }
 
-    /// Returns a copy whose relative dates are anchored to `instant`.
-    ///
-    /// Defaults to a fixed constant rather than the system clock, so regenerating a
-    /// fixture next year reproduces it exactly. See ``Faker/reference``.
     /// Copies the ambient settings a nested forge should share with its parent.
     ///
     /// Deliberately not the rules or the traits: only the configuration a child would
@@ -257,6 +265,10 @@ public struct Forge<T>: Sendable {
     var ambientReference: Timestamp { referenceInstant }
     var ambientNovelNames: Bool { wantsNovelNames }
 
+    /// Returns a copy whose relative dates are anchored to `instant`.
+    ///
+    /// Defaults to a fixed constant rather than the system clock, so regenerating a
+    /// fixture next year reproduces it exactly. See ``Faker/reference``.
     public func reference(_ instant: Timestamp) -> Forge {
         var copy = self
         copy.referenceInstant = instant
@@ -493,6 +505,23 @@ public struct ForgeSequence<T>: Sequence, IteratorProtocol {
 ///
 /// let staff = users.generate(10, seed: 1337, applying: .admin)
 /// ```
+///
+/// ## Naming this alongside swift-testing
+///
+/// swift-testing exports a protocol also called `Trait`, so a file importing both cannot
+/// spell this one — and `Decoy.Trait` does not help, because the `Decoy` enum shadows the
+/// module of the same name. Since fixtures mostly live in tests, that collision is likely.
+///
+/// Disambiguate with a selective import in the file declaring the extension:
+///
+/// ```swift
+/// import Testing
+/// import struct Decoy.Trait
+/// import Decoy
+/// ```
+///
+/// Only the declaration needs it. Call sites use static-member lookup (`applying: .admin`),
+/// which never names the type.
 public struct Trait<T>: Sendable {
     /// What the trait is called.
     ///
