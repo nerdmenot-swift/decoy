@@ -9,68 +9,68 @@ A field marked `·` still generates: it produces English. That is the point of
 publishing this — so the fallback is something you chose rather than something you
 discovered in your test data.
 
-| Locale | Given names | Surnames | Cities | Streets | Postcodes | Addresses | Phone numbers | Subdivisions | Countries | Colours | Compass | Zodiac | Company forms | Products | Departments | Job titles | Vocabulary | Invented names |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `ar` | N | N | N | · | N | N | N | N | N | N | N | N | · | · | · | · | · | · |
-| `az` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · |
-| `bn_BD` | N | · | N | · | N | N | N | N | N | · | N | · | · | · | · | · | · | · |
-| `cs_CZ` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · |
-| `cy` | N | · | N | · | · | N | N | N | N | N | N | N | N | · | · | · | · | · |
-| `da` | N | N | N | N | N | N | N | N | N | · | N | N | N | · | · | · | N | · |
-| `de` | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · |
-| `de_AT` | · | · | N | N | N | N | N | N | N | · | N | N | N | N | N | · | · | · |
-| `de_CH` | · | · | N | N | N | N | N | N | N | · | N | N | N | N | N | · | · | · |
-| `el` | N | N | N | · | N | N | N | N | N | N | N | N | N | · | · | · | N | · |
-| `en` | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N |
-| `en_AU` | · | · | N | · | N | N | N | N | N | · | · | · | N | · | · | · | · | · |
-| `en_AU_ocker` | · | · | N | · | N | N | N | N | N | · | · | · | N | · | · | · | · | · |
-| `en_BORK` | · | · | N | · | N | N | N | N | · | · | · | · | N | · | · | · | · | · |
-| `en_CA` | · | · | N | · | · | N | N | N | N | · | · | · | N | · | · | · | · | · |
-| `en_GB` | N | · | N | N | · | N | N | N | N | · | · | · | N | · | · | · | · | · |
-| `en_GH` | · | · | N | · | · | · | N | N | N | · | · | · | · | · | · | · | · | · |
-| `en_HK` | · | · | N | · | · | N | N | · | N | · | · | · | N | · | · | · | · | · |
-| `en_IE` | · | · | N | · | · | N | N | N | N | · | · | · | N | · | · | · | · | · |
-| `en_IN` | · | · | N | · | N | N | N | N | N | · | · | · | N | · | · | · | · | · |
-| `en_NG` | · | · | N | · | · | N | N | N | N | · | · | · | N | · | · | · | · | · |
-| `en_US` | · | · | N | · | N | N | N | N | N | · | · | · | N | · | · | · | · | · |
-| `en_ZA` | · | · | N | · | N | N | N | N | N | · | · | · | N | · | · | · | · | · |
-| `es` | N | · | N | N | N | N | N | N | N | N | N | N | N | N | N | · | N | · |
-| `es_MX` | · | · | N | N | N | N | N | N | N | N | N | N | N | · | · | · | · | · |
-| `fa` | N | N | N | · | N | N | N | N | N | N | N | N | · | · | · | · | · | · |
-| `fi` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | N | · |
-| `fr` | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · |
-| `fr_BE` | · | · | N | N | N | N | N | N | N | · | N | N | N | N | N | · | · | · |
-| `fr_CA` | · | · | N | · | · | N | N | N | N | · | N | N | N | · | · | · | · | · |
-| `fr_CH` | · | · | N | N | N | N | N | N | N | · | N | N | N | N | N | · | · | · |
-| `fr_LU` | · | · | N | N | N | N | N | N | N | · | N | N | N | N | N | · | · | · |
-| `fr_SN` | · | · | N | N | N | N | N | N | N | · | N | N | · | · | · | · | · | · |
-| `he` | N | N | N | · | N | N | N | N | N | N | N | N | · | · | · | · | N | · |
-| `hr` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | N | · |
-| `hu` | N | N | N | · | N | N | N | N | N | N | N | N | N | · | · | · | · | · |
-| `hy` | N | N | N | · | · | N | N | N | N | N | N | · | N | · | · | · | · | · |
-| `id_ID` | · | N | N | · | N | N | N | N | N | N | N | N | N | · | · | · | N | · |
-| `it` | N | N | N | N | N | N | N | N | N | · | N | N | N | N | N | · | N | · |
-| `ja` | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · | N | · |
-| `ka_GE` | N | N | N | · | N | N | N | N | N | · | N | N | · | · | · | · | · | · |
-| `ko` | N | · | N | · | N | N | N | N | N | N | N | N | N | · | · | · | · | · |
-| `lv` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · |
-| `mk` | N | · | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · |
-| `nb_NO` | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · | · | N | · |
-| `nl` | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · |
-| `nl_BE` | · | · | N | N | N | N | N | N | N | · | N | N | N | N | N | · | · | · |
-| `pl` | N | N | N | · | N | N | N | N | N | N | N | N | N | · | · | · | N | · |
-| `pt_BR` | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · | · | · |
-| `pt_PT` | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · |
-| `ro` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · |
-| `ro_MD` | · | · | N | · | N | N | N | N | N | · | N | N | · | · | · | · | · | · |
-| `ru` | N | N | N | · | N | N | N | N | N | N | N | N | · | · | · | · | · | · |
-| `sk` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · |
-| `sl_SI` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · |
-| `sr_RS_latin` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · |
-| `sv` | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · | N | · |
-| `tr` | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · | · | · |
-| `uk` | N | N | N | · | N | N | N | N | N | · | N | N | · | · | · | · | · | · |
-| `vi` | · | N | N | · | N | N | N | N | N | · | N | N | · | · | · | · | · | · |
-| `yo_NG` | · | N | N | · | · | N | N | N | N | · | N | · | · | · | · | · | · | · |
-| `zh_CN` | · | N | N | · | N | N | N | N | N | N | N | N | · | · | · | · | N | · |
-| `zh_TW` | · | N | N | · | N | N | N | N | N | N | N | N | · | · | · | · | · | · |
+| Locale | Given names | Surnames | Cities | Streets | Postcodes | Addresses | Phone numbers | Subdivisions | Countries | Colours | Compass | Zodiac | Company forms | Products | Departments | Job titles | Vocabulary | Invented names | Real-world lists |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| `ar` | N | N | N | · | N | N | N | N | N | N | N | N | · | · | · | · | · | · | · |
+| `az` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · | · |
+| `bn_BD` | N | · | N | · | N | N | N | N | N | · | N | · | · | · | · | · | · | · | · |
+| `cs_CZ` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · | · |
+| `cy` | N | · | N | · | · | N | N | N | N | N | N | N | N | · | · | · | · | · | · |
+| `da` | N | N | N | N | N | N | N | N | N | · | N | N | N | · | · | · | N | · | · |
+| `de` | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · | · |
+| `de_AT` | · | · | N | N | N | N | N | N | N | · | N | N | N | N | N | · | · | · | · |
+| `de_CH` | · | · | N | N | N | N | N | N | N | · | N | N | N | N | N | · | · | · | · |
+| `el` | N | N | N | · | N | N | N | N | N | N | N | N | N | · | · | · | N | · | · |
+| `en` | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N |
+| `en_AU` | · | · | N | · | N | N | N | N | N | · | · | · | N | · | · | · | · | · | · |
+| `en_AU_ocker` | · | · | N | · | N | N | N | N | N | · | · | · | N | · | · | · | · | · | · |
+| `en_BORK` | · | · | N | · | N | N | N | N | · | · | · | · | N | · | · | · | · | · | · |
+| `en_CA` | · | · | N | · | · | N | N | N | N | · | · | · | N | · | · | · | · | · | · |
+| `en_GB` | N | · | N | N | · | N | N | N | N | · | · | · | N | · | · | · | · | · | · |
+| `en_GH` | · | · | N | · | · | · | N | N | N | · | · | · | · | · | · | · | · | · | · |
+| `en_HK` | · | · | N | · | · | N | N | · | N | · | · | · | N | · | · | · | · | · | · |
+| `en_IE` | · | · | N | · | · | N | N | N | N | · | · | · | N | · | · | · | · | · | · |
+| `en_IN` | · | · | N | · | N | N | N | N | N | · | · | · | N | · | · | · | · | · | · |
+| `en_NG` | · | · | N | · | · | N | N | N | N | · | · | · | N | · | · | · | · | · | · |
+| `en_US` | · | · | N | · | N | N | N | N | N | · | · | · | N | · | · | · | · | · | · |
+| `en_ZA` | · | · | N | · | N | N | N | N | N | · | · | · | N | · | · | · | · | · | · |
+| `es` | N | · | N | N | N | N | N | N | N | N | N | N | N | N | N | · | N | · | · |
+| `es_MX` | · | · | N | N | N | N | N | N | N | N | N | N | N | · | · | · | · | · | · |
+| `fa` | N | N | N | · | N | N | N | N | N | N | N | N | · | · | · | · | · | · | · |
+| `fi` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | N | · | · |
+| `fr` | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · | · |
+| `fr_BE` | · | · | N | N | N | N | N | N | N | · | N | N | N | N | N | · | · | · | · |
+| `fr_CA` | · | · | N | · | · | N | N | N | N | · | N | N | N | · | · | · | · | · | · |
+| `fr_CH` | · | · | N | N | N | N | N | N | N | · | N | N | N | N | N | · | · | · | · |
+| `fr_LU` | · | · | N | N | N | N | N | N | N | · | N | N | N | N | N | · | · | · | · |
+| `fr_SN` | · | · | N | N | N | N | N | N | N | · | N | N | · | · | · | · | · | · | · |
+| `he` | N | N | N | · | N | N | N | N | N | N | N | N | · | · | · | · | N | · | · |
+| `hr` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | N | · | · |
+| `hu` | N | N | N | · | N | N | N | N | N | N | N | N | N | · | · | · | · | · | · |
+| `hy` | N | N | N | · | · | N | N | N | N | N | N | · | N | · | · | · | · | · | · |
+| `id_ID` | · | N | N | · | N | N | N | N | N | N | N | N | N | · | · | · | N | · | · |
+| `it` | N | N | N | N | N | N | N | N | N | · | N | N | N | N | N | · | N | · | · |
+| `ja` | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · | N | · | · |
+| `ka_GE` | N | N | N | · | N | N | N | N | N | · | N | N | · | · | · | · | · | · | · |
+| `ko` | N | · | N | · | N | N | N | N | N | N | N | N | N | · | · | · | · | · | · |
+| `lv` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · | · |
+| `mk` | N | · | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · | · |
+| `nb_NO` | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · | · | N | · | · |
+| `nl` | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · | · |
+| `nl_BE` | · | · | N | N | N | N | N | N | N | · | N | N | N | N | N | · | · | · | · |
+| `pl` | N | N | N | · | N | N | N | N | N | N | N | N | N | · | · | · | N | · | · |
+| `pt_BR` | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · | · | · | · |
+| `pt_PT` | N | N | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · | · |
+| `ro` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · | · |
+| `ro_MD` | · | · | N | · | N | N | N | N | N | · | N | N | · | · | · | · | · | · | · |
+| `ru` | N | N | N | · | N | N | N | N | N | N | N | N | · | · | · | · | · | · | · |
+| `sk` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · | · |
+| `sl_SI` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · | · |
+| `sr_RS_latin` | N | N | N | · | N | N | N | N | N | · | N | N | N | · | · | · | · | · | · |
+| `sv` | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · | N | · | · |
+| `tr` | N | N | N | N | N | N | N | N | N | N | N | N | N | · | · | · | · | · | · |
+| `uk` | N | N | N | · | N | N | N | N | N | · | N | N | · | · | · | · | · | · | · |
+| `vi` | · | N | N | · | N | N | N | N | N | · | N | N | · | · | · | · | · | · | · |
+| `yo_NG` | · | N | N | · | · | N | N | N | N | · | N | · | · | · | · | · | · | · | · |
+| `zh_CN` | · | N | N | · | N | N | N | N | N | N | N | N | · | · | · | · | N | · | · |
+| `zh_TW` | · | N | N | · | N | N | N | N | N | N | N | N | · | · | · | · | · | · | · |

@@ -384,13 +384,13 @@ func coverage(_ directory: URL, against reference: String, gate: URL?, writeGate
     let bearsLanguage = LocaleCorpus.bearsLanguage
     let allReference = Set(try load(referenceURL).paths.map(\.path))
     let referencePaths = Set(allReference.filter(bearsLanguage))
-    let invented = allReference.filter(LocaleCorpus.isInvented).count
+    let invented = allReference.filter(LocaleCorpus.isEnglishOnlyByPolicy).count
     let referenceNamespaces = Set(referencePaths.map(namespace)).sorted()
 
     print("native coverage against '\(reference)' (\(referencePaths.count) paths)")
     print("percentages are paths a locale defines ITSELF, not what it resolves via fallback.")
-    print("\(invented) invented-namespace paths are excluded — English-only by design, "
-        + "see the matrix's 'Invented names' column.\n")
+    print("\(invented) English-only paths are excluded (invented, or real-world lists Decoy does not translate), "
+        + "see the matrix's 'Invented names' and 'Real-world lists' columns.\n")
 
     let width = 14
     print("locale".padding(toLength: width, withPad: " ", startingAt: 0)
@@ -565,6 +565,11 @@ func matrix(_ directory: URL) throws {
         // would otherwise omit entirely — an omission that reads as "not offered" when the
         // truth is "offered in English to everybody". A whole column of `·` is the point.
         ("Invented names", ["whimsy.creature", "sport.discipline", "beverage.beer_style"]),
+        // The other English-only group. Excluded from the coverage ratio for the reason
+        // argued at `isEnglishOnlyByPolicy`, and shown here for the same reason the
+        // invented column is: a caller reaching for an animal name really does get
+        // English, and a table that omitted the row would read as "not offered".
+        ("Real-world lists", ["animal.animal", "food.fruit", "notable.scientist"]),
     ]
 
     let blobs = try FileManager.default

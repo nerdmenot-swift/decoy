@@ -177,21 +177,44 @@ public struct LocaleCorpus: Sendable {
     /// the excluded count so the exclusion is visible rather than silent.
     public static func bearsLanguage(_ path: String) -> Bool {
         if path.hasPrefix("location.postcode_by_state.") { return false }
-        return !isInvented(path)
+        return !isEnglishOnlyByPolicy(path)
     }
 
-    /// Namespaces holding content Decoy invents rather than sources.
+    /// Namespaces Decoy has committed never to localise.
     ///
-    /// A prefix list rather than a corpus flag because the corpus format has no room for
-    /// one without a version bump, and because the boundary is a naming decision this
-    /// project already makes: these namespaces exist precisely because no registry covers
-    /// them. Adding a namespace here is a deliberate act, and the matrix keeps the
-    /// English-only reality visible either way.
-    public static func isInvented(_ path: String) -> Bool {
-        for prefix in ["whimsy.", "sport.", "beverage.", "system.error_", "commerce.review_"]
-        where path.hasPrefix(prefix) {
-            return true
-        }
+    /// Two groups, and they are excluded for **different** reasons — worth keeping
+    /// straight, because collapsing them is how this exclusion would become the tuning it
+    /// is meant not to be.
+    ///
+    /// `whimsy`, `sport`, `beverage`, `system.error_` and `commerce.review_` are
+    /// *invented*. There is no Japanese equivalent of an invented pub name because there
+    /// is nothing to equate it to; no registry can ever publish one.
+    ///
+    /// `animal`, `food`, `nature`, `media`, `notable`, `brand` and `institution` are
+    /// different: an otter plainly has a Japanese name, so these are translatable in a way
+    /// the first group is not. They are excluded because Decoy has stated it will not
+    /// translate them — writing a Japanese animal list would mean producing an
+    /// unverifiable foreign-language fact list, and the `common-knowledge` descriptor
+    /// already concedes that the English one is unverified. Doing it seven times over in
+    /// languages the author cannot check would be inventing, not sourcing.
+    ///
+    /// What is *not* excluded is the case these are often confused with: `person.job_title`
+    /// and `commerce.department` are English-only today and still count, because a French
+    /// occupational registry exists and could replace them. Those are gaps. These are
+    /// decisions.
+    ///
+    /// The justification for excluding at all is what the warning claims — *"records will
+    /// be largely another language's data"*. Before this, `ja` read 28% while being 100%
+    /// native for colours and dates, 80% for location and 60% for person, which is to say
+    /// the warning would have been false about every field a Japanese caller actually
+    /// generates. The matrix carries `Invented names` and `Real-world lists` columns so the
+    /// English-only reality of both groups stays visible where it is true.
+    public static func isEnglishOnlyByPolicy(_ path: String) -> Bool {
+        let invented = ["whimsy.", "sport.", "beverage.", "system.error_", "commerce.review_"]
+        let untranslated = [
+            "animal.", "food.", "nature.", "media.", "notable.", "brand.", "institution.",
+        ]
+        for prefix in invented + untranslated where path.hasPrefix(prefix) { return true }
         return false
     }
 

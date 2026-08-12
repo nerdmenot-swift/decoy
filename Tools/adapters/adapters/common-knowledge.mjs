@@ -1,7 +1,7 @@
 /**
  * The categories every other faker library ships and this one refused until now.
  *
- * Fills seven new namespaces: `animal`, `food`, `nature`, `media`, `notable`, `brand`
+ * Fills seven namespaces: `animal`, `food`, `nature`, `media`, `notable`, `brand`
  * and `institution`.
  *
  * ## What changed
@@ -35,6 +35,11 @@
  * cosmetic, and fixable in a diff. Where a fact is contested or a detail uncertain the
  * entry was dropped rather than guessed — a list forty items long that is right is worth
  * more than one sixty long that is half-remembered.
+ *
+ * That rule is why the lists are the lengths they are. Some categories have far more real
+ * members than appear here and were cut at the point where the next entry would have been
+ * a guess; others are near-exhaustive because the category is genuinely small. Neither is
+ * a target that was aimed at.
  */
 
 export const id = 'common-knowledge'
@@ -45,69 +50,131 @@ export const source = 'common-knowledge'
 // ---------------------------------------------------------------------------
 
 const ANIMALS = [
-  'Otter', 'Badger', 'Fox', 'Wolf', 'Bear', 'Lynx', 'Hare', 'Hedgehog', 'Squirrel',
-  'Deer', 'Elk', 'Bison', 'Moose', 'Beaver', 'Raccoon', 'Skunk', 'Porcupine', 'Marmot',
-  'Lion', 'Tiger', 'Leopard', 'Cheetah', 'Jaguar', 'Panther', 'Hyena', 'Jackal',
-  'Elephant', 'Rhinoceros', 'Hippopotamus', 'Giraffe', 'Zebra', 'Antelope', 'Gazelle',
-  'Wildebeest', 'Warthog', 'Meerkat', 'Aardvark', 'Pangolin', 'Armadillo', 'Sloth',
-  'Kangaroo', 'Koala', 'Wombat', 'Platypus', 'Echidna', 'Tasmanian Devil',
-  'Chimpanzee', 'Gorilla', 'Orangutan', 'Baboon', 'Lemur', 'Gibbon',
-  'Walrus', 'Seal', 'Sea Lion', 'Whale', 'Dolphin', 'Porpoise', 'Manatee',
-  'Camel', 'Llama', 'Alpaca', 'Yak', 'Ibex', 'Chamois', 'Mongoose', 'Weasel', 'Stoat',
+  'Otter', 'Badger', 'Fox', 'Wolf', 'Coyote', 'Dingo', 'Bear', 'Polar Bear', 'Panda',
+  'Lynx', 'Bobcat', 'Caracal', 'Serval', 'Ocelot', 'Hare', 'Rabbit', 'Hedgehog',
+  'Squirrel', 'Chipmunk', 'Dormouse', 'Vole', 'Shrew', 'Mole', 'Rat', 'Mouse', 'Gerbil',
+  'Hamster', 'Guinea Pig', 'Capybara', 'Deer', 'Elk', 'Bison', 'Moose', 'Reindeer',
+  'Beaver', 'Raccoon', 'Skunk', 'Porcupine', 'Marmot', 'Wolverine', 'Ferret', 'Stoat',
+  'Weasel', 'Mink', 'Marten', 'Lion', 'Tiger', 'Leopard', 'Snow Leopard', 'Cheetah',
+  'Jaguar', 'Panther', 'Cougar', 'Hyena', 'Jackal', 'Elephant', 'Rhinoceros',
+  'Hippopotamus', 'Giraffe', 'Okapi', 'Zebra', 'Antelope', 'Gazelle', 'Impala', 'Oryx',
+  'Kudu', 'Eland', 'Wildebeest', 'Warthog', 'Meerkat', 'Mongoose', 'Aardvark',
+  'Pangolin', 'Armadillo', 'Anteater', 'Sloth', 'Tapir', 'Kangaroo', 'Wallaby', 'Koala',
+  'Wombat', 'Possum', 'Platypus', 'Echidna', 'Tasmanian Devil', 'Quokka', 'Bilby',
+  'Chimpanzee', 'Bonobo', 'Gorilla', 'Orangutan', 'Baboon', 'Mandrill', 'Macaque',
+  'Lemur', 'Gibbon', 'Marmoset', 'Tamarin', 'Tarsier', 'Loris', 'Walrus', 'Seal',
+  'Sea Lion', 'Whale', 'Narwhal', 'Beluga', 'Orca', 'Dolphin', 'Porpoise', 'Manatee',
+  'Dugong', 'Camel', 'Dromedary', 'Llama', 'Alpaca', 'Vicuña', 'Guanaco', 'Yak', 'Ibex',
+  'Chamois', 'Mouflon', 'Bat', 'Flying Fox', 'Numbat', 'Fossa', 'Binturong', 'Coati',
 ]
 
 const BIRDS = [
-  'Robin', 'Sparrow', 'Blackbird', 'Starling', 'Wren', 'Finch', 'Thrush', 'Nightingale',
-  'Swallow', 'Swift', 'Martin', 'Lark', 'Magpie', 'Jackdaw', 'Rook', 'Crow', 'Raven',
-  'Jay', 'Woodpecker', 'Kingfisher', 'Cuckoo', 'Owl', 'Kestrel', 'Falcon', 'Hawk',
-  'Buzzard', 'Eagle', 'Osprey', 'Harrier', 'Kite', 'Heron', 'Egret', 'Stork', 'Crane',
-  'Swan', 'Goose', 'Duck', 'Teal', 'Mallard', 'Grebe', 'Coot', 'Moorhen', 'Curlew',
-  'Lapwing', 'Oystercatcher', 'Puffin', 'Gannet', 'Cormorant', 'Albatross', 'Petrel',
-  'Pelican', 'Flamingo', 'Ibis', 'Peacock', 'Pheasant', 'Partridge', 'Quail', 'Grouse',
-  'Toucan', 'Parrot', 'Macaw', 'Cockatoo', 'Penguin', 'Ostrich', 'Emu', 'Kiwi',
+  'Robin', 'Sparrow', 'Blackbird', 'Starling', 'Wren', 'Finch', 'Chaffinch', 'Goldfinch',
+  'Bullfinch', 'Greenfinch', 'Siskin', 'Linnet', 'Thrush', 'Redwing', 'Fieldfare',
+  'Nightingale', 'Warbler', 'Blackcap', 'Chiffchaff', 'Whitethroat', 'Swallow', 'Swift',
+  'Martin', 'Lark', 'Skylark', 'Pipit', 'Wagtail', 'Dunnock', 'Nuthatch', 'Treecreeper',
+  'Tit', 'Goldcrest', 'Firecrest', 'Waxwing', 'Shrike', 'Magpie', 'Jackdaw', 'Rook',
+  'Crow', 'Raven', 'Chough', 'Jay', 'Woodpecker', 'Wryneck', 'Kingfisher', 'Bee-eater',
+  'Roller', 'Hoopoe', 'Cuckoo', 'Nightjar', 'Owl', 'Barn Owl', 'Tawny Owl', 'Kestrel',
+  'Falcon', 'Peregrine', 'Merlin', 'Hobby', 'Hawk', 'Sparrowhawk', 'Goshawk', 'Buzzard',
+  'Eagle', 'Golden Eagle', 'Osprey', 'Harrier', 'Kite', 'Vulture', 'Condor', 'Heron',
+  'Egret', 'Bittern', 'Stork', 'Crane', 'Spoonbill', 'Swan', 'Goose', 'Brent Goose',
+  'Duck', 'Teal', 'Mallard', 'Wigeon', 'Pintail', 'Shoveler', 'Pochard', 'Eider',
+  'Merganser', 'Grebe', 'Coot', 'Moorhen', 'Rail', 'Curlew', 'Godwit', 'Snipe',
+  'Woodcock', 'Lapwing', 'Plover', 'Dunlin', 'Sanderling', 'Turnstone', 'Oystercatcher',
+  'Avocet', 'Puffin', 'Guillemot', 'Razorbill', 'Gannet', 'Cormorant', 'Shag', 'Skua',
+  'Tern', 'Gull', 'Kittiwake', 'Albatross', 'Petrel', 'Shearwater', 'Fulmar', 'Pelican',
+  'Flamingo', 'Ibis', 'Peacock', 'Pheasant', 'Partridge', 'Quail', 'Grouse', 'Ptarmigan',
+  'Capercaillie', 'Turkey', 'Toucan', 'Hornbill', 'Parrot', 'Macaw', 'Cockatoo',
+  'Budgerigar', 'Lorikeet', 'Hummingbird', 'Sunbird', 'Penguin', 'Ostrich', 'Emu',
+  'Cassowary', 'Rhea', 'Kiwi', 'Bowerbird', 'Lyrebird', 'Kookaburra',
+]
+
+const REPTILES_AND_AMPHIBIANS = [
+  'Crocodile', 'Alligator', 'Caiman', 'Gharial', 'Tortoise', 'Turtle', 'Terrapin',
+  'Iguana', 'Chameleon', 'Gecko', 'Skink', 'Monitor Lizard', 'Komodo Dragon', 'Agama',
+  'Anole', 'Slow Worm', 'Adder', 'Viper', 'Cobra', 'King Cobra', 'Mamba', 'Krait',
+  'Rattlesnake', 'Copperhead', 'Boa Constrictor', 'Python', 'Anaconda', 'Grass Snake',
+  'Corn Snake', 'Milk Snake', 'Sea Snake', 'Frog', 'Tree Frog', 'Bullfrog',
+  'Poison Dart Frog', 'Toad', 'Natterjack', 'Newt', 'Salamander', 'Axolotl', 'Caecilian',
 ]
 
 const DOG_BREEDS = [
-  'Labrador Retriever', 'Golden Retriever', 'German Shepherd', 'Border Collie', 'Beagle',
-  'Poodle', 'Bulldog', 'Boxer', 'Dachshund', 'Rottweiler', 'Doberman Pinscher',
-  'Great Dane', 'Saint Bernard', 'Bernese Mountain Dog', 'Newfoundland', 'Husky',
+  'Labrador Retriever', 'Golden Retriever', 'Flat-Coated Retriever',
+  'Chesapeake Bay Retriever', 'German Shepherd', 'Belgian Malinois', 'Border Collie',
+  'Rough Collie', 'Australian Shepherd', 'Old English Sheepdog', 'Shetland Sheepdog',
+  'Beagle', 'Poodle', 'Standard Poodle', 'Bulldog', 'French Bulldog', 'Boxer',
+  'Dachshund', 'Rottweiler', 'Doberman Pinscher', 'Great Dane', 'Mastiff',
+  'Saint Bernard', 'Bernese Mountain Dog', 'Newfoundland', 'Leonberger', 'Siberian Husky',
   'Alaskan Malamute', 'Samoyed', 'Akita', 'Shiba Inu', 'Chow Chow', 'Shar Pei',
   'Jack Russell Terrier', 'Yorkshire Terrier', 'Scottish Terrier', 'Airedale Terrier',
-  'Staffordshire Bull Terrier', 'West Highland White Terrier', 'Cairn Terrier',
-  'Cocker Spaniel', 'Springer Spaniel', 'Cavalier King Charles Spaniel', 'Pointer',
-  'Weimaraner', 'Vizsla', 'Greyhound', 'Whippet', 'Irish Wolfhound', 'Afghan Hound',
-  'Basset Hound', 'Bloodhound', 'Dalmatian', 'Pug', 'Chihuahua', 'Pomeranian',
-  'Shih Tzu', 'Maltese', 'Bichon Frise', 'Papillon', 'Corgi',
+  'Staffordshire Bull Terrier', 'Bull Terrier', 'West Highland White Terrier',
+  'Cairn Terrier', 'Border Terrier', 'Fox Terrier', 'Norfolk Terrier', 'Bedlington Terrier',
+  'Cocker Spaniel', 'Springer Spaniel', 'Cavalier King Charles Spaniel',
+  'Brittany Spaniel', 'Pointer', 'German Shorthaired Pointer', 'Weimaraner', 'Vizsla',
+  'Setter', 'Irish Setter', 'Gordon Setter', 'Greyhound', 'Whippet', 'Saluki',
+  'Irish Wolfhound', 'Scottish Deerhound', 'Borzoi', 'Afghan Hound', 'Basset Hound',
+  'Bloodhound', 'Basenji', 'Rhodesian Ridgeback', 'Dalmatian', 'Pug', 'Chihuahua',
+  'Pomeranian', 'Shih Tzu', 'Lhasa Apso', 'Maltese', 'Bichon Frise', 'Havanese',
+  'Papillon', 'Pekingese', 'Corgi', 'Schnauzer', 'Giant Schnauzer', 'Keeshond',
+  'Portuguese Water Dog', 'Australian Cattle Dog', 'Kelpie', 'Great Pyrenees',
 ]
 
 const CAT_BREEDS = [
-  'Siamese', 'Persian', 'Maine Coon', 'Ragdoll', 'British Shorthair', 'Bengal',
-  'Abyssinian', 'Birman', 'Burmese', 'Russian Blue', 'Sphynx', 'Devon Rex', 'Cornish Rex',
+  'Siamese', 'Persian', 'Maine Coon', 'Ragdoll', 'Ragamuffin', 'British Shorthair',
+  'British Longhair', 'Bengal', 'Abyssinian', 'Birman', 'Burmese', 'Burmilla',
+  'Russian Blue', 'Sphynx', 'Devon Rex', 'Cornish Rex', 'Selkirk Rex', 'LaPerm',
   'Scottish Fold', 'Norwegian Forest Cat', 'Siberian', 'Turkish Angora', 'Turkish Van',
-  'Manx', 'Somali', 'Tonkinese', 'Ocicat', 'Savannah', 'Chartreux', 'Korat',
-  'Egyptian Mau', 'Singapura', 'Balinese', 'Himalayan', 'American Shorthair',
-  'Exotic Shorthair', 'Oriental Shorthair', 'Selkirk Rex', 'Bombay', 'Nebelung',
+  'Manx', 'Cymric', 'Somali', 'Tonkinese', 'Ocicat', 'Savannah', 'Chartreux', 'Korat',
+  'Egyptian Mau', 'Arabian Mau', 'Singapura', 'Balinese', 'Javanese', 'Himalayan',
+  'American Shorthair', 'American Curl', 'American Bobtail', 'Exotic Shorthair',
+  'Oriental Shorthair', 'Bombay', 'Nebelung', 'Snowshoe', 'Pixiebob', 'Toyger',
+  'Highlander', 'Munchkin', 'Japanese Bobtail', 'Kurilian Bobtail', 'Peterbald',
+]
+
+const HORSE_BREEDS = [
+  'Thoroughbred', 'Arabian', 'Quarter Horse', 'Standardbred', 'Morgan', 'Appaloosa',
+  'Paint Horse', 'Andalusian', 'Lusitano', 'Lipizzaner', 'Friesian', 'Hanoverian',
+  'Holsteiner', 'Oldenburg', 'Trakehner', 'Selle Français', 'Dutch Warmblood',
+  'Irish Draught', 'Cleveland Bay', 'Clydesdale', 'Shire', 'Percheron', 'Suffolk Punch',
+  'Belgian Draft', 'Haflinger', 'Fjord', 'Icelandic Horse', 'Akhal-Teke', 'Marwari',
+  'Criollo', 'Mustang', 'Camargue', 'Shetland Pony', 'Welsh Pony', 'Connemara Pony',
+  'New Forest Pony', 'Dartmoor Pony', 'Exmoor Pony', 'Fell Pony', 'Dales Pony',
 ]
 
 const FISH = [
-  'Salmon', 'Trout', 'Cod', 'Haddock', 'Halibut', 'Plaice', 'Sole', 'Turbot', 'Bass',
-  'Bream', 'Mackerel', 'Herring', 'Sardine', 'Anchovy', 'Tuna', 'Swordfish', 'Marlin',
-  'Snapper', 'Grouper', 'Mullet', 'Pike', 'Perch', 'Carp', 'Tench', 'Roach', 'Barbel',
-  'Eel', 'Catfish', 'Sturgeon', 'Shark', 'Ray', 'Skate', 'Angelfish', 'Clownfish',
-  'Guppy', 'Koi', 'Goldfish', 'Piranha', 'Barracuda', 'Tilapia',
+  'Salmon', 'Sea Trout', 'Trout', 'Brown Trout', 'Rainbow Trout', 'Char', 'Grayling',
+  'Cod', 'Haddock', 'Pollock', 'Whiting', 'Hake', 'Ling', 'Halibut', 'Plaice', 'Sole',
+  'Dover Sole', 'Turbot', 'Brill', 'Flounder', 'Dab', 'Bass', 'Sea Bass', 'Bream',
+  'Sea Bream', 'John Dory', 'Monkfish', 'Gurnard', 'Mackerel', 'Herring', 'Sardine',
+  'Pilchard', 'Sprat', 'Anchovy', 'Tuna', 'Bluefin Tuna', 'Skipjack', 'Swordfish',
+  'Marlin', 'Sailfish', 'Mahi-Mahi', 'Snapper', 'Grouper', 'Mullet', 'Wrasse', 'Pike',
+  'Perch', 'Zander', 'Carp', 'Mirror Carp', 'Tench', 'Roach', 'Rudd', 'Dace', 'Chub',
+  'Barbel', 'Bleak', 'Gudgeon', 'Minnow', 'Stickleback', 'Eel', 'Conger Eel', 'Lamprey',
+  'Catfish', 'Sturgeon', 'Shark', 'Basking Shark', 'Dogfish', 'Ray', 'Manta Ray',
+  'Skate', 'Angelfish', 'Clownfish', 'Butterflyfish', 'Guppy', 'Molly', 'Tetra', 'Koi',
+  'Goldfish', 'Betta', 'Piranha', 'Barracuda', 'Tilapia', 'Arapaima', 'Seahorse',
 ]
 
 const INSECTS = [
-  'Ant', 'Bee', 'Bumblebee', 'Wasp', 'Hornet', 'Beetle', 'Ladybird', 'Weevil',
-  'Butterfly', 'Moth', 'Dragonfly', 'Damselfly', 'Mayfly', 'Cricket', 'Grasshopper',
-  'Locust', 'Cicada', 'Mantis', 'Stick Insect', 'Cockroach', 'Termite', 'Earwig',
-  'Firefly', 'Aphid', 'Midge', 'Mosquito', 'Housefly', 'Hoverfly', 'Horsefly', 'Flea',
+  'Ant', 'Bee', 'Bumblebee', 'Honeybee', 'Mason Bee', 'Wasp', 'Hornet', 'Sawfly',
+  'Beetle', 'Stag Beetle', 'Ground Beetle', 'Dung Beetle', 'Ladybird', 'Weevil',
+  'Glow-worm', 'Butterfly', 'Red Admiral', 'Peacock Butterfly', 'Painted Lady',
+  'Swallowtail', 'Moth', 'Hawk-moth', 'Dragonfly', 'Damselfly', 'Mayfly', 'Caddisfly',
+  'Stonefly', 'Lacewing', 'Cricket', 'Grasshopper', 'Locust', 'Katydid', 'Cicada',
+  'Mantis', 'Stick Insect', 'Leaf Insect', 'Cockroach', 'Termite', 'Earwig', 'Firefly',
+  'Aphid', 'Froghopper', 'Shieldbug', 'Water Boatman', 'Pond Skater', 'Midge',
+  'Mosquito', 'Housefly', 'Hoverfly', 'Horsefly', 'Crane Fly', 'Flea', 'Louse',
+  'Silverfish', 'Springtail', 'Thrips',
 ]
 
 const FARM_ANIMALS = [
-  'Cow', 'Bull', 'Calf', 'Sheep', 'Lamb', 'Ram', 'Goat', 'Kid', 'Pig', 'Piglet', 'Sow',
-  'Horse', 'Foal', 'Donkey', 'Mule', 'Chicken', 'Hen', 'Rooster', 'Duck', 'Goose',
-  'Turkey', 'Guinea Fowl', 'Rabbit', 'Alpaca',
+  'Cow', 'Bull', 'Calf', 'Heifer', 'Ox', 'Steer', 'Sheep', 'Ewe', 'Lamb', 'Ram',
+  'Wether', 'Goat', 'Nanny Goat', 'Billy Goat', 'Kid', 'Pig', 'Piglet', 'Sow', 'Boar',
+  'Hog', 'Horse', 'Mare', 'Stallion', 'Foal', 'Gelding', 'Pony', 'Donkey', 'Mule',
+  'Hinny', 'Chicken', 'Hen', 'Rooster', 'Chick', 'Pullet', 'Duck', 'Drake', 'Duckling',
+  'Goose', 'Gander', 'Gosling', 'Turkey', 'Guinea Fowl', 'Quail', 'Rabbit', 'Alpaca',
+  'Llama', 'Buffalo',
 ]
 
 const PET_NAMES = [
@@ -115,7 +182,11 @@ const PET_NAMES = [
   'Rosie', 'Teddy', 'Poppy', 'Ollie', 'Ruby', 'Alfie', 'Coco', 'Toby', 'Millie', 'Oscar',
   'Nala', 'Simba', 'Jasper', 'Willow', 'Hugo', 'Bonnie', 'Rocky', 'Pepper', 'Ziggy',
   'Mango', 'Biscuit', 'Marmalade', 'Pickle', 'Waffles', 'Noodle', 'Peanut', 'Mochi',
-  'Gizmo', 'Tilly', 'Barnaby',
+  'Gizmo', 'Tilly', 'Barnaby', 'Dexter', 'Hazel', 'Nutmeg', 'Cinnamon', 'Olive',
+  'Pumpkin', 'Muffin', 'Crumpet', 'Bramble', 'Juniper', 'Clover', 'Pippin', 'Widget',
+  'Bobbin', 'Domino', 'Smudge', 'Socks', 'Mittens', 'Shadow', 'Misty', 'Tigger',
+  'Bandit', 'Scout', 'Ranger', 'Archie', 'Frankie', 'Winston', 'Duchess', 'Cleo',
+  'Sable', 'Storm', 'Comet', 'Pixie', 'Nibbles', 'Bubbles', 'Gus', 'Otis', 'Wilbur',
 ]
 
 // ---------------------------------------------------------------------------
@@ -123,62 +194,135 @@ const PET_NAMES = [
 // ---------------------------------------------------------------------------
 
 const FRUITS = [
-  'Apple', 'Pear', 'Quince', 'Plum', 'Damson', 'Greengage', 'Cherry', 'Peach',
-  'Nectarine', 'Apricot', 'Orange', 'Lemon', 'Lime', 'Grapefruit', 'Mandarin',
-  'Clementine', 'Kumquat', 'Banana', 'Plantain', 'Mango', 'Papaya', 'Guava', 'Lychee',
-  'Rambutan', 'Passion Fruit', 'Pineapple', 'Melon', 'Watermelon', 'Cantaloupe',
-  'Strawberry', 'Raspberry', 'Blackberry', 'Blueberry', 'Redcurrant', 'Blackcurrant',
-  'Gooseberry', 'Cranberry', 'Elderberry', 'Fig', 'Date', 'Pomegranate', 'Persimmon',
-  'Kiwi Fruit', 'Dragon Fruit', 'Starfruit', 'Grape', 'Rhubarb', 'Avocado',
+  'Apple', 'Bramley Apple', 'Crab Apple', 'Pear', 'Quince', 'Medlar', 'Plum', 'Damson',
+  'Greengage', 'Sloe', 'Cherry', 'Morello Cherry', 'Peach', 'Nectarine', 'Apricot',
+  'Orange', 'Blood Orange', 'Seville Orange', 'Lemon', 'Lime', 'Kaffir Lime',
+  'Grapefruit', 'Pomelo', 'Mandarin', 'Satsuma', 'Clementine', 'Tangerine', 'Kumquat',
+  'Yuzu', 'Bergamot', 'Banana', 'Plantain', 'Mango', 'Papaya', 'Guava', 'Lychee',
+  'Longan', 'Rambutan', 'Mangosteen', 'Durian', 'Jackfruit', 'Breadfruit',
+  'Passion Fruit', 'Pineapple', 'Melon', 'Watermelon', 'Cantaloupe', 'Honeydew',
+  'Galia Melon', 'Strawberry', 'Raspberry', 'Blackberry', 'Loganberry', 'Tayberry',
+  'Blueberry', 'Bilberry', 'Redcurrant', 'Blackcurrant', 'Whitecurrant', 'Gooseberry',
+  'Cranberry', 'Lingonberry', 'Elderberry', 'Mulberry', 'Cloudberry', 'Fig', 'Date',
+  'Pomegranate', 'Persimmon', 'Kiwi Fruit', 'Dragon Fruit', 'Starfruit', 'Feijoa',
+  'Tamarillo', 'Physalis', 'Grape', 'Rhubarb', 'Avocado', 'Olive', 'Coconut',
 ]
 
 const VEGETABLES = [
-  'Potato', 'Sweet Potato', 'Carrot', 'Parsnip', 'Turnip', 'Swede', 'Beetroot',
-  'Celeriac', 'Radish', 'Onion', 'Shallot', 'Leek', 'Garlic', 'Spring Onion',
-  'Cabbage', 'Kale', 'Savoy', 'Brussels Sprout', 'Cauliflower', 'Broccoli', 'Romanesco',
-  'Pak Choi', 'Spinach', 'Chard', 'Watercress', 'Rocket', 'Lettuce', 'Endive', 'Chicory',
-  'Celery', 'Fennel', 'Asparagus', 'Artichoke', 'Courgette', 'Marrow', 'Cucumber',
-  'Pumpkin', 'Butternut Squash', 'Aubergine', 'Pepper', 'Chilli', 'Tomato',
-  'Pea', 'Broad Bean', 'Green Bean', 'Runner Bean', 'Sweetcorn', 'Okra',
+  'Potato', 'New Potato', 'Sweet Potato', 'Yam', 'Cassava', 'Taro', 'Jerusalem Artichoke',
+  'Carrot', 'Parsnip', 'Turnip', 'Swede', 'Beetroot', 'Celeriac', 'Kohlrabi', 'Radish',
+  'Daikon', 'Horseradish', 'Onion', 'Red Onion', 'Shallot', 'Leek', 'Garlic',
+  'Wild Garlic', 'Spring Onion', 'Chive', 'Cabbage', 'Red Cabbage', 'Savoy Cabbage',
+  'Kale', 'Cavolo Nero', 'Brussels Sprout', 'Cauliflower', 'Broccoli',
+  'Purple Sprouting Broccoli', 'Romanesco', 'Pak Choi', 'Choi Sum', 'Spinach', 'Chard',
+  'Rainbow Chard', 'Watercress', 'Rocket', 'Lamb’s Lettuce', 'Lettuce', 'Cos Lettuce',
+  'Iceberg Lettuce', 'Endive', 'Chicory', 'Radicchio', 'Sorrel', 'Samphire', 'Celery',
+  'Fennel', 'Asparagus', 'Artichoke', 'Cardoon', 'Courgette', 'Marrow', 'Cucumber',
+  'Gherkin', 'Pumpkin', 'Butternut Squash', 'Acorn Squash', 'Crown Prince Squash',
+  'Aubergine', 'Pepper', 'Bell Pepper', 'Padrón Pepper', 'Chilli', 'Jalapeño',
+  'Habanero', 'Scotch Bonnet', 'Tomato', 'Cherry Tomato', 'Beef Tomato', 'Tomatillo',
+  'Pea', 'Mangetout', 'Sugar Snap Pea', 'Broad Bean', 'Green Bean', 'Runner Bean',
+  'Borlotti Bean', 'Sweetcorn', 'Okra', 'Bamboo Shoot', 'Water Chestnut', 'Lotus Root',
 ]
 
 const HERBS_AND_SPICES = [
-  'Basil', 'Oregano', 'Thyme', 'Rosemary', 'Sage', 'Marjoram', 'Tarragon', 'Dill',
-  'Parsley', 'Coriander', 'Chives', 'Mint', 'Bay Leaf', 'Lemongrass', 'Chervil',
-  'Black Pepper', 'White Pepper', 'Cinnamon', 'Cassia', 'Nutmeg', 'Mace', 'Clove',
-  'Cardamom', 'Cumin', 'Caraway', 'Fennel Seed', 'Coriander Seed', 'Mustard Seed',
-  'Turmeric', 'Ginger', 'Galangal', 'Saffron', 'Paprika', 'Sumac', 'Star Anise',
-  'Fenugreek', 'Asafoetida', 'Juniper', 'Allspice', 'Vanilla',
+  'Basil', 'Thai Basil', 'Oregano', 'Marjoram', 'Thyme', 'Lemon Thyme', 'Rosemary',
+  'Sage', 'Tarragon', 'Dill', 'Parsley', 'Flat-Leaf Parsley', 'Coriander', 'Chervil',
+  'Chives', 'Mint', 'Spearmint', 'Bay Leaf', 'Lemongrass', 'Kaffir Lime Leaf',
+  'Curry Leaf', 'Lovage', 'Savory', 'Borage', 'Black Pepper', 'White Pepper',
+  'Green Peppercorn', 'Sichuan Pepper', 'Pink Peppercorn', 'Long Pepper', 'Cinnamon',
+  'Cassia', 'Nutmeg', 'Mace', 'Clove', 'Cardamom', 'Black Cardamom', 'Cumin',
+  'Black Cumin', 'Caraway', 'Fennel Seed', 'Coriander Seed', 'Mustard Seed',
+  'Nigella Seed', 'Celery Seed', 'Poppy Seed', 'Sesame Seed', 'Turmeric', 'Ginger',
+  'Galangal', 'Saffron', 'Paprika', 'Smoked Paprika', 'Cayenne', 'Chilli Flakes',
+  'Sumac', 'Star Anise', 'Anise', 'Fenugreek', 'Asafoetida', 'Juniper', 'Allspice',
+  'Vanilla', 'Tonka Bean', 'Mahleb', 'Grains of Paradise', 'Amchur', 'Za’atar',
+  'Ras el Hanout', 'Garam Masala', 'Baharat', 'Herbes de Provence', 'Furikake',
 ]
 
 const CHEESES = [
-  'Cheddar', 'Stilton', 'Wensleydale', 'Red Leicester', 'Double Gloucester', 'Caerphilly',
-  'Lancashire', 'Cheshire', 'Brie', 'Camembert', 'Roquefort', 'Comté', 'Gruyère',
-  'Emmental', 'Raclette', 'Reblochon', 'Munster', 'Époisses', 'Chèvre', 'Parmesan',
-  'Pecorino', 'Gorgonzola', 'Taleggio', 'Mozzarella', 'Burrata', 'Ricotta', 'Provolone',
-  'Manchego', 'Idiazábal', 'Cabrales', 'Gouda', 'Edam', 'Leyden', 'Feta', 'Halloumi',
-  'Havarti', 'Jarlsberg', 'Gubbeen', 'Mascarpone', 'Quark',
+  'Cheddar', 'Mature Cheddar', 'Stilton', 'Wensleydale', 'Red Leicester',
+  'Double Gloucester', 'Caerphilly', 'Lancashire', 'Cheshire', 'Shropshire Blue',
+  'Cornish Yarg', 'Stinking Bishop', 'Brie', 'Brie de Meaux', 'Camembert', 'Roquefort',
+  'Comté', 'Beaufort', 'Gruyère', 'Emmental', 'Appenzeller', 'Raclette', 'Tête de Moine',
+  'Vacherin', 'Reblochon', 'Tomme de Savoie', 'Morbier', 'Munster', 'Époisses',
+  'Livarot', 'Pont-l’Évêque', 'Saint-Nectaire', 'Cantal', 'Chèvre', 'Crottin de Chavignol',
+  'Valençay', 'Sainte-Maure', 'Parmesan', 'Grana Padano', 'Pecorino', 'Pecorino Romano',
+  'Gorgonzola', 'Taleggio', 'Fontina', 'Asiago', 'Mozzarella', 'Buffalo Mozzarella',
+  'Burrata', 'Stracciatella', 'Ricotta', 'Provolone', 'Scamorza', 'Caciocavallo',
+  'Manchego', 'Idiazábal', 'Cabrales', 'Mahón', 'Tetilla', 'Queijo da Serra', 'Gouda',
+  'Aged Gouda', 'Edam', 'Leyden', 'Maasdam', 'Feta', 'Halloumi', 'Kefalotyri',
+  'Graviera', 'Havarti', 'Danablu', 'Jarlsberg', 'Gubbeen', 'Mascarpone', 'Quark',
+  'Cream Cheese', 'Cottage Cheese', 'Paneer', 'Labneh',
 ]
 
 const DISHES = [
-  'Risotto', 'Paella', 'Ratatouille', 'Cassoulet', 'Bouillabaisse', 'Coq au Vin',
-  'Beef Bourguignon', 'Moussaka', 'Lasagne', 'Carbonara', 'Puttanesca', 'Osso Buco',
-  'Gnocchi', 'Minestrone', 'Gazpacho', 'Tortilla Española', 'Goulash', 'Schnitzel',
-  'Sauerbraten', 'Pierogi', 'Borscht', 'Stroganoff', 'Shakshuka', 'Falafel', 'Hummus',
-  'Tabbouleh', 'Kofta', 'Shawarma', 'Tagine', 'Couscous', 'Jollof Rice', 'Injera',
-  'Biryani', 'Rogan Josh', 'Dhansak', 'Dosa', 'Pad Thai', 'Tom Yum', 'Laksa', 'Rendang',
-  'Pho', 'Banh Mi', 'Ramen', 'Katsu Curry', 'Bibimbap', 'Bulgogi', 'Kimchi Jjigae',
-  'Mapo Tofu', 'Dim Sum', 'Ceviche', 'Empanada', 'Feijoada', 'Mole', 'Tamale',
+  'Risotto', 'Risotto alla Milanese', 'Paella', 'Ratatouille', 'Cassoulet',
+  'Bouillabaisse', 'Coq au Vin', 'Beef Bourguignon', 'Confit de Canard', 'Choucroute',
+  'Moussaka', 'Souvlaki', 'Spanakopita', 'Lasagne', 'Carbonara', 'Cacio e Pepe',
+  'Amatriciana', 'Puttanesca', 'Osso Buco', 'Saltimbocca', 'Gnocchi', 'Minestrone',
+  'Ribollita', 'Panzanella', 'Gazpacho', 'Salmorejo', 'Tortilla Española', 'Fabada',
+  'Pisto', 'Goulash', 'Schnitzel', 'Sauerbraten', 'Rouladen', 'Spätzle', 'Pierogi',
+  'Bigos', 'Borscht', 'Stroganoff', 'Golubtsy', 'Shakshuka', 'Falafel', 'Hummus',
+  'Baba Ganoush', 'Tabbouleh', 'Fattoush', 'Kofta', 'Shawarma', 'Kebab', 'Mezze',
+  'Dolma', 'Tagine', 'Couscous', 'Harira', 'Jollof Rice', 'Egusi Soup', 'Injera',
+  'Doro Wat', 'Bobotie', 'Biryani', 'Rogan Josh', 'Dhansak', 'Vindaloo', 'Korma',
+  'Dal Makhani', 'Chana Masala', 'Dosa', 'Idli', 'Samosa', 'Pakora', 'Pad Thai',
+  'Tom Yum', 'Green Curry', 'Massaman Curry', 'Som Tam', 'Laksa', 'Nasi Goreng',
+  'Rendang', 'Satay', 'Gado-Gado', 'Pho', 'Banh Mi', 'Bun Cha', 'Ramen', 'Udon',
+  'Soba', 'Tempura', 'Katsu Curry', 'Okonomiyaki', 'Takoyaki', 'Sushi', 'Sashimi',
+  'Bibimbap', 'Bulgogi', 'Japchae', 'Kimchi Jjigae', 'Tteokbokki', 'Mapo Tofu',
+  'Kung Pao Chicken', 'Peking Duck', 'Dim Sum', 'Char Siu', 'Hot Pot', 'Ceviche',
+  'Empanada', 'Feijoada', 'Moqueca', 'Asado', 'Mole', 'Tamale', 'Pozole', 'Chiles Rellenos',
+  'Jambalaya', 'Gumbo', 'Clam Chowder', 'Poutine', 'Shepherd’s Pie', 'Toad in the Hole',
+  'Cornish Pasty', 'Ploughman’s Lunch', 'Full English Breakfast', 'Haggis', 'Cullen Skink',
 ]
 
 const DESSERTS = [
-  'Tiramisu', 'Panna Cotta', 'Cannoli', 'Zabaglione', 'Crème Brûlée', 'Tarte Tatin',
-  'Profiterole', 'Éclair', 'Madeleine', 'Macaron', 'Clafoutis', 'Mille-feuille',
-  'Sachertorte', 'Black Forest Gateau', 'Strudel', 'Stollen', 'Baklava', 'Kunafa',
-  'Halva', 'Churros', 'Flan', 'Sticky Toffee Pudding', 'Eton Mess', 'Trifle',
+  'Tiramisu', 'Panna Cotta', 'Cannoli', 'Zabaglione', 'Semifreddo', 'Cassata',
+  'Crème Brûlée', 'Crème Caramel', 'Tarte Tatin', 'Tarte au Citron', 'Profiterole',
+  'Éclair', 'Madeleine', 'Macaron', 'Canelé', 'Clafoutis', 'Mille-feuille',
+  'Paris-Brest', 'Croquembouche', 'Opera Cake', 'Sachertorte', 'Black Forest Gateau',
+  'Apple Strudel', 'Linzer Torte', 'Stollen', 'Lebkuchen', 'Baklava', 'Kunafa',
+  'Halva', 'Loukoumades', 'Galaktoboureko', 'Churros', 'Flan', 'Crema Catalana',
+  'Tres Leches Cake', 'Alfajores', 'Sticky Toffee Pudding', 'Eton Mess', 'Trifle',
   'Bakewell Tart', 'Treacle Tart', 'Bread and Butter Pudding', 'Spotted Dick',
-  'Banoffee Pie', 'Pavlova', 'Cheesecake', 'Brownie', 'Blondie', 'Cobbler', 'Crumble',
-  'Sorbet', 'Gelato', 'Affogato', 'Mochi', 'Mango Sticky Rice',
+  'Jam Roly-Poly', 'Syllabub', 'Banoffee Pie', 'Pavlova', 'Lamington', 'Cheesecake',
+  'Basque Cheesecake', 'Brownie', 'Blondie', 'Cobbler', 'Crumble', 'Pie', 'Key Lime Pie',
+  'Pecan Pie', 'Sorbet', 'Granita', 'Gelato', 'Affogato', 'Kulfi', 'Mochi',
+  'Mango Sticky Rice', 'Dorayaki', 'Bingsu', 'Rice Pudding', 'Custard Tart',
+  'Pastel de Nata', 'Knickerbocker Glory',
+]
+
+const GRAINS_AND_PULSES = [
+  'Wheat', 'Spelt', 'Einkorn', 'Emmer', 'Barley', 'Pearl Barley', 'Rye', 'Oats',
+  'Pinhead Oats', 'Rice', 'Basmati Rice', 'Jasmine Rice', 'Arborio Rice', 'Wild Rice',
+  'Brown Rice', 'Maize', 'Polenta', 'Semolina', 'Bulgur', 'Freekeh', 'Couscous',
+  'Quinoa', 'Amaranth', 'Buckwheat', 'Millet', 'Sorghum', 'Teff', 'Farro',
+  'Red Lentil', 'Green Lentil', 'Puy Lentil', 'Beluga Lentil', 'Chickpea',
+  'Black Bean', 'Kidney Bean', 'Pinto Bean', 'Cannellini Bean', 'Butter Bean',
+  'Haricot Bean', 'Adzuki Bean', 'Mung Bean', 'Black-Eyed Pea', 'Split Pea', 'Soybean',
+]
+
+const NUTS_AND_SEEDS = [
+  'Almond', 'Walnut', 'Pecan', 'Hazelnut', 'Cobnut', 'Chestnut', 'Cashew', 'Pistachio',
+  'Macadamia', 'Brazil Nut', 'Pine Nut', 'Peanut', 'Coconut', 'Sunflower Seed',
+  'Pumpkin Seed', 'Sesame Seed', 'Linseed', 'Chia Seed', 'Hemp Seed', 'Poppy Seed',
+]
+
+const SEAFOOD = [
+  'Prawn', 'King Prawn', 'Shrimp', 'Langoustine', 'Lobster', 'Crayfish', 'Crab',
+  'Brown Crab', 'Spider Crab', 'Mussel', 'Clam', 'Cockle', 'Razor Clam', 'Oyster',
+  'Scallop', 'Whelk', 'Winkle', 'Abalone', 'Squid', 'Cuttlefish', 'Octopus',
+  'Sea Urchin', 'Samphire', 'Seaweed', 'Kelp', 'Nori', 'Wakame', 'Dulse',
+]
+
+const BREADS = [
+  'Sourdough', 'Baguette', 'Ciabatta', 'Focaccia', 'Pugliese', 'Rye Bread',
+  'Pumpernickel', 'Bagel', 'Brioche', 'Challah', 'Pita', 'Naan', 'Roti', 'Chapati',
+  'Paratha', 'Tortilla', 'Arepa', 'Injera', 'Lavash', 'Barbari', 'Soda Bread',
+  'Cornbread', 'Crumpet', 'Muffin', 'Scone', 'Croissant', 'Pain au Chocolat',
+  'Pretzel', 'Bannock', 'Flatbread', 'Milk Loaf', 'Bloomer', 'Cottage Loaf',
 ]
 
 // ---------------------------------------------------------------------------
@@ -187,48 +331,119 @@ const DESSERTS = [
 
 const MOUNTAINS = [
   'Everest', 'K2', 'Kangchenjunga', 'Lhotse', 'Makalu', 'Cho Oyu', 'Dhaulagiri',
-  'Manaslu', 'Nanga Parbat', 'Annapurna', 'Denali', 'Aconcagua', 'Kilimanjaro',
-  'Mount Elbrus', 'Vinson Massif', 'Puncak Jaya', 'Mont Blanc', 'Matterhorn',
-  'Monte Rosa', 'Eiger', 'Jungfrau', 'Grossglockner', 'Zugspitze', 'Mount Olympus',
-  'Mount Etna', 'Vesuvius', 'Mount Fuji', 'Mount Kita', 'Mount Cook', 'Mount Kosciuszko',
-  'Table Mountain', 'Mount Kenya', 'Atlas', 'Ben Nevis', 'Snowdon', 'Scafell Pike',
-  'Carrauntoohil', 'Mount Rainier', 'Mount Whitney', 'Mount Shasta', 'Pikes Peak',
-  'Half Dome', 'Mount Hood', 'Popocatépetl', 'Chimborazo', 'Cotopaxi', 'Fitz Roy',
-  'Torres del Paine', 'Mount Ararat', 'Mount Sinai',
+  'Manaslu', 'Nanga Parbat', 'Annapurna', 'Gasherbrum', 'Broad Peak', 'Shishapangma',
+  'Ama Dablam', 'Machapuchare', 'Denali', 'Mount Logan', 'Aconcagua', 'Ojos del Salado',
+  'Huascarán', 'Illimani', 'Kilimanjaro', 'Mount Kenya', 'Mount Stanley', 'Mount Elbrus',
+  'Mount Kazbek', 'Vinson Massif', 'Puncak Jaya', 'Mont Blanc', 'Matterhorn',
+  'Monte Rosa', 'Dom', 'Eiger', 'Jungfrau', 'Mönch', 'Piz Bernina', 'Grossglockner',
+  'Zugspitze', 'Marmolada', 'Gran Paradiso', 'Triglav', 'Mount Olympus', 'Mount Etna',
+  'Vesuvius', 'Stromboli', 'Teide', 'Mulhacén', 'Aneto', 'Mount Fuji', 'Mount Kita',
+  'Mount Ontake', 'Mount Aso', 'Mount Cook', 'Mount Taranaki', 'Mount Kosciuszko',
+  'Table Mountain', 'Drakensberg', 'Toubkal', 'Mount Ararat', 'Mount Damavand',
+  'Ben Nevis', 'Ben Macdui', 'Snowdon', 'Scafell Pike', 'Helvellyn', 'Carrauntoohil',
+  'Mount Rainier', 'Mount Whitney', 'Mount Shasta', 'Mount St Helens', 'Pikes Peak',
+  'Longs Peak', 'Half Dome', 'El Capitan', 'Mount Hood', 'Grand Teton',
+  'Popocatépetl', 'Iztaccíhuatl', 'Chimborazo', 'Cotopaxi', 'Fitz Roy', 'Cerro Torre',
+  'Torres del Paine', 'Mount Sinai', 'Mount Fuego',
 ]
 
 const RIVERS = [
-  'Nile', 'Amazon', 'Yangtze', 'Mississippi', 'Missouri', 'Yenisei', 'Ob', 'Yellow River',
-  'Congo', 'Amur', 'Lena', 'Mekong', 'Mackenzie', 'Niger', 'Brahmaputra', 'Ganges',
-  'Indus', 'Danube', 'Volga', 'Rhine', 'Elbe', 'Loire', 'Rhône', 'Seine', 'Tagus',
-  'Ebro', 'Po', 'Tiber', 'Vistula', 'Oder', 'Dnieper', 'Don', 'Thames', 'Severn',
-  'Trent', 'Shannon', 'Clyde', 'Tyne', 'Colorado', 'Columbia', 'Rio Grande', 'Hudson',
-  'St Lawrence', 'Paraná', 'Orinoco', 'Zambezi', 'Orange', 'Limpopo', 'Murray', 'Darling',
+  'Nile', 'Amazon', 'Yangtze', 'Mississippi', 'Missouri', 'Yenisei', 'Ob', 'Irtysh',
+  'Yellow River', 'Congo', 'Amur', 'Lena', 'Mekong', 'Mackenzie', 'Niger', 'Volta',
+  'Brahmaputra', 'Ganges', 'Yamuna', 'Godavari', 'Krishna', 'Indus', 'Euphrates',
+  'Tigris', 'Jordan', 'Danube', 'Volga', 'Ural', 'Rhine', 'Moselle', 'Main', 'Neckar',
+  'Elbe', 'Weser', 'Meuse', 'Scheldt', 'Loire', 'Rhône', 'Seine', 'Garonne', 'Marne',
+  'Tagus', 'Douro', 'Guadalquivir', 'Guadiana', 'Ebro', 'Po', 'Arno', 'Tiber', 'Adige',
+  'Vistula', 'Oder', 'Bug', 'Dnieper', 'Dniester', 'Don', 'Neva', 'Thames', 'Severn',
+  'Trent', 'Mersey', 'Ouse', 'Tyne', 'Tees', 'Avon', 'Wye', 'Shannon', 'Liffey',
+  'Clyde', 'Tay', 'Spey', 'Tweed', 'Forth', 'Colorado', 'Columbia', 'Snake',
+  'Rio Grande', 'Hudson', 'Delaware', 'Potomac', 'Ohio', 'Tennessee', 'St Lawrence',
+  'Fraser', 'Yukon', 'Paraná', 'Paraguay', 'Uruguay', 'Orinoco', 'Magdalena',
+  'São Francisco', 'Zambezi', 'Orange', 'Limpopo', 'Okavango', 'Murray', 'Darling',
+]
+
+const LAKES = [
+  'Lake Superior', 'Lake Michigan', 'Lake Huron', 'Lake Erie', 'Lake Ontario',
+  'Great Bear Lake', 'Great Slave Lake', 'Lake Winnipeg', 'Lake Baikal', 'Lake Ladoga',
+  'Lake Onega', 'Caspian Sea', 'Aral Sea', 'Lake Balkhash', 'Lake Victoria',
+  'Lake Tanganyika', 'Lake Malawi', 'Lake Turkana', 'Lake Chad', 'Lake Tana',
+  'Lake Titicaca', 'Lake Maracaibo', 'Lake Geneva', 'Lake Constance', 'Lake Garda',
+  'Lake Como', 'Lake Maggiore', 'Lake Lucerne', 'Lake Zurich', 'Lake Neuchâtel',
+  'Lake Balaton', 'Lake Vänern', 'Lake Vättern', 'Lake Saimaa', 'Lake Inari',
+  'Loch Ness', 'Loch Lomond', 'Loch Awe', 'Windermere', 'Ullswater', 'Lough Neagh',
+  'Lake Taupo', 'Lake Eyre', 'Lake Toba', 'Lake Biwa', 'Dead Sea',
+]
+
+const ISLANDS = [
+  'Greenland', 'Madagascar', 'Borneo', 'Sumatra', 'Java', 'Sulawesi', 'Bali', 'Honshu',
+  'Hokkaido', 'Kyushu', 'Shikoku', 'Okinawa', 'Taiwan', 'Hainan', 'Luzon', 'Mindanao',
+  'Sri Lanka', 'Maldives', 'Zanzibar', 'Mauritius', 'Réunion', 'Seychelles', 'Socotra',
+  'Great Britain', 'Ireland', 'Isle of Man', 'Isle of Wight', 'Anglesey', 'Skye',
+  'Mull', 'Islay', 'Orkney', 'Shetland', 'Hebrides', 'Iceland', 'Faroe Islands',
+  'Svalbard', 'Gotland', 'Bornholm', 'Rügen', 'Texel', 'Sicily', 'Sardinia', 'Corsica',
+  'Elba', 'Capri', 'Ibiza', 'Mallorca', 'Menorca', 'Tenerife', 'Lanzarote', 'Madeira',
+  'Azores', 'Crete', 'Rhodes', 'Santorini', 'Corfu', 'Mykonos', 'Cyprus', 'Malta',
+  'Cuba', 'Jamaica', 'Hispaniola', 'Puerto Rico', 'Barbados', 'Trinidad', 'Bermuda',
+  'Newfoundland', 'Vancouver Island', 'Baffin Island', 'Tasmania', 'New Guinea',
+  'Fiji', 'Tahiti', 'Hawaii', 'Galápagos', 'Easter Island', 'Falkland Islands',
+]
+
+const DESERTS = [
+  'Sahara', 'Arabian Desert', 'Rub’ al Khali', 'Syrian Desert', 'Negev', 'Kalahari',
+  'Namib', 'Danakil', 'Gobi', 'Taklamakan', 'Karakum', 'Kyzylkum', 'Thar',
+  'Registan', 'Dasht-e Kavir', 'Dasht-e Lut', 'Great Victoria Desert',
+  'Great Sandy Desert', 'Simpson Desert', 'Gibson Desert', 'Tanami Desert',
+  'Mojave', 'Sonoran Desert', 'Chihuahuan Desert', 'Great Basin', 'Painted Desert',
+  'Atacama', 'Patagonian Desert', 'Sechura Desert', 'Antarctic Desert',
 ]
 
 const TREES = [
-  'Oak', 'Ash', 'Beech', 'Birch', 'Elm', 'Alder', 'Hazel', 'Hornbeam', 'Sycamore',
-  'Maple', 'Lime', 'Poplar', 'Aspen', 'Willow', 'Rowan', 'Hawthorn', 'Blackthorn',
-  'Holly', 'Yew', 'Juniper', 'Scots Pine', 'Douglas Fir', 'Spruce', 'Larch', 'Cedar',
-  'Cypress', 'Redwood', 'Sequoia', 'Chestnut', 'Walnut', 'Hickory', 'Magnolia',
-  'Eucalyptus', 'Baobab', 'Acacia', 'Olive', 'Cork Oak', 'Plane', 'Ginkgo', 'Mulberry',
+  'Oak', 'Sessile Oak', 'Holm Oak', 'Cork Oak', 'Ash', 'Beech', 'Copper Beech', 'Birch',
+  'Silver Birch', 'Alder', 'Hazel', 'Hornbeam', 'Sycamore', 'Maple', 'Field Maple',
+  'Sugar Maple', 'Lime', 'Poplar', 'Aspen', 'Black Poplar', 'Willow', 'Weeping Willow',
+  'Crack Willow', 'Rowan', 'Whitebeam', 'Hawthorn', 'Blackthorn', 'Elder', 'Holly',
+  'Yew', 'Juniper', 'Scots Pine', 'Corsican Pine', 'Stone Pine', 'Douglas Fir',
+  'Silver Fir', 'Norway Spruce', 'Sitka Spruce', 'Larch', 'Cedar', 'Cedar of Lebanon',
+  'Cypress', 'Monterey Cypress', 'Redwood', 'Giant Sequoia', 'Chestnut',
+  'Horse Chestnut', 'Sweet Chestnut', 'Walnut', 'Hickory', 'Magnolia', 'Eucalyptus',
+  'Baobab', 'Acacia', 'Olive', 'Fig', 'Plane', 'Ginkgo', 'Mulberry', 'Elm',
+  'Wych Elm', 'Laburnum', 'Catalpa', 'Tulip Tree', 'Judas Tree', 'Banyan', 'Mangrove',
+  'Palm', 'Date Palm', 'Coconut Palm', 'Bamboo', 'Teak', 'Mahogany', 'Ebony',
 ]
 
 const FLOWERS = [
-  'Rose', 'Tulip', 'Daffodil', 'Narcissus', 'Hyacinth', 'Crocus', 'Snowdrop', 'Bluebell',
-  'Lily', 'Iris', 'Peony', 'Poppy', 'Cornflower', 'Foxglove', 'Delphinium', 'Lupin',
-  'Hollyhock', 'Sunflower', 'Dahlia', 'Chrysanthemum', 'Aster', 'Marigold', 'Zinnia',
-  'Cosmos', 'Sweet Pea', 'Wisteria', 'Clematis', 'Honeysuckle', 'Jasmine', 'Camellia',
-  'Rhododendron', 'Azalea', 'Hydrangea', 'Lavender', 'Geranium', 'Petunia', 'Pansy',
-  'Violet', 'Primrose', 'Orchid', 'Freesia', 'Anemone', 'Buttercup', 'Daisy',
+  'Rose', 'Damask Rose', 'Tulip', 'Daffodil', 'Narcissus', 'Hyacinth', 'Crocus',
+  'Snowdrop', 'Bluebell', 'Grape Hyacinth', 'Fritillary', 'Allium', 'Lily',
+  'Tiger Lily', 'Lily of the Valley', 'Iris', 'Peony', 'Poppy', 'Icelandic Poppy',
+  'Cornflower', 'Foxglove', 'Delphinium', 'Lupin', 'Hollyhock', 'Snapdragon',
+  'Sunflower', 'Dahlia', 'Chrysanthemum', 'Aster', 'Marigold', 'Zinnia', 'Cosmos',
+  'Nigella', 'Nasturtium', 'Sweet Pea', 'Wisteria', 'Clematis', 'Honeysuckle',
+  'Jasmine', 'Camellia', 'Magnolia', 'Rhododendron', 'Azalea', 'Hydrangea', 'Lilac',
+  'Buddleia', 'Forsythia', 'Viburnum', 'Lavender', 'Geranium', 'Pelargonium',
+  'Petunia', 'Begonia', 'Fuchsia', 'Impatiens', 'Pansy', 'Viola', 'Violet', 'Primrose',
+  'Cowslip', 'Orchid', 'Freesia', 'Anemone', 'Ranunculus', 'Buttercup', 'Daisy',
+  'Ox-eye Daisy', 'Gerbera', 'Carnation', 'Gladiolus', 'Amaryllis', 'Protea',
+  'Bird of Paradise', 'Frangipani', 'Hibiscus', 'Bougainvillea', 'Water Lily',
 ]
 
 const GEMSTONES = [
-  'Diamond', 'Ruby', 'Sapphire', 'Emerald', 'Topaz', 'Amethyst', 'Aquamarine', 'Garnet',
-  'Peridot', 'Opal', 'Tourmaline', 'Tanzanite', 'Zircon', 'Spinel', 'Alexandrite',
-  'Moonstone', 'Sunstone', 'Labradorite', 'Lapis Lazuli', 'Turquoise', 'Malachite',
-  'Jade', 'Onyx', 'Agate', 'Carnelian', 'Jasper', 'Obsidian', 'Amber', 'Pearl', 'Coral',
-  'Citrine', 'Morganite', 'Kunzite', 'Iolite', 'Chrysoprase',
+  'Diamond', 'Ruby', 'Sapphire', 'Star Sapphire', 'Emerald', 'Topaz', 'Imperial Topaz',
+  'Amethyst', 'Aquamarine', 'Garnet', 'Tsavorite', 'Demantoid', 'Peridot', 'Opal',
+  'Black Opal', 'Fire Opal', 'Tourmaline', 'Paraiba Tourmaline', 'Tanzanite', 'Zircon',
+  'Spinel', 'Alexandrite', 'Moonstone', 'Sunstone', 'Labradorite', 'Lapis Lazuli',
+  'Turquoise', 'Malachite', 'Azurite', 'Rhodochrosite', 'Jade', 'Jadeite', 'Nephrite',
+  'Onyx', 'Sardonyx', 'Agate', 'Moss Agate', 'Carnelian', 'Chalcedony', 'Jasper',
+  'Bloodstone', 'Obsidian', 'Amber', 'Jet', 'Pearl', 'Coral', 'Citrine',
+  'Smoky Quartz', 'Rose Quartz', 'Rock Crystal', 'Morganite', 'Kunzite', 'Iolite',
+  'Chrysoprase', 'Chrysoberyl', 'Beryl', 'Heliodor', 'Ametrine', 'Larimar', 'Charoite',
+]
+
+const WEATHER = [
+  'Clear', 'Sunny', 'Fair', 'Partly Cloudy', 'Cloudy', 'Overcast', 'Hazy', 'Misty',
+  'Foggy', 'Freezing Fog', 'Drizzle', 'Light Rain', 'Rain', 'Heavy Rain',
+  'Showers', 'Thundery Showers', 'Thunderstorm', 'Hail', 'Sleet', 'Light Snow', 'Snow',
+  'Heavy Snow', 'Blizzard', 'Frost', 'Black Ice', 'Windy', 'Gale', 'Storm', 'Squall',
+  'Hurricane', 'Tornado', 'Dust Storm', 'Heatwave', 'Cold Snap',
 ]
 
 // ---------------------------------------------------------------------------
@@ -244,63 +459,163 @@ const GEMSTONES = [
  * they do not date, and nobody has to wonder whether the library is endorsing them.
  */
 const BOOK_TITLES = [
-  'Pride and Prejudice', 'Jane Eyre', 'Wuthering Heights', 'Middlemarch', 'Bleak House',
-  'Great Expectations', 'David Copperfield', 'Vanity Fair', 'Tess of the d’Urbervilles',
-  'Far from the Madding Crowd', 'Moby-Dick', 'The Scarlet Letter',
-  'The Adventures of Huckleberry Finn', 'Little Women', 'Walden', 'Leaves of Grass',
-  'War and Peace', 'Anna Karenina', 'Crime and Punishment', 'The Brothers Karamazov',
-  'Fathers and Sons', 'Dead Souls', 'Madame Bovary', 'Les Misérables',
-  'The Count of Monte Cristo', 'Germinal', 'Don Quixote', 'The Divine Comedy',
-  'Faust', 'The Metamorphosis', 'The Trial', 'Buddenbrooks', 'Ulysses', 'Dubliners',
-  'Heart of Darkness', 'The Picture of Dorian Gray', 'Dracula', 'Frankenstein',
-  'Treasure Island', 'The Time Machine', 'The War of the Worlds', 'Robinson Crusoe',
-  'Gulliver’s Travels', 'The Odyssey', 'The Iliad', 'The Aeneid', 'Beowulf',
-  'The Canterbury Tales', 'Paradise Lost', 'The Tale of Genji',
+  'Pride and Prejudice', 'Sense and Sensibility', 'Emma', 'Persuasion', 'Mansfield Park',
+  'Jane Eyre', 'Wuthering Heights', 'The Tenant of Wildfell Hall', 'Middlemarch',
+  'Silas Marner', 'The Mill on the Floss', 'Bleak House', 'Great Expectations',
+  'David Copperfield', 'Oliver Twist', 'A Tale of Two Cities', 'Hard Times',
+  'Vanity Fair', 'Tess of the d’Urbervilles', 'Far from the Madding Crowd',
+  'Jude the Obscure', 'The Mayor of Casterbridge', 'Moby-Dick', 'Billy Budd',
+  'The Scarlet Letter', 'The Adventures of Huckleberry Finn', 'The Adventures of Tom Sawyer',
+  'Little Women', 'Walden', 'Leaves of Grass', 'The Age of Innocence',
+  'The House of Mirth', 'My Ántonia', 'The Portrait of a Lady', 'The Turn of the Screw',
+  'War and Peace', 'Anna Karenina', 'The Death of Ivan Ilyich', 'Crime and Punishment',
+  'The Brothers Karamazov', 'The Idiot', 'Notes from Underground', 'Fathers and Sons',
+  'Dead Souls', 'The Cherry Orchard', 'Eugene Onegin', 'Madame Bovary',
+  'Sentimental Education', 'Les Misérables', 'The Hunchback of Notre-Dame',
+  'The Count of Monte Cristo', 'The Three Musketeers', 'Germinal', 'Nana',
+  'In Search of Lost Time', 'Don Quixote', 'The Divine Comedy', 'The Decameron',
+  'Faust', 'The Sorrows of Young Werther', 'The Metamorphosis', 'The Trial',
+  'The Castle', 'Buddenbrooks', 'Death in Venice', 'The Magic Mountain', 'Ulysses',
+  'Dubliners', 'A Portrait of the Artist as a Young Man', 'Mrs Dalloway',
+  'To the Lighthouse', 'Orlando', 'Heart of Darkness', 'Lord Jim', 'Nostromo',
+  'The Picture of Dorian Gray', 'Dracula', 'Frankenstein', 'Treasure Island',
+  'Kidnapped', 'The Strange Case of Dr Jekyll and Mr Hyde', 'The Time Machine',
+  'The War of the Worlds', 'The Invisible Man', 'Twenty Thousand Leagues Under the Sea',
+  'Around the World in Eighty Days', 'Robinson Crusoe', 'Gulliver’s Travels',
+  'Tom Jones', 'Tristram Shandy', 'The Odyssey', 'The Iliad', 'The Aeneid',
+  'Metamorphoses', 'Beowulf', 'The Canterbury Tales', 'Paradise Lost',
+  'The Tale of Genji', 'The Pillow Book', 'Journey to the West',
+  'Romance of the Three Kingdoms', 'One Thousand and One Nights', 'The Epic of Gilgamesh',
 ]
 
 const BOOK_AUTHORS = [
-  'Jane Austen', 'Charlotte Brontë', 'Emily Brontë', 'George Eliot', 'Charles Dickens',
-  'William Thackeray', 'Thomas Hardy', 'Herman Melville', 'Nathaniel Hawthorne',
-  'Mark Twain', 'Louisa May Alcott', 'Henry David Thoreau', 'Walt Whitman',
+  'Jane Austen', 'Charlotte Brontë', 'Emily Brontë', 'Anne Brontë', 'George Eliot',
+  'Elizabeth Gaskell', 'Charles Dickens', 'William Thackeray', 'Anthony Trollope',
+  'Thomas Hardy', 'George Meredith', 'Wilkie Collins', 'Herman Melville',
+  'Nathaniel Hawthorne', 'Mark Twain', 'Louisa May Alcott', 'Henry David Thoreau',
+  'Ralph Waldo Emerson', 'Walt Whitman', 'Emily Dickinson', 'Edgar Allan Poe',
   'Leo Tolstoy', 'Fyodor Dostoevsky', 'Ivan Turgenev', 'Nikolai Gogol', 'Anton Chekhov',
-  'Gustave Flaubert', 'Victor Hugo', 'Alexandre Dumas', 'Émile Zola', 'Marcel Proust',
-  'Miguel de Cervantes', 'Dante Alighieri', 'Johann Wolfgang von Goethe', 'Franz Kafka',
-  'Thomas Mann', 'James Joyce', 'Joseph Conrad', 'Oscar Wilde', 'Bram Stoker',
-  'Mary Shelley', 'Robert Louis Stevenson', 'H. G. Wells', 'Daniel Defoe',
-  'Jonathan Swift', 'Homer', 'Virgil', 'Geoffrey Chaucer', 'John Milton',
-  'Virginia Woolf', 'Edith Wharton', 'Willa Cather', 'Henry James',
+  'Alexander Pushkin', 'Mikhail Bulgakov', 'Gustave Flaubert', 'Victor Hugo',
+  'Alexandre Dumas', 'Honoré de Balzac', 'Stendhal', 'Émile Zola', 'Guy de Maupassant',
+  'Marcel Proust', 'Miguel de Cervantes', 'Dante Alighieri', 'Giovanni Boccaccio',
+  'Johann Wolfgang von Goethe', 'Friedrich Schiller', 'Franz Kafka', 'Thomas Mann',
+  'Hermann Hesse', 'Rainer Maria Rilke', 'James Joyce', 'Joseph Conrad', 'Oscar Wilde',
+  'Bram Stoker', 'Mary Shelley', 'Robert Louis Stevenson', 'H. G. Wells', 'Jules Verne',
+  'Daniel Defoe', 'Jonathan Swift', 'Henry Fielding', 'Laurence Sterne', 'Homer',
+  'Virgil', 'Ovid', 'Sophocles', 'Euripides', 'Aeschylus', 'Aristophanes',
+  'Geoffrey Chaucer', 'John Milton', 'William Shakespeare', 'Christopher Marlowe',
+  'Virginia Woolf', 'Edith Wharton', 'Willa Cather', 'Henry James', 'Kate Chopin',
+  'Murasaki Shikibu', 'Sei Shōnagon', 'Matsuo Bashō', 'Rabindranath Tagore',
 ]
 
 const BOOK_GENRES = [
-  'Literary Fiction', 'Historical Fiction', 'Science Fiction', 'Fantasy', 'Mystery',
-  'Crime', 'Thriller', 'Horror', 'Romance', 'Adventure', 'Satire', 'Gothic',
-  'Bildungsroman', 'Epistolary', 'Dystopian', 'Magical Realism', 'Biography', 'Memoir',
-  'Travel Writing', 'Essay', 'Poetry', 'Drama', 'Popular Science', 'History',
+  'Literary Fiction', 'Historical Fiction', 'Science Fiction', 'Fantasy',
+  'Epic Fantasy', 'Mystery', 'Crime', 'Detective Fiction', 'Thriller', 'Spy Fiction',
+  'Horror', 'Gothic', 'Romance', 'Adventure', 'Western', 'Satire', 'Bildungsroman',
+  'Epistolary', 'Dystopian', 'Utopian', 'Magical Realism', 'Speculative Fiction',
+  'Short Stories', 'Novella', 'Biography', 'Autobiography', 'Memoir', 'Travel Writing',
+  'Nature Writing', 'Essay', 'Poetry', 'Epic Poetry', 'Drama', 'Tragedy', 'Comedy',
+  'Popular Science', 'History', 'Philosophy', 'Reference', 'True Crime',
+]
+
+const FILM_TITLES = [
+  'Citizen Kane', 'Casablanca', 'The Third Man', 'Sunset Boulevard', 'Double Indemnity',
+  'The Maltese Falcon', 'Vertigo', 'Rear Window', 'North by Northwest', 'Psycho',
+  'The Birds', 'Metropolis', 'Nosferatu', 'The Cabinet of Dr Caligari', 'M',
+  'Battleship Potemkin', 'Bicycle Thieves', 'La Dolce Vita', '8½', 'La Strada',
+  'Rome, Open City', 'The Leopard', 'Cinema Paradiso',
+  'The 400 Blows', 'Breathless', 'Jules and Jim', 'Cléo from 5 to 7', 'Hiroshima Mon Amour',
+  'The Rules of the Game', 'Grand Illusion', 'Seven Samurai', 'Rashomon', 'Ikiru',
+  'Tokyo Story', 'Ugetsu', 'Spirited Away', 'My Neighbour Totoro', 'The Seventh Seal',
+  'Wild Strawberries', 'Persona', 'Andrei Rublev', 'Stalker', 'Solaris',
+  'Modern Times', 'City Lights', 'The Gold Rush', 'The General', 'Singin’ in the Rain',
+  'Some Like It Hot', 'It Happened One Night', 'His Girl Friday', 'Bringing Up Baby',
+  'The Philadelphia Story', 'All About Eve', 'On the Waterfront', '12 Angry Men',
+  'To Kill a Mockingbird', 'Lawrence of Arabia', 'The Bridge on the River Kwai',
+  'Dr Strangelove', '2001: A Space Odyssey', 'A Clockwork Orange', 'Barry Lyndon',
+  'The Shining', 'Apocalypse Now', 'Taxi Driver', 'Raging Bull', 'Goodfellas',
+  'Chinatown', 'One Flew Over the Cuckoo’s Nest', 'Network', 'Annie Hall', 'Manhattan',
+  'Blade Runner', 'Alien', 'The Empire Strikes Back', 'Jaws', 'Close Encounters of the Third Kind',
+  'Do the Right Thing', 'Pulp Fiction', 'Fargo', 'The Big Lebowski', 'Groundhog Day',
+  'Amélie', 'Pan’s Labyrinth', 'City of God', 'Crouching Tiger, Hidden Dragon',
+  'In the Mood for Love', 'Oldboy', 'Parasite', 'A Separation', 'The Lives of Others',
+  'Wings of Desire', 'Aguirre, the Wrath of God', 'Fitzcarraldo',
 ]
 
 const FILM_GENRES = [
-  'Drama', 'Comedy', 'Thriller', 'Horror', 'Science Fiction', 'Fantasy', 'Western',
-  'Film Noir', 'Documentary', 'Animation', 'Musical', 'Romance', 'War', 'Crime',
-  'Mystery', 'Adventure', 'Biopic', 'Historical Epic', 'Road Movie', 'Heist',
+  'Drama', 'Comedy', 'Romantic Comedy', 'Screwball Comedy', 'Thriller', 'Psychological Thriller',
+  'Horror', 'Slasher', 'Science Fiction', 'Fantasy', 'Western', 'Spaghetti Western',
+  'Film Noir', 'Neo-Noir', 'Documentary', 'Mockumentary', 'Animation', 'Stop Motion',
+  'Musical', 'Romance', 'War', 'Crime', 'Gangster', 'Heist', 'Mystery', 'Adventure',
+  'Biopic', 'Historical Epic', 'Road Movie', 'Coming-of-Age', 'Disaster', 'Martial Arts',
+  'Superhero', 'Silent Film', 'Experimental',
+]
+
+const SONG_TITLES = [
+  'Summertime', 'Autumn Leaves', 'Body and Soul', 'All the Things You Are',
+  'Round Midnight', 'Take the A Train', 'So What', 'Blue in Green', 'Naima',
+  'A Love Supreme', 'Giant Steps', 'My Favourite Things', 'Misty', 'Stardust',
+  'Georgia on My Mind', 'Mood Indigo', 'In a Sentimental Mood', 'Caravan',
+  'Sing, Sing, Sing', 'Cheek to Cheek', 'Night and Day', 'Someone to Watch Over Me',
+  'The Man I Love', 'Fly Me to the Moon', 'Moon River', 'What a Wonderful World',
+  'Strange Fruit', 'God Bless the Child', 'Cry Me a River', 'At Last',
+  'Bridge over Troubled Water', 'The Sound of Silence', 'Blowin’ in the Wind',
+  'The Times They Are a-Changin’', 'This Land Is Your Land', 'Amazing Grace',
+  'House of the Rising Sun', 'Scarborough Fair', 'Greensleeves', 'Danny Boy',
+  'Auld Lang Syne', 'Swing Low, Sweet Chariot', 'Down by the Riverside',
+  'Ode to Joy', 'The Blue Danube', 'Bolero', 'Clair de Lune', 'Für Elise',
+  'The Four Seasons', 'Canon in D', 'Ave Maria', 'Nessun Dorma', 'Habanera',
+  'Ride of the Valkyries', 'Rhapsody in Blue', 'Bohemian Rhapsody', 'Imagine',
+  'Hey Jude', 'Yesterday', 'Let It Be', 'Space Oddity', 'Heroes', 'Life on Mars',
+  'Purple Rain', 'Respect', 'I Heard It Through the Grapevine', 'Superstition',
+  'What’s Going On', 'Sittin’ on the Dock of the Bay', 'A Change Is Gonna Come',
+  'No Woman No Cry', 'Redemption Song', 'Three Little Birds',
 ]
 
 const MUSIC_GENRES = [
-  'Jazz', 'Blues', 'Bebop', 'Swing', 'Soul', 'Funk', 'Motown', 'Disco', 'Reggae', 'Ska',
-  'Dub', 'Rock', 'Blues Rock', 'Psychedelic Rock', 'Progressive Rock', 'Punk',
-  'Post-Punk', 'New Wave', 'Grunge', 'Indie Rock', 'Shoegaze', 'Britpop', 'Metal',
-  'Thrash Metal', 'Doom Metal', 'Hip Hop', 'Trip Hop', 'Grime', 'House', 'Techno',
-  'Trance', 'Drum and Bass', 'Garage', 'Ambient', 'Downtempo', 'Folk', 'Bluegrass',
-  'Country', 'Americana', 'Gospel', 'Classical', 'Baroque', 'Romantic', 'Opera',
-  'Chamber Music', 'Minimalism', 'Flamenco', 'Fado', 'Bossa Nova', 'Samba', 'Salsa',
-  'Afrobeat', 'Highlife', 'Klezmer', 'Qawwali',
+  'Jazz', 'Bebop', 'Hard Bop', 'Cool Jazz', 'Free Jazz', 'Swing', 'Big Band',
+  'Blues', 'Delta Blues', 'Chicago Blues', 'Soul', 'Northern Soul', 'Funk', 'Motown',
+  'Disco', 'Reggae', 'Rocksteady', 'Ska', 'Dub', 'Dancehall', 'Rock', 'Blues Rock',
+  'Psychedelic Rock', 'Progressive Rock', 'Glam Rock', 'Hard Rock', 'Punk',
+  'Post-Punk', 'New Wave', 'Goth', 'Grunge', 'Indie Rock', 'Shoegaze', 'Dream Pop',
+  'Britpop', 'Post-Rock', 'Math Rock', 'Emo', 'Metal', 'Heavy Metal', 'Thrash Metal',
+  'Death Metal', 'Black Metal', 'Doom Metal', 'Hip Hop', 'Boom Bap', 'Trap',
+  'Trip Hop', 'Grime', 'Drill', 'House', 'Deep House', 'Acid House', 'Techno',
+  'Detroit Techno', 'Minimal Techno', 'Trance', 'Drum and Bass', 'Jungle', 'Garage',
+  'Dubstep', 'Breakbeat', 'Ambient', 'Downtempo', 'IDM', 'Synthwave', 'Folk',
+  'Folk Rock', 'Bluegrass', 'Country', 'Alt-Country', 'Americana', 'Rockabilly',
+  'Gospel', 'Spiritual', 'Classical', 'Baroque', 'Renaissance', 'Romantic',
+  'Contemporary Classical', 'Opera', 'Chamber Music', 'Choral', 'Minimalism',
+  'Flamenco', 'Fado', 'Tango', 'Bossa Nova', 'Samba', 'Forró', 'Salsa', 'Merengue',
+  'Cumbia', 'Reggaeton', 'Afrobeat', 'Afrobeats', 'Highlife', 'Soukous', 'Mbalax',
+  'Klezmer', 'Qawwali', 'Raga', 'Gamelan', 'Enka', 'K-pop', 'J-pop', 'Chanson',
+  'Schlager', 'Polka', 'Zydeco', 'Calypso', 'Soca', 'Bhangra',
 ]
 
 const INSTRUMENTS = [
-  'Piano', 'Violin', 'Viola', 'Cello', 'Double Bass', 'Harp', 'Guitar', 'Banjo',
-  'Mandolin', 'Ukulele', 'Lute', 'Sitar', 'Flute', 'Piccolo', 'Oboe', 'Clarinet',
-  'Bassoon', 'Saxophone', 'Trumpet', 'Cornet', 'Trombone', 'French Horn', 'Tuba',
-  'Accordion', 'Harmonica', 'Bagpipes', 'Organ', 'Harpsichord', 'Drum Kit', 'Timpani',
-  'Marimba', 'Xylophone', 'Vibraphone', 'Tabla', 'Djembe', 'Bodhrán', 'Theremin',
+  'Piano', 'Grand Piano', 'Upright Piano', 'Violin', 'Viola', 'Cello', 'Double Bass',
+  'Harp', 'Lyre', 'Guitar', 'Acoustic Guitar', 'Electric Guitar', 'Bass Guitar',
+  'Banjo', 'Mandolin', 'Ukulele', 'Lute', 'Sitar', 'Sarod', 'Oud', 'Balalaika',
+  'Bouzouki', 'Koto', 'Shamisen', 'Erhu', 'Guzheng', 'Flute', 'Piccolo', 'Recorder',
+  'Pan Pipes', 'Shakuhachi', 'Bansuri', 'Oboe', 'Cor Anglais', 'Clarinet',
+  'Bass Clarinet', 'Bassoon', 'Contrabassoon', 'Saxophone', 'Alto Saxophone',
+  'Tenor Saxophone', 'Trumpet', 'Cornet', 'Flugelhorn', 'Trombone', 'French Horn',
+  'Tuba', 'Euphonium', 'Accordion', 'Concertina', 'Harmonica', 'Melodica', 'Bagpipes',
+  'Organ', 'Pipe Organ', 'Hammond Organ', 'Harpsichord', 'Clavichord', 'Celesta',
+  'Drum Kit', 'Snare Drum', 'Timpani', 'Bass Drum', 'Bongos', 'Congas', 'Cajón',
+  'Marimba', 'Xylophone', 'Vibraphone', 'Glockenspiel', 'Steel Pan', 'Tabla',
+  'Djembe', 'Bodhrán', 'Taiko', 'Cymbals', 'Triangle', 'Tambourine', 'Theremin',
+  'Synthesiser', 'Sampler', 'Drum Machine',
+]
+
+const ART_MOVEMENTS = [
+  'Romanesque', 'Gothic', 'Early Renaissance', 'High Renaissance', 'Mannerism',
+  'Baroque', 'Rococo', 'Neoclassicism', 'Romanticism', 'Realism', 'Pre-Raphaelite',
+  'Impressionism', 'Post-Impressionism', 'Pointillism', 'Symbolism', 'Art Nouveau',
+  'Fauvism', 'Expressionism', 'Cubism', 'Futurism', 'Constructivism', 'Suprematism',
+  'De Stijl', 'Bauhaus', 'Dada', 'Surrealism', 'Art Deco', 'Abstract Expressionism',
+  'Colour Field', 'Pop Art', 'Op Art', 'Minimalism', 'Conceptual Art', 'Arte Povera',
+  'Land Art', 'Photorealism', 'Neo-Expressionism', 'Street Art', 'Ukiyo-e',
 ]
 
 // ---------------------------------------------------------------------------
@@ -308,77 +623,176 @@ const INSTRUMENTS = [
 // ---------------------------------------------------------------------------
 
 const PHILOSOPHERS = [
-  'Socrates', 'Plato', 'Aristotle', 'Heraclitus', 'Parmenides', 'Democritus', 'Epicurus',
-  'Zeno of Citium', 'Diogenes', 'Pythagoras', 'Seneca', 'Epictetus', 'Marcus Aurelius',
-  'Plotinus', 'Augustine of Hippo', 'Boethius', 'Avicenna', 'Averroes', 'Maimonides',
-  'Thomas Aquinas', 'William of Ockham', 'Machiavelli', 'Montaigne', 'Francis Bacon',
-  'René Descartes', 'Blaise Pascal', 'Baruch Spinoza', 'Gottfried Leibniz', 'John Locke',
-  'George Berkeley', 'David Hume', 'Jean-Jacques Rousseau', 'Immanuel Kant',
-  'Georg Wilhelm Friedrich Hegel', 'Arthur Schopenhauer', 'Søren Kierkegaard',
-  'Karl Marx', 'John Stuart Mill', 'Friedrich Nietzsche', 'William James',
-  'Bertrand Russell', 'Ludwig Wittgenstein', 'Martin Heidegger', 'Jean-Paul Sartre',
-  'Simone de Beauvoir', 'Hannah Arendt', 'Simone Weil', 'Michel Foucault',
+  'Thales', 'Anaximander', 'Pythagoras', 'Heraclitus', 'Parmenides', 'Zeno of Elea',
+  'Empedocles', 'Anaxagoras', 'Democritus', 'Protagoras', 'Socrates', 'Plato',
+  'Aristotle', 'Epicurus', 'Zeno of Citium', 'Diogenes', 'Pyrrho', 'Cicero', 'Seneca',
+  'Epictetus', 'Marcus Aurelius', 'Plotinus', 'Hypatia', 'Augustine of Hippo',
+  'Boethius', 'Al-Kindi', 'Al-Farabi', 'Avicenna', 'Al-Ghazali', 'Averroes',
+  'Maimonides', 'Anselm of Canterbury', 'Peter Abelard', 'Thomas Aquinas',
+  'Duns Scotus', 'William of Ockham', 'Nicholas of Cusa', 'Machiavelli', 'Erasmus',
+  'Montaigne', 'Francis Bacon', 'Thomas Hobbes', 'René Descartes', 'Blaise Pascal',
+  'Baruch Spinoza', 'Nicolas Malebranche', 'Gottfried Leibniz', 'John Locke',
+  'George Berkeley', 'David Hume', 'Adam Smith', 'Voltaire', 'Montesquieu',
+  'Jean-Jacques Rousseau', 'Denis Diderot', 'Immanuel Kant', 'Johann Gottlieb Fichte',
+  'Friedrich Schelling', 'Georg Wilhelm Friedrich Hegel', 'Arthur Schopenhauer',
+  'Auguste Comte', 'Søren Kierkegaard', 'Karl Marx', 'John Stuart Mill',
+  'Friedrich Nietzsche', 'Charles Sanders Peirce', 'William James', 'John Dewey',
+  'Gottlob Frege', 'Edmund Husserl', 'Henri Bergson', 'Bertrand Russell',
+  'Ludwig Wittgenstein', 'Martin Heidegger', 'Rudolf Carnap', 'Karl Popper',
+  'Jean-Paul Sartre', 'Simone de Beauvoir', 'Maurice Merleau-Ponty', 'Albert Camus',
+  'Hannah Arendt', 'Simone Weil', 'Theodor Adorno', 'Walter Benjamin',
+  'Jürgen Habermas', 'Michel Foucault', 'Jacques Derrida', 'Gilles Deleuze',
+  'John Rawls', 'Iris Murdoch', 'Elizabeth Anscombe', 'Mary Midgley', 'Confucius',
+  'Laozi', 'Zhuangzi', 'Mencius', 'Xunzi', 'Nagarjuna', 'Adi Shankara',
 ]
 
 const SCIENTISTS = [
-  'Archimedes', 'Euclid', 'Hipparchus', 'Ptolemy', 'Al-Khwarizmi', 'Alhazen',
-  'Nicolaus Copernicus', 'Tycho Brahe', 'Johannes Kepler', 'Galileo Galilei',
-  'Isaac Newton', 'Robert Hooke', 'Christiaan Huygens', 'Edmond Halley',
-  'Carl Linnaeus', 'Antoine Lavoisier', 'Alessandro Volta', 'John Dalton',
-  'Michael Faraday', 'James Clerk Maxwell', 'Charles Darwin', 'Alfred Russel Wallace',
-  'Gregor Mendel', 'Louis Pasteur', 'Dmitri Mendeleev', 'Lord Kelvin',
-  'Ludwig Boltzmann', 'Henri Poincaré', 'Marie Curie', 'Pierre Curie',
-  'Ernest Rutherford', 'Max Planck', 'Albert Einstein', 'Niels Bohr',
-  'Erwin Schrödinger', 'Werner Heisenberg', 'Paul Dirac', 'Emmy Noether',
-  'Lise Meitner', 'Enrico Fermi', 'Richard Feynman', 'Rosalind Franklin',
-  'Barbara McClintock', 'Dorothy Hodgkin', 'Alan Turing', 'Ada Lovelace',
-  'Charles Babbage', 'Grace Hopper', 'Edwin Hubble', 'Subrahmanyan Chandrasekhar',
+  'Archimedes', 'Euclid', 'Eratosthenes', 'Hipparchus', 'Ptolemy', 'Galen',
+  'Al-Khwarizmi', 'Alhazen', 'Al-Biruni', 'Nicolaus Copernicus', 'Andreas Vesalius',
+  'Tycho Brahe', 'Johannes Kepler', 'Galileo Galilei', 'William Harvey',
+  'Robert Boyle', 'Isaac Newton', 'Robert Hooke', 'Christiaan Huygens',
+  'Edmond Halley', 'Antonie van Leeuwenhoek', 'Carl Linnaeus', 'Leonhard Euler',
+  'Antoine Lavoisier', 'Alessandro Volta', 'Luigi Galvani', 'Edward Jenner',
+  'John Dalton', 'Humphry Davy', 'Michael Faraday', 'Charles Lyell',
+  'James Clerk Maxwell', 'Charles Darwin', 'Alfred Russel Wallace', 'Gregor Mendel',
+  'Louis Pasteur', 'Robert Koch', 'Joseph Lister', 'Dmitri Mendeleev', 'Lord Kelvin',
+  'Ludwig Boltzmann', 'Josiah Willard Gibbs', 'Henri Poincaré', 'Marie Curie',
+  'Pierre Curie', 'Wilhelm Röntgen', 'J. J. Thomson', 'Ernest Rutherford',
+  'Max Planck', 'Albert Einstein', 'Niels Bohr', 'Louis de Broglie',
+  'Erwin Schrödinger', 'Werner Heisenberg', 'Wolfgang Pauli', 'Paul Dirac',
+  'Max Born', 'Emmy Noether', 'Lise Meitner', 'Enrico Fermi', 'Richard Feynman',
+  'Julian Schwinger', 'Freeman Dyson', 'Linus Pauling', 'Rosalind Franklin',
+  'Francis Crick', 'James Watson', 'Barbara McClintock', 'Dorothy Hodgkin',
+  'Alexander Fleming', 'Jonas Salk', 'Rita Levi-Montalcini', 'Alan Turing',
+  'Ada Lovelace', 'Charles Babbage', 'Claude Shannon', 'John von Neumann',
+  'Grace Hopper', 'Norbert Wiener', 'Edwin Hubble', 'Henrietta Swan Leavitt',
+  'Cecilia Payne-Gaposchkin', 'Subrahmanyan Chandrasekhar', 'Jocelyn Bell Burnell',
+  'Vera Rubin', 'Carl Sagan', 'Stephen Hawking', 'Alfred Wegener', 'Rachel Carson',
+  'Jane Goodall', 'Katherine Johnson', 'Chien-Shiung Wu', 'Srinivasa Ramanujan',
+]
+
+const MATHEMATICIANS = [
+  'Euclid', 'Archimedes', 'Apollonius of Perga', 'Diophantus', 'Hypatia', 'Aryabhata',
+  // Full names throughout, including where the surname alone is the usual form. A name
+  // column that mixes `Blaise Pascal` with a bare `Pascal` reads as dirty data, which is
+  // the opposite of what a fixture is for.
+  'Brahmagupta', 'Al-Khwarizmi', 'Omar Khayyam', 'Leonardo Fibonacci', 'Gerolamo Cardano',
+  'René Descartes', 'Pierre de Fermat', 'Blaise Pascal', 'Isaac Newton',
+  'Gottfried Leibniz', 'Jacob Bernoulli', 'Johann Bernoulli',
+  'Leonhard Euler', 'Joseph-Louis Lagrange', 'Pierre-Simon Laplace', 'Adrien-Marie Legendre',
+  'Carl Friedrich Gauss', 'Augustin-Louis Cauchy', 'Niels Henrik Abel', 'Évariste Galois',
+  'Carl Gustav Jacobi', 'Peter Gustav Lejeune Dirichlet', 'Bernhard Riemann',
+  'Karl Weierstrass', 'Richard Dedekind', 'Georg Cantor', 'Sofia Kovalevskaya',
+  'Henri Poincaré', 'David Hilbert', 'Emmy Noether', 'Srinivasa Ramanujan',
+  'G. H. Hardy', 'John Edensor Littlewood', 'Hermann Weyl', 'John von Neumann',
+  'Kurt Gödel', 'Alan Turing', 'Alonzo Church', 'André Weil', 'Alexander Grothendieck',
+  'Paul Erdős', 'Andrey Kolmogorov', 'John Nash', 'Benoit Mandelbrot', 'Mary Cartwright',
+  'Julia Robinson', 'Maryam Mirzakhani',
+]
+
+const INVENTORS = [
+  'Johannes Gutenberg', 'Leonardo da Vinci', 'Galileo Galilei', 'Thomas Newcomen',
+  'James Watt', 'Richard Arkwright', 'Eli Whitney', 'Robert Fulton',
+  'George Stephenson', 'Isambard Kingdom Brunel', 'Charles Goodyear',
+  'Samuel Morse', 'Louis Daguerre', 'Joseph Nicéphore Niépce', 'Elias Howe',
+  'Isaac Singer', 'Alfred Nobel', 'Alexander Graham Bell', 'Thomas Edison',
+  'Nikola Tesla', 'George Westinghouse', 'Karl Benz', 'Gottlieb Daimler',
+  'Rudolf Diesel', 'Heinrich Hertz', 'Guglielmo Marconi', 'Wilbur Wright',
+  'Orville Wright', 'Henry Ford', 'John Logie Baird', 'Vladimir Zworykin',
+  'Frank Whittle', 'Chester Carlson', 'Willis Carrier', 'Percy Spencer',
+  'Jack Kilby', 'Robert Noyce', 'Douglas Engelbart', 'Tim Berners-Lee',
+  'Hedy Lamarr', 'Stephanie Kwolek', 'Josephine Cochrane', 'Margaret Knight',
 ]
 
 const COMPOSERS = [
-  'Hildegard of Bingen', 'Guillaume de Machaut', 'Josquin des Prez',
-  'Giovanni Pierluigi da Palestrina', 'Claudio Monteverdi', 'Henry Purcell',
-  'Antonio Vivaldi', 'Johann Sebastian Bach', 'George Frideric Handel',
-  'Domenico Scarlatti', 'Joseph Haydn', 'Wolfgang Amadeus Mozart',
-  'Ludwig van Beethoven', 'Franz Schubert', 'Hector Berlioz', 'Felix Mendelssohn',
-  'Frédéric Chopin', 'Robert Schumann', 'Clara Schumann', 'Franz Liszt',
-  'Richard Wagner', 'Giuseppe Verdi', 'Johannes Brahms', 'Anton Bruckner',
-  'Pyotr Ilyich Tchaikovsky', 'Antonín Dvořák', 'Edvard Grieg', 'Jean Sibelius',
-  'Gustav Mahler', 'Richard Strauss', 'Claude Debussy', 'Maurice Ravel', 'Erik Satie',
-  'Igor Stravinsky', 'Béla Bartók', 'Sergei Prokofiev', 'Dmitri Shostakovich',
-  'Sergei Rachmaninoff', 'Arnold Schoenberg', 'Alban Berg', 'Ralph Vaughan Williams',
-  'Gustav Holst', 'Benjamin Britten', 'Aaron Copland', 'George Gershwin',
+  'Hildegard of Bingen', 'Guillaume de Machaut', 'John Dunstaple', 'Josquin des Prez',
+  'Thomas Tallis', 'William Byrd', 'Giovanni Pierluigi da Palestrina', 'Orlande de Lassus',
+  'Claudio Monteverdi', 'Heinrich Schütz', 'Jean-Baptiste Lully', 'Arcangelo Corelli',
+  'Henry Purcell', 'Antonio Vivaldi', 'Jean-Philippe Rameau', 'Johann Sebastian Bach',
+  'George Frideric Handel', 'Domenico Scarlatti', 'Georg Philipp Telemann',
+  'Christoph Willibald Gluck', 'Joseph Haydn', 'Wolfgang Amadeus Mozart',
+  'Ludwig van Beethoven', 'Franz Schubert', 'Carl Maria von Weber', 'Gioachino Rossini',
+  'Gaetano Donizetti', 'Vincenzo Bellini', 'Hector Berlioz', 'Felix Mendelssohn',
+  'Fanny Mendelssohn', 'Frédéric Chopin', 'Robert Schumann', 'Clara Schumann',
+  'Franz Liszt', 'Richard Wagner', 'Giuseppe Verdi', 'Charles Gounod',
+  'Bedřich Smetana', 'Johannes Brahms', 'Camille Saint-Saëns', 'Georges Bizet',
+  'Modest Mussorgsky', 'Nikolai Rimsky-Korsakov', 'Anton Bruckner',
+  'Pyotr Ilyich Tchaikovsky', 'Antonín Dvořák', 'Edvard Grieg', 'Gabriel Fauré',
+  'Leoš Janáček', 'Giacomo Puccini', 'Gustav Mahler', 'Hugo Wolf', 'Claude Debussy',
+  'Richard Strauss', 'Jean Sibelius', 'Erik Satie', 'Ralph Vaughan Williams',
+  'Sergei Rachmaninoff', 'Maurice Ravel', 'Manuel de Falla', 'Béla Bartók',
+  'Zoltán Kodály', 'Igor Stravinsky', 'Arnold Schoenberg', 'Alban Berg',
+  'Anton Webern', 'Sergei Prokofiev', 'Paul Hindemith', 'George Gershwin',
+  'Aaron Copland', 'Dmitri Shostakovich', 'Olivier Messiaen', 'Benjamin Britten',
+  'John Cage', 'Pierre Boulez', 'Karlheinz Stockhausen', 'György Ligeti',
+  'Luciano Berio', 'Steve Reich', 'Philip Glass', 'Arvo Pärt', 'Toru Takemitsu',
 ]
 
 const ARTISTS = [
-  'Giotto', 'Fra Angelico', 'Sandro Botticelli', 'Leonardo da Vinci', 'Michelangelo',
-  'Raphael', 'Titian', 'Tintoretto', 'Caravaggio', 'Artemisia Gentileschi',
-  'El Greco', 'Diego Velázquez', 'Francisco Goya', 'Peter Paul Rubens',
-  'Anthony van Dyck', 'Rembrandt', 'Johannes Vermeer', 'Frans Hals',
-  'Jean-Antoine Watteau', 'Jacques-Louis David', 'J. M. W. Turner', 'John Constable',
-  'Eugène Delacroix', 'Gustave Courbet', 'Édouard Manet', 'Claude Monet',
-  'Pierre-Auguste Renoir', 'Edgar Degas', 'Mary Cassatt', 'Berthe Morisot',
-  'Camille Pissarro', 'Paul Cézanne', 'Vincent van Gogh', 'Paul Gauguin',
-  'Georges Seurat', 'Henri de Toulouse-Lautrec', 'Gustav Klimt', 'Egon Schiele',
-  'Edvard Munch', 'Henri Matisse', 'Pablo Picasso', 'Georges Braque', 'Marc Chagall',
-  'Wassily Kandinsky', 'Paul Klee', 'Piet Mondrian', 'Salvador Dalí', 'René Magritte',
-  'Frida Kahlo', 'Georgia O’Keeffe', 'Edward Hopper', 'Jackson Pollock',
-  'Mark Rothko', 'Katsushika Hokusai', 'Utagawa Hiroshige',
+  'Giotto', 'Duccio', 'Fra Angelico', 'Masaccio', 'Piero della Francesca',
+  'Sandro Botticelli', 'Leonardo da Vinci', 'Michelangelo', 'Raphael', 'Donatello',
+  'Titian', 'Giorgione', 'Tintoretto', 'Veronese', 'Correggio', 'Parmigianino',
+  'Caravaggio', 'Artemisia Gentileschi', 'Annibale Carracci', 'Bernini',
+  'Hieronymus Bosch', 'Pieter Bruegel the Elder', 'Jan van Eyck', 'Rogier van der Weyden',
+  'Albrecht Dürer', 'Lucas Cranach', 'Hans Holbein', 'Matthias Grünewald', 'El Greco',
+  'Diego Velázquez', 'Francisco de Zurbarán', 'Bartolomé Esteban Murillo',
+  'Francisco Goya', 'Peter Paul Rubens', 'Anthony van Dyck', 'Rembrandt',
+  'Johannes Vermeer', 'Frans Hals', 'Jan Steen', 'Jacob van Ruisdael',
+  'Jean-Antoine Watteau', 'François Boucher', 'Jean-Honoré Fragonard',
+  'Jean-Baptiste-Siméon Chardin', 'Jacques-Louis David', 'Jean-Auguste-Dominique Ingres',
+  'Élisabeth Vigée Le Brun', 'J. M. W. Turner', 'John Constable', 'William Blake',
+  'Caspar David Friedrich', 'Eugène Delacroix', 'Théodore Géricault',
+  'Jean-François Millet', 'Gustave Courbet', 'Camille Corot', 'Édouard Manet',
+  'Claude Monet', 'Pierre-Auguste Renoir', 'Edgar Degas', 'Mary Cassatt',
+  'Berthe Morisot', 'Camille Pissarro', 'Alfred Sisley', 'Paul Cézanne',
+  'Vincent van Gogh', 'Paul Gauguin', 'Georges Seurat', 'Paul Signac',
+  'Henri de Toulouse-Lautrec', 'Auguste Rodin', 'Camille Claudel', 'Gustav Klimt',
+  'Egon Schiele', 'Oskar Kokoschka', 'Edvard Munch', 'James Ensor', 'Henri Matisse',
+  'André Derain', 'Pablo Picasso', 'Georges Braque', 'Juan Gris', 'Marc Chagall',
+  'Amedeo Modigliani', 'Constantin Brâncuși', 'Wassily Kandinsky', 'Paul Klee',
+  'Franz Marc', 'Piet Mondrian', 'Kazimir Malevich', 'El Lissitzky',
+  'Marcel Duchamp', 'Salvador Dalí', 'René Magritte', 'Joan Miró', 'Max Ernst',
+  'Frida Kahlo', 'Diego Rivera', 'Georgia O’Keeffe', 'Edward Hopper',
+  'Grant Wood', 'Jacob Lawrence', 'Jackson Pollock', 'Mark Rothko',
+  'Willem de Kooning', 'Barbara Hepworth', 'Henry Moore', 'Francis Bacon',
+  'Lucian Freud', 'Louise Bourgeois', 'Katsushika Hokusai', 'Utagawa Hiroshige',
+  'Kitagawa Utamaro', 'Sesshū Tōyō',
+]
+
+const ARCHITECTS = [
+  'Imhotep', 'Vitruvius', 'Filippo Brunelleschi', 'Leon Battista Alberti',
+  'Donato Bramante', 'Michelangelo', 'Andrea Palladio', 'Gian Lorenzo Bernini',
+  'Francesco Borromini', 'Christopher Wren', 'Nicholas Hawksmoor', 'John Vanbrugh',
+  'Robert Adam', 'John Nash', 'Karl Friedrich Schinkel', 'Charles Barry',
+  'Augustus Pugin', 'Gustave Eiffel', 'Antoni Gaudí', 'Louis Sullivan',
+  'Charles Rennie Mackintosh', 'Victor Horta', 'Otto Wagner', 'Adolf Loos',
+  'Frank Lloyd Wright', 'Walter Gropius', 'Ludwig Mies van der Rohe', 'Le Corbusier',
+  'Alvar Aalto', 'Eileen Gray', 'Oscar Niemeyer', 'Louis Kahn', 'Eero Saarinen',
+  'Jørn Utzon', 'Kenzō Tange', 'Renzo Piano', 'Richard Rogers', 'Norman Foster',
+  'I. M. Pei', 'Frank Gehry', 'Rem Koolhaas', 'Zaha Hadid', 'Tadao Ando',
+  'Santiago Calatrava', 'Herzog & de Meuron', 'Denise Scott Brown', 'Balkrishna Doshi',
 ]
 
 const EXPLORERS = [
-  'Zheng He', 'Ibn Battuta', 'Marco Polo', 'Christopher Columbus', 'Vasco da Gama',
-  'Ferdinand Magellan', 'Hernán Cortés', 'Francisco Pizarro', 'Jacques Cartier',
-  'Francis Drake', 'Walter Raleigh', 'Henry Hudson', 'Abel Tasman', 'James Cook',
-  'Alexander von Humboldt', 'Meriwether Lewis', 'William Clark', 'David Livingstone',
-  'Henry Morton Stanley', 'Richard Burton', 'John Hanning Speke', 'Mary Kingsley',
-  'Fridtjof Nansen', 'Roald Amundsen', 'Robert Falcon Scott', 'Ernest Shackleton',
-  'Matthew Henson', 'Edmund Hillary', 'Tenzing Norgay', 'Jacques Cousteau',
-  'Yuri Gagarin', 'Valentina Tereshkova', 'Neil Armstrong', 'Buzz Aldrin',
+  'Pytheas', 'Hanno the Navigator', 'Xuanzang', 'Leif Erikson', 'Erik the Red',
+  'Zheng He', 'Ibn Battuta', 'Marco Polo', 'Bartolomeu Dias', 'Christopher Columbus',
+  'Vasco da Gama', 'Amerigo Vespucci', 'Ferdinand Magellan', 'Juan Sebastián Elcano',
+  'Hernán Cortés', 'Francisco Pizarro', 'Hernando de Soto', 'Jacques Cartier',
+  'Samuel de Champlain', 'Francis Drake', 'Walter Raleigh', 'Henry Hudson',
+  'Willem Barentsz', 'Abel Tasman', 'William Dampier', 'James Cook',
+  'Jean-François de La Pérouse', 'Alexander von Humboldt', 'Matthew Flinders',
+  'Meriwether Lewis', 'William Clark', 'Sacagawea', 'John Franklin',
+  'David Livingstone', 'Henry Morton Stanley', 'Richard Burton', 'John Hanning Speke',
+  'Mary Kingsley', 'Isabella Bird', 'Gertrude Bell', 'Freya Stark', 'Fridtjof Nansen',
+  'Roald Amundsen', 'Robert Falcon Scott', 'Ernest Shackleton', 'Douglas Mawson',
+  'Robert Peary', 'Matthew Henson', 'Edmund Hillary', 'Tenzing Norgay',
+  'Jacques Cousteau', 'Thor Heyerdahl', 'Yuri Gagarin', 'Alan Shepard',
+  'Valentina Tereshkova', 'Neil Armstrong', 'Buzz Aldrin', 'Michael Collins',
+  'Sally Ride', 'Mae Jemison',
 ]
 
 /**
- * Living public figures, which is the one list here worth pausing over.
+ * Living public figures, which is the one category here worth pausing over.
  *
  * The project refuses rosters of real people. The line being drawn is between
  * identifying private individuals — which is what an election-candidate database does,
@@ -386,32 +800,48 @@ const EXPLORERS = [
  * known. Nothing here is private, and nothing here is paired with an address, a
  * date of birth or anything else that would make a fixture look like a record about them.
  *
- * Kept small and uncontroversial for that reason. The historical lists above carry no
- * such question and are where the volume is.
+ * Kept modest for that reason, and expanded only along the same axis: more names of the
+ * same public kind, not more detail about any of them. The historical lists above carry
+ * no such question and are where the volume is.
  */
 const ACTORS = [
   'Meryl Streep', 'Denzel Washington', 'Cate Blanchett', 'Anthony Hopkins',
-  'Viola Davis', 'Daniel Day-Lewis', 'Judi Dench', 'Morgan Freeman', 'Helen Mirren',
-  'Tom Hanks', 'Frances McDormand', 'Ian McKellen', 'Michelle Yeoh', 'Idris Elba',
-  'Tilda Swinton', 'Mahershala Ali', 'Olivia Colman', 'Gary Oldman', 'Lupita Nyong’o',
-  'Riz Ahmed', 'Toni Collette', 'Ke Huy Quan', 'Sally Hawkins', 'Chiwetel Ejiofor',
+  'Viola Davis', 'Daniel Day-Lewis', 'Judi Dench', 'Maggie Smith', 'Morgan Freeman',
+  'Helen Mirren', 'Tom Hanks', 'Frances McDormand', 'Ian McKellen', 'Michelle Yeoh',
+  'Idris Elba', 'Tilda Swinton', 'Mahershala Ali', 'Olivia Colman', 'Gary Oldman',
+  'Lupita Nyong’o', 'Riz Ahmed', 'Toni Collette', 'Ke Huy Quan', 'Sally Hawkins',
+  'Chiwetel Ejiofor', 'Emma Thompson', 'Ralph Fiennes', 'Kate Winslet',
+  'Jeff Bridges', 'Julianne Moore', 'Javier Bardem', 'Penélope Cruz',
+  'Marion Cotillard', 'Isabelle Huppert', 'Christoph Waltz', 'Bill Nighy',
+  'Brendan Gleeson', 'Saoirse Ronan', 'Andrew Garfield', 'Regina King',
+  'Sterling K. Brown', 'Song Kang-ho', 'Tony Leung', 'Irrfan Khan', 'Naomie Harris',
 ]
 
 const MUSICIANS = [
   'Aretha Franklin', 'Stevie Wonder', 'Nina Simone', 'Miles Davis', 'John Coltrane',
-  'Ella Fitzgerald', 'Billie Holiday', 'Ray Charles', 'Bob Dylan', 'Joni Mitchell',
-  'Paul McCartney', 'David Bowie', 'Prince', 'Kate Bush', 'Peter Gabriel',
-  'Björk', 'Yo-Yo Ma', 'Jacqueline du Pré', 'Ravi Shankar', 'Fela Kuti',
-  'Bob Marley', 'Celia Cruz', 'Cesária Évora', 'Youssou N’Dour',
+  'Duke Ellington', 'Louis Armstrong', 'Ella Fitzgerald', 'Billie Holiday',
+  'Sarah Vaughan', 'Ray Charles', 'Marvin Gaye', 'Otis Redding', 'Sam Cooke',
+  'Bob Dylan', 'Joni Mitchell', 'Leonard Cohen', 'Paul Simon', 'Paul McCartney',
+  'John Lennon', 'David Bowie', 'Prince', 'Kate Bush', 'Peter Gabriel', 'Björk',
+  'Brian Eno', 'Yo-Yo Ma', 'Jacqueline du Pré', 'Martha Argerich', 'Glenn Gould',
+  'Vladimir Horowitz', 'Maria Callas', 'Luciano Pavarotti', 'Jessye Norman',
+  'Ravi Shankar', 'Zakir Hussain', 'Fela Kuti', 'Bob Marley', 'Celia Cruz',
+  'Cesária Évora', 'Youssou N’Dour', 'Ali Farka Touré', 'Astor Piazzolla',
+  'João Gilberto', 'Caetano Veloso', 'Umm Kulthum', 'Nusrat Fateh Ali Khan',
 ]
 
 const ATHLETES = [
-  'Jesse Owens', 'Muhammad Ali', 'Pelé', 'Diego Maradona', 'Michael Jordan',
-  'Serena Williams', 'Roger Federer', 'Rafael Nadal', 'Billie Jean King',
-  'Martina Navratilova', 'Usain Bolt', 'Carl Lewis', 'Jackie Joyner-Kersee',
-  'Nadia Comăneci', 'Simone Biles', 'Michael Phelps', 'Katie Ledecky',
-  'Eddy Merckx', 'Ayrton Senna', 'Jack Nicklaus', 'Babe Ruth', 'Wayne Gretzky',
-  'Sachin Tendulkar', 'Don Bradman', 'Jonah Lomu', 'Marta Vieira da Silva',
+  'Jesse Owens', 'Muhammad Ali', 'Pelé', 'Diego Maradona', 'Johan Cruyff',
+  'Michael Jordan', 'Serena Williams', 'Venus Williams', 'Roger Federer',
+  'Rafael Nadal', 'Novak Djokovic', 'Billie Jean King', 'Martina Navratilova',
+  'Steffi Graf', 'Rod Laver', 'Usain Bolt', 'Carl Lewis',
+  'Jackie Joyner-Kersee', 'Florence Griffith Joyner', 'Emil Zátopek',
+  'Haile Gebrselassie', 'Eliud Kipchoge', 'Nadia Comăneci', 'Olga Korbut',
+  'Simone Biles', 'Michael Phelps', 'Mark Spitz', 'Katie Ledecky', 'Ian Thorpe',
+  'Eddy Merckx', 'Bernard Hinault', 'Ayrton Senna', 'Juan Manuel Fangio',
+  'Jack Nicklaus', 'Bobby Jones', 'Babe Ruth', 'Jackie Robinson', 'Wayne Gretzky',
+  'Sachin Tendulkar', 'Don Bradman', 'Viv Richards', 'Jonah Lomu', 'Richie McCaw',
+  'Marta Vieira da Silva', 'Mia Hamm', 'Abebe Bikila', 'Fanny Blankers-Koen',
 ]
 
 // ---------------------------------------------------------------------------
@@ -419,128 +849,275 @@ const ATHLETES = [
 // ---------------------------------------------------------------------------
 
 const CAMERA_MAKERS = [
-  'Canon', 'Nikon', 'Sony', 'Fujifilm', 'Olympus', 'Panasonic', 'Leica', 'Pentax',
-  'Hasselblad', 'Phase One', 'Sigma', 'Ricoh', 'Kodak', 'Polaroid', 'GoPro',
+  'Canon', 'Nikon', 'Sony', 'Fujifilm', 'Olympus', 'OM System', 'Panasonic', 'Leica',
+  'Pentax', 'Hasselblad', 'Phase One', 'Mamiya', 'Sigma', 'Ricoh', 'Kodak',
+  'Polaroid', 'Rollei', 'Zeiss', 'Voigtländer', 'GoPro', 'DJI', 'Lomography',
 ]
 
 const PHONE_MAKERS = [
   'Apple', 'Samsung', 'Google', 'Xiaomi', 'Huawei', 'Oppo', 'Vivo', 'OnePlus',
-  'Motorola', 'Nokia', 'Sony', 'Asus', 'Realme', 'Honor', 'Nothing',
+  'Motorola', 'Nokia', 'Sony', 'Asus', 'Realme', 'Honor', 'Nothing', 'Fairphone',
+  'TCL', 'ZTE', 'Tecno', 'Infinix',
 ]
 
 const APPLIANCE_BRANDS = [
   'Bosch', 'Siemens', 'Miele', 'AEG', 'Zanussi', 'Electrolux', 'Whirlpool', 'Indesit',
-  'Hotpoint', 'Beko', 'Hoover', 'Dyson', 'Smeg', 'Neff', 'LG', 'Samsung', 'Panasonic',
-  'Sharp', 'Haier', 'Candy',
+  'Hotpoint', 'Beko', 'Hoover', 'Dyson', 'Smeg', 'Neff', 'Gaggenau', 'Liebherr',
+  'LG', 'Samsung', 'Panasonic', 'Sharp', 'Haier', 'Candy', 'Grundig', 'Bissell',
+  'KitchenAid', 'Sage', 'De’Longhi', 'Kenwood',
+]
+
+const WATCH_BRANDS = [
+  'Rolex', 'Omega', 'Patek Philippe', 'Audemars Piguet', 'Vacheron Constantin',
+  'Jaeger-LeCoultre', 'Breguet', 'Blancpain', 'IWC', 'Cartier', 'Panerai',
+  'TAG Heuer', 'Breitling', 'Zenith', 'Longines', 'Tudor', 'Grand Seiko', 'Seiko',
+  'Citizen', 'Casio', 'Tissot', 'Oris', 'Nomos Glashütte', 'A. Lange & Söhne',
+  'Glashütte Original', 'Hamilton', 'Bell & Ross', 'Bremont', 'Christopher Ward',
+]
+
+const FASHION_BRANDS = [
+  'Chanel', 'Dior', 'Hermès', 'Louis Vuitton', 'Gucci', 'Prada', 'Miu Miu',
+  'Versace', 'Armani', 'Valentino', 'Fendi', 'Bottega Veneta', 'Balenciaga',
+  'Givenchy', 'Saint Laurent', 'Loewe', 'Burberry', 'Alexander McQueen',
+  'Vivienne Westwood', 'Stella McCartney', 'Paul Smith', 'Margaret Howell',
+  'Comme des Garçons', 'Issey Miyake', 'Yohji Yamamoto', 'Jil Sander', 'Acne Studios',
+  'Maison Margiela', 'Dries Van Noten', 'Rick Owens', 'Ralph Lauren', 'Calvin Klein',
+]
+
+const SPORTSWEAR_BRANDS = [
+  'Nike', 'Adidas', 'Puma', 'Reebok', 'New Balance', 'Asics', 'Under Armour',
+  'Salomon', 'Hoka', 'Brooks', 'Saucony', 'On', 'Mizuno', 'Umbro', 'Kappa',
+  'Le Coq Sportif', 'Fila', 'Columbia', 'The North Face', 'Patagonia', 'Arc’teryx',
+  'Berghaus', 'Rab', 'Mammut', 'Salewa',
+]
+
+const MOTORCYCLE_BRANDS = [
+  'Honda', 'Yamaha', 'Suzuki', 'Kawasaki', 'Harley-Davidson', 'Indian', 'BMW',
+  'Ducati', 'Aprilia', 'Moto Guzzi', 'MV Agusta', 'Benelli', 'Triumph', 'Norton',
+  'BSA', 'Royal Enfield', 'KTM', 'Husqvarna', 'Beta', 'Sherco', 'Zero', 'Bajaj',
+  'TVS', 'Hero',
 ]
 
 const UNIVERSITIES = [
   'University of Oxford', 'University of Cambridge', 'Imperial College London',
-  'University College London', 'University of Edinburgh', 'University of Manchester',
-  'University of Glasgow', 'Trinity College Dublin', 'Harvard University',
-  'Massachusetts Institute of Technology', 'Stanford University', 'Yale University',
-  'Princeton University', 'Columbia University', 'University of Chicago',
-  'California Institute of Technology', 'University of California, Berkeley',
-  'Cornell University', 'Johns Hopkins University', 'University of Michigan',
-  'University of Toronto', 'McGill University', 'University of British Columbia',
-  'ETH Zurich', 'EPFL', 'Sorbonne University', 'Université PSL', 'Heidelberg University',
-  'Technical University of Munich', 'Ludwig Maximilian University of Munich',
-  'Delft University of Technology', 'Leiden University', 'Utrecht University',
-  'KU Leuven', 'Uppsala University', 'Lund University', 'University of Copenhagen',
-  'University of Helsinki', 'University of Vienna', 'Charles University',
-  'University of Bologna', 'Sapienza University of Rome', 'Complutense University',
-  'University of Barcelona', 'University of Tokyo', 'Kyoto University',
-  'Peking University', 'Tsinghua University', 'National University of Singapore',
-  'Seoul National University', 'Indian Institute of Science',
-  'University of Melbourne', 'Australian National University', 'University of Cape Town',
+  'University College London', 'London School of Economics', 'King’s College London',
+  'University of Edinburgh', 'University of Manchester', 'University of Glasgow',
+  'University of Bristol', 'University of Warwick', 'Durham University',
+  'University of St Andrews', 'Trinity College Dublin', 'University College Dublin',
+  'Harvard University', 'Massachusetts Institute of Technology', 'Stanford University',
+  'Yale University', 'Princeton University', 'Columbia University',
+  'University of Chicago', 'California Institute of Technology',
+  'University of California, Berkeley', 'University of California, Los Angeles',
+  'Cornell University', 'Brown University', 'Dartmouth College',
+  'University of Pennsylvania', 'Johns Hopkins University', 'Duke University',
+  'Northwestern University', 'University of Michigan', 'Carnegie Mellon University',
+  'Georgia Institute of Technology', 'University of Texas at Austin',
+  'University of Washington', 'University of Toronto', 'McGill University',
+  'University of British Columbia', 'ETH Zurich', 'EPFL', 'University of Zurich',
+  'Sorbonne University', 'Université PSL', 'École Polytechnique', 'Sciences Po',
+  'Heidelberg University', 'Technical University of Munich',
+  'Ludwig Maximilian University of Munich', 'Humboldt University of Berlin',
+  'RWTH Aachen University', 'Delft University of Technology', 'Leiden University',
+  'Utrecht University', 'University of Amsterdam', 'Wageningen University',
+  'KU Leuven', 'Ghent University', 'Uppsala University', 'Lund University',
+  'Karolinska Institute', 'KTH Royal Institute of Technology',
+  'University of Copenhagen', 'Aarhus University', 'University of Oslo',
+  'University of Helsinki', 'Aalto University', 'University of Vienna',
+  'Charles University', 'Jagiellonian University', 'University of Warsaw',
+  'University of Bologna', 'Sapienza University of Rome', 'University of Padua',
+  'Politecnico di Milano', 'Complutense University of Madrid',
+  'University of Barcelona', 'Autonomous University of Madrid',
+  'University of Coimbra', 'University of Lisbon', 'University of Tokyo',
+  'Kyoto University', 'Osaka University', 'Tohoku University', 'Peking University',
+  'Tsinghua University', 'Fudan University', 'Zhejiang University',
+  'University of Hong Kong', 'National University of Singapore',
+  'Nanyang Technological University', 'Seoul National University', 'KAIST',
+  'Indian Institute of Science', 'Indian Institute of Technology Bombay',
+  'University of Melbourne', 'Australian National University', 'University of Sydney',
+  'University of Auckland', 'University of Cape Town', 'University of the Witwatersrand',
+  'American University of Beirut', 'Tel Aviv University',
+  'Hebrew University of Jerusalem', 'National Autonomous University of Mexico',
+  'University of São Paulo', 'University of Buenos Aires',
 ]
 
 const FOOTBALL_CLUBS = [
-  'Arsenal', 'Aston Villa', 'Chelsea', 'Everton', 'Liverpool', 'Manchester City',
-  'Manchester United', 'Newcastle United', 'Tottenham Hotspur', 'West Ham United',
-  'Celtic', 'Rangers', 'Real Madrid', 'Barcelona', 'Atlético Madrid', 'Sevilla',
-  'Valencia', 'Athletic Bilbao', 'Real Sociedad', 'Juventus', 'AC Milan',
-  'Internazionale', 'Napoli', 'Roma', 'Lazio', 'Fiorentina', 'Bayern Munich',
-  'Borussia Dortmund', 'RB Leipzig', 'Bayer Leverkusen', 'Schalke 04', 'Hamburger SV',
-  'Paris Saint-Germain', 'Olympique de Marseille', 'Olympique Lyonnais', 'Monaco',
-  'Ajax', 'PSV Eindhoven', 'Feyenoord', 'Benfica', 'Porto', 'Sporting CP',
-  'Galatasaray', 'Fenerbahçe', 'Beşiktaş', 'Shakhtar Donetsk', 'Dynamo Kyiv',
-  'Red Star Belgrade', 'Olympiacos', 'Panathinaikos', 'Boca Juniors', 'River Plate',
-  'Flamengo', 'Palmeiras', 'Santos', 'Corinthians', 'Club América', 'LA Galaxy',
+  'Arsenal', 'Aston Villa', 'Chelsea', 'Everton', 'Leeds United', 'Liverpool',
+  'Manchester City', 'Manchester United', 'Newcastle United', 'Nottingham Forest',
+  'Tottenham Hotspur', 'West Ham United', 'Wolverhampton Wanderers', 'Southampton',
+  'Brighton & Hove Albion', 'Crystal Palace', 'Fulham', 'Celtic', 'Rangers',
+  'Aberdeen', 'Hearts', 'Hibernian', 'Cardiff City', 'Swansea City',
+  'Real Madrid', 'Barcelona', 'Atlético Madrid', 'Sevilla', 'Real Betis', 'Valencia',
+  'Villarreal', 'Athletic Bilbao', 'Real Sociedad', 'Celta Vigo', 'Espanyol',
+  'Juventus', 'AC Milan', 'Internazionale', 'Napoli', 'Roma', 'Lazio', 'Atalanta',
+  'Fiorentina', 'Torino', 'Bologna', 'Sampdoria', 'Genoa', 'Udinese',
+  'Bayern Munich', 'Borussia Dortmund', 'RB Leipzig', 'Bayer Leverkusen',
+  'Borussia Mönchengladbach', 'Eintracht Frankfurt', 'VfB Stuttgart', 'Werder Bremen',
+  'Schalke 04', 'Hamburger SV', 'VfL Wolfsburg', 'Paris Saint-Germain',
+  'Olympique de Marseille', 'Olympique Lyonnais', 'Monaco', 'Lille', 'Nice',
+  'Saint-Étienne', 'Nantes', 'Rennes', 'Ajax', 'PSV Eindhoven', 'Feyenoord',
+  'AZ Alkmaar', 'Club Brugge', 'Anderlecht', 'Standard Liège', 'Gent', 'Benfica',
+  'Porto', 'Sporting CP', 'Braga', 'Galatasaray', 'Fenerbahçe', 'Beşiktaş',
+  'Trabzonspor', 'Shakhtar Donetsk', 'Dynamo Kyiv', 'Zenit Saint Petersburg',
+  'Spartak Moscow', 'CSKA Moscow', 'Red Star Belgrade', 'Partizan', 'Dinamo Zagreb',
+  'Olympiacos', 'Panathinaikos', 'AEK Athens', 'Slavia Prague', 'Sparta Prague',
+  'Legia Warsaw', 'Salzburg', 'Rapid Vienna', 'Basel', 'Young Boys', 'Copenhagen',
+  'Rosenborg', 'Malmö', 'Boca Juniors', 'River Plate', 'Racing Club',
+  'Independiente', 'San Lorenzo', 'Flamengo', 'Palmeiras', 'Santos', 'Corinthians',
+  'São Paulo', 'Grêmio', 'Internacional', 'Peñarol', 'Nacional', 'Colo-Colo',
+  'Club América', 'Chivas Guadalajara', 'Cruz Azul', 'LA Galaxy', 'Seattle Sounders',
+  'Al Ahly', 'Zamalek', 'Kaizer Chiefs', 'Orlando Pirates', 'Urawa Red Diamonds',
+  'Kashima Antlers', 'Jeonbuk Hyundai Motors',
 ]
 
 const MUSEUMS = [
-  'The Louvre', 'Musée d’Orsay', 'Centre Pompidou', 'The British Museum',
-  'National Gallery', 'Tate Modern', 'Tate Britain', 'Victoria and Albert Museum',
-  'Natural History Museum', 'Science Museum', 'The Metropolitan Museum of Art',
-  'Museum of Modern Art', 'Guggenheim Museum', 'Whitney Museum of American Art',
-  'Art Institute of Chicago', 'Smithsonian Institution', 'Getty Center',
-  'Rijksmuseum', 'Van Gogh Museum', 'Mauritshuis', 'Prado Museum', 'Reina Sofía',
-  'Guggenheim Bilbao', 'Uffizi Gallery', 'Galleria Borghese', 'Vatican Museums',
-  'Pergamon Museum', 'Alte Nationalgalerie', 'Kunsthistorisches Museum',
-  'Hermitage Museum', 'Tretyakov Gallery', 'Acropolis Museum', 'Egyptian Museum',
-  'National Palace Museum', 'Tokyo National Museum', 'Museum of Islamic Art',
+  'The Louvre', 'Musée d’Orsay', 'Centre Pompidou', 'Musée Rodin', 'Musée de l’Orangerie',
+  'The British Museum', 'National Gallery', 'National Portrait Gallery', 'Tate Modern',
+  'Tate Britain', 'Victoria and Albert Museum', 'Natural History Museum',
+  'Science Museum', 'Imperial War Museum', 'Wallace Collection', 'Courtauld Gallery',
+  'Ashmolean Museum', 'Fitzwilliam Museum', 'National Museum of Scotland',
+  'The Metropolitan Museum of Art', 'Museum of Modern Art', 'Guggenheim Museum',
+  'Whitney Museum of American Art', 'Frick Collection', 'American Museum of Natural History',
+  'Art Institute of Chicago', 'Smithsonian Institution',
+  'National Gallery of Art', 'Getty Center', 'LACMA', 'SFMOMA',
+  'Museum of Fine Arts, Boston', 'Isabella Stewart Gardner Museum', 'Rijksmuseum',
+  'Van Gogh Museum', 'Stedelijk Museum', 'Mauritshuis', 'Kröller-Müller Museum',
+  'Prado Museum', 'Reina Sofía', 'Thyssen-Bornemisza Museum', 'Guggenheim Bilbao',
+  'Uffizi Gallery', 'Galleria dell’Accademia', 'Galleria Borghese', 'Vatican Museums',
+  'Brera Art Gallery', 'Peggy Guggenheim Collection', 'Pergamon Museum',
+  'Alte Nationalgalerie', 'Gemäldegalerie', 'Neues Museum', 'Bode Museum',
+  'Kunsthistorisches Museum', 'Albertina', 'Belvedere', 'Kunsthaus Zürich',
+  'Hermitage Museum', 'Tretyakov Gallery', 'Pushkin Museum', 'Acropolis Museum',
+  'National Archaeological Museum', 'Egyptian Museum', 'Topkapi Palace Museum',
+  'Istanbul Archaeology Museums', 'National Palace Museum', 'Tokyo National Museum',
+  'Mori Art Museum', 'National Museum of Korea', 'Palace Museum',
+  'Museum of Islamic Art', 'National Gallery of Australia', 'Museu de Arte de São Paulo',
+]
+
+const NEWSPAPERS = [
+  'The Times', 'The Guardian', 'The Observer', 'The Daily Telegraph',
+  'The Financial Times', 'The Independent', 'The Economist', 'The Irish Times',
+  'The Scotsman', 'The New York Times', 'The Washington Post', 'The Wall Street Journal',
+  'Los Angeles Times', 'Chicago Tribune', 'The Boston Globe', 'USA Today',
+  'The Globe and Mail', 'Toronto Star', 'Le Monde', 'Le Figaro', 'Libération',
+  'Frankfurter Allgemeine Zeitung', 'Süddeutsche Zeitung', 'Die Zeit', 'Der Spiegel',
+  'Die Welt', 'Corriere della Sera', 'La Repubblica', 'La Stampa', 'El País',
+  'El Mundo', 'La Vanguardia', 'Público', 'NRC Handelsblad', 'De Volkskrant',
+  'Dagens Nyheter', 'Aftenposten', 'Politiken', 'Helsingin Sanomat',
+  'Neue Zürcher Zeitung', 'Gazeta Wyborcza', 'The Japan Times', 'Asahi Shimbun',
+  'Yomiuri Shimbun', 'South China Morning Post', 'The Straits Times',
+  'The Times of India', 'The Hindu', 'The Sydney Morning Herald', 'The Age',
+  'Mail & Guardian', 'Folha de S.Paulo', 'Clarín', 'La Nación', 'Haaretz',
+]
+
+const ORCHESTRAS = [
+  'Berlin Philharmonic', 'Vienna Philharmonic', 'Royal Concertgebouw Orchestra',
+  'London Symphony Orchestra', 'London Philharmonic Orchestra',
+  'Philharmonia Orchestra', 'BBC Symphony Orchestra', 'Royal Philharmonic Orchestra',
+  'Hallé Orchestra', 'City of Birmingham Symphony Orchestra',
+  'Royal Scottish National Orchestra', 'Bournemouth Symphony Orchestra',
+  'Orchestre de Paris', 'Bavarian Radio Symphony Orchestra',
+  'Leipzig Gewandhaus Orchestra', 'Staatskapelle Dresden', 'Staatskapelle Berlin',
+  'Czech Philharmonic', 'Budapest Festival Orchestra', 'Mahler Chamber Orchestra',
+  'Academy of St Martin in the Fields', 'Orchestra of the Age of Enlightenment',
+  'Boston Symphony Orchestra', 'New York Philharmonic', 'Chicago Symphony Orchestra',
+  'Philadelphia Orchestra', 'Cleveland Orchestra', 'Los Angeles Philharmonic',
+  'San Francisco Symphony', 'Toronto Symphony Orchestra', 'Montreal Symphony Orchestra',
+  'NHK Symphony Orchestra', 'Sydney Symphony Orchestra', 'Melbourne Symphony Orchestra',
+  'Israel Philharmonic Orchestra', 'Orquestra Sinfônica do Estado de São Paulo',
+  'Simón Bolívar Symphony Orchestra',
 ]
 
 export async function run({ locales }) {
   if (!locales.includes('en')) throw new Error('common-knowledge needs the `en` locale')
+
+  const contributions = {
+    'animal.animal': ANIMALS,
+    'animal.bird': BIRDS,
+    'animal.reptile_or_amphibian': REPTILES_AND_AMPHIBIANS,
+    'animal.dog_breed': DOG_BREEDS,
+    'animal.cat_breed': CAT_BREEDS,
+    'animal.horse_breed': HORSE_BREEDS,
+    'animal.fish': FISH,
+    'animal.insect': INSECTS,
+    'animal.farm_animal': FARM_ANIMALS,
+    'animal.pet_name': PET_NAMES,
+
+    'food.fruit': FRUITS,
+    'food.vegetable': VEGETABLES,
+    'food.herb_or_spice': HERBS_AND_SPICES,
+    'food.cheese': CHEESES,
+    'food.dish': DISHES,
+    'food.dessert': DESSERTS,
+    'food.grain_or_pulse': GRAINS_AND_PULSES,
+    'food.nut_or_seed': NUTS_AND_SEEDS,
+    'food.seafood': SEAFOOD,
+    'food.bread': BREADS,
+
+    'nature.mountain': MOUNTAINS,
+    'nature.river': RIVERS,
+    'nature.lake': LAKES,
+    'nature.island': ISLANDS,
+    'nature.desert': DESERTS,
+    'nature.tree': TREES,
+    'nature.flower': FLOWERS,
+    'nature.gemstone': GEMSTONES,
+    'nature.weather': WEATHER,
+
+    'media.book_title': BOOK_TITLES,
+    'media.book_author': BOOK_AUTHORS,
+    'media.book_genre': BOOK_GENRES,
+    'media.film_title': FILM_TITLES,
+    'media.film_genre': FILM_GENRES,
+    'media.song_title': SONG_TITLES,
+    'media.music_genre': MUSIC_GENRES,
+    'media.instrument': INSTRUMENTS,
+    'media.art_movement': ART_MOVEMENTS,
+
+    'notable.philosopher': PHILOSOPHERS,
+    'notable.scientist': SCIENTISTS,
+    'notable.mathematician': MATHEMATICIANS,
+    'notable.inventor': INVENTORS,
+    'notable.composer': COMPOSERS,
+    'notable.artist': ARTISTS,
+    'notable.architect': ARCHITECTS,
+    'notable.explorer': EXPLORERS,
+    'notable.actor': ACTORS,
+    'notable.musician': MUSICIANS,
+    'notable.athlete': ATHLETES,
+
+    'brand.camera': CAMERA_MAKERS,
+    'brand.phone': PHONE_MAKERS,
+    'brand.appliance': APPLIANCE_BRANDS,
+    'brand.watch': WATCH_BRANDS,
+    'brand.fashion': FASHION_BRANDS,
+    'brand.sportswear': SPORTSWEAR_BRANDS,
+    'brand.motorcycle': MOTORCYCLE_BRANDS,
+
+    'institution.university': UNIVERSITIES,
+    'institution.football_club': FOOTBALL_CLUBS,
+    'institution.museum': MUSEUMS,
+    'institution.newspaper': NEWSPAPERS,
+    'institution.orchestra': ORCHESTRAS,
+  }
+
+  // A duplicate inside one list is a transcription slip rather than a design choice, and
+  // the compiler would happily ship it as a value that draws twice as often. Cheap to
+  // catch here, where the fix is obvious, rather than in somebody's fixture.
+  for (const [path, values] of Object.entries(contributions)) {
+    const seen = new Set()
+    const duplicates = new Set()
+    for (const value of values) {
+      if (seen.has(value)) duplicates.add(value)
+      seen.add(value)
+    }
+    if (duplicates.size > 0) {
+      throw new Error(`${path} repeats: ${[...duplicates].join(', ')}`)
+    }
+  }
+
+  const total = Object.values(contributions).reduce((sum, v) => sum + v.length, 0)
   return {
-    contributions: {
-      en: {
-        'animal.animal': ANIMALS,
-        'animal.bird': BIRDS,
-        'animal.dog_breed': DOG_BREEDS,
-        'animal.cat_breed': CAT_BREEDS,
-        'animal.fish': FISH,
-        'animal.insect': INSECTS,
-        'animal.farm_animal': FARM_ANIMALS,
-        'animal.pet_name': PET_NAMES,
-
-        'food.fruit': FRUITS,
-        'food.vegetable': VEGETABLES,
-        'food.herb_or_spice': HERBS_AND_SPICES,
-        'food.cheese': CHEESES,
-        'food.dish': DISHES,
-        'food.dessert': DESSERTS,
-
-        'nature.mountain': MOUNTAINS,
-        'nature.river': RIVERS,
-        'nature.tree': TREES,
-        'nature.flower': FLOWERS,
-        'nature.gemstone': GEMSTONES,
-
-        'media.book_title': BOOK_TITLES,
-        'media.book_author': BOOK_AUTHORS,
-        'media.book_genre': BOOK_GENRES,
-        'media.film_genre': FILM_GENRES,
-        'media.music_genre': MUSIC_GENRES,
-        'media.instrument': INSTRUMENTS,
-
-        'notable.philosopher': PHILOSOPHERS,
-        'notable.scientist': SCIENTISTS,
-        'notable.composer': COMPOSERS,
-        'notable.artist': ARTISTS,
-        'notable.explorer': EXPLORERS,
-        'notable.actor': ACTORS,
-        'notable.musician': MUSICIANS,
-        'notable.athlete': ATHLETES,
-
-        'brand.camera': CAMERA_MAKERS,
-        'brand.phone': PHONE_MAKERS,
-        'brand.appliance': APPLIANCE_BRANDS,
-
-        'institution.university': UNIVERSITIES,
-        'institution.football_club': FOOTBALL_CLUBS,
-        'institution.museum': MUSEUMS,
-      },
-    },
-    stats: {
-      animals: ANIMALS.length + BIRDS.length + DOG_BREEDS.length + CAT_BREEDS.length
-        + FISH.length + INSECTS.length + FARM_ANIMALS.length + PET_NAMES.length,
-      food: FRUITS.length + VEGETABLES.length + HERBS_AND_SPICES.length + CHEESES.length
-        + DISHES.length + DESSERTS.length,
-      people: PHILOSOPHERS.length + SCIENTISTS.length + COMPOSERS.length + ARTISTS.length
-        + EXPLORERS.length + ACTORS.length + MUSICIANS.length + ATHLETES.length,
-    },
+    contributions: { en: contributions },
+    stats: { paths: Object.keys(contributions).length, values: total },
   }
 }

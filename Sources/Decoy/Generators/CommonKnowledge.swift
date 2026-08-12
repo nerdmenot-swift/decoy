@@ -60,6 +60,13 @@ public struct AnimalFaker {
     public mutating func farmAnimal() -> String { faker.require("animal.farm_animal") }
     public mutating func dogBreed() -> String { faker.require("animal.dog_breed") }
     public mutating func catBreed() -> String { faker.require("animal.cat_breed") }
+    public mutating func horseBreed() -> String { faker.require("animal.horse_breed") }
+
+    /// A reptile or an amphibian, drawn together because the colloquial category is
+    /// "cold-blooded thing that is not a fish" rather than either clade on its own.
+    public mutating func reptileOrAmphibian() -> String {
+        faker.require("animal.reptile_or_amphibian")
+    }
 
     /// A pet's name, which is the one draw here that is not a fact about the world —
     /// it is what people call their animals, and drawn from the same stock of ordinary
@@ -81,14 +88,21 @@ public struct FoodFaker {
     /// existed. This one is real cooking; that one is composition.
     public mutating func dish() -> String { faker.require("food.dish") }
     public mutating func dessert() -> String { faker.require("food.dessert") }
+    public mutating func grainOrPulse() -> String { faker.require("food.grain_or_pulse") }
+    public mutating func nutOrSeed() -> String { faker.require("food.nut_or_seed") }
+    public mutating func seafood() -> String { faker.require("food.seafood") }
+    public mutating func bread() -> String { faker.require("food.bread") }
 
     /// An ingredient of any kind, for the column that does not care which.
     public mutating func ingredient() -> String {
-        switch faker.int(in: 0...3) {
+        switch faker.int(in: 0...6) {
         case 0: return fruit()
         case 1: return vegetable()
         case 2: return herbOrSpice()
-        default: return cheese()
+        case 3: return cheese()
+        case 4: return grainOrPulse()
+        case 5: return nutOrSeed()
+        default: return seafood()
         }
     }
 }
@@ -101,6 +115,12 @@ public struct NatureFaker {
     public mutating func tree() -> String { faker.require("nature.tree") }
     public mutating func flower() -> String { faker.require("nature.flower") }
     public mutating func gemstone() -> String { faker.require("nature.gemstone") }
+    public mutating func lake() -> String { faker.require("nature.lake") }
+    public mutating func island() -> String { faker.require("nature.island") }
+    public mutating func desert() -> String { faker.require("nature.desert") }
+
+    /// A weather condition, in the register a forecast uses.
+    public mutating func weather() -> String { faker.require("nature.weather") }
 }
 
 public struct MediaFaker {
@@ -116,6 +136,9 @@ public struct MediaFaker {
     public mutating func filmGenre() -> String { faker.require("media.film_genre") }
     public mutating func musicGenre() -> String { faker.require("media.music_genre") }
     public mutating func instrument() -> String { faker.require("media.instrument") }
+    public mutating func filmTitle() -> String { faker.require("media.film_title") }
+    public mutating func songTitle() -> String { faker.require("media.song_title") }
+    public mutating func artMovement() -> String { faker.require("media.art_movement") }
 
     /// A book as a coherent `(title, author, genre)` row.
     ///
@@ -137,6 +160,9 @@ public struct NotableFaker {
     public mutating func composer() -> String { faker.require("notable.composer") }
     public mutating func artist() -> String { faker.require("notable.artist") }
     public mutating func explorer() -> String { faker.require("notable.explorer") }
+    public mutating func mathematician() -> String { faker.require("notable.mathematician") }
+    public mutating func inventor() -> String { faker.require("notable.inventor") }
+    public mutating func architect() -> String { faker.require("notable.architect") }
 
     /// A living public figure.
     ///
@@ -152,11 +178,14 @@ public struct NotableFaker {
 
     /// Any historical figure, for the column that does not care which field.
     public mutating func historicalFigure() -> String {
-        switch faker.int(in: 0...4) {
+        switch faker.int(in: 0...7) {
         case 0: return philosopher()
         case 1: return scientist()
-        case 2: return composer()
-        case 3: return artist()
+        case 2: return mathematician()
+        case 3: return inventor()
+        case 4: return composer()
+        case 5: return artist()
+        case 6: return architect()
         default: return explorer()
         }
     }
@@ -173,6 +202,10 @@ public struct BrandFaker {
     public mutating func camera() -> String { faker.require("brand.camera") }
     public mutating func phone() -> String { faker.require("brand.phone") }
     public mutating func appliance() -> String { faker.require("brand.appliance") }
+    public mutating func watch() -> String { faker.require("brand.watch") }
+    public mutating func fashion() -> String { faker.require("brand.fashion") }
+    public mutating func sportswear() -> String { faker.require("brand.sportswear") }
+    public mutating func motorcycle() -> String { faker.require("brand.motorcycle") }
 
     /// A car manufacturer, which lives in `vehicle` because it was there first.
     public mutating func car() -> String { faker.require("vehicle.manufacturer") }
@@ -186,4 +219,6 @@ public struct InstitutionFaker {
         faker.require("institution.football_club")
     }
     public mutating func museum() -> String { faker.require("institution.museum") }
+    public mutating func newspaper() -> String { faker.require("institution.newspaper") }
+    public mutating func orchestra() -> String { faker.require("institution.orchestra") }
 }

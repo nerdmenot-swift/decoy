@@ -708,8 +708,8 @@ of engineering produces it.
 ## Sequencing
 
 1. ~~Binary format with all six requirements representable~~ — **done** (format v2)
-2. ~~Core generators against the faker-derived corpus~~ — **done** (293 methods across 28
-   namespaces; 275 across 27 without Foundation, which gates the `date` namespace)
+2. ~~Core generators against the faker-derived corpus~~ — **done** (315 methods across 28
+   namespaces; 297 across 27 without Foundation, which gates the `date` namespace)
 3. ~~Corpus discoverability and coverage measurement~~ — **done** (`Corpus.paths`, `decoy-inspect`)
 4. Authoritative reference adapters replacing factual fields — **done for everything
    with a pinnable registry**. Migrated: ISO 3166-1 and 3166-2, ISO 639, ISO 4217, IANA
