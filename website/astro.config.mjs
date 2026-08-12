@@ -57,14 +57,13 @@ export default defineConfig({
               'family=IBM+Plex+Mono:wght@400;500;600&display=swap',
           },
         },
-        // Applied before first paint, so a reader who collapsed the sidebar does not
-        // watch it flash open on every navigation.
+        // Applied before first paint, so a reader who collapsed the table of contents
+        // does not watch it flash open on every navigation.
         {
           tag: 'script',
           content:
-            "try{var d=document.documentElement.dataset;" +
-            "if(localStorage.getItem('decoy:sidebar'))d.sidebar='collapsed';" +
-            "if(localStorage.getItem('decoy:toc'))d.toc='collapsed'}catch(e){}",
+            "try{if(localStorage.getItem('decoy:toc'))" +
+            "document.documentElement.dataset.toc='collapsed'}catch(e){}",
         },
       ],
       sidebar: [
