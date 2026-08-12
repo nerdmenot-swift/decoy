@@ -3,7 +3,7 @@
 // spacing, its own social row. This is the site's header instead, so the docs pages
 // and the landing page read as one thing.
 import Search from '@astrojs/starlight/components/Search.astro'
-import ThemeSelect from '@astrojs/starlight/components/ThemeSelect.astro'
+import ThemeToggle from './ThemeToggle.astro'
 import lockup from './lockup.svg?raw'
 ---
 <div class="decoy-header">
@@ -13,7 +13,7 @@ import lockup from './lockup.svg?raw'
     <a href="/start/install/">Install</a>
     <a href="/api/">Reference</a>
     <a href="https://github.com/NerdMeNot/decoy">GitHub</a>
-    <ThemeSelect />
+    <ThemeToggle />
   </nav>
 </div>
 <style>

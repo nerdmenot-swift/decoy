@@ -9,7 +9,7 @@
         "astro": "^7.2.1",
       },
       "devDependencies": {
-        "playwright": "^1.62.1",
+        "playwright": "^1.56.0",
         "wrangler": "^4",
       },
     },

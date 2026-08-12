@@ -20,10 +20,10 @@ faker.location.buildingNumber()
 | `streetAddress()`<br /><span class="sig">full: Bool = false</span> | `281 Jacklyn Port`<br />`50 Sargent Plain`<br />`385 Backus Landing` |
 | `secondaryAddress()` | `Flat 7`<br />`Floor 0`<br />`Flat 9` |
 | `city()` | `Bangor`<br />`Wabasha`<br />`Cheektowaga` |
-| `place()` | `["state": "California", "state_code": "CA", "city": "Salida"]`<br />`["city": "West Bishop", "state": "California", "state_code": "CA"]`<br />`["state_code": "PA", "city": "Fox Chase", "state": "Pennsylvania"]` |
+| `place()` | `["city": "Salida", "state": "California", "state_code": "CA"]`<br />`["state": "California", "state_code": "CA", "city": "West Bishop"]`<br />`["city": "Fox Chase", "state": "Pennsylvania", "state_code": "PA"]` |
 | `placeAndPostcode()` | `(city: "Tuckahoe", state: "New York", stateCode: "NY", postcode: "10537")`<br />`(city: "Chevy Chase", state: "Maryland", stateCode: "MD", postcode: "21717")`<br />`(city: "Greenville", state: "Alabama", stateCode: "AL", postcode: "36455")` |
 | `county()` | `Iroquois County`<br />`Nottoway County`<br />`Issaquena County` |
-| `stateRow()` | `["name": "Iowa", "abbr": "IA"]`<br />`["name": "Michigan", "abbr": "MI"]`<br />`["name": "Nevada", "abbr": "NV"]` |
+| `stateRow()` | `["abbr": "IA", "name": "Iowa"]`<br />`["abbr": "MI", "name": "Michigan"]`<br />`["abbr": "NV", "name": "Nevada"]` |
 | `state()` | `Connecticut`<br />`Montana`<br />`Michigan` |
 | `stateAbbreviation()` | `PA`<br />`WA`<br />`KY` |
 | `country()` | `Curaçao`<br />`Brunei`<br />`Togo` |
@@ -33,10 +33,10 @@ faker.location.buildingNumber()
 | `postcode()`<br /><span class="sig">state abbreviation: String?</span> | `02310`<br />`25552`<br />`70177` |
 | `stateAndPostcode()` | `(state: "Indiana", abbr: "IN", postcode: "46678")`<br />`(state: "Oklahoma", abbr: "OK", postcode: "73939")`<br />`(state: "South Dakota", abbr: "SD", postcode: "57721")` |
 | `postalAddress()` | `Austin Castanon 30 Nicholas Walk Corry Florida 18167`<br />`Robert Goff 88983 Washington Underpass Dodson Branch Hawaii 34743`<br />`Karrie Sanders 18537 Wood Hill Suffield Depot Arizona 87567` |
-| `countryCode()` | `["alpha2": "CH", "alpha3": "CHE", "numeric": "756"]`<br />`["alpha2": "MS", "alpha3": "MSR", "numeric": "500"]`<br />`["alpha2": "MN", "alpha3": "MNG", "numeric": "496"]` |
+| `countryCode()` | `["numeric": "756", "alpha2": "CH", "alpha3": "CHE"]`<br />`["numeric": "500", "alpha2": "MS", "alpha3": "MSR"]`<br />`["numeric": "496", "alpha2": "MN", "alpha3": "MNG"]` |
 | `countryCodeAlpha2()` | `YU`<br />`TP`<br />`AN` |
 | `countryCodeAlpha3()` | `SUR`<br />`ARM`<br />`PER` |
-| `language()` | `["alpha2": "en", "alpha3": "eng", "name": "English"]`<br />`["alpha2": "ga", "alpha3": "gle", "name": "Irish"]`<br />`["alpha2": "tn", "alpha3": "tsn", "name": "Tswana"]` |
+| `language()` | `["name": "English", "alpha2": "en", "alpha3": "eng"]`<br />`["name": "Irish", "alpha2": "ga", "alpha3": "gle"]`<br />`["name": "Tswana", "alpha2": "tn", "alpha3": "tsn"]` |
 | `direction()`<br /><span class="sig">abbreviated: Bool = false</span> | `Southeast`<br />`East`<br />`East` |
 | `cardinalDirection()`<br /><span class="sig">abbreviated: Bool = false</span> | `West`<br />`South`<br />`North` |
 | `ordinalDirection()`<br /><span class="sig">abbreviated: Bool = false</span> | `Southwest`<br />`Southeast`<br />`Southeast` |

@@ -3,8 +3,12 @@ title: Seeds and reproducibility
 description: What the same seed guarantees, and the two things that change the answer.
 ---
 
-The same seed, the same corpus version and the same call order produce the same values,
-on every machine and every platform.
+A **seed** is a number you choose. Decoy's randomness is deterministic, so the same
+number always makes the same choices — which is what turns generated data into something
+you can rely on twice.
+
+Precisely: the same seed, the same corpus version and the same call order produce the
+same values, on every machine and every platform.
 
 ```swift
 var a = Faker(seed: 42, locale: DecoyLocaleEN.locale)

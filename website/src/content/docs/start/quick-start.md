@@ -3,6 +3,28 @@ title: Quick start
 description: Generating values, and why the same seed gives you the same people forever.
 ---
 
+## What a seed is
+
+A **seed** is just a number you choose.
+
+Decoy's randomness is deterministic: the same number always makes the same choices. Seed
+1337 gives you the same names, the same addresses and the same companies today, next
+year, on your laptop and in CI. Change the number and you get an entirely different set —
+equally repeatable.
+
+That is the whole point. Fixtures you can regenerate exactly are fixtures you can rely on
+in a test, a screenshot diff or a demo database.
+
+```swift
+Faker(seed: 1337, locale: DecoyLocaleEN.locale)   // these people
+Faker(seed: 42, locale: DecoyLocaleEN.locale)     // different people, just as repeatable
+```
+
+Any `UInt64` works. Pick one, write it down, and keep it in the code rather than in an
+environment variable that varies by machine.
+
+## A faker is a stream
+
 A `Faker` is a value type carrying a seed, a locale and a row index. Every draw advances
 its state, so a faker is a stream rather than a bag — which is why it is `inout`
 everywhere and why `var` matters.

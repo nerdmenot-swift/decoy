@@ -13,6 +13,9 @@ import DecoyLocaleEN
 var faker = Faker(seed: 1337, locale: DecoyLocaleEN.locale)
 ```
 
+The seed is any number you pick. The same one always produces the same values — see
+[quick start](/start/quick-start/).
+
 ## People
 
 | I need | Call | Returns |
