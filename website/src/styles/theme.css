@@ -127,6 +127,10 @@
 /* A rule under h2 rather than extra space above it. Reads as a document with sections
    instead of a page with headings, which suits a project about record-keeping. */
 .sl-markdown-content h2 {
+  /* Starlight sets headings to `display: inline` so its anchor link sits alongside.
+     A border on an inline box wraps with the text, so the rule stopped at the last word
+     and a two-line heading got two stubs. Blocking it makes the rule span the column. */
+  display: block;
   border-bottom: 2px solid var(--sl-color-hairline);
   padding-bottom: 0.4rem;
   margin-top: 2.6rem;
