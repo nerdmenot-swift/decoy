@@ -3,19 +3,34 @@ title: Install
 description: Adding Decoy to a Swift package, and the one thing everybody gets wrong first.
 ---
 
-Decoy is a Swift 6 package with no dependencies. Add it, then add a locale.
+Decoy is a Swift 6 package with no dependencies. Two edits to `Package.swift`:
 
 ```swift
 // Package.swift
-.package(url: "https://github.com/NerdMeNot/decoy", from: "1.0.0")
+let package = Package(
+    name: "MyApp",
+    // 1. Where to fetch it from.
+    dependencies: [
+        .package(url: "https://github.com/NerdMeNot/decoy", from: "1.0.0"),
+    ],
+    targets: [
+        // 2. Which of your targets uses it, and which products they use.
+        .testTarget(name: "MyAppTests", dependencies: [
+            .product(name: "Decoy", package: "decoy"),
+            .product(name: "DecoyLocaleEN", package: "decoy"),
+        ]),
+    ]
+)
 ```
 
-```swift
-.target(name: "MyTests", dependencies: [
-    .product(name: "Decoy", package: "decoy"),
-    .product(name: "DecoyLocaleEN", package: "decoy"),
-])
-```
+Both are needed, and that is SwiftPM's design rather than anything Decoy asks for. The
+top-level `dependencies` array only tells SwiftPM where to resolve the package from; it
+does not put anything on any target's import path. Each target then names the products it
+actually uses, which is what lets a test target depend on Decoy while your shipping target
+does not — so fake-data generators and their corpora never end up linked into your app.
+
+The second entry is a separate product on purpose. `Decoy` is the engine and
+`DecoyLocaleEN` is the data; you pick the locales you want and pay for those only.
 
 ## Always import a locale
 
@@ -27,9 +42,18 @@ name and it traps with a message telling you exactly this.
 import Decoy
 import DecoyLocaleEN
 
+// `faker` is a variable you create, not a global or a module. Name it what you like —
+// every example on this site calls it `faker`, which is why the calls below read as
+// `faker.something`.
 var faker = Faker(seed: 1337, locale: DecoyLocaleEN.locale)
+
 faker.person.fullName()   // "Riley Bonneau"
+faker.company.name()      // "Crosslin inc."
 ```
+
+It must be a `var`. `Faker` is a struct that carries its own random state, so each draw
+mutates it — that is what makes a run reproducible instead of depending on shared global
+state. Hold one per test, or let a [forge](/guides/forges/) hold it for you.
 
 Three locales ship as importable modules today — `DecoyLocaleEN`, `DecoyLocaleDE` and
 `DecoyLocaleJA`. Sixty-four compile; the rest are emitted on request, which is two

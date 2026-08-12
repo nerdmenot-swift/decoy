@@ -123,6 +123,57 @@
   --sl-nav-height: 4rem;
 }
 
+/* Collapsed panes.
+   Each side pane can be given back to the content. See PaneToggles.astro for why.
+
+   The left pane collapses by overriding --sl-content-inline-start, not --sl-sidebar-width:
+   the right-hand "On this page" panel sizes itself from --sl-sidebar-width too, so zeroing
+   that collapsed the table of contents to a column one character wide.
+
+   Content widens rather than filling the viewport. Prose at full width on a 27-inch display
+   is unreadable, and the pages that want the room are the ones with wide tables, which
+   scroll inside their own container regardless. */
+@media (min-width: 50rem) {
+  html[data-sidebar='collapsed'] {
+    --sl-content-inline-start: 0rem;
+    --sl-content-width: 66rem;
+  }
+  html[data-sidebar='collapsed'] .sidebar-pane {
+    --sl-sidebar-visibility: hidden;
+    width: 0;
+    border-inline-end: 0;
+  }
+}
+
+@media (min-width: 72rem) {
+  html[data-toc='collapsed'] { --sl-content-width: 66rem; }
+  html[data-toc='collapsed'] .right-sidebar-container { display: none; }
+  /* .main-pane is width: min(100% - var(--sl-sidebar-width), …) — it reserves the table of
+     contents' width whether or not one is rendered, so hiding the panel alone bought no
+     room at all. Take the full width and let .sl-container's max-width (which is
+     --sl-content-width) do the capping. margin-inline comes back to auto because
+     Starlight's default of `auto 0` would otherwise pin the content to the right edge,
+     against the gap the panel used to fill. */
+  html[data-toc='collapsed'] .main-pane {
+    width: 100%;
+    --sl-content-margin-inline: auto;
+  }
+  /* Both gone is the widest a page gets, and the case the locale matrix wants. */
+  html[data-sidebar='collapsed'][data-toc='collapsed'] { --sl-content-width: 82rem; }
+}
+
+/* Running text keeps its measure; tables and code take the width that was freed. Widening
+   a paragraph to 82rem is ~130 characters a line, which is worse to read than the panes
+   were to look at. */
+@media (min-width: 50rem) {
+  html[data-sidebar='collapsed'] .sl-markdown-content,
+  html[data-toc='collapsed'] .sl-markdown-content {
+    > :is(p, ul, ol, dl, blockquote, h1, h2, h3, h4, h5, h6) {
+      max-width: 48rem;
+    }
+  }
+}
+
 .sl-markdown-content h1,
 .sl-markdown-content h2,
 .sl-markdown-content h3,

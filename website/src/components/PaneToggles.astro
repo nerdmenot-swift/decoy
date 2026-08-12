@@ -1,0 +1,119 @@
+---
+/**
+ * Collapses either side pane, so a page can have the width its content needs.
+ *
+ * The reference pages carry tables the chrome cannot afford — the locale matrix is 64 rows
+ * by thirteen columns, and with both panes open the last five are cut off the right edge.
+ * The right-hand "On this page" panel is the worse offender on exactly those pages: the
+ * matrix has one heading, so 18.75rem is spent listing a single link.
+ *
+ * Collapsing a sidebar *group* does not help either case. Only reclaiming the pane does.
+ * Both choices are remembered, and applied before first paint.
+ *
+ * Each button is hidden at widths where its pane is not on screen to begin with, rather
+ * than left to do nothing: Starlight drops the left sidebar to a menu below 50rem, and
+ * does not show the table of contents at all below 72rem.
+ */
+const PANES = [
+  {
+    id: 'rail-toggle',
+    attr: 'sidebar',
+    key: 'decoy:sidebar',
+    name: 'sidebar',
+    // A panel with its divider on the left / on the right.
+    line: 6,
+  },
+  {
+    id: 'toc-toggle',
+    attr: 'toc',
+    key: 'decoy:toc',
+    name: 'table of contents',
+    line: 10,
+  },
+] as const
+---
+
+{PANES.map((p) => (
+  <button
+    type="button"
+    id={p.id}
+    class="pane-toggle"
+    data-attr={p.attr}
+    data-key={p.key}
+    data-name={p.name}
+    aria-pressed="false"
+    aria-label={`Hide ${p.name}`}
+    title={`Hide ${p.name}`}
+  >
+    <svg viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="1.5" y="2.5" width="13" height="11" rx="1.5" />
+      <line x1={p.line} y1="2.5" x2={p.line} y2="13.5" />
+    </svg>
+  </button>
+))}
+
+<script is:inline>
+  ;(() => {
+    for (const button of document.querySelectorAll('.pane-toggle')) {
+      const { attr, key, name } = button.dataset
+
+      const paint = (collapsed) => {
+        document.documentElement.dataset[attr] = collapsed ? 'collapsed' : 'open'
+        button.setAttribute('aria-pressed', String(collapsed))
+        const label = `${collapsed ? 'Show' : 'Hide'} ${name}`
+        button.setAttribute('aria-label', label)
+        button.title = label
+      }
+
+      paint(document.documentElement.dataset[attr] === 'collapsed')
+      button.addEventListener('click', () => {
+        const collapsed = document.documentElement.dataset[attr] !== 'collapsed'
+        paint(collapsed)
+        try {
+          collapsed ? localStorage.setItem(key, '1') : localStorage.removeItem(key)
+        } catch {
+          // Private browsing denies storage. The toggle still works for this page.
+        }
+      })
+    }
+  })()
+</script>
+
+<style>
+  .pane-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 1.9rem;
+    height: 1.9rem;
+    padding: 0;
+    border: 1px solid var(--decoy-rule);
+    border-radius: 3px;
+    background: none;
+    color: var(--decoy-faint);
+    cursor: pointer;
+  }
+  .pane-toggle:hover {
+    color: var(--decoy-accent);
+    border-color: var(--decoy-accent);
+  }
+  .pane-toggle[aria-pressed='true'] {
+    color: var(--decoy-accent);
+    background: var(--decoy-accent-soft);
+    border-color: var(--decoy-accent);
+  }
+  .pane-toggle svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.3;
+  }
+  @media (max-width: 50rem) {
+    #rail-toggle { display: none; }
+  }
+  @media (max-width: 72rem) {
+    #toc-toggle { display: none; }
+  }
+</style>

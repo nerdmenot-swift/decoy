@@ -153,23 +153,32 @@ faker.person.jobTitle()        <span class="c">// "Implemented frame Designer"</
         <p class="voice">
           Pick a namespace to see real output, or open its page for every method it has.
         </p>
-        <div class="detail">
-          <div class="detail-head">
-            <code id="detail-ns">faker.person</code>
-            <a id="detail-link" href="/api/person/">all methods &rarr;</a>
+        <!-- Two panes rather than a grid of cards over a floating panel. The panel was
+             sticky at the top of the viewport while the card that drove it could be most
+             of a screen below, so the output changed where nobody was looking; and it grew
+             and shrank with each namespace, shunting the whole page. Here the roster sits
+             beside its own output at a fixed height, so choosing is a local act and nothing
+             below ever moves. -->
+        <div class="browser">
+          <div class="rail">
+            {cards.map((c, i) => (
+              <button
+                class:list={['rail-item', { on: i === 0 }]}
+                data-ns={c.ns}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+              >
+                <code>{c.ns}</code><span class="rail-n">{c.count}</span>
+              </button>
+            ))}
           </div>
-          <dl id="detail-body"></dl>
-        </div>
-        <div class="grid">
-          {cards.map((c, i) => (
-            <button class:list={['card', { on: i === 0 }]} data-ns={c.ns}>
-              <span class="card-head">
-                <code>{c.ns}</code><span class="card-n">{c.count}</span>
-              </span>
-              <span class="card-blurb">{c.blurb}</span>
-              <span class="card-ex">{c.preview.map((v) => <em>{v}</em>)}</span>
-            </button>
-          ))}
+          <div class="pane">
+            <div class="pane-head">
+              <code id="pane-ns">faker.person</code>
+              <span id="pane-blurb">Names, honorifics, jobs</span>
+              <a id="pane-link" href="/api/person/">all 19 &rarr;</a>
+            </div>
+            <dl id="pane-body"></dl>
+          </div>
         </div>
       </section>
 
@@ -307,9 +316,11 @@ faker.person.jobTitle()        <span class="c">// "Implemented frame Designer"</
       const byNs = Object.fromEntries(cards.map((c) => [c.ns, c]))
       function showNs(ns) {
         const c = byNs[ns]
-        $('#detail-ns').textContent = ns === 'faker' ? 'faker' : `faker.${ns}`
-        $('#detail-link').href = `/api/${ns}/`
-        $('#detail-body').innerHTML = c.methods
+        $('#pane-ns').textContent = ns === 'faker' ? 'faker' : `faker.${ns}`
+        $('#pane-blurb').textContent = c.blurb
+        $('#pane-link').href = `/api/${ns}/`
+        $('#pane-link').textContent = `all ${c.count} →`
+        $('#pane-body').innerHTML = c.methods
           .map(
             (x) =>
               `<div><dt>${esc(x.m)}()</dt><dd>` +
@@ -317,11 +328,18 @@ faker.person.jobTitle()        <span class="c">// "Implemented frame Designer"</
               '</dd></div>'
           )
           .join('')
+        // The pane scrolls, so a previous namespace's scroll position would otherwise
+        // land you halfway down the new one.
+        $('#pane-body').scrollTop = 0
       }
       document.querySelectorAll('[data-ns]').forEach((b) =>
         b.addEventListener('click', () => {
-          document.querySelectorAll('[data-ns]').forEach((o) => o.classList.remove('on'))
+          document.querySelectorAll('[data-ns]').forEach((o) => {
+            o.classList.remove('on')
+            o.setAttribute('aria-pressed', 'false')
+          })
           b.classList.add('on')
+          b.setAttribute('aria-pressed', 'true')
           showNs(b.dataset.ns)
         })
       )

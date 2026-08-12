@@ -20,10 +20,10 @@ faker.location.buildingNumber()
 | `streetAddress(full: Bool = false)` | `281 Jacklyn Port`<br />`50 Sargent Plain`<br />`385 Backus Landing` |
 | `secondaryAddress()` | `Flat 7`<br />`Floor 0`<br />`Flat 9` |
 | `city()` | `Bangor`<br />`Wabasha`<br />`Cheektowaga` |
-| `place()` | `["state": "California", "city": "Salida", "state_code": "CA"]`<br />`["city": "West Bishop", "state_code": "CA", "state": "California"]`<br />`["city": "Fox Chase", "state_code": "PA", "state": "Pennsylvania"]` |
+| `place()` | `["state_code": "CA", "city": "Salida", "state": "California"]`<br />`["city": "West Bishop", "state_code": "CA", "state": "California"]`<br />`["city": "Fox Chase", "state_code": "PA", "state": "Pennsylvania"]` |
 | `placeAndPostcode()` | `(city: "Tuckahoe", state: "New York", stateCode: "NY", postcode: "10537")`<br />`(city: "Chevy Chase", state: "Maryland", stateCode: "MD", postcode: "21717")`<br />`(city: "Greenville", state: "Alabama", stateCode: "AL", postcode: "36455")` |
 | `county()` | `Iroquois County`<br />`Nottoway County`<br />`Issaquena County` |
-| `stateRow()` | `["abbr": "IA", "name": "Iowa"]`<br />`["abbr": "MI", "name": "Michigan"]`<br />`["abbr": "NV", "name": "Nevada"]` |
+| `stateRow()` | `["name": "Iowa", "abbr": "IA"]`<br />`["name": "Michigan", "abbr": "MI"]`<br />`["name": "Nevada", "abbr": "NV"]` |
 | `state()` | `Connecticut`<br />`Montana`<br />`Michigan` |
 | `stateAbbreviation()` | `PA`<br />`WA`<br />`KY` |
 | `country()` | `Curaçao`<br />`Brunei`<br />`Togo` |

@@ -15,7 +15,7 @@ faker.system.mimeType()
 | Method | Example output |
 |---|---|
 | `mimeType()` | `application/epub+zip`<br />`application/x-dtbncx+xml`<br />`application/vnd.intergeo` |
-| `programmingLanguage()` | `["name": "Just", "color": "#384d54", "extension": ".just"]`<br />`["name": "C++", "color": "#f34b7d", "extension": ".cpp"]`<br />`["name": "MeTTa", "color": "#6a5acd", "extension": ".metta"]` |
+| `programmingLanguage()` | `["name": "Just", "extension": ".just", "color": "#384d54"]`<br />`["name": "C++", "extension": ".cpp", "color": "#f34b7d"]`<br />`["name": "MeTTa", "extension": ".metta", "color": "#6a5acd"]` |
 | `programmingLanguageName()` | `eC`<br />`Qt Script`<br />`KCL` |
 | `variableName(_ style: NamingStyle = .camelCase)` | `contrivedConvoy`<br />`deliciousConsumerism`<br />`lightweightFlexure` |
 | `fileExtension()` | `tmo`<br />`plb`<br />`emotionml` |
