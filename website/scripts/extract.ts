@@ -75,7 +75,21 @@ func rows(_ locale: LocaleCorpus, seed: UInt64, count: Int) -> [Row] {
 
 /// Everything stringifies the same way, so tuples, dictionaries, numbers and dates
 /// all reach the reference without a special case per return type.
-func s<T>(_ v: T) -> String { v as? String ?? String(describing: v) }
+///
+/// Dictionaries are sorted by key first. Swift's Dictionary is unordered and its Hasher is
+/// seeded per process, so \`String(describing:)\` prints the same dictionary in a different
+/// order on each run -- which made every regeneration of these pages produce a diff with
+/// no change in it. Sorting is the difference between documentation that is diffable and
+/// documentation that merely churns.
+func s<T>(_ v: T) -> String {
+    if let v = v as? String { return v }
+    if let d = v as? [String: String] {
+        return "[" + d.sorted { $0.key < $1.key }
+            .map { "\\"\\($0.key)\\": \\"\\($0.value)\\"" }
+            .joined(separator: ", ") + "]"
+    }
+    return String(describing: v)
+}
 func mk(_ seed: UInt64) -> Faker { Faker(seed: seed, locale: load("en", ["en", "base"])) }
 var api: [String: [String]] = [:]
 ${probes}
