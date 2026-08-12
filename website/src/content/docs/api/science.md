@@ -14,7 +14,7 @@ faker.science.chemicalElement()
 
 | Method | Example output |
 |---|---|
-| `chemicalElement()` | `["atomicNumber": "14", "name": "Silicon", "symbol": "Si"]`<br />`["atomicNumber": "39", "name": "Yttrium", "symbol": "Y"]`<br />`["atomicNumber": "93", "name": "Neptunium", "symbol": "Np"]` |
+| `chemicalElement()` | `["name": "Silicon", "symbol": "Si", "atomicNumber": "14"]`<br />`["name": "Yttrium", "symbol": "Y", "atomicNumber": "39"]`<br />`["name": "Neptunium", "symbol": "Np", "atomicNumber": "93"]` |
 | `unit()` | `["symbol": "mi²", "name": "square miles"]`<br />`["symbol": "pn", "name": "pinches"]`<br />`["symbol": "Gs", "name": "g-force"]` |
 
 Examples are real output from three different seeds, captured when this page was built,

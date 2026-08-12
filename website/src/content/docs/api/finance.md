@@ -19,7 +19,7 @@ faker.finance.accountType()
 | `transactionDescription()` | `invoice transaction at Spencer corp. using card ending with 9665 for 994.89`<br />`deposit transaction at Elliott-Cruz using card ending with 3314 for 796.48`<br />`payment transaction at Pittman, Henn and Barboza using card ending with 6866 for 331.78` |
 | `accountNumber(digits: Int = 8)` | `96070510`<br />`33224553`<br />`59326041` |
 | `routingNumber()` | `0918`<br />`0724`<br />`0113` |
-| `currency()` | `["name": "Tongan Paʻanga", "numericCode": "776", "symbol": "TOP", "code": "TOP"]`<br />`["name": "São Tomé & Príncipe Dobra", "numericCode": "930", "symbol": "STN", "code": "STN"`<br />`["name": "Cuban Peso", "numericCode": "192", "symbol": "CUP", "code": "CUP"]` |
+| `currency()` | `["numericCode": "776", "symbol": "TOP", "name": "Tongan Paʻanga", "code": "TOP"]`<br />`["numericCode": "930", "symbol": "STN", "name": "São Tomé & Príncipe Dobra", "code": "STN"`<br />`["numericCode": "192", "symbol": "CUP", "name": "Cuban Peso", "code": "CUP"]` |
 | `currencyName()` | `Japanese Yen`<br />`Qatari Riyal`<br />`Swedish Krona` |
 | `currencyCode()` | `HTG`<br />`DOP`<br />`HTG` |
 | `currencySymbol()` | `KGS`<br />`CUP`<br />`HNL` |

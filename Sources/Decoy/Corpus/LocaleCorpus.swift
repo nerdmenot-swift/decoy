@@ -401,6 +401,6 @@ extension LocaleCorpus {
 
         // A corpus that cannot be read is a programming error here, not a user error.
         let corpus = try! Corpus(bytes: builder.build())
-        return LocaleCorpus(code: "en", chain: [corpus])
+        return LocaleCorpus(code: "built-in", chain: [corpus])
     }()
 }

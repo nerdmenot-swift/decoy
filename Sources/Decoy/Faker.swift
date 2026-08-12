@@ -137,6 +137,17 @@ public struct Faker: Sendable {
         if let value = draw(path) { return value }
         if locale.declaresEmpty(path) { return "" }
 
+        // The stub traps for a different reason than a real locale does, and the fix
+        // is different too, so it says so rather than sending people to look at a corpus
+        // that was never the problem.
+        if locale.code == "built-in" {
+            preconditionFailure(
+                "Decoy: no locale was supplied, so '\(path)' has nothing to draw from. "
+                    + "The built-in corpus is a ten-path smoke-test stub. Import a locale "
+                    + "and pass it: Faker(locale: DecoyLocaleEN.locale), or for a forge, "
+                    + ".locale(DecoyLocaleEN.locale)."
+            )
+        }
         preconditionFailure(
             "Decoy: locale '\(locale.code)' has no data for '\(path)'. "
                 + "Either the locale lacks this field or its corpus was not compiled."

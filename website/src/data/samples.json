@@ -11,9 +11,9 @@
       "[\"iataCode\": \"BA\", \"name\": \"British Airways\"]"
     ],
     "airline.airplane": [
-      "[\"iataTypeCode\": \"747\", \"name\": \"Boeing 747\"]",
-      "[\"iataTypeCode\": \"330\", \"name\": \"Airbus A330\"]",
-      "[\"iataTypeCode\": \"CR7\", \"name\": \"Bombardier CRJ700\"]"
+      "[\"name\": \"Boeing 747\", \"iataTypeCode\": \"747\"]",
+      "[\"name\": \"Airbus A330\", \"iataTypeCode\": \"330\"]",
+      "[\"name\": \"Bombardier CRJ700\", \"iataTypeCode\": \"CR7\"]"
     ],
     "airline.airport": [
       "[\"iataCode\": \"QCY\", \"name\": \"RAF Coningsby\"]",
@@ -491,9 +491,9 @@
       "3519564758117413"
     ],
     "finance.currency": [
-      "[\"name\": \"Tongan Paʻanga\", \"numericCode\": \"776\", \"symbol\": \"TOP\", \"code\": \"TOP\"]",
-      "[\"name\": \"São Tomé & Príncipe Dobra\", \"numericCode\": \"930\", \"symbol\": \"STN\", \"code\": \"STN\"]",
-      "[\"name\": \"Cuban Peso\", \"numericCode\": \"192\", \"symbol\": \"CUP\", \"code\": \"CUP\"]"
+      "[\"numericCode\": \"776\", \"symbol\": \"TOP\", \"name\": \"Tongan Paʻanga\", \"code\": \"TOP\"]",
+      "[\"numericCode\": \"930\", \"symbol\": \"STN\", \"name\": \"São Tomé & Príncipe Dobra\", \"code\": \"STN\"]",
+      "[\"numericCode\": \"192\", \"symbol\": \"CUP\", \"name\": \"Cuban Peso\", \"code\": \"CUP\"]"
     ],
     "finance.currencyCode": [
       "HTG",
@@ -826,9 +826,9 @@
       "Togo"
     ],
     "location.countryCode": [
-      "[\"alpha2\": \"CH\", \"alpha3\": \"CHE\", \"numeric\": \"756\"]",
-      "[\"alpha2\": \"MS\", \"alpha3\": \"MSR\", \"numeric\": \"500\"]",
-      "[\"alpha2\": \"MN\", \"alpha3\": \"MNG\", \"numeric\": \"496\"]"
+      "[\"numeric\": \"756\", \"alpha2\": \"CH\", \"alpha3\": \"CHE\"]",
+      "[\"numeric\": \"500\", \"alpha2\": \"MS\", \"alpha3\": \"MSR\"]",
+      "[\"numeric\": \"496\", \"alpha2\": \"MN\", \"alpha3\": \"MNG\"]"
     ],
     "location.countryCodeAlpha2": [
       "YU",
@@ -851,9 +851,9 @@
       "East"
     ],
     "location.language": [
-      "[\"alpha2\": \"en\", \"alpha3\": \"eng\", \"name\": \"English\"]",
-      "[\"alpha2\": \"ga\", \"alpha3\": \"gle\", \"name\": \"Irish\"]",
-      "[\"alpha2\": \"tn\", \"alpha3\": \"tsn\", \"name\": \"Tswana\"]"
+      "[\"name\": \"English\", \"alpha2\": \"en\", \"alpha3\": \"eng\"]",
+      "[\"name\": \"Irish\", \"alpha2\": \"ga\", \"alpha3\": \"gle\"]",
+      "[\"name\": \"Tswana\", \"alpha2\": \"tn\", \"alpha3\": \"tsn\"]"
     ],
     "location.latitude": [
       "-16.3815",
@@ -871,9 +871,9 @@
       "Southeast"
     ],
     "location.place": [
-      "[\"state\": \"California\", \"city\": \"Salida\", \"state_code\": \"CA\"]",
-      "[\"city\": \"West Bishop\", \"state_code\": \"CA\", \"state\": \"California\"]",
-      "[\"city\": \"Fox Chase\", \"state_code\": \"PA\", \"state\": \"Pennsylvania\"]"
+      "[\"state_code\": \"CA\", \"city\": \"Salida\", \"state\": \"California\"]",
+      "[\"city\": \"West Bishop\", \"state\": \"California\", \"state_code\": \"CA\"]",
+      "[\"state\": \"Pennsylvania\", \"state_code\": \"PA\", \"city\": \"Fox Chase\"]"
     ],
     "location.placeAndPostcode": [
       "(city: \"Tuckahoe\", state: \"New York\", stateCode: \"NY\", postcode: \"10537\")",
@@ -1236,9 +1236,9 @@
       "(519) 442-7387"
     ],
     "science.chemicalElement": [
-      "[\"atomicNumber\": \"14\", \"name\": \"Silicon\", \"symbol\": \"Si\"]",
-      "[\"atomicNumber\": \"39\", \"name\": \"Yttrium\", \"symbol\": \"Y\"]",
-      "[\"atomicNumber\": \"93\", \"name\": \"Neptunium\", \"symbol\": \"Np\"]"
+      "[\"name\": \"Silicon\", \"symbol\": \"Si\", \"atomicNumber\": \"14\"]",
+      "[\"name\": \"Yttrium\", \"symbol\": \"Y\", \"atomicNumber\": \"39\"]",
+      "[\"name\": \"Neptunium\", \"symbol\": \"Np\", \"atomicNumber\": \"93\"]"
     ],
     "science.unit": [
       "[\"symbol\": \"mi²\", \"name\": \"square miles\"]",
@@ -1316,9 +1316,9 @@
       "application/vnd.intergeo"
     ],
     "system.programmingLanguage": [
-      "[\"color\": \"#384d54\", \"extension\": \".just\", \"name\": \"Just\"]",
-      "[\"color\": \"#f34b7d\", \"extension\": \".cpp\", \"name\": \"C++\"]",
-      "[\"color\": \"#6a5acd\", \"extension\": \".metta\", \"name\": \"MeTTa\"]"
+      "[\"extension\": \".just\", \"color\": \"#384d54\", \"name\": \"Just\"]",
+      "[\"extension\": \".cpp\", \"color\": \"#f34b7d\", \"name\": \"C++\"]",
+      "[\"extension\": \".metta\", \"color\": \"#6a5acd\", \"name\": \"MeTTa\"]"
     ],
     "system.programmingLanguageName": [
       "eC",

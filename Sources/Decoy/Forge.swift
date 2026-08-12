@@ -38,6 +38,13 @@ public struct Forge<T>: Sendable {
     /// The locale every generated row draws from.
     private var localeCorpus: LocaleCorpus = .builtIn
 
+    /// Whether `locale(_:)` was called, as opposed to the default still standing.
+    ///
+    /// A nested forge should speak the parent’s language without being told twice,
+    /// but only where it has not chosen one of its own — so this records the
+    /// difference between "unset" and "set, and happens to be the built-in".
+    private var localeWasSet = false
+
     /// The instant relative date generation is anchored to.
     private var referenceInstant: Timestamp = .decoyReference
     private var wantsNovelNames = false
@@ -178,7 +185,13 @@ public struct Forge<T>: Sendable {
         return appending { faker, target, _ in
             let n = faker.int(in: count)
             let childSeed = faker.rng.next()
-            target[keyPath: keyPath] = try child.runGenerate(rows: 0..<n, seed: childSeed)
+            // The child inherits the parent's locale, anchor and name mode unless it
+            // chose its own. Without this a nested forge fell back to the ten-path stub
+            // and trapped on the first word it drew, after the parent had already been
+            // configured correctly -- which read as a corpus problem rather than a
+            // missing call.
+            let resolved = child.localeWasSet ? child : child.inheriting(from: self)
+            target[keyPath: keyPath] = try resolved.runGenerate(rows: 0..<n, seed: childSeed)
         }
     }
 
@@ -203,6 +216,7 @@ public struct Forge<T>: Sendable {
     public func locale(_ locale: LocaleCorpus) -> Forge {
         var copy = self
         copy.localeCorpus = locale
+        copy.localeWasSet = true
         return copy
     }
 
@@ -227,6 +241,22 @@ public struct Forge<T>: Sendable {
     ///
     /// Defaults to a fixed constant rather than the system clock, so regenerating a
     /// fixture next year reproduces it exactly. See ``Faker/reference``.
+    /// Copies the ambient settings a nested forge should share with its parent.
+    ///
+    /// Deliberately not the rules or the traits: only the configuration a child would
+    /// otherwise have to repeat.
+    func inheriting<Parent>(from parent: Forge<Parent>) -> Forge {
+        var copy = self
+        copy.localeCorpus = parent.ambientLocale
+        copy.referenceInstant = parent.ambientReference
+        copy.wantsNovelNames = parent.ambientNovelNames
+        return copy
+    }
+
+    var ambientLocale: LocaleCorpus { localeCorpus }
+    var ambientReference: Timestamp { referenceInstant }
+    var ambientNovelNames: Bool { wantsNovelNames }
+
     public func reference(_ instant: Timestamp) -> Forge {
         var copy = self
         copy.referenceInstant = instant

@@ -1,6 +1,7 @@
 import Testing
 
 @testable import Decoy
+@testable import DecoyLocaleDE
 @testable import DecoyLocaleEN
 
 /// The convenience path, for callers who want plausible data and do not care whether
@@ -81,5 +82,60 @@ struct UnseededTests {
         #expect(Set(seeds).count == 200)
         #expect(seeds.contains { $0 > UInt64.max / 2 })
         #expect(seeds.contains { $0 < UInt64.max / 2 })
+    }
+}
+
+/// Nested forges, which is where the API's ergonomics were worst.
+///
+/// Configuring the parent correctly and then having the child trap on the first word it
+/// drew is the kind of failure that reads as a corpus problem and is actually a missing
+/// call. Worse, the stub reported itself as locale `en`, so the message blamed the very
+/// locale that had been supplied.
+@Suite("Nested forges")
+struct NestedForgeTests {
+    struct Post { var title = "" }
+    struct User { var name = ""; var posts: [Post] = [] }
+
+    private var child: Forge<Post> {
+        Forge<Post>("Post") { Post() }.rule(\.title) { $0.lorem.sentence(words: 3) }
+    }
+
+    @Test("a child inherits the parent's locale")
+    func inheritsLocale() {
+        let users = Forge<User>("User") { User() }
+            .locale(DecoyLocaleEN.locale)
+            .rule(\.name) { $0.person.fullName() }
+            .each(\.posts, 2...2, of: child)     // no .locale on the child
+
+        let rows = users.generate(3, seed: 1337)
+        #expect(rows.allSatisfy { $0.posts.count == 2 })
+        #expect(rows.allSatisfy { $0.posts.allSatisfy { !$0.title.isEmpty } })
+    }
+
+    @Test("a child that picks its own locale keeps it")
+    func childLocaleWins() {
+        let german = child.locale(DecoyLocaleDE.locale)
+        let users = Forge<User>("User") { User() }
+            .locale(DecoyLocaleEN.locale)
+            .rule(\.name) { $0.person.fullName() }
+            .each(\.posts, 1...1, of: german)
+
+        // Inheritance must not overwrite a deliberate choice. German lorem resolves
+        // through `de`, so the values differ from the English chain's.
+        let viaGerman = users.generate(4, seed: 99).flatMap { $0.posts.map(\.title) }
+        let viaEnglish = Forge<User>("User") { User() }
+            .locale(DecoyLocaleEN.locale)
+            .rule(\.name) { $0.person.fullName() }
+            .each(\.posts, 1...1, of: child)
+            .generate(4, seed: 99).flatMap { $0.posts.map(\.title) }
+        #expect(viaGerman.allSatisfy { !$0.isEmpty })
+        #expect(viaEnglish.allSatisfy { !$0.isEmpty })
+    }
+
+    @Test("the built-in stub does not claim to be English")
+    func stubIsHonest() {
+        // It used to report `en`, so "locale 'en' has no data for lorem.word" pointed at
+        // a locale that was never involved.
+        #expect(LocaleCorpus.builtIn.code == "built-in")
     }
 }
