@@ -53,7 +53,6 @@ export default defineConfig({
             rel: 'stylesheet',
             href:
               'https://fonts.googleapis.com/css2?' +
-              'family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..700,0..100,0..1&' +
               'family=Public+Sans:wght@400;500;600;700&' +
               'family=IBM+Plex+Mono:wght@400;500;600&display=swap',
           },

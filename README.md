@@ -11,14 +11,17 @@ Reproducible by construction, portable across macOS, Linux, and Windows.
 
 ## Why
 
-[Fakery](https://github.com/vadymmarkov/Fakery) is the only established Swift option,
-and it has three problems Decoy exists to fix:
+Fixtures are only useful if they hold still, and only trustworthy if you can say where
+they came from. Decoy is built on three commitments:
 
-- **No seed injection.** You cannot supply a `RandomNumberGenerator`, so runs are not
-  reproducible — fatal for fixtures and database seeding.
-- **Effectively unmaintained.** Last PR merged ~2 years ago.
-- **Shallow non-English data.** It vendors Ruby faker's corpus, the weakest of the
-  major fakers outside English.
+- **Reproducible by construction.** The RNG is a value type you supply and thread
+  through. Seed 1337 gives the same rows on every machine, every run, until the corpus
+  version changes — which it does loudly.
+- **Sourced, not invented.** Every string is derived from a citable primary source by a
+  reproducible pipeline and carries its origin with it. Where no source exists, the
+  corpus records that rather than guessing.
+- **Deep outside English.** Sixty-four locales, each measured for how much of its own
+  language it actually supplies, with the gaps published rather than hidden.
 
 ## Design
 
@@ -33,16 +36,14 @@ and it has three problems Decoy exists to fix:
   the full corelibs implementation.
 - **Dates are anchored, not "now".** `past()` is relative to a fixed reference
   instant, because anchoring to the system clock would mean seed 1337 producing
-  different fixtures tomorrow than today — a reproducibility hole every other faker
-  has.
+  different fixtures tomorrow than today, which is a reproducibility hole.
 - **No runtime JSON parsing.** The corpus compiles to a compact binary format (string
   arena + offset table) loaded once and sliced. Notably this avoids `Bundle.module`,
-  the most platform-fragile part of SPM and a large share of Fakery's trouble off
-  macOS.
+  the most platform-fragile part of SPM.
 - **Every string carries its origin.** The corpus records which source and licence each
   path came from, so `decoy-inspect` can answer "where did this come from" and generate
-  attribution from what actually shipped. No other faker records this, which is why none
-  of them can be audited or licensed with confidence.
+  attribution from what actually shipped — which is what makes the corpus auditable
+  and licensable with confidence.
 - **Typed key paths, no reflection anywhere.** Rules are `WritableKeyPath`s, so the
   value type of every rule is checked at compile time. Nothing in the library reflects
   on a type — which is why a `Forge` is named explicitly: deriving the seed from
@@ -128,14 +129,15 @@ Tools/adapters/
 ```
 
 Rebuild it with `node Tools/adapters/run.mjs`, then `swift run decoy-compile-corpus`.
-There is no package manifest and nothing to install: they are plain `.mjs` files, and a
-toolchain built to remove a dependency should not need a package manager of its own.
+There is no package manifest and nothing to install: they are plain `.mjs` files, because
+a toolchain whose job is to keep shipped data accountable should not itself depend on a
+package it cannot audit.
 
 Countries, languages, currencies, time zones, media types, subdivisions, cities,
 programming languages, elements, units and English surnames come from registries — CLDR,
-IANA, the ISO 4217 registry, GeoNames, Linguist, PubChem, the US Census. Person names,
-streets and most vocabulary are still inherited from `@faker-js/faker`, which is the
-lowest-precedence adapter and is deleted a field at a time as others cover its ground.
+IANA, the ISO 4217 registry, GeoNames, Linguist, PubChem, the US Census. Personal names come
+from twelve national civil registries; streets are composed from each language's own
+vocabulary; the rest is either authored here or recorded as unavailable.
 
 `decoy-inspect` audits any of it — every path, what a locale defines itself, and which
 source and licence covers each field:
@@ -157,7 +159,7 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
 - [x] Multi-platform package skeleton, Foundation-free core, `swiftLanguageMode(.v6)`
 - [x] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
-- [x] Adapter pipeline: 49 sources, integrity-verified, provenance per path — **no faker-js**
+- [x] Adapter pipeline: 49 sources, integrity-verified, provenance per path
 - [x] [Locale support matrix](docs/locale-support.md) — which fields each of the 64 locales
       supplies itself, and which fall through to English. Generated from the corpus and
       checked in CI, so it cannot describe a corpus that is no longer shipping.

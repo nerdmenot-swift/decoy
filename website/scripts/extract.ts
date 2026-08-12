@@ -115,10 +115,40 @@ do {
     fun["ssid"] = take(6) { $0.whimsy.ssid() }
 }
 
+// Provenance for the columns the register shows. The whole argument of the project is
+// that every value can name its source, so the site had better read that out of the
+// corpus rather than caption it by hand.
+struct Prov: Encodable { let path: String, source: String, license: String, version: String, retrieved: String }
+var prov: [String: [String: Prov]] = [:]
+let COLUMNS = [
+    ("name", "person.last_name.generic"), ("city", "location.city_name"),
+    ("company", "company.name_pattern"), ("job", "person.job_title"),
+    ("phone", "phone_number.format.national"),
+]
+
+func provenance(_ loc: LocaleCorpus) -> [String: Prov] {
+    var byColumn: [String: Prov] = [:]
+    for (column, path) in COLUMNS {
+        // Walk the chain the way a draw does, so the credited source is the one that
+        // actually supplied this locale's value rather than the first that mentions it.
+        for corpus in loc.chain {
+            guard let entry = try? corpus.lookup(path), case .strings(let t) = entry,
+                let s = try? corpus.source(t.sourceID) else { continue }
+            byColumn[column] = Prov(path: path, source: s.id, license: s.license,
+                                    version: s.version, retrieved: s.retrieved)
+            break
+        }
+    }
+    return byColumn
+}
+${Object.entries(locales)
+  .map(([code, chain]) => `prov["${code}"] = provenance(load("${code}", ${JSON.stringify(chain)}))`)
+  .join('\n')}
+
 let enc = JSONEncoder()
 enc.outputFormatting = [.prettyPrinted, .sortedKeys]
-struct Payload: Encodable { let locales: [String: [String: [Row]]]; let fun: [String: [String]] }
-FileHandle.standardOutput.write(try! enc.encode(Payload(locales: out, fun: fun)))
+struct Payload: Encodable { let locales: [String: [String: [Row]]]; let fun: [String: [String]]; let prov: [String: [String: Prov]] }
+FileHandle.standardOutput.write(try! enc.encode(Payload(locales: out, fun: fun, prov: prov)))
 `
 
 if (!existsSync(join(CORPUS, 'en.decoy'))) {

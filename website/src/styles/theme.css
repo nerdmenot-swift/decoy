@@ -11,7 +11,7 @@
  */
 
 :root {
-  --decoy-display: 'Fraunces', 'Iowan Old Style', Palatino, Georgia, serif;
+  --decoy-display: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --decoy-sans: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --decoy-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
@@ -23,14 +23,16 @@
 /* ---- light ---------------------------------------------------------------- */
 
 :root[data-theme='light'] {
-  --decoy-paper: #f8f8f5;
+  --decoy-paper: #f1f2ec;
   --decoy-card: #ffffff;
   --decoy-ink: #12171e;
   --decoy-muted: #5b5f63;
   --decoy-faint: #6f716d;
-  --decoy-rule: #dedcd5;
+  --decoy-rule: #d9dcd2;
   --decoy-accent: #2c7382;
-  --decoy-accent-soft: #e4eff1;
+  --decoy-accent-soft: #e2edef;
+  --decoy-band: #e9ebe2;
+  --decoy-amber-soft: #f7f0dd;
   --decoy-caution: #8f6114;
 
   /* Starlight's own tokens, repointed. Its neutral ramp runs cool grey; ours is warm,
@@ -46,12 +48,12 @@
   --sl-color-gray-5: #dedcd5;
   --sl-color-gray-6: #eeece5;
   --sl-color-gray-7: #f4f2ec;
-  --sl-color-black: #f8f8f5;
+  --sl-color-black: #f1f2ec;
   --sl-color-text: #12171e;
   --sl-color-text-accent: #2c7382;
-  --sl-color-bg: #f8f8f5;
-  --sl-color-bg-nav: #f8f8f5;
-  --sl-color-bg-sidebar: #f8f8f5;
+  --sl-color-bg: #f1f2ec;
+  --sl-color-bg-nav: #f1f2ec;
+  --sl-color-bg-sidebar: #f1f2ec;
   --sl-color-bg-inline-code: #eeece5;
   --sl-color-hairline: #dedcd5;
   --sl-color-hairline-light: #e8e6df;
@@ -69,6 +71,8 @@
   --decoy-rule: #262b31;
   --decoy-accent: #5aaec0;
   --decoy-accent-soft: #17262b;
+  --decoy-band: #171b20;
+  --decoy-amber-soft: #241d10;
   --decoy-caution: #e0a029;
   /* The mark lifts on dark grounds; #328191 sits too close to #0f1216 to hold an edge. */
   --decoy-teal: #5aaec0;
@@ -115,7 +119,6 @@
 .sl-markdown-content h3,
 .sl-markdown-content h4 {
   font-family: var(--decoy-display);
-  font-variation-settings: 'SOFT' 20, 'WONK' 1;
   font-weight: 600;
   letter-spacing: -0.012em;
   text-wrap: balance;

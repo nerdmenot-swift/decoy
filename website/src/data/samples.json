@@ -2399,5 +2399,451 @@
         }
       ]
     }
+  },
+  "prov": {
+    "de": {
+      "city": {
+        "license": "CC-BY-4.0",
+        "path": "location.city_name",
+        "retrieved": "2026-08-07",
+        "source": "cities-json",
+        "version": "1.1.61"
+      },
+      "company": {
+        "license": "Apache-2.0",
+        "path": "company.name_pattern",
+        "retrieved": "2026-08-09",
+        "source": "decoy-authored",
+        "version": "1"
+      },
+      "job": {
+        "license": "CC-BY-4.0",
+        "path": "person.job_title",
+        "retrieved": "2026-08-09",
+        "source": "onet",
+        "version": "30.3"
+      },
+      "name": {
+        "license": "CC0-1.0",
+        "path": "person.last_name.generic",
+        "retrieved": "2026-08-09",
+        "source": "wikidata",
+        "version": "2026-08-09"
+      },
+      "phone": {
+        "license": "Apache-2.0",
+        "path": "phone_number.format.national",
+        "retrieved": "2026-08-09",
+        "source": "libphonenumber",
+        "version": "9.0.36"
+      }
+    },
+    "en": {
+      "city": {
+        "license": "CC-BY-4.0",
+        "path": "location.city_name",
+        "retrieved": "2026-08-07",
+        "source": "cities-json",
+        "version": "1.1.61"
+      },
+      "company": {
+        "license": "Apache-2.0",
+        "path": "company.name_pattern",
+        "retrieved": "2026-08-09",
+        "source": "decoy-authored",
+        "version": "1"
+      },
+      "job": {
+        "license": "CC-BY-4.0",
+        "path": "person.job_title",
+        "retrieved": "2026-08-09",
+        "source": "onet",
+        "version": "30.3"
+      },
+      "name": {
+        "license": "public-domain",
+        "path": "person.last_name.generic",
+        "retrieved": "2026-08-07",
+        "source": "us-census-surnames",
+        "version": "2010"
+      },
+      "phone": {
+        "license": "Apache-2.0",
+        "path": "phone_number.format.national",
+        "retrieved": "2026-08-09",
+        "source": "libphonenumber",
+        "version": "9.0.36"
+      }
+    },
+    "es": {
+      "city": {
+        "license": "CC-BY-4.0",
+        "path": "location.city_name",
+        "retrieved": "2026-08-07",
+        "source": "cities-json",
+        "version": "1.1.61"
+      },
+      "company": {
+        "license": "Apache-2.0",
+        "path": "company.name_pattern",
+        "retrieved": "2026-08-09",
+        "source": "decoy-authored",
+        "version": "1"
+      },
+      "job": {
+        "license": "CC-BY-4.0",
+        "path": "person.job_title",
+        "retrieved": "2026-08-09",
+        "source": "onet",
+        "version": "30.3"
+      },
+      "name": {
+        "license": "public-domain",
+        "path": "person.last_name.generic",
+        "retrieved": "2026-08-07",
+        "source": "us-census-surnames",
+        "version": "2010"
+      },
+      "phone": {
+        "license": "Apache-2.0",
+        "path": "phone_number.format.national",
+        "retrieved": "2026-08-09",
+        "source": "libphonenumber",
+        "version": "9.0.36"
+      }
+    },
+    "fr": {
+      "city": {
+        "license": "CC-BY-4.0",
+        "path": "location.city_name",
+        "retrieved": "2026-08-07",
+        "source": "cities-json",
+        "version": "1.1.61"
+      },
+      "company": {
+        "license": "Apache-2.0",
+        "path": "company.name_pattern",
+        "retrieved": "2026-08-09",
+        "source": "decoy-authored",
+        "version": "1"
+      },
+      "job": {
+        "license": "CC-BY-4.0",
+        "path": "person.job_title",
+        "retrieved": "2026-08-09",
+        "source": "onet",
+        "version": "30.3"
+      },
+      "name": {
+        "license": "CC0-1.0",
+        "path": "person.last_name.generic",
+        "retrieved": "2026-08-09",
+        "source": "wikidata",
+        "version": "2026-08-09"
+      },
+      "phone": {
+        "license": "Apache-2.0",
+        "path": "phone_number.format.national",
+        "retrieved": "2026-08-09",
+        "source": "libphonenumber",
+        "version": "9.0.36"
+      }
+    },
+    "he": {
+      "city": {
+        "license": "CC-BY-4.0",
+        "path": "location.city_name",
+        "retrieved": "2026-08-07",
+        "source": "cities-json",
+        "version": "1.1.61"
+      },
+      "company": {
+        "license": "Apache-2.0",
+        "path": "company.name_pattern",
+        "retrieved": "2026-08-09",
+        "source": "decoy-authored",
+        "version": "1"
+      },
+      "job": {
+        "license": "CC-BY-4.0",
+        "path": "person.job_title",
+        "retrieved": "2026-08-09",
+        "source": "onet",
+        "version": "30.3"
+      },
+      "name": {
+        "license": "CC0-1.0",
+        "path": "person.last_name.generic",
+        "retrieved": "2026-08-09",
+        "source": "wikidata",
+        "version": "2026-08-09"
+      },
+      "phone": {
+        "license": "Apache-2.0",
+        "path": "phone_number.format.national",
+        "retrieved": "2026-08-09",
+        "source": "libphonenumber",
+        "version": "9.0.36"
+      }
+    },
+    "it": {
+      "city": {
+        "license": "CC-BY-4.0",
+        "path": "location.city_name",
+        "retrieved": "2026-08-07",
+        "source": "cities-json",
+        "version": "1.1.61"
+      },
+      "company": {
+        "license": "Apache-2.0",
+        "path": "company.name_pattern",
+        "retrieved": "2026-08-09",
+        "source": "decoy-authored",
+        "version": "1"
+      },
+      "job": {
+        "license": "CC-BY-4.0",
+        "path": "person.job_title",
+        "retrieved": "2026-08-09",
+        "source": "onet",
+        "version": "30.3"
+      },
+      "name": {
+        "license": "CC0-1.0",
+        "path": "person.last_name.generic",
+        "retrieved": "2026-08-09",
+        "source": "wikidata",
+        "version": "2026-08-09"
+      },
+      "phone": {
+        "license": "Apache-2.0",
+        "path": "phone_number.format.national",
+        "retrieved": "2026-08-09",
+        "source": "libphonenumber",
+        "version": "9.0.36"
+      }
+    },
+    "ja": {
+      "city": {
+        "license": "CC-BY-4.0",
+        "path": "location.city_name",
+        "retrieved": "2026-08-07",
+        "source": "cities-json",
+        "version": "1.1.61"
+      },
+      "company": {
+        "license": "Apache-2.0",
+        "path": "company.name_pattern",
+        "retrieved": "2026-08-09",
+        "source": "decoy-authored",
+        "version": "1"
+      },
+      "job": {
+        "license": "CC-BY-4.0",
+        "path": "person.job_title",
+        "retrieved": "2026-08-09",
+        "source": "onet",
+        "version": "30.3"
+      },
+      "name": {
+        "license": "CC0-1.0",
+        "path": "person.last_name.generic",
+        "retrieved": "2026-08-09",
+        "source": "wikidata",
+        "version": "2026-08-09"
+      },
+      "phone": {
+        "license": "Apache-2.0",
+        "path": "phone_number.format.national",
+        "retrieved": "2026-08-09",
+        "source": "libphonenumber",
+        "version": "9.0.36"
+      }
+    },
+    "pl": {
+      "city": {
+        "license": "CC-BY-4.0",
+        "path": "location.city_name",
+        "retrieved": "2026-08-07",
+        "source": "cities-json",
+        "version": "1.1.61"
+      },
+      "company": {
+        "license": "Apache-2.0",
+        "path": "company.name_pattern",
+        "retrieved": "2026-08-09",
+        "source": "decoy-authored",
+        "version": "1"
+      },
+      "job": {
+        "license": "CC-BY-4.0",
+        "path": "person.job_title",
+        "retrieved": "2026-08-09",
+        "source": "onet",
+        "version": "30.3"
+      },
+      "name": {
+        "license": "CC0-1.0",
+        "path": "person.last_name.generic",
+        "retrieved": "2026-08-09",
+        "source": "wikidata",
+        "version": "2026-08-09"
+      },
+      "phone": {
+        "license": "Apache-2.0",
+        "path": "phone_number.format.national",
+        "retrieved": "2026-08-09",
+        "source": "libphonenumber",
+        "version": "9.0.36"
+      }
+    },
+    "ru": {
+      "city": {
+        "license": "CC-BY-4.0",
+        "path": "location.city_name",
+        "retrieved": "2026-08-07",
+        "source": "cities-json",
+        "version": "1.1.61"
+      },
+      "company": {
+        "license": "Apache-2.0",
+        "path": "company.name_pattern",
+        "retrieved": "2026-08-09",
+        "source": "decoy-authored",
+        "version": "1"
+      },
+      "job": {
+        "license": "CC-BY-4.0",
+        "path": "person.job_title",
+        "retrieved": "2026-08-09",
+        "source": "onet",
+        "version": "30.3"
+      },
+      "name": {
+        "license": "CC0-1.0",
+        "path": "person.last_name.generic",
+        "retrieved": "2026-08-09",
+        "source": "wikidata",
+        "version": "2026-08-09"
+      },
+      "phone": {
+        "license": "Apache-2.0",
+        "path": "phone_number.format.national",
+        "retrieved": "2026-08-09",
+        "source": "libphonenumber",
+        "version": "9.0.36"
+      }
+    },
+    "tr": {
+      "city": {
+        "license": "CC-BY-4.0",
+        "path": "location.city_name",
+        "retrieved": "2026-08-07",
+        "source": "cities-json",
+        "version": "1.1.61"
+      },
+      "company": {
+        "license": "Apache-2.0",
+        "path": "company.name_pattern",
+        "retrieved": "2026-08-09",
+        "source": "decoy-authored",
+        "version": "1"
+      },
+      "job": {
+        "license": "CC-BY-4.0",
+        "path": "person.job_title",
+        "retrieved": "2026-08-09",
+        "source": "onet",
+        "version": "30.3"
+      },
+      "name": {
+        "license": "CC0-1.0",
+        "path": "person.last_name.generic",
+        "retrieved": "2026-08-09",
+        "source": "wikidata",
+        "version": "2026-08-09"
+      },
+      "phone": {
+        "license": "Apache-2.0",
+        "path": "phone_number.format.national",
+        "retrieved": "2026-08-09",
+        "source": "libphonenumber",
+        "version": "9.0.36"
+      }
+    },
+    "vi": {
+      "city": {
+        "license": "CC-BY-4.0",
+        "path": "location.city_name",
+        "retrieved": "2026-08-07",
+        "source": "cities-json",
+        "version": "1.1.61"
+      },
+      "company": {
+        "license": "Apache-2.0",
+        "path": "company.name_pattern",
+        "retrieved": "2026-08-09",
+        "source": "decoy-authored",
+        "version": "1"
+      },
+      "job": {
+        "license": "CC-BY-4.0",
+        "path": "person.job_title",
+        "retrieved": "2026-08-09",
+        "source": "onet",
+        "version": "30.3"
+      },
+      "name": {
+        "license": "CC0-1.0",
+        "path": "person.last_name.generic",
+        "retrieved": "2026-08-09",
+        "source": "wikidata",
+        "version": "2026-08-09"
+      },
+      "phone": {
+        "license": "Apache-2.0",
+        "path": "phone_number.format.national",
+        "retrieved": "2026-08-09",
+        "source": "libphonenumber",
+        "version": "9.0.36"
+      }
+    },
+    "zh_CN": {
+      "city": {
+        "license": "CC-BY-4.0",
+        "path": "location.city_name",
+        "retrieved": "2026-08-07",
+        "source": "cities-json",
+        "version": "1.1.61"
+      },
+      "company": {
+        "license": "Apache-2.0",
+        "path": "company.name_pattern",
+        "retrieved": "2026-08-09",
+        "source": "decoy-authored",
+        "version": "1"
+      },
+      "job": {
+        "license": "CC-BY-4.0",
+        "path": "person.job_title",
+        "retrieved": "2026-08-09",
+        "source": "onet",
+        "version": "30.3"
+      },
+      "name": {
+        "license": "CC0-1.0",
+        "path": "person.last_name.generic",
+        "retrieved": "2026-08-09",
+        "source": "wikidata",
+        "version": "2026-08-09"
+      },
+      "phone": {
+        "license": "Apache-2.0",
+        "path": "phone_number.format.national",
+        "retrieved": "2026-08-09",
+        "source": "libphonenumber",
+        "version": "9.0.36"
+      }
+    }
   }
 }
