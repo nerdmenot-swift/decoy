@@ -1,5 +1,5 @@
 ---
-title: Your first fixtures
+title: Quick start
 description: Generating values, and why the same seed gives you the same people forever.
 ---
 

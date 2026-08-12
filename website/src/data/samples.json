@@ -1,4 +1,1586 @@
 {
+  "api": {
+    "airline.aircraftType": [
+      "Embraer E175",
+      "Boeing 747",
+      "Bombardier CRJ900"
+    ],
+    "airline.airline": [
+      "[\"iataCode\": \"KL\", \"name\": \"KLM\"]",
+      "[\"iataCode\": \"VN\", \"name\": \"Vietnam Airlines\"]",
+      "[\"iataCode\": \"BA\", \"name\": \"British Airways\"]"
+    ],
+    "airline.airplane": [
+      "[\"iataTypeCode\": \"747\", \"name\": \"Boeing 747\"]",
+      "[\"iataTypeCode\": \"330\", \"name\": \"Airbus A330\"]",
+      "[\"iataTypeCode\": \"CR7\", \"name\": \"Bombardier CRJ700\"]"
+    ],
+    "airline.airport": [
+      "[\"iataCode\": \"QCY\", \"name\": \"RAF Coningsby\"]",
+      "[\"iataCode\": \"PNA\", \"name\": \"Pamplona Airport\"]",
+      "[\"iataCode\": \"TLH\", \"name\": \"Tallahassee Regional Airport\"]"
+    ],
+    "airline.flightNumber": [
+      "8389",
+      "9316",
+      "7287"
+    ],
+    "airline.recordLocator": [
+      "TEAAVJ",
+      "KOPTIX",
+      "XACBXL"
+    ],
+    "airline.seat": [
+      "37D",
+      "20D",
+      "60E"
+    ],
+    "animal.animal": [
+      "Warthog",
+      "Tamarin",
+      "Numbat"
+    ],
+    "animal.bird": [
+      "Peacock",
+      "Pochard",
+      "Golden Eagle"
+    ],
+    "animal.catBreed": [
+      "Devon Rex",
+      "Birman",
+      "Manx"
+    ],
+    "animal.dogBreed": [
+      "Cavalier King Charles Spaniel",
+      "Basset Hound",
+      "Saint Bernard"
+    ],
+    "animal.farmAnimal": [
+      "Hog",
+      "Sow",
+      "Goose"
+    ],
+    "animal.fish": [
+      "Brown Trout",
+      "Dace",
+      "Tetra"
+    ],
+    "animal.horseBreed": [
+      "Andalusian",
+      "Connemara Pony",
+      "Clydesdale"
+    ],
+    "animal.insect": [
+      "Caddisfly",
+      "Bee",
+      "Stick Insect"
+    ],
+    "animal.petName": [
+      "Jasper",
+      "Nibbles",
+      "Mango"
+    ],
+    "animal.reptileOrAmphibian": [
+      "Monitor Lizard",
+      "Bullfrog",
+      "Toad"
+    ],
+    "beverage.ageStatement": [
+      "Sherry Finish",
+      "12 Year Old",
+      "Single Cask"
+    ],
+    "beverage.beer": [
+      "Copper Nightjar Wheat Beer",
+      "Sable Marmot Stout",
+      "Immense Kingfisher Stout"
+    ],
+    "beverage.beerStyle": [
+      "Dubbel",
+      "Pilsner",
+      "Lager"
+    ],
+    "beverage.brewery": [
+      "Escarpment Brewing Co.",
+      "Gecko & Sons",
+      "The Sable Lantern Brewery"
+    ],
+    "beverage.cocktail": [
+      "The Spindle Sour",
+      "The Hedgehog",
+      "The Ermine"
+    ],
+    "beverage.coffee": [
+      "Ledger Washed",
+      "Patient Lagoon Medium Roast",
+      "The Twilight Gecko Anaerobic"
+    ],
+    "beverage.grape": [
+      "Riesling",
+      "Chardonnay",
+      "Nebbiolo"
+    ],
+    "beverage.roast": [
+      "Natural",
+      "Medium Roast",
+      "Decaf"
+    ],
+    "beverage.tea": [
+      "Earnest Causeway White Tea",
+      "Delta Morning Yerba Mate",
+      "Noble Magpie Green Tea"
+    ],
+    "beverage.teaBase": [
+      "Green Tea",
+      "White Tea",
+      "Herbal Infusion"
+    ],
+    "beverage.whisky": [
+      "Glen Basin 18 Year Old",
+      "Tapir's Reserve Single Cask",
+      "Reef 12 Year Old"
+    ],
+    "beverage.wine": [
+      "Hollow Thicket Sangiovese",
+      "Escarpment Estate Riesling",
+      "Falcon Ridge Chardonnay"
+    ],
+    "brand.appliance": [
+      "De’Longhi",
+      "Indesit",
+      "Hotpoint"
+    ],
+    "brand.camera": [
+      "Polaroid",
+      "OM System",
+      "Lomography"
+    ],
+    "brand.car": [
+      "McLaren",
+      "Chevrolet",
+      "Mazda"
+    ],
+    "brand.fashion": [
+      "Fendi",
+      "Yohji Yamamoto",
+      "Paul Smith"
+    ],
+    "brand.motorcycle": [
+      "Suzuki",
+      "Hero",
+      "Aprilia"
+    ],
+    "brand.phone": [
+      "Oppo",
+      "Tecno",
+      "Google"
+    ],
+    "brand.sportswear": [
+      "Salewa",
+      "Berghaus",
+      "Hoka"
+    ],
+    "brand.watch": [
+      "TAG Heuer",
+      "Omega",
+      "Breguet"
+    ],
+    "color.cssRGB": [
+      "rgb(27, 13, 167)",
+      "rgb(7, 37, 48)",
+      "rgb(235, 32, 93)"
+    ],
+    "color.hex": [
+      "#077866",
+      "#3eb9a0",
+      "#821fe8"
+    ],
+    "color.human": [
+      "pink",
+      "brown",
+      "thistle"
+    ],
+    "color.rgb": [
+      "(red: 92, green: 66, blue: 34)",
+      "(red: 61, green: 141, blue: 85)",
+      "(red: 9, green: 206, blue: 8)"
+    ],
+    "color.space": [
+      "RGB",
+      "LAB",
+      "HSV"
+    ],
+    "commerce.department": [
+      "Books",
+      "Toys",
+      "Clothing"
+    ],
+    "commerce.ean13": [
+      "0745318112594",
+      "0787611384759",
+      "0438485397887"
+    ],
+    "commerce.price": [
+      "171.62",
+      "359.87",
+      "352.15"
+    ],
+    "commerce.product": [
+      "Towels",
+      "Salad",
+      "Pants"
+    ],
+    "commerce.productAdjective": [
+      "Luxurious",
+      "Bespoke",
+      "Small"
+    ],
+    "commerce.productDescription": [
+      "Andy shoes are designed to keeping in mind durability as well as trends",
+      "New ABC 13 9370, 13.3, 5th Gen CoreA5-8250U, 8GB RAM, 256GB SSD, power UHD Graphics",
+      "The beautiful range of Apple Natural is a distinctive coffee blend"
+    ],
+    "commerce.productMaterial": [
+      "Cotton",
+      "Bamboo",
+      "Metal"
+    ],
+    "commerce.productName": [
+      "Small Soft Fish",
+      "Tasty Bronze Bacon",
+      "Incredible Rubber Soap"
+    ],
+    "commerce.review": [
+      "Mixed: the build quality is a noticeable step up but the weight is not as described.",
+      "Does the job — the instructions is genuinely excellent, though the grip could be better.",
+      "Mixed: the weight is exactly as described but the noise is a let-down for the money."
+    ],
+    "commerce.reviewAspect": [
+      "the packaging",
+      "the packaging",
+      "the price"
+    ],
+    "commerce.reviewTitle": [
+      "Good, with one caveat",
+      "Good, with one caveat",
+      "Save your money"
+    ],
+    "commerce.sku": [
+      "BH-8442-TZ",
+      "ME-8260-AE",
+      "PO-8867-TV"
+    ],
+    "company.adjective": [
+      "Sharable",
+      "Stand-alone",
+      "Managed"
+    ],
+    "company.buzzAdjective": [
+      "turn-key",
+      "dot-com",
+      "one-to-one"
+    ],
+    "company.buzzNoun": [
+      "platforms",
+      "mindshare",
+      "ROI"
+    ],
+    "company.buzzPhrase": [
+      "drive cutting-edge metrics",
+      "leverage out-of-the-box niches",
+      "generate wireless mindshare"
+    ],
+    "company.buzzVerb": [
+      "enhance",
+      "grow",
+      "monetize"
+    ],
+    "company.catchPhrase": [
+      "Universal non-volatile product",
+      "Horizontal background hub",
+      "Enhanced heuristic pricing structure"
+    ],
+    "company.category": [
+      "Insurance",
+      "Insurance",
+      "Engineering"
+    ],
+    "company.descriptor": [
+      "executive",
+      "maximized",
+      "dynamic"
+    ],
+    "company.legalEntityType": [
+      "C.A.",
+      "inc.",
+      "Coop."
+    ],
+    "company.name": [
+      "Penaloza-Floyd",
+      "Strickland corporation",
+      "Griffin-Ding"
+    ],
+    "company.noun": [
+      "parallelism",
+      "knowledge user",
+      "access"
+    ],
+    "crypto.bech32Address": [
+      "bc1qz38xamnmm38fdln0knh6rqrx6uaq3lcyakafht",
+      "bc1q83k3347a7sdulect42ppd8t8z93uv8yczl09uk",
+      "bc1qj9cwg9jfpdcf9kemp56xa37wtxmcn24lkclkh9"
+    ],
+    "crypto.bitcoinAddress": [
+      "1942HDSfTAMs5Fj9hFzmo3mynuUe62SuNq",
+      "18gMuXkk8sY8mDsM1BFx6usuGWmhMVjUQ9",
+      "17KfuRP9RTRNznDRLmo1q37CzyycWR2rP9"
+    ],
+    "crypto.ethereumAddress": [
+      "0xac38495abc120deb3fa2d6aeec7795a7ebd6f6a7",
+      "0xe1ce683b5d88514d581aa2b16a6e0809083d2269",
+      "0x2df581cae1e0e3ee83b1c2bfce53774b6ca498c8"
+    ],
+    "crypto.md5": [
+      "839c2bd8182a837e9b8b7a03ee5c3cda",
+      "32349d583f612235b647fdcde9abfa69",
+      "14650af2e1c44f6bb6f883c11794166f"
+    ],
+    "crypto.p2shAddress": [
+      "3JygFNDLzHkssp7huB6wALFyxEwBpjxbsf",
+      "33NtHtcoydSHfXF2zez8sMLLLe4VXCcyvB",
+      "3DGBQHKXob61RQYDsPWiu9P5xbEKoNF9ji"
+    ],
+    "crypto.sha1": [
+      "e8d44bf53d04abbb20e2c0e59d625eb20c4d1e57",
+      "fa19f8c49e63ac0d4528d334b609e13ef13b2288",
+      "a1e82c25462ae2aec86859ce31b39c1843226e84"
+    ],
+    "crypto.sha256": [
+      "7df924c186ab96c0dc599b33efc0eb6ec53458da6822f24fd65281f8932484f6",
+      "8aa85d1327c0646d66d13894b9ccd69e64761c85b24fba59af21f5348c0d9d27",
+      "b89b95594761738296b3e22030f6503c7197d8063e30f17082bfb528d33e77b9"
+    ],
+    "crypto.sha512": [
+      "c87947017304449b2816880ddde247918f4cd3983d5a5b21500507b6f7922cab18ac346c2248f1bfda51ae10056191927dd2ad2ca8d321e2ddb55fc89ab96d09",
+      "7f85ea4948c18340a78957f546a8b520271f4ab6487f31a1adaba725ae475d5f04350f11b75d199ecdac365ea41bce72e2c482314fc3a5ea437cfea6558baf4a",
+      "c4a8902759ed62ae392fd608e200b8bd4f166b32e8dd81bd18cde7913851d32f19d02fe9e52607cdbd99d776b90e9f290925a2fdf4812ee6ea3b207fccfe01fc"
+    ],
+    "database.collation": [
+      "cp1250_general_ci",
+      "utf8mb4_bin",
+      "utf8mb4_unicode_ci"
+    ],
+    "database.column": [
+      "first_name",
+      "title",
+      "first_name"
+    ],
+    "database.engine": [
+      "CSV",
+      "CSV",
+      "MyISAM"
+    ],
+    "database.type": [
+      "text",
+      "date",
+      "date"
+    ],
+    "date.amPm": [
+      "AM",
+      "PM",
+      "PM"
+    ],
+    "date.birthdate": [
+      "1960-10-25 09:24:34 +0000",
+      "1978-01-13 15:56:39 +0000",
+      "1978-12-25 23:15:26 +0000"
+    ],
+    "date.century": [
+      "II",
+      "XVI",
+      "XII"
+    ],
+    "date.dayOfMonth": [
+      "16",
+      "8",
+      "11"
+    ],
+    "date.dayOfWeek": [
+      "4",
+      "5",
+      "3"
+    ],
+    "date.future": [
+      "2026-11-05 05:09:40 +0000",
+      "2026-10-30 17:43:03 +0000",
+      "2026-09-17 07:55:17 +0000"
+    ],
+    "date.hour": [
+      "23",
+      "8",
+      "18"
+    ],
+    "date.minute": [
+      "5",
+      "46",
+      "49"
+    ],
+    "date.month": [
+      "8",
+      "11",
+      "7"
+    ],
+    "date.monthName": [
+      "October",
+      "October",
+      "December"
+    ],
+    "date.past": [
+      "2025-12-29 09:39:18 +0000",
+      "2025-06-26 07:29:11 +0000",
+      "2025-10-17 19:25:52 +0000"
+    ],
+    "date.recent": [
+      "2025-12-31 04:18:07 +0000",
+      "2025-12-31 01:33:35 +0000",
+      "2025-12-31 17:23:12 +0000"
+    ],
+    "date.soon": [
+      "2026-01-01 20:48:03 +0000",
+      "2026-01-01 11:26:03 +0000",
+      "2026-01-01 08:52:43 +0000"
+    ],
+    "date.timeZone": [
+      "Pacific/Noumea",
+      "America/Port-au-Prince",
+      "Asia/Bishkek"
+    ],
+    "date.unix": [
+      "952071975",
+      "1317911448",
+      "1433892168"
+    ],
+    "date.weekdayName": [
+      "Wednesday",
+      "Sunday",
+      "Friday"
+    ],
+    "date.year": [
+      "2020",
+      "2011",
+      "2004"
+    ],
+    "finance.accountNumber": [
+      "96070510",
+      "33224553",
+      "59326041"
+    ],
+    "finance.accountType": [
+      "Auto Loan",
+      "Investment",
+      "Savings"
+    ],
+    "finance.bitcoinAddress": [
+      "15Tf6qujaZgtt8ydJ9hujxUbyVzhscssTM",
+      "1CF5UrdM9R51yx276fxkqQ14vUheLCqfSk",
+      "1JYCRgP1rB8F67f469hDqfm1y6dMmaacvR"
+    ],
+    "finance.creditCardNumber": [
+      "6504313472756266",
+      "361014942847",
+      "3519564758117413"
+    ],
+    "finance.currency": [
+      "[\"code\": \"TOP\", \"name\": \"Tongan Paʻanga\", \"numericCode\": \"776\", \"symbol\": \"TOP\"]",
+      "[\"code\": \"STN\", \"name\": \"São Tomé & Príncipe Dobra\", \"numericCode\": \"930\", \"symbol\": \"STN\"]",
+      "[\"code\": \"CUP\", \"name\": \"Cuban Peso\", \"numericCode\": \"192\", \"symbol\": \"CUP\"]"
+    ],
+    "finance.currencyCode": [
+      "HTG",
+      "DOP",
+      "HTG"
+    ],
+    "finance.currencyName": [
+      "Japanese Yen",
+      "Qatari Riyal",
+      "Swedish Krona"
+    ],
+    "finance.currencySymbol": [
+      "KGS",
+      "CUP",
+      "HNL"
+    ],
+    "finance.ein": [
+      "85-7822253",
+      "38-7806802",
+      "90-3294207"
+    ],
+    "finance.iban": [
+      "GB88RBKT99449561959272",
+      "GB61YTYM61964652991849",
+      "GB06ZMJO57342059846302"
+    ],
+    "finance.routingNumber": [
+      "0918",
+      "0724",
+      "0113"
+    ],
+    "finance.transactionDescription": [
+      "invoice transaction at Spencer corp. using card ending with 9665 for 994.89",
+      "deposit transaction at Elliott-Cruz using card ending with 3314 for 796.48",
+      "payment transaction at Pittman, Henn and Barboza using card ending with 6866 for 331.78"
+    ],
+    "finance.transactionType": [
+      "withdrawal",
+      "payment",
+      "deposit"
+    ],
+    "food.bread": [
+      "Injera",
+      "Naan",
+      "Barbari"
+    ],
+    "food.cheese": [
+      "Havarti",
+      "Manchego",
+      "Livarot"
+    ],
+    "food.dessert": [
+      "Canelé",
+      "Pavlova",
+      "Profiterole"
+    ],
+    "food.dish": [
+      "Injera",
+      "Bigos",
+      "Soba"
+    ],
+    "food.fruit": [
+      "Melon",
+      "Mandarin",
+      "Greengage"
+    ],
+    "food.grainOrPulse": [
+      "Oats",
+      "Spelt",
+      "Split Pea"
+    ],
+    "food.herbOrSpice": [
+      "Chilli Flakes",
+      "Turmeric",
+      "Long Pepper"
+    ],
+    "food.ingredient": [
+      "Mussel",
+      "Satsuma",
+      "Brazil Nut"
+    ],
+    "food.nutOrSeed": [
+      "Sesame Seed",
+      "Pumpkin Seed",
+      "Peanut"
+    ],
+    "food.seafood": [
+      "Spider Crab",
+      "Razor Clam",
+      "Cockle"
+    ],
+    "food.vegetable": [
+      "Beef Tomato",
+      "Sweetcorn",
+      "Yam"
+    ],
+    "instant.amPm": [
+      "AM",
+      "AM",
+      "PM"
+    ],
+    "instant.birthdate": [
+      "1995-10-31T07:11:09Z",
+      "1959-01-05T20:45:30Z",
+      "1999-02-18T16:41:53Z"
+    ],
+    "instant.century": [
+      "XIX",
+      "XIX",
+      "XVII"
+    ],
+    "instant.dayOfMonth": [
+      "31",
+      "30",
+      "20"
+    ],
+    "instant.dayOfWeek": [
+      "4",
+      "6",
+      "1"
+    ],
+    "instant.future": [
+      "2026-03-27T20:14:25Z",
+      "2026-03-14T07:20:17Z",
+      "2026-09-11T07:23:51Z"
+    ],
+    "instant.hour": [
+      "7",
+      "5",
+      "12"
+    ],
+    "instant.minute": [
+      "58",
+      "47",
+      "26"
+    ],
+    "instant.month": [
+      "10",
+      "5",
+      "4"
+    ],
+    "instant.monthName": [
+      "March",
+      "September",
+      "April"
+    ],
+    "instant.past": [
+      "2025-04-25T07:32:02Z",
+      "2025-06-24T17:39:47Z",
+      "2025-07-19T14:18:59Z"
+    ],
+    "instant.recent": [
+      "2025-12-31T16:39:32Z",
+      "2025-12-31T10:23:35Z",
+      "2025-12-31T01:45:24Z"
+    ],
+    "instant.soon": [
+      "2026-01-01T18:39:13Z",
+      "2026-01-01T11:52:15Z",
+      "2026-01-01T20:07:24Z"
+    ],
+    "instant.timeZone": [
+      "America/Santo_Domingo",
+      "America/Indiana/Vincennes",
+      "Atlantic/South_Georgia"
+    ],
+    "instant.unix": [
+      "2037668258",
+      "1612904428",
+      "1656985946"
+    ],
+    "instant.weekdayName": [
+      "Sunday",
+      "Wednesday",
+      "Friday"
+    ],
+    "instant.year": [
+      "1987",
+      "1931",
+      "1942"
+    ],
+    "institution.footballClub": [
+      "Rosenborg",
+      "Gent",
+      "West Ham United"
+    ],
+    "institution.museum": [
+      "Albertina",
+      "Mori Art Museum",
+      "National Palace Museum"
+    ],
+    "institution.newspaper": [
+      "South China Morning Post",
+      "The Hindu",
+      "The Economist"
+    ],
+    "institution.orchestra": [
+      "Staatskapelle Dresden",
+      "City of Birmingham Symphony Orchestra",
+      "Czech Philharmonic"
+    ],
+    "institution.university": [
+      "American University of Beirut",
+      "Leiden University",
+      "Hebrew University of Jerusalem"
+    ],
+    "internet.domainName": [
+      "currie.tk",
+      "owen.gy",
+      "abbott.cd"
+    ],
+    "internet.domainSuffix": [
+      "luxe",
+      "grainger",
+      "nba"
+    ],
+    "internet.domainWord": [
+      "stewart",
+      "gray",
+      "kim"
+    ],
+    "internet.email": [
+      "theodore.mello@example.com",
+      "river.spruill@example.net",
+      "melanie.sinclair@example.com"
+    ],
+    "internet.emoji": [
+      "🥌",
+      "✋🏼",
+      "👉🏿"
+    ],
+    "internet.freeEmail": [
+      "sandra.barker@icloud.com",
+      "brittney.guion@hotmail.com",
+      "charles.graves@yahoo.com"
+    ],
+    "internet.gamertag": [
+      "ForgetfulCrooning3967",
+      "GoneRatafia849",
+      "RopyEmbassy8667"
+    ],
+    "internet.hexColor": [
+      "#8cc026",
+      "#02c490",
+      "#1eca6d"
+    ],
+    "internet.httpMethod": [
+      "DELETE",
+      "OPTIONS",
+      "DELETE"
+    ],
+    "internet.httpStatusCode": [
+      "505",
+      "500",
+      "207"
+    ],
+    "internet.ipv4": [
+      "89.193.159.167",
+      "128.57.79.114",
+      "72.199.164.222"
+    ],
+    "internet.ipv6": [
+      "86fc:e26a:9646:a9b0:ec74:87e6:9f3e:c44e",
+      "8067:8d7a:84c4:0fc7:a12d:4e96:450f:8300",
+      "2cca:f346:2290:08b6:7fac:a0c2:f962:088e"
+    ],
+    "internet.jwtAlgorithm": [
+      "Ed25519",
+      "PS256",
+      "RS256"
+    ],
+    "internet.macAddress": [
+      "f9:4d:b9:1c:70:be",
+      "4e:cc:e7:81:54:61",
+      "4f:1d:fe:ff:58:4e"
+    ],
+    "internet.password": [
+      "49$$IFtIxmJm1Nn3",
+      "o2pi*w*yYXHuu8Gr",
+      "Jue1hyyYhw1Gr2T%"
+    ],
+    "internet.port": [
+      "34724",
+      "53189",
+      "8949"
+    ],
+    "internet.url": [
+      "https://stephens.football",
+      "https://worthy.xn--gckr3f0f",
+      "https://alva.schmidt"
+    ],
+    "internet.userAgent": [
+      "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/198.0.0.0 Safari/537.36",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Safari/605.1.15",
+      "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1 Mobile/15E148 Safari/604.1"
+    ],
+    "internet.username": [
+      "sandra4634",
+      "jenette9014",
+      "jeffrey4295"
+    ],
+    "location.buildingNumber": [
+      "16",
+      "2581",
+      "72"
+    ],
+    "location.cardinalDirection": [
+      "West",
+      "South",
+      "North"
+    ],
+    "location.city": [
+      "Bangor",
+      "Wabasha",
+      "Cheektowaga"
+    ],
+    "location.continent": [
+      "Antarctica",
+      "Asia",
+      "Asia"
+    ],
+    "location.coordinate": [
+      "(latitude: 11.7424, longitude: -147.2878)",
+      "(latitude: 13.0647, longitude: -123.1048)",
+      "(latitude: -29.4436, longitude: 129.7897)"
+    ],
+    "location.country": [
+      "Curaçao",
+      "Brunei",
+      "Togo"
+    ],
+    "location.countryCode": [
+      "[\"alpha2\": \"CH\", \"alpha3\": \"CHE\", \"numeric\": \"756\"]",
+      "[\"alpha2\": \"MS\", \"alpha3\": \"MSR\", \"numeric\": \"500\"]",
+      "[\"alpha2\": \"MN\", \"alpha3\": \"MNG\", \"numeric\": \"496\"]"
+    ],
+    "location.countryCodeAlpha2": [
+      "YU",
+      "TP",
+      "AN"
+    ],
+    "location.countryCodeAlpha3": [
+      "SUR",
+      "ARM",
+      "PER"
+    ],
+    "location.county": [
+      "Iroquois County",
+      "Nottoway County",
+      "Issaquena County"
+    ],
+    "location.direction": [
+      "Southeast",
+      "East",
+      "East"
+    ],
+    "location.language": [
+      "[\"alpha2\": \"en\", \"alpha3\": \"eng\", \"name\": \"English\"]",
+      "[\"alpha2\": \"ga\", \"alpha3\": \"gle\", \"name\": \"Irish\"]",
+      "[\"alpha2\": \"tn\", \"alpha3\": \"tsn\", \"name\": \"Tswana\"]"
+    ],
+    "location.latitude": [
+      "-16.3815",
+      "25.4694",
+      "51.6109"
+    ],
+    "location.longitude": [
+      "37.2465",
+      "-93.5617",
+      "6.2004"
+    ],
+    "location.ordinalDirection": [
+      "Southwest",
+      "Southeast",
+      "Southeast"
+    ],
+    "location.place": [
+      "[\"state\": \"California\", \"state_code\": \"CA\", \"city\": \"Salida\"]",
+      "[\"city\": \"West Bishop\", \"state\": \"California\", \"state_code\": \"CA\"]",
+      "[\"state_code\": \"PA\", \"city\": \"Fox Chase\", \"state\": \"Pennsylvania\"]"
+    ],
+    "location.placeAndPostcode": [
+      "(city: \"Tuckahoe\", state: \"New York\", stateCode: \"NY\", postcode: \"10537\")",
+      "(city: \"Chevy Chase\", state: \"Maryland\", stateCode: \"MD\", postcode: \"21717\")",
+      "(city: \"Greenville\", state: \"Alabama\", stateCode: \"AL\", postcode: \"36455\")"
+    ],
+    "location.postalAddress": [
+      "Austin Castanon\n30 Nicholas Walk\nCorry Florida 18167",
+      "Robert Goff\n88983 Washington Underpass\nDodson Branch Hawaii 34743",
+      "Karrie Sanders\n18537 Wood Hill\nSuffield Depot Arizona 87567"
+    ],
+    "location.postcode": [
+      "02310",
+      "25552",
+      "70177"
+    ],
+    "location.secondaryAddress": [
+      "Flat 7",
+      "Floor 0",
+      "Flat 9"
+    ],
+    "location.state": [
+      "Connecticut",
+      "Montana",
+      "Michigan"
+    ],
+    "location.stateAbbreviation": [
+      "PA",
+      "WA",
+      "KY"
+    ],
+    "location.stateAndPostcode": [
+      "(state: \"Indiana\", abbr: \"IN\", postcode: \"46678\")",
+      "(state: \"Oklahoma\", abbr: \"OK\", postcode: \"73939\")",
+      "(state: \"South Dakota\", abbr: \"SD\", postcode: \"57721\")"
+    ],
+    "location.stateRow": [
+      "[\"name\": \"Iowa\", \"abbr\": \"IA\"]",
+      "[\"name\": \"Michigan\", \"abbr\": \"MI\"]",
+      "[\"name\": \"Nevada\", \"abbr\": \"NV\"]"
+    ],
+    "location.streetAddress": [
+      "281 Jacklyn Port",
+      "50 Sargent Plain",
+      "385 Backus Landing"
+    ],
+    "location.streetName": [
+      "Billie Freeway",
+      "Mary Run",
+      "Strandberg Freeway"
+    ],
+    "location.streetSuffix": [
+      "Station",
+      "Fork",
+      "Rapid"
+    ],
+    "location.timeZone": [
+      "Pacific/Tarawa",
+      "America/Vancouver",
+      "America/Yakutat"
+    ],
+    "lorem.paragraph": [
+      "Antidea adfectatio colos cumulate benivolens conjuratio fideliter puxis apex. Frons integre extrinsecus sicut attice adulatio commodum abstinenter. Nequaquam perseveranter laete opportune defetigatio. Comessatio barbare faux jocundiatas diligens venus patienter dimicatio. Moles conpes poema conjectio definitio caute patiens festive poema ceu. Panax comitas alte adfectatio aequabiliter extrinsecus.",
+      "Jus labos contumaciter exsistimatio adgnomen quojas confluens. Probabiliter aemulatio manifesto cognitio conctanter celebritas. Compensatio annalis credulitas panaces. Vates levamen pollen nemus turbo haud bipes leviter eloquens. Pixis favorabiliter perduellio tegimen. Adulescens amatrix numquid scienter. Consolatio vox declinatio cultrix marcens utcumque arquitenens.",
+      "Porro lubenter congruens. Flagrans praeceps benevolens vorsus. Crus adspiratio vituperatio caelestis senex allocutio robur securis genetrix coacervatio. Sorbitio inoboediens strix obedientio majestas mucro obstetrix. Humilitas nox universitas utrobique constans."
+    ],
+    "lorem.paragraphs": [
+      "Contumaciter segniter exhortatio morio humilitas ardens creatrix. Perfectio calamitas alpis inpetigo versus solummodo integre consequtio. Gigans amnis repente devotio. Capacitas aliquo aliquoties libens noctu natio cultrix carbo compensatio. Indulgens utroque celestis aedificatio aliquoties partim plato petulans. Ambigue felix alternatio amoenitas malevolens neglegenter translatio manufesto pecus plene.\n\nDis volucris adeps collocatio pestis sero. Dos quotienscumque depulsio fatigatio cupiditas commodum dictio confidens. Quojas foramen alia certatio. Cyma velociter citra naturaliter tandem atriensis rus vespillo. Audacter tamen procul frequens mediocriter phoenix. Competens november amministratio munificens.\n\nScorpio strages confusio definitio aquilo qualitas verax orbis accipiter. Aplustre profusio patiens sopio desursum conjux cogitatio. Immutatio tantisper promissio caste ablutio magnifice consolatio. Satius paulum agrestis inpetigo conclave. Consecutio haereditas vivax.",
+      "Contamen ante paulisper nuper infans coturnix existumatio aviditas cupido derivatio. Tiberis latro congregatio. Laute prosus maledicens traductio improbitas reprensio. Moene cummagis nex certe socrates hau.\n\nNovissime valenter decurio cornix cornix adusque. Compressio cartago collatio ultra puppis continens familiaris. Regio jucunde turbo furnax vulnus. Pedes gravitas asseveratio. Admiratio demens dicio biceps delectatio. Commilito unguis dignatio valetudo hucusque demisse ilict.\n\nEleganter venus rudis nimirum ammonitio. Care apstinenter ignorantio crebritas comes. Mensis nex forsitan heros columen ceteroquin proportio onyx maxime cuspis. Cras explicatio gummis excellens paelex tenuitas adsumptio glans contrectatio. Pestis disceptio capacitas magnes cottidie conpetens profecto. Cuma magnifice pedester foeditas arcte conjuncte.",
+      "Certo aratio fraus continuatio aemulatio parapsis. Acus quorsus paullulo comperte haereditas utrimque probabiliter non facile anxie. Concitate panis concors cummis sacerdos certe specialiter opportunitas cognitio.\n\nPraestans cunctatio cujatis conquisitio reversio adtributio audacter cunctatio ebur. Berbex fatigatio segniter tenuiter revera castigatio cimex praestans usurpatio utroque. Conpago oboedens felix foras. Commissio elix ratis cotes cyclops recens cuimodi bipes elate decusis. Conciliatrix subtilitas aegritudo. Paululum saluber desolatio crux quotiescunque cummaxime fraudulenter deditio adprime.\n\nCodex excellens cuicuimodi gigas apsis. Amoenitas cucumis exsistimatio cupo numquid calamitas aspis concitatio laqueare aeternitas. Mapale adsiduitas prudens canis obscenitas patiens explicatio."
+    ],
+    "lorem.sentence": [
+      "Fors ovis comiter quatenus virgo cunctatio frater.",
+      "Apex paropsis assensio fraglans adfinis singulariter egregie.",
+      "Eques attice plato baro utiliter."
+    ],
+    "lorem.sentences": [
+      "Fideliter salax demisse quin comprehensio auctio plebes. Conprehensio videlicet apis charybdis pulmo. Adseveratio aegrotatio amice vates assuetudo lex.",
+      "Allex fatigatio laqueare plebs contans. Chors honos huc haudquaquam expositio palumbes speciose appetitio. Genetrix revera perseveranter.",
+      "Comparatio deliberatio onyx. Facinus comissatio sinciput comprehensio nequando frequens decore. Dimicatio difficiliter caesim aspere sipho."
+    ],
+    "lorem.slug": [
+      "hau-nondum-collectio",
+      "dispositio-quotiescunque-singillatim",
+      "possessio-vorsus-plebes"
+    ],
+    "lorem.text": [
+      "Mors aedilitas altrix femur pignus societas. Fidis volucris qui demens conpages absis requies eruditio. Senex codex tandem.",
+      "Senex credens humilitas fornax communio. Huccine seges continuo alicubi quamvis. Iens tantisper cornicen adaeque. Cantio adulatio acriter speciose vetustas libido necessitas avare quosum caeles.",
+      "Retro adolescens attamen aspis persecutio malignans quocunque haereditas anceps compressio. Deorsus infans threx sequax. Diligens celeber quaad abies crebritas breviter ita."
+    ],
+    "lorem.word": [
+      "vas",
+      "contatio",
+      "maxume"
+    ],
+    "lorem.words": [
+      "circuitio substitutio laute",
+      "civis principaliter gausapes",
+      "interea mollitudo adulescens"
+    ],
+    "media.artMovement": [
+      "Suprematism",
+      "Neoclassicism",
+      "Impressionism"
+    ],
+    "media.book": [
+      "(title: \"David Copperfield\", author: \"Victor Hugo\", genre: \"Drama\")",
+      "(title: \"Twenty Thousand Leagues Under the Sea\", author: \"Emily Dickinson\", genre: \"Autobiography\")",
+      "(title: \"The Metamorphosis\", author: \"Joseph Conrad\", genre: \"Poetry\")"
+    ],
+    "media.bookAuthor": [
+      "Sophocles",
+      "Mikhail Bulgakov",
+      "Mikhail Bulgakov"
+    ],
+    "media.bookGenre": [
+      "Gothic",
+      "Reference",
+      "Utopian"
+    ],
+    "media.bookTitle": [
+      "David Copperfield",
+      "Walden",
+      "The Adventures of Tom Sawyer"
+    ],
+    "media.filmGenre": [
+      "War",
+      "Science Fiction",
+      "Mockumentary"
+    ],
+    "media.filmTitle": [
+      "The Maltese Falcon",
+      "Apocalypse Now",
+      "Cinema Paradiso"
+    ],
+    "media.instrument": [
+      "French Horn",
+      "Balalaika",
+      "Double Bass"
+    ],
+    "media.musicGenre": [
+      "Bhangra",
+      "Progressive Rock",
+      "Baroque"
+    ],
+    "media.songTitle": [
+      "Purple Rain",
+      "Giant Steps",
+      "My Favourite Things"
+    ],
+    "nature.desert": [
+      "Sonoran Desert",
+      "Negev",
+      "Rub’ al Khali"
+    ],
+    "nature.flower": [
+      "Sunflower",
+      "Hibiscus",
+      "Fritillary"
+    ],
+    "nature.gemstone": [
+      "Sapphire",
+      "Coral",
+      "Peridot"
+    ],
+    "nature.island": [
+      "Islay",
+      "Sardinia",
+      "Bermuda"
+    ],
+    "nature.lake": [
+      "Lake Vättern",
+      "Lake Taupo",
+      "Lake Vänern"
+    ],
+    "nature.mountain": [
+      "Mount Etna",
+      "Teide",
+      "Carrauntoohil"
+    ],
+    "nature.river": [
+      "Fraser",
+      "Arno",
+      "Mekong"
+    ],
+    "nature.tree": [
+      "Willow",
+      "Poplar",
+      "Willow"
+    ],
+    "nature.weather": [
+      "Sleet",
+      "Hurricane",
+      "Fair"
+    ],
+    "notable.actor": [
+      "Julianne Moore",
+      "Daniel Day-Lewis",
+      "Idris Elba"
+    ],
+    "notable.architect": [
+      "Charles Rennie Mackintosh",
+      "Francesco Borromini",
+      "Rem Koolhaas"
+    ],
+    "notable.artist": [
+      "Wassily Kandinsky",
+      "Jean-Auguste-Dominique Ingres",
+      "Raphael"
+    ],
+    "notable.athlete": [
+      "Olga Korbut",
+      "Katie Ledecky",
+      "Mark Spitz"
+    ],
+    "notable.composer": [
+      "Bedřich Smetana",
+      "Anton Webern",
+      "Carl Maria von Weber"
+    ],
+    "notable.explorer": [
+      "Edmund Hillary",
+      "John Hanning Speke",
+      "Ibn Battuta"
+    ],
+    "notable.historicalFigure": [
+      "Apollonius of Perga",
+      "Edward Jenner",
+      "Charles Gounod"
+    ],
+    "notable.inventor": [
+      "Gottlieb Daimler",
+      "Willis Carrier",
+      "Heinrich Hertz"
+    ],
+    "notable.mathematician": [
+      "Alexander Grothendieck",
+      "Johann Bernoulli",
+      "Richard Dedekind"
+    ],
+    "notable.musician": [
+      "Paul Simon",
+      "Leonard Cohen",
+      "Luciano Pavarotti"
+    ],
+    "notable.philosopher": [
+      "Baruch Spinoza",
+      "Anaxagoras",
+      "Plato"
+    ],
+    "notable.scientist": [
+      "Carl Linnaeus",
+      "Alexander Fleming",
+      "Emmy Noether"
+    ],
+    "person.bio": [
+      "baker, coffee enthusiast",
+      "cyclist 🇹🇼",
+      "guitarist"
+    ],
+    "person.bloodType": [
+      "A+",
+      "B+",
+      "B+"
+    ],
+    "person.firstName": [
+      "Mary",
+      "Mary",
+      "Janet"
+    ],
+    "person.fullName": [
+      "John Wilkes",
+      "Adrian Johnson",
+      "Carol Contreras"
+    ],
+    "person.gender": [
+      "Genderqueer",
+      "Non-binary",
+      "Non-binary"
+    ],
+    "person.jobArea": [
+      "circuit",
+      "capability",
+      "approach"
+    ],
+    "person.jobDescriptor": [
+      "Front-line",
+      "Business-focused",
+      "Innovative"
+    ],
+    "person.jobTitle": [
+      "De-engineered challenge Supervisor",
+      "Centralized array Designer",
+      "Extended analyzer Coordinator"
+    ],
+    "person.jobType": [
+      "Engineer",
+      "Supervisor",
+      "Facilitator"
+    ],
+    "person.lastName": [
+      "Szymanski",
+      "Shumate",
+      "Alvarez"
+    ],
+    "person.middleName": [
+      "Connie",
+      "Paul",
+      "Kieran"
+    ],
+    "person.novelLastName": [
+      "Titz",
+      "Roacht",
+      "Mountagnolds"
+    ],
+    "person.prefix": [
+      "Miss",
+      "Prof.",
+      "Dr."
+    ],
+    "person.sex": [
+      "female",
+      "female",
+      "female"
+    ],
+    "person.ssn": [
+      "570-08-7268",
+      "483-21-0411",
+      "668-60-1347"
+    ],
+    "person.suffix": [
+      "PhD",
+      "DDS",
+      "IV"
+    ],
+    "person.zodiacSign": [
+      "Scorpio",
+      "Cancer",
+      "Taurus"
+    ],
+    "phone.areaCode": [
+      "713",
+      "504",
+      "617"
+    ],
+    "phone.exchangeCode": [
+      "312",
+      "646",
+      "901"
+    ],
+    "phone.imei": [
+      "785138788887205",
+      "973056810514070",
+      "605874956023524"
+    ],
+    "phone.number": [
+      "(657) 915-6037",
+      "(465) 768-3438",
+      "(519) 442-7387"
+    ],
+    "science.chemicalElement": [
+      "[\"atomicNumber\": \"14\", \"name\": \"Silicon\", \"symbol\": \"Si\"]",
+      "[\"atomicNumber\": \"39\", \"name\": \"Yttrium\", \"symbol\": \"Y\"]",
+      "[\"atomicNumber\": \"93\", \"name\": \"Neptunium\", \"symbol\": \"Np\"]"
+    ],
+    "science.unit": [
+      "[\"name\": \"square miles\", \"symbol\": \"mi²\"]",
+      "[\"name\": \"pinches\", \"symbol\": \"pn\"]",
+      "[\"name\": \"g-force\", \"symbol\": \"Gs\"]"
+    ],
+    "sport.club": [
+      "Causeway United",
+      "Nightjar Casuals",
+      "Glacial Shoal FC"
+    ],
+    "sport.clubSuffix": [
+      "Thistle",
+      "Wanderers",
+      "United"
+    ],
+    "sport.discipline": [
+      "Badminton",
+      "Netball",
+      "Swimming"
+    ],
+    "sport.trophy": [
+      "The Silent Lattice Trophy",
+      "The Narrows Shield",
+      "The Narrows Shield"
+    ],
+    "sport.venue": [
+      "Foothill Park",
+      "The Basin Arena",
+      "Moor Park"
+    ],
+    "system.component": [
+      "export-worker",
+      "billing",
+      "scheduler"
+    ],
+    "system.databaseError": [
+      "connection to server was lost during query execution",
+      "null value in column \"tenant_id\" violates not-null constraint",
+      "insert or update on table \"sessions\" violates foreign key constraint \"users_email_key\""
+    ],
+    "system.directoryPath": [
+      "/home/user/dir",
+      "/srv",
+      "/mnt"
+    ],
+    "system.errorMessage": [
+      "file exceeds the 25MB limit",
+      "panic recovered in session-store: send on closed channel",
+      "password must be at least 12 characters"
+    ],
+    "system.fileExtension": [
+      "tmo",
+      "plb",
+      "emotionml"
+    ],
+    "system.fileName": [
+      "assignatio-casualiter.dxp",
+      "fortitudo-abundanter.stl",
+      "corbis-gratanter.xfdl"
+    ],
+    "system.filePath": [
+      "/var/spool/cunctanter-adparate.rm",
+      "/etc/defaults/catervatim-care.flx",
+      "/usr/ferox-claritudo.ttc"
+    ],
+    "system.httpError": [
+      "too many redirects following gateway callback",
+      "connection reset by peer while reading response body",
+      "rate limit exceeded: retry after 64 seconds"
+    ],
+    "system.mimeType": [
+      "application/epub+zip",
+      "application/x-dtbncx+xml",
+      "application/vnd.intergeo"
+    ],
+    "system.programmingLanguage": [
+      "[\"color\": \"#384d54\", \"extension\": \".just\", \"name\": \"Just\"]",
+      "[\"color\": \"#f34b7d\", \"extension\": \".cpp\", \"name\": \"C++\"]",
+      "[\"color\": \"#6a5acd\", \"extension\": \".metta\", \"name\": \"MeTTa\"]"
+    ],
+    "system.programmingLanguageName": [
+      "eC",
+      "Qt Script",
+      "KCL"
+    ],
+    "system.runtimeError": [
+      "unmarshalling failed: unexpected token at position 266",
+      "goroutine leak detected: 433 routines blocked on the same mutex",
+      "context deadline exceeded"
+    ],
+    "system.semver": [
+      "8.2.4",
+      "7.1.26",
+      "7.11.16"
+    ],
+    "system.validationError": [
+      "email must be a valid address",
+      "this field is required",
+      "email must be a valid address"
+    ],
+    "system.variableName": [
+      "contrivedConvoy",
+      "deliciousConsumerism",
+      "lightweightFlexure"
+    ],
+    "uuid": [
+      "eb6a6fd6-05d6-453d-a6eb-d48076ce3e82",
+      "ab5a3b0d-bab0-4af6-bbe6-f3452720d6b2",
+      "27bfeebf-cf1d-4ec5-ada6-efff31e66950"
+    ],
+    "uuidV7": [
+      "019b76da-a800-768b-a223-5f6fda903906",
+      "019b76da-a800-7694-8fba-93eaadd1a4b2",
+      "019b76da-a800-703e-a2dc-de948b884ad2"
+    ],
+    "uuidV7Value": [
+      "019B76DA-A800-7A99-B971-EBB58D4B802A",
+      "019B76DA-A800-7EB8-B694-29574F80CC17",
+      "019B76DA-A800-7290-8320-BC6C758B81D9"
+    ],
+    "uuidValue": [
+      "50C8E69F-C66F-4243-9A01-34B1782C6885",
+      "8D57A623-CB45-4F9A-9082-52F467F6F7F2",
+      "AD74D664-F78F-4EEF-BC75-B3E8BB70B9CA"
+    ],
+    "vehicle.bicycleType": [
+      "Mountain Bicycle",
+      "Tandem Bicycle",
+      "Touring Bicycle"
+    ],
+    "vehicle.fuel": [
+      "Hybrid",
+      "Gasoline",
+      "Biodiesel"
+    ],
+    "vehicle.manufacturer": [
+      "Land Rover",
+      "Saab",
+      "Chrysler"
+    ],
+    "vehicle.model": [
+      "Escape",
+      "Discovery",
+      "Escape"
+    ],
+    "vehicle.name": [
+      "Saab Land Cruiser",
+      "Mazda Mustang",
+      "Seat Land Cruiser"
+    ],
+    "vehicle.registrationPlate": [
+      "TD-908-BX",
+      "UH-786-XJ",
+      "JU-755-XI"
+    ],
+    "vehicle.type": [
+      "Pickup Truck",
+      "Pickup Truck",
+      "Passenger Van"
+    ],
+    "vehicle.vin": [
+      "HRAHK9SYAPPN02DFR",
+      "DRZRY3LSXNAU7NRWX",
+      "6YFJ3VFL11E4DR0SD"
+    ],
+    "whimsy.adjective": [
+      "Keen",
+      "Lucid",
+      "Dappled"
+    ],
+    "whimsy.bandName": [
+      "Brittle Ravine",
+      "Jovial Ravine",
+      "The Anvils"
+    ],
+    "whimsy.boardGame": [
+      "Rise of the Wombats",
+      "Rise of the Herons",
+      "Grateful Turnstile"
+    ],
+    "whimsy.codename": [
+      "Operation Auburn Prism",
+      "Project Prudent Isthmus",
+      "Project Mottled Moor"
+    ],
+    "whimsy.creature": [
+      "Stoat",
+      "Umbrette",
+      "Lemur"
+    ],
+    "whimsy.cuisine": [
+      "Gujarati",
+      "Yucatecan",
+      "Vietnamese"
+    ],
+    "whimsy.dishName": [
+      "Fennel Tartare with green peppercorn",
+      "Cured Beetroot with burnt butter",
+      "Griddled Squash with green peppercorn"
+    ],
+    "whimsy.excuse": [
+      "a config flag was set in staging and not in production",
+      "the disk filled with logs about the disk filling",
+      "the clock on one node drifted"
+    ],
+    "whimsy.faculty": [
+      "Architecture",
+      "Archaeology",
+      "Engineering"
+    ],
+    "whimsy.gameMechanic": [
+      "Trick-Taking",
+      "Legacy",
+      "Engine Building"
+    ],
+    "whimsy.horseName": [
+      "Crimson Dancer",
+      "Amber Delta",
+      "Frosted Dancer"
+    ],
+    "whimsy.object": [
+      "Turnstile",
+      "Meridian",
+      "Lattice"
+    ],
+    "whimsy.paintColour": [
+      "Iguana Feather",
+      "Pewter Morning",
+      "Sable Cairn"
+    ],
+    "whimsy.peakName": [
+      "Bitter Crag",
+      "Northern Crag",
+      "Frosted Crag"
+    ],
+    "whimsy.place": [
+      "Headland",
+      "Cairn",
+      "Cairn"
+    ],
+    "whimsy.pubName": [
+      "The Gannet & Thimble",
+      "The Egrets Arms",
+      "The Dippers Arms"
+    ],
+    "whimsy.releaseName": [
+      "Tidal Tern",
+      "Vivid Vole",
+      "Sable Sturgeon"
+    ],
+    "whimsy.restaurantName": [
+      "The Marsh Kitchen",
+      "The Old Quarry",
+      "The Drifting Thimble"
+    ],
+    "whimsy.roomName": [
+      "Feral Fjord",
+      "Idle Cairn",
+      "The Magpie"
+    ],
+    "whimsy.schoolName": [
+      "Narrows Preparatory School",
+      "The Lagoon Grammar School",
+      "The Steppe Academy"
+    ],
+    "whimsy.shipName": [
+      "The Northern Tapir",
+      "The Signal of Ravine",
+      "The Frosted Zebu"
+    ],
+    "whimsy.ssid": [
+      "Tell My WiFi Love Her",
+      "Get Off My LAN",
+      "Get Off My LAN"
+    ],
+    "whimsy.starName": [
+      "Causeway Borealis",
+      "Mortar Majoris",
+      "Basin Borealis"
+    ],
+    "whimsy.superheroName": [
+      "The Bitter Quokka",
+      "The Distant Roebuck",
+      "The Frosted Lapwing"
+    ],
+    "whimsy.superpower": [
+      "Invisibility",
+      "Density Control",
+      "Sonic Scream"
+    ],
+    "whimsy.talkTitle": [
+      "Stop Doing Idempotency",
+      "Considered Harmful: Rethinking Test Fixtures",
+      "Canary Releases Without the Tears"
+    ],
+    "whimsy.technobabble": [
+      "Try to copy the protocol, maybe it will generate the digital driver",
+      "You cannot copy the card without parsing the back-end monitor",
+      "You cannot override the card without compressing the redundant matrix"
+    ],
+    "word.adjective": [
+      "immeasurable",
+      "unlucky",
+      "stuck"
+    ],
+    "word.adverb": [
+      "weightily",
+      "abroad",
+      "directly"
+    ],
+    "word.conjunction": [
+      "whereas",
+      "nor",
+      "either"
+    ],
+    "word.interjection": [
+      "bravo",
+      "huh",
+      "huh"
+    ],
+    "word.noun": [
+      "maturity",
+      "dole",
+      "twill"
+    ],
+    "word.preposition": [
+      "against",
+      "on",
+      "outside"
+    ],
+    "word.verb": [
+      "bandy",
+      "ensnare",
+      "cure"
+    ],
+    "word.words": [
+      "defense meditation future",
+      "roundel nylon feller",
+      "stuffing changer autonomy"
+    ]
+  },
   "fun": {
     "bandName": [
       "The Umbral Panthers",

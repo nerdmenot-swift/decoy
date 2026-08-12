@@ -17,6 +17,7 @@ import { $ } from 'bun'
 import { existsSync, mkdirSync, writeFileSync, readFileSync, readdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { readSurface, key, call } from './parse'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO = join(HERE, '..', '..')
@@ -39,7 +40,7 @@ function chainFor(code: string): string[] {
   return parts.filter((c) => existsSync(join(CORPUS, `${c}.decoy`)))
 }
 
-const SWIFT = (locales: Record<string, string[]>) => `
+const SWIFT = (locales: Record<string, string[]>, probes: string) => `
 import Decoy
 import Foundation
 
@@ -71,6 +72,13 @@ func rows(_ locale: LocaleCorpus, seed: UInt64, count: Int) -> [Row] {
         )
     }
 }
+
+/// Everything stringifies the same way, so tuples, dictionaries, numbers and dates
+/// all reach the reference without a special case per return type.
+func s<T>(_ v: T) -> String { v as? String ?? String(describing: v) }
+func mk(_ seed: UInt64) -> Faker { Faker(seed: seed, locale: load("en", ["en", "base"])) }
+var api: [String: [String]] = [:]
+${probes}
 
 var out: [String: [String: [Row]]] = [:]
 ${Object.entries(locales)
@@ -147,8 +155,8 @@ ${Object.entries(locales)
 
 let enc = JSONEncoder()
 enc.outputFormatting = [.prettyPrinted, .sortedKeys]
-struct Payload: Encodable { let locales: [String: [String: [Row]]]; let fun: [String: [String]]; let prov: [String: [String: Prov]] }
-FileHandle.standardOutput.write(try! enc.encode(Payload(locales: out, fun: fun, prov: prov)))
+struct Payload: Encodable { let locales: [String: [String: [Row]]]; let fun: [String: [String]]; let prov: [String: [String: Prov]]; let api: [String: [String]] }
+FileHandle.standardOutput.write(try! enc.encode(Payload(locales: out, fun: fun, prov: prov, api: api)))
 `
 
 if (!existsSync(join(CORPUS, 'en.decoy'))) {
@@ -159,7 +167,19 @@ if (!existsSync(join(CORPUS, 'en.decoy'))) {
 const locales = Object.fromEntries(TOUR.map((c) => [c, chainFor(c)]))
 const tmp = join(REPO, '.website-extract')
 mkdirSync(join(tmp, 'Sources', 'extract'), { recursive: true })
-writeFileSync(join(tmp, 'Sources', 'extract', 'main.swift'), SWIFT(locales))
+const surface = readSurface(join(REPO, 'Sources', 'Decoy', 'Generators'))
+let probeSeed = 1000
+const probes = surface
+  .filter((m) => m.callable)
+  .map((m) => {
+    const lines = [`api["${key(m)}"] = []`]
+    for (let i = 0; i < 3; i++)
+      lines.push(`api["${key(m)}"]?.append(s({ var f = mk(${probeSeed + i}); return ${call(m)} }()))`)
+    probeSeed += 3
+    return lines.join('\n')
+  })
+  .join('\n')
+writeFileSync(join(tmp, 'Sources', 'extract', 'main.swift'), SWIFT(locales, probes))
 writeFileSync(
   join(tmp, 'Package.swift'),
   `// swift-tools-version: 6.0
@@ -189,96 +209,149 @@ console.log(
 // Generated reference pages
 // ---------------------------------------------------------------------------
 //
-// Three pages are written from the source rather than by hand, because a hand-kept
-// list of 315 methods is a list that is correct on the day it is written. The counts
-// in this repository have drifted three times already; a generator cannot drift.
+// One page per namespace, every method listed with output the library actually
+// produced during this build. Hand-written examples go stale silently; these cannot.
 
-const DOCS = join(HERE, '..', 'src', 'content', 'docs', 'reference')
-const GENERATORS = join(REPO, 'Sources', 'Decoy', 'Generators')
+const DOCS = join(HERE, '..', 'src', 'content', 'docs')
+const API_DIR = join(DOCS, 'api')
 
-/** Every `public [mutating] func` inside each `public struct …Faker`. */
-function surface(): Map<string, string[]> {
-  const found = new Map<string, string[]>()
-  for (const file of readdirSync(GENERATORS).filter((f) => f.endsWith('.swift'))) {
-    const src = readFileSync(join(GENERATORS, file), 'utf8')
-    let current: string | null = null
-    for (const line of src.split('\n')) {
-      const struct = line.match(/^\s*public struct ([A-Za-z]+)Faker\b/)
-      if (struct) {
-        current = struct[1][0].toLowerCase() + struct[1].slice(1)
-        if (!found.has(current)) found.set(current, [])
-        continue
-      }
-      const fn = line.match(/^\s*public (?:mutating )?func ([a-z][A-Za-z0-9]*)\s*\(/)
-      if (fn && current) found.get(current)!.push(fn[1])
-    }
-  }
-  return found
-}
-
-const NAMESPACE_NOTES: Record<string, string> = {
-  location: 'Cities, addresses, postcodes, subdivisions, coordinates.',
-  whimsy: 'Invented things — pubs, bands, codenames, technobabble.',
-  internet: 'Emails, domains, user agents, passwords, colours.',
-  instant: 'Timestamps without Foundation.',
-  date: 'The same, as `Foundation.Date`. Compiled only where Foundation exists.',
-  person: 'Names, honorifics, jobs, zodiac.',
-  system: 'Files, MIME types, semver, error messages.',
-  finance: 'IBANs, cards, currencies, transactions.',
-  notable: 'Historical figures and a short list of public ones.',
-  commerce: 'Products, departments, reviews.',
-  beverage: 'Invented beer, wine, whisky, coffee, tea.',
-  food: 'Real produce, cheeses, dishes, breads.',
-  company: 'Names, legal forms, buzzwords.',
-  media: 'Books, films, songs, genres, instruments.',
-  animal: 'Animals, birds, breeds, insects, pet names.',
-  nature: 'Mountains, rivers, lakes, islands, trees, gemstones.',
-  word: 'Parts of speech, from wordnets.',
-  vehicle: 'Manufacturers, models, plates, VINs.',
+/** What each namespace is for, in one line, shown on its page and in the index. */
+const ABOUT: Record<string, string> = {
+  person: 'Names, honorifics, job titles, gender, zodiac.',
+  location: 'Addresses, cities, subdivisions, postcodes, coordinates, countries.',
+  internet: 'Emails, usernames, domains, URLs, IPs, user agents, passwords.',
+  company: 'Company names, legal forms, catchphrases, buzzwords.',
+  commerce: 'Products, departments, prices, SKUs, barcodes, reviews.',
+  finance: 'IBANs, card numbers, account numbers, currencies, transactions.',
+  phone: 'Numbers in each locale’s own format, area codes, IMEI.',
+  instant: 'Dates and times as `Timestamp`, with no Foundation dependency.',
+  date: 'The same values as `Foundation.Date`. Only where Foundation exists.',
+  system: 'File names and paths, MIME types, semver, error messages.',
+  database: 'Engines, collations, column names and types.',
+  crypto: 'Hashes and checksummed blockchain addresses.',
   lorem: 'Placeholder prose, in Latin.',
-  crypto: 'Hashes and checksummed chain addresses.',
-  brand: 'Cameras, phones, watches, appliances.',
-  airline: 'Airports, aircraft, flight numbers, seats.',
-  sport: 'Invented clubs, venues, trophies; real disciplines.',
-  institution: 'Universities, clubs, museums, newspapers.',
-  color: 'Human names, hex, RGB, colour spaces.',
-  phone: 'Numbers in each locale’s own format, IMEI.',
-  database: 'Engines, collations, column types.',
+  word: 'Single words by part of speech, from wordnets.',
+  color: 'Human colour names, hex, RGB, colour spaces.',
   science: 'Chemical elements and SI units.',
+  vehicle: 'Manufacturers, models, fuel types, plates, VINs.',
+  airline: 'Airports, aircraft, flight numbers, seats, record locators.',
+  animal: 'Animals, birds, fish, insects, breeds, pet names.',
+  food: 'Fruit, vegetables, cheeses, dishes, breads, seafood.',
+  nature: 'Mountains, rivers, lakes, islands, trees, flowers, gemstones, weather.',
+  media: 'Book, film and song titles, authors, genres, instruments.',
+  notable: 'Historical figures, plus a short list of living public ones.',
+  brand: 'Cameras, phones, watches, fashion, sportswear, appliances.',
+  institution: 'Universities, football clubs, museums, newspapers, orchestras.',
+  whimsy: 'Invented pubs, bands, codenames, superheroes, technobabble.',
+  beverage: 'Invented beers, wines, whiskies, cocktails, coffees, teas.',
+  sport: 'Invented clubs, venues and trophies; real disciplines.',
 }
 
-function writeNamespaces() {
-  const api = [...surface().entries()].sort((a, b) => b[1].length - a[1].length)
-  const total = api.reduce((n, [, m]) => n + m.length, 0)
-  const body = api
-    .map(([ns, methods]) => {
-      const notes = NAMESPACE_NOTES[ns] ? `\n${NAMESPACE_NOTES[ns]}\n` : '\n'
-      return `### \`${ns}\` · ${methods.length}\n${notes}\n` +
-        methods.map((m) => `\`${m}()\``).join(' · ')
-    })
-    .join('\n\n')
-  writeFileSync(join(DOCS, 'namespaces.md'),
+/** Namespaces whose values are invented, or real-but-unverified. Flagged on the page
+ *  so nobody ships one believing it carries the same guarantee as a sourced field. */
+const CAVEAT: Record<string, string> = {
+  whimsy: 'invented',
+  beverage: 'invented',
+  sport: 'invented',
+  animal: 'unverified',
+  food: 'unverified',
+  nature: 'unverified',
+  media: 'unverified',
+  notable: 'unverified',
+  brand: 'unverified',
+  institution: 'unverified',
+}
+
+const NOTE: Record<string, string> = {
+  invented:
+    ':::note[Invented]\nValues here are composed, not sourced. There is no fact of the ' +
+    'matter for them to be wrong about — which is exactly why they are allowed.\n:::',
+  unverified:
+    ':::caution[High accuracy, unverified]\nThese are real things, written from general ' +
+    'knowledge rather than fetched from a registry. Every other source in the corpus is ' +
+    'pinned and hash-verified; this one cannot be.\n:::',
+}
+
+function escapeCell(v: string) {
+  return v.replace(/\|/g, '\\|').replace(/\n/g, ' ').slice(0, 90)
+}
+
+function writeApiPages(api: Record<string, string[]>) {
+  const surface = readSurface(join(REPO, 'Sources', 'Decoy', 'Generators'))
+  const byNs = new Map<string, typeof surface>()
+  for (const m of surface) {
+    const ns = m.ns || 'faker'
+    if (!byNs.has(ns)) byNs.set(ns, [])
+    byNs.get(ns)!.push(m)
+  }
+
+  mkdirSync(API_DIR, { recursive: true })
+  const index: string[] = []
+
+  for (const [ns, methods] of [...byNs.entries()].sort()) {
+    const accessor = ns === 'faker' ? 'faker' : `faker.${ns}`
+    const rows = methods
+      .map((m) => {
+        const params = m.params ? `<br /><span class="sig">${escapeCell(m.params)}</span>` : ''
+        const examples = api[key(m)]
+        const shown = examples?.length
+          ? examples.map((e) => `\`${escapeCell(e)}\``).join('<br />')
+          : '_takes arguments — see below_'
+        return `| \`${m.name}()\`${params} | ${shown} |`
+      })
+      .join('\n')
+
+    const caveat = CAVEAT[ns] ? `\n${NOTE[CAVEAT[ns]]}\n` : ''
+    writeFileSync(join(API_DIR, `${ns}.md`),
 `---
-title: Namespaces
+title: ${ns}
+description: ${ABOUT[ns] ?? `The \`${ns}\` generators.`}
+---
+
+<!-- Generated by website/scripts/extract.ts. Do not edit by hand. -->
+
+${ABOUT[ns] ?? ''}
+${caveat}
+\`\`\`swift
+var faker = Faker(seed: 1337, locale: DecoyLocaleEN.locale)
+${accessor}.${methods[0].name}()
+\`\`\`
+
+| Method | Example output |
+|---|---|
+${rows}
+
+Examples are real output from three different seeds, captured when this page was built.
+`)
+    index.push(`| [\`${ns}\`](/api/${ns}/) | ${methods.length} | ${ABOUT[ns] ?? ''} |`)
+  }
+
+  const total = surface.length
+  writeFileSync(join(API_DIR, 'index.md'),
+`---
+title: All generators
 description: Every generator Decoy ships, grouped by namespace.
 ---
 
 <!-- Generated by website/scripts/extract.ts. Do not edit by hand. -->
 
-${total} generators across ${api.length} namespaces. Every one is seeded and reproducible:
-the same seed and corpus version always give the same value.
-
-Reach them through a \`Faker\`:
+${total} generators across ${byNs.size} namespaces. Each page lists every method with
+output the library actually produced.
 
 \`\`\`swift
+import Decoy
+import DecoyLocaleEN
+
 var faker = Faker(seed: 1337, locale: DecoyLocaleEN.locale)
-faker.person.fullName()
-faker.location.placeAndPostcode()
+faker.person.fullName()      // "Riley Bonneau"
+faker.location.city()        // "Duchesne"
 \`\`\`
 
-${body}
+| Namespace | Methods | |
+|---|---|---|
+${index.join('\n')}
 `)
-  return { total, count: api.length }
+  return { total, count: byNs.size }
 }
 
 function writeSources() {
@@ -288,74 +361,56 @@ function writeSources() {
     const name = s.url ? `[${s.name}](${s.url})` : s.name
     return `| \`${s.id}\` | ${name} | \`${s.license}\` | ${s.retrieved || s.version || '—'} |`
   }).sort()
-  writeFileSync(join(DOCS, 'sources.md'),
+  writeFileSync(join(DOCS, 'reference', 'sources.md'),
 `---
 title: Sources
-description: Every source the corpus is built from, with its licence and retrieval date.
+description: Every source the corpus is built from, with licence and retrieval date.
 ---
 
 <!-- Generated by website/scripts/extract.ts. Do not edit by hand. -->
 
 ${rows.length} sources. Each is fetched from a pinned URL and verified against an SRI
-integrity hash, so a silently changed upstream fails the build rather than quietly
-altering everyone's fixtures. Licences are checked mechanically on every run against an
-Apache-2.0 compatibility list.
-
-A cached artifact is re-verified rather than trusted: a tampered cache would otherwise
-produce a corpus that passes every check on the machine that built it and nowhere else.
+integrity hash, so a changed upstream fails the build rather than quietly altering
+everyone's fixtures.
 
 | ID | Source | Licence | Retrieved |
 |---|---|---|---|
 ${rows.join('\n')}
 
-Two licence values are not SPDX identifiers and mean something specific.
-**\`public-facts\`** records a conclusion: the extracted content is facts nobody authored —
-that Antigua and Barbuda has the ISO code \`AG\`, that a German GmbH is abbreviated so
-because statute says it is — and there is no creative expression for anyone to license.
-**\`public-domain\`** is a positive statement by the publisher.
-
-Every source with a licence requiring its notice to travel also ships that notice in
-\`LICENSES/\`, and \`decoy-inspect --notice\` fails if one is about to be named without it.
+\`public-facts\` and \`public-domain\` are not SPDX identifiers. The first records that the
+extracted content is facts nobody authored — that Antigua and Barbuda has the ISO code
+\`AG\` — and so has no author to license it. The second is a positive statement by the
+publisher.
 `)
   return rows.length
 }
 
 function writeMatrix() {
   const md = readFileSync(join(REPO, 'docs', 'locale-support.md'), 'utf8')
-  const table = md.slice(md.indexOf('| Locale |'))
-  writeFileSync(join(DOCS, 'locale-matrix.md'),
+  writeFileSync(join(DOCS, 'reference', 'locale-matrix.md'),
 `---
 title: Locale matrix
-description: What each locale supplies itself, and what it borrows.
+description: What each locale supplies itself, and what it inherits.
 ---
 
 <!-- Generated by website/scripts/extract.ts from docs/locale-support.md. Do not edit. -->
 
-A locale either supplies a field itself, or resolves it through the fallback chain — in
-which case the values are **another language's**, almost always English.
+\`N\` means the locale carries its own data for that group. \`·\` means it inherits from
+the fallback chain — which almost always means English.
 
-\`N\` means the locale carries its own data for that group. \`·\` means it inherits.
+Check this before picking a locale. Generated from the compiled corpus and diffed in CI.
 
-Generated from the compiled corpus and diffed in CI, so it cannot describe a corpus that
-is no longer shipping.
+${md.slice(md.indexOf('| Locale |'))}
 
-${table}
-
-## Reading it
-
-A group is only as native as its weakest member: *Given names* needs both the female and
-male lists, so a locale carrying one and not the other reads as inherited.
-
-The last two columns behave differently from the rest. **Invented names** and
-**Real-world lists** are English-only by design and show a single native locale between
-them, so they are excluded from the coverage percentage — counting content that will
-never be translated would measure how much has been invented rather than how local a
-locale is. They appear here because a caller reaching for an animal name really does get
-English, and a table that omitted the row would read as *not offered*.
+The last two columns are English-only by design and excluded from coverage percentages.
+They are shown because a caller reaching for an animal name really does get English.
 `)
 }
 
-const ns = writeNamespaces()
+const apiStats = writeApiPages(payload.api ?? {})
 const srcCount = writeSources()
 writeMatrix()
-console.log(`  extract: ${ns.total} methods / ${ns.count} namespaces, ${srcCount} sources, matrix`)
+console.log(
+  `  extract: ${apiStats.total} methods / ${apiStats.count} namespaces, ` +
+    `${srcCount} sources, matrix`
+)
