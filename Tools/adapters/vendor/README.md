@@ -13,7 +13,8 @@ redistributable under its recorded licence.
 
 | File | Source | Licence | Why |
 |---|---|---|---|
-| `dvv-etunimet-etunimitilasto.xlsx` | `dvv-etunimet` | CC-BY-4.0 | `avoindata.suomi.fi` answers 403 from its load balancer to clients it does not recognise — GitHub's runners among them — regardless of user agent. One of 51 pinned artifacts, and the only one affected, but without it no platform could build the corpus from a fresh clone. CC BY 4.0 permits redistribution; the copyright line, source URL and full licence text ship in `NOTICE` and `LICENSES/dvv-etunimet.txt`. |
+| `us-census-surnames-surnames.zip` | `us-census-surnames` | public-domain | `www2.census.gov` sits behind a WAF that answers **HTTP 200** with a 247-byte "Request Rejected" page. That is the nastiest shape a block can take: the fetcher accepts the response, and only the integrity hash catches it. A US federal work, so public domain. It is 12.3 MB, which is more than anyone wants in a repository — the alternative is English losing its surnames, the most-drawn data in the corpus, to route around a CDN rule. |
+| `dvv-etunimet-etunimitilasto.xlsx` | `dvv-etunimet` | CC-BY-4.0 | `avoindata.suomi.fi` answers 403 from its load balancer to clients it does not recognise — GitHub's runners among them — regardless of user agent. One of 51 pinned artifacts, but without it no platform could build the corpus from a fresh clone. CC BY 4.0 permits redistribution; the copyright line, source URL and full licence text ship in `NOTICE` and `LICENSES/dvv-etunimet.txt`. |
 
 To re-vendor after re-pinning a version, download the new URL and drop it in here under the
 same name. If the upstream becomes reachable again, deleting the file is enough — the
