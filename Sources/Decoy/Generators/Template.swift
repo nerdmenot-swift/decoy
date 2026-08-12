@@ -322,12 +322,34 @@ extension Faker {
         return out
     }
 
+    /// The index just past the first occurrence of `needle`, or nil if it is absent.
+    ///
+    /// `String.range(of:)` is Foundation. The core imports none, so this compiled on macOS
+    /// only because Foundation reaches it there anyway — and the Linux and Windows builds
+    /// did not compile at all. Nothing noticed, because the CI matrix that was supposed to
+    /// enforce portability had never been run.
+    static func indexPast(_ needle: String, in text: String) -> String.Index? {
+        guard !needle.isEmpty else { return text.startIndex }
+        var start = text.startIndex
+        while start < text.endIndex {
+            var here = start
+            var wanted = needle.startIndex
+            while here < text.endIndex, wanted < needle.endIndex, text[here] == needle[wanted] {
+                here = text.index(after: here)
+                wanted = needle.index(after: wanted)
+            }
+            if wanted == needle.endIndex { return here }
+            start = text.index(after: start)
+        }
+        return nil
+    }
+
     /// Reads `"key": 123` out of a brace object without parsing it.
     static func jsonNumber(named key: String, in text: String) -> Int? {
-        guard let range = text.range(of: "\"\(key)\"") else { return nil }
+        guard let after = indexPast("\"\(key)\"", in: text) else { return nil }
         var digits = ""
         var seenColon = false
-        for character in text[range.upperBound...] {
+        for character in text[after...] {
             if character == ":" { seenColon = true; continue }
             guard seenColon else { continue }
             if character == "-" && digits.isEmpty { digits.append(character); continue }
