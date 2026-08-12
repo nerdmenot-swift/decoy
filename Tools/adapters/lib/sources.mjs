@@ -128,6 +128,31 @@ async function acquire(sourceId, artifact) {
     await rm(cached, { force: true })
   }
 
+  // A vendored copy, for upstreams that cannot be fetched from a build machine.
+  //
+  // avoindata.suomi.fi answers 403 from its load balancer to every client outside whatever
+  // it considers acceptable -- GitHub's runners, and this laptop. It is one of fifty-one
+  // pinned artifacts and the only one affected, but a cold clone could not build the corpus
+  // at all because of it, on any platform.
+  //
+  // Vendoring does not weaken anything: the hash below still decides whether the bytes are
+  // right, exactly as it does for a download, so a tampered vendored file fails the same
+  // way a tampered cache does. It is checked after the cache and before the network, so a
+  // reachable upstream is still preferred once the cache is warm.
+  const vendored = join(root, 'vendor', `${sourceId}-${suffix}`)
+  if (await exists(vendored)) {
+    const buffer = await readFile(vendored)
+    if (digest(normalise(buffer, artifact.ignoreLinesMatching), algorithm) === expected) {
+      process.stderr.write(`  vendored ${sourceId}/${artifact.name ?? suffix}\n`)
+      await writeFile(cached, buffer)
+      return cached
+    }
+    throw new Error(
+      `integrity mismatch for vendored ${vendored}\n` +
+        `Re-vendor from the pinned URL, or delete the file to fetch it.`,
+    )
+  }
+
   process.stderr.write(`  fetching ${artifact.url}\n`)
   const buffer = await fetchWithRetry(artifact.url)
 
