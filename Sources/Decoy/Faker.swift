@@ -38,7 +38,11 @@ public struct Faker: Sendable {
     public internal(set) var index: Int
 
     /// The locale and its fallback chain, which every generator reads through.
-    public let locale: LocaleCorpus
+    ///
+    /// Settable only from inside the module, so a caller cannot change it mid-stream.
+    /// ``PersonFaker/fullName(_:)`` narrows it for the length of one composition, to
+    /// keep a name's pattern and its parts from arriving in different languages.
+    public internal(set) var locale: LocaleCorpus
 
     /// Whether name generators should produce names no real person has.
     ///

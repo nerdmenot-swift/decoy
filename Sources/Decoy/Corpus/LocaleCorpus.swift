@@ -70,6 +70,37 @@ public struct LocaleCorpus: Sendable {
         return table
     }
 
+    /// The narrowed chain starting at the first corpus carrying all of `requires`.
+    ///
+    /// Exists because a pattern and the parts it interpolates can come from different
+    /// languages, and the result is not a degraded record but an incoherent one.
+    ///
+    /// Five locales — `zh_CN`, `zh_TW`, `vi`, `id_ID`, `yo_NG` — supply their own
+    /// surnames and their own name pattern but no given names. Resolving each path on
+    /// its own merits gave `zh_CN` the Han pattern `{{lastName}}{{firstName}}`, correct
+    /// in having no separator, and then filled the second half from English: `ChengAaliyah`.
+    /// Two scripts, no space, and nothing at the call site to suggest anything was wrong.
+    ///
+    /// Composing the whole name from wherever the parts come from yields `Aaliyah
+    /// Bradley` — entirely English, a visible and honest fallback rather than a chimera.
+    /// Narrowing only the *pattern* is not enough: that produced `Brenda 安期`, which
+    /// fixed the spacing and left both languages exactly where they were.
+    /// `lastName()` still returns 鄭, because a caller asking only for a surname is not
+    /// building anything self-contradictory; it is the *composition* that has to agree
+    /// with itself.
+    public func agreeing(on requires: [String]) -> LocaleCorpus {
+        for index in chain.indices {
+            let corpus = chain[index]
+            let carriesAll = requires.allSatisfy { required in
+                guard let entry = try? corpus.lookup(required) else { return false }
+                if case .explicitlyEmpty = entry { return false }
+                return true
+            }
+            if carriesAll { return LocaleCorpus(code: code, chain: Array(chain[index...])) }
+        }
+        return self
+    }
+
     /// The composite table at `path`, if the chain has one.
     public func composite(_ path: String) -> CompositeTable? {
         guard case .composite(let table)? = resolve(path) else { return nil }

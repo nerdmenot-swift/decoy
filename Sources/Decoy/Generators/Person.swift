@@ -160,7 +160,25 @@ public struct PersonFaker {
     /// Order and components are data, not code: `hu` puts the family name first, and
     /// some locales weight patterns so prefixes appear only occasionally. Hard-coding
     /// `"\(first) \(last)"` would be wrong outside Western Europe.
+    /// A full name in the locale's own order and spacing.
+    ///
+    /// The pattern is taken from a corpus that also carries the given names it
+    /// interpolates, rather than from whichever corpus mentions `person.name` first.
+    /// Resolving those independently let `zh_CN` pair its own Han pattern — correctly
+    /// spaceless — with an English given name, and produce `ChengAaliyah`. See
+    /// ``LocaleCorpus/stringsAgreeing(_:requires:)``.
     public mutating func fullName(_ gender: Gender? = nil) -> String {
+        let coherent = faker.locale.agreeing(
+            on: ["person.first_name.female", "person.first_name.male"])
+        if coherent.chain.count != faker.locale.chain.count {
+            // The whole composition is narrowed, not just the pattern: expanding against
+            // the full chain would still pull the surname from the front of it.
+            var scoped = faker
+            scoped.locale = coherent
+            let name = scoped.person.fullName(gender)
+            faker.rng = scoped.rng
+            return name
+        }
         if let pattern = faker.draw("person.name") {
             return faker.expand(pattern)
         }
