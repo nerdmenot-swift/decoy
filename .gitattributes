@@ -1,0 +1,18 @@
+# Line endings are LF everywhere, including on a Windows checkout.
+#
+# Several tests read this repository's own source as text — the generator surface count,
+# the locale-module/manifest agreement checks — and Swift's Character is an extended
+# grapheme cluster, so CRLF is a *single* Character. Splitting on "\n" therefore finds no
+# separators at all on a CRLF checkout and returns the whole file as one line. The tests
+# are newline-agnostic now, but normalising here removes the class rather than the instance.
+#
+# It also keeps the corpus adapters honest: several parse pinned upstream text files, and a
+# checkout that rewrote their bytes would change what the integrity hashes are computed over.
+* text=auto eol=lf
+
+# Binary, never touched.
+*.decoy      binary
+*.xlsx       binary
+*.zip        binary
+*.png        binary
+*.ico        binary

@@ -33,12 +33,17 @@ struct LocaleModuleTests {
     private static func declaredLocales() throws -> [(name: String, chain: [String])] {
         let manifest = try String(
             contentsOf: root.appendingPathComponent("Package.swift"), encoding: .utf8)
-        guard let start = manifest.range(of: "let locales:"),
-            let end = manifest.range(of: "\n]", range: start.upperBound..<manifest.endIndex)
-        else { return [] }
+        // Line handling is newline-agnostic on purpose. Swift's Character is an extended
+        // grapheme cluster and CRLF is a single one, so on a Windows checkout `"\n"` matches
+        // nothing: the array came back as one giant line, which parsed as a single locale
+        // named Base carrying every other locale's chain entries as its own.
+        guard let start = manifest.range(of: "let locales:") else { return [] }
+        let body = manifest[start.upperBound...]
+        let lines = body.split(whereSeparator: \.isNewline)
+        // The array ends at the first line that is just a closing bracket.
+        let entries = lines.prefix { $0.trimmingCharacters(in: .whitespaces) != "]" }
 
-        return manifest[start.upperBound..<end.lowerBound]
-            .split(separator: "\n")
+        return entries
             .compactMap { line -> (String, [String])? in
                 let quoted = line.split(separator: "\"").enumerated()
                     .filter { $0.offset % 2 == 1 }

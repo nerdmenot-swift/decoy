@@ -34,7 +34,12 @@ struct SurfaceCountTests {
             let source = try String(contentsOf: file, encoding: .utf8)
             var namespace: String?
 
-            for line in source.split(separator: "\n", omittingEmptySubsequences: false) {
+            // `whereSeparator: \.isNewline`, not `separator: "\n"`. Swift's Character is an
+            // extended grapheme cluster and CRLF is a single one, so splitting a Windows
+            // checkout on "\n" finds no separators at all and hands back the whole file as
+            // one line. Every count then came out zero, which read as "the directory is
+            // empty" rather than "the lines did not split".
+            for line in source.split(whereSeparator: \.isNewline) {
                 let trimmed = line.trimmingCharacters(in: .whitespaces)
 
                 if let name = Self.namespaceName(declaredIn: trimmed) {
