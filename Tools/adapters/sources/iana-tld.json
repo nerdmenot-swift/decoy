@@ -5,6 +5,7 @@
   "copyright": "",
   "url": "https://www.iana.org/domains/root/db",
   "version": "2026080700",
+  "versionFrom": { "artifact": "tlds", "pattern": "^# Version (\\d+)" },
   "retrieved": "2026-08-08",
   "note": [
     "IANA operates the root zone, so this is the authoritative list of top-level domains",

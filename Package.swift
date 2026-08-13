@@ -55,6 +55,13 @@ let package = Package(
         .executable(name: "decoy-validate", targets: ["DecoyCorpusValidator"]),
     ] + localeProducts,
     targets: [
+        // The corpus build pipeline, being ported from Tools/adapters/*.mjs. Kept out of
+        // the Decoy library entirely: none of it ships to anybody who installs the package.
+        .target(
+            name: "DecoyAdapterKit",
+            dependencies: ["Decoy"],
+            swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
         .target(
             name: "Decoy",
             swiftSettings: [.swiftLanguageMode(.v6)]
@@ -89,7 +96,8 @@ let package = Package(
         .testTarget(
             name: "DecoyTests",
             dependencies: [
-                "Decoy", "DecoyCorpusKit", "DecoyLocaleEN", "DecoyLocaleDE", "DecoyLocaleJA",
+                "Decoy", "DecoyCorpusKit", "DecoyAdapterKit",
+                "DecoyLocaleEN", "DecoyLocaleDE", "DecoyLocaleJA",
             ],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),

@@ -245,6 +245,28 @@ export async function loadSource(sourceId) {
           )
   }
 
+  // A version that lives inside the data is read out of it rather than transcribed.
+  //
+  // iana-tld ships its serial on the first line, and its digest deliberately ignores that
+  // line so IANA's daily regeneration does not fail the build for an unchanged list. The
+  // consequence nobody accounted for is that the transcribed `version` then goes stale
+  // silently: the descriptor claimed 2026080700 while the file that actually compiled in
+  // said 2026081200. Provenance naming the wrong version of a source is the one failure
+  // this project cannot afford, so where the artifact states its own version, that wins.
+  if (descriptor.versionFrom) {
+    const { artifact: name, pattern } = descriptor.versionFrom
+    const path = artifacts[name]
+    if (!path) throw new Error(`${sourceId}: versionFrom names unknown artifact '${name}'`)
+    const found = (await readFile(path, 'utf8')).match(new RegExp(pattern, 'm'))?.[1]
+    if (!found) {
+      throw new Error(
+        `${sourceId}: versionFrom pattern /${pattern}/ matched nothing in '${name}'. ` +
+          `Upstream changed its header; fix the pattern rather than transcribing a version.`,
+      )
+    }
+    descriptor.version = found
+  }
+
   return { descriptor, artifacts }
 }
 
