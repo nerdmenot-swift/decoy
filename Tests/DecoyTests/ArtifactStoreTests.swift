@@ -49,23 +49,36 @@ struct ArtifactStoreTests {
     }
 
     /// A cached file is re-verified, never trusted.
+    ///
+    /// The tampering happens on a copy in memory rather than on the file in `.cache`. The
+    /// first version wrote the corrupted bytes to the real cache and restored them in a
+    /// `defer`, which is safe only if nothing else reads that file meanwhile — and
+    /// swift-testing runs tests in parallel, so `IANATLDAdapter` read it mid-corruption and
+    /// reported `entry 378: "evil" vs "exchange"`. A test that mutates shared state on disk
+    /// is a test that fails somebody else.
     @Test("a corrupted cache entry is rejected and re-fetched, not used")
-    func corruptedCache() async throws {
+    func corruptedCache() throws {
         let store = ArtifactStore(root: Self.root)
         let descriptor = try Self.descriptor("iana-tld")
         let artifact = try #require(descriptor.artifacts?.first)
         let cached = store.cacheDirectory
             .appendingPathComponent("iana-tld-\(artifact.cacheSuffix)")
         let original = try Data(contentsOf: cached)
-        defer { try? original.write(to: cached) }
 
         // A plausible-looking file with one TLD swapped: exactly what a tampered mirror
         // would serve, and the case the digest exists for.
         let tampered = String(decoding: original, as: UTF8.self)
             .replacingOccurrences(of: "\nZONE", with: "\nEVIL")
-        try Data(tampered.utf8).write(to: cached)
+        #expect(tampered != String(decoding: original, as: UTF8.self), "nothing was tampered")
 
         let expectation = try Integrity.Expectation(artifact.integrity)
+        // The real bytes still verify …
+        #expect(throws: Never.self) {
+            try Integrity.verify(
+                [UInt8](original), against: expectation, source: "iana-tld",
+                url: artifact.url, ignoringLinesMatching: artifact.ignoreLinesMatching)
+        }
+        // … and the altered ones do not.
         #expect(throws: Integrity.Failure.self) {
             try Integrity.verify(
                 [UInt8](Data(tampered.utf8)), against: expectation, source: "iana-tld",
