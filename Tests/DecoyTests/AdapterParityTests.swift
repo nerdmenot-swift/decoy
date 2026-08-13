@@ -30,6 +30,9 @@ struct AdapterParityTests {
         USSurnamesAdapter(),
         AirportsAdapter(),
         ProgrammingLanguagesAdapter(),
+        IANATZDBAdapter(),
+        PersianWordsAdapter(),
+        LatinWordsAdapter(),
     ]
 
     private static func roster() -> (locales: [String], cldr: [String: String?]) {
