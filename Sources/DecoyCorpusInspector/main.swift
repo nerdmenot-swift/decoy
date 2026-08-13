@@ -543,33 +543,60 @@ func matrix(_ directory: URL) throws {
     /// that. Each group names the paths whose absence would be felt: `person.first_name`
     /// and `last_name` are what make a name look local, and a group is only as native as
     /// its weakest member.
-    let groups: [(String, [String])] = [
-        ("Given names", ["person.first_name.female", "person.first_name.male"]),
-        ("Surnames", ["person.last_name.generic", "person.last_name.male"]),
-        ("Cities", ["location.city_name"]),
-        ("Streets", ["location.street_pattern", "location.street_name"]),
-        ("Postcodes", ["location.postcode"]),
-        ("Addresses", ["location.postal_address"]),
-        ("Phone numbers", ["phone_number.format.national"]),
-        ("Subdivisions", ["location.state"]),
-        ("Countries", ["location.country"]),
-        ("Colours", ["color.human"]),
-        ("Compass", ["location.direction.cardinal"]),
-        ("Zodiac", ["person.western_zodiac_sign"]),
-        ("Company forms", ["company.legal_entity_type"]),
-        ("Products", ["commerce.product_name.product"]),
-        ("Departments", ["commerce.department"]),
-        ("Job titles", ["person.job_title"]),
-        ("Vocabulary", ["word.noun"]),
+    ///
+    /// Each group is a list of *alternatives*, and an alternative is a set of paths that
+    /// must all be present. `[[a], [b, c]]` therefore means "a, or both b and c".
+    ///
+    /// The distinction is not pedantry. This used to be a flat list tested with
+    /// `contains(where:)` — any one path sufficed — which contradicted the sentence above
+    /// and over-reported: Danish, Croatian, Persian, Georgian and Macedonian were all
+    /// marked ✓ for given names while holding male names only. `fullName()` needs a chain
+    /// that can supply both sexes, so those five produced *entirely English* full names
+    /// from a table that said their given names were native. That is the exact failure the
+    /// matrix is published to prevent.
+    ///
+    /// `allSatisfy` over the flat list would have been just as wrong the other way: for
+    /// surnames the two paths are alternatives, and most locales carry only `generic`.
+    let groups: [(String, [[String]])] = [
+        // Either a generic list, or both sexes. One sex alone cannot compose a full name.
+        (
+            "Given names",
+            [
+                ["person.first_name.generic"],
+                ["person.first_name.female", "person.first_name.male"],
+            ]
+        ),
+        ("Surnames", [["person.last_name.generic"], ["person.last_name.male"]]),
+        ("Cities", [["location.city_name"]]),
+        ("Streets", [["location.street_pattern"], ["location.street_name"]]),
+        ("Postcodes", [["location.postcode"]]),
+        ("Addresses", [["location.postal_address"]]),
+        ("Phone numbers", [["phone_number.format.national"]]),
+        ("Subdivisions", [["location.state"]]),
+        ("Countries", [["location.country"]]),
+        ("Colours", [["color.human"]]),
+        ("Compass", [["location.direction.cardinal"]]),
+        ("Zodiac", [["person.western_zodiac_sign"]]),
+        ("Company forms", [["company.legal_entity_type"]]),
+        ("Products", [["commerce.product_name.product"]]),
+        ("Departments", [["commerce.department"]]),
+        ("Job titles", [["person.job_title"]]),
+        ("Vocabulary", [["word.noun"]]),
         // The invented namespaces, which no locale but English fills and which the matrix
         // would otherwise omit entirely — an omission that reads as "not offered" when the
         // truth is "offered in English to everybody". A whole column of `·` is the point.
-        ("Invented names", ["whimsy.creature", "sport.discipline", "beverage.beer_style"]),
+        (
+            "Invented names",
+            [["whimsy.creature"], ["sport.discipline"], ["beverage.beer_style"]]
+        ),
         // The other English-only group. Excluded from the coverage ratio for the reason
         // argued at `isEnglishOnlyByPolicy`, and shown here for the same reason the
         // invented column is: a caller reaching for an animal name really does get
         // English, and a table that omitted the row would read as "not offered".
-        ("Real-world lists", ["animal.animal", "food.fruit", "notable.scientist"]),
+        (
+            "Real-world lists",
+            [["animal.animal"], ["food.fruit"], ["notable.scientist"]]
+        ),
     ]
 
     let blobs = try FileManager.default
@@ -602,8 +629,9 @@ func matrix(_ directory: URL) throws {
 
     for code in own.keys.sorted() where code != "base" {
         let paths = own[code] ?? []
-        let cells = groups.map { _, wanted in
-            wanted.contains(where: { paths.contains($0) }) ? "✓" : "✗"
+        // Native when any one alternative is satisfied *in full*.
+        let cells = groups.map { _, alternatives in
+            alternatives.contains { $0.allSatisfy(paths.contains) } ? "✓" : "✗"
         }
         print("| `\(code)` | " + cells.joined(separator: " | ") + " |")
     }
