@@ -487,11 +487,11 @@ const REGISTRIES = [
         if (!Number.isFinite(bearers) || bearers <= 0) continue
         const sex = sexe === '1' ? 'male' : sexe === '2' ? 'female' : null
         if (!sex) continue
-        const key = `${sex} ${name}`
+        const key = `${sex}\u0000${name}`
         totals.set(key, (totals.get(key) ?? 0) + bearers)
       }
       return [...totals].map(([key, count]) => {
-        const [sex, name] = key.split(' ')
+        const [sex, name] = key.split('\u0000')
         return { name, sex, count }
       })
     },
