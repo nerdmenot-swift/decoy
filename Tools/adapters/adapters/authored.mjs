@@ -978,9 +978,55 @@ const PRODUCT_MATERIALS = [
   'Linen', 'Marble', 'Metal', 'Plastic', 'Rubber', 'Silk', 'Soft', 'Steel', 'Wooden',
 ]
 
+/**
+ * Locales that block English honorifics rather than inherit them.
+ *
+ * Every chain ends at English, and English carries `person.prefix`. So a locale that says
+ * nothing about honorifics does not get none — it gets *Mr.*, *Dr.* and *Prof.*, in a
+ * language that may have no prefixed honorific at all. Azerbaijani full names were coming
+ * out as "Dr. Nazir Novruzəliyev", at the 7-in-100 weight the prefix variant carries.
+ *
+ * The mechanism to stop this already existed and worked: `null` means the concept does
+ * not exist here, and it blocks the fallback. Japanese uses it, which is why Japanese was
+ * never affected. The declarations for everywhere else lived in faker-js, and when faker
+ * was removed they went with it — only Japanese was restored. The comment in
+ * `lib/patterns.mjs` claiming this was fixed reads true because the *resolver* honours
+ * nulls correctly; there were simply no nulls left for it to honour.
+ *
+ * Blocking is the safe default rather than the finished answer. A missing honorific is
+ * never wrong; a wrong-language one always is. Several of these languages do have prefixed
+ * honorifics — German Herr/Frau, French M./Mme, Spanish Sr./Sra. are already supplied by
+ * their own locales and are absent from this list — and the ones below should get real
+ * data source by source rather than a guess. Turkish belongs here permanently: Bey and
+ * Hanım follow the name, so a prefix is wrong in the same way it is for Japanese.
+ *
+ * Locales inheriting from a same-language ancestor are deliberately absent: es_MX takes
+ * Spanish honorifics from `es`, fr_CA and fr_SN take French from `fr`, and the en_*
+ * family takes English from `en`, all of which is correct.
+ */
+const NO_PREFIXED_HONORIFIC = [
+  'ar', 'az', 'bn_BD', 'cs_CZ', 'cy', 'da', 'el', 'fa', 'fi', 'he', 'hr', 'hu', 'hy',
+  'id_ID', 'ka_GE', 'ko', 'lv', 'mk', 'nb_NO', 'pl', 'pt_BR', 'ro', 'ro_MD', 'ru', 'sk',
+  'sl_SI', 'sr_RS_latin', 'sv', 'tr', 'uk', 'vi', 'yo_NG', 'zh_CN', 'zh_TW',
+]
+
+/**
+ * Adds the block without disturbing anything a locale already contributes.
+ *
+ * Merged rather than spread: object spread replaces a key outright, and five of the
+ * locales above (da, nb_NO, pt_BR, sv, tr) already receive street data from
+ * `streetContributions()`. A second spread would have silently discarded it.
+ */
+function withBlockedHonorifics(contributions) {
+  for (const code of NO_PREFIXED_HONORIFIC) {
+    contributions[code] = { ...contributions[code], 'person.prefix': null }
+  }
+  return contributions
+}
+
 export async function run() {
   return {
-    contributions: {
+    contributions: withBlockedHonorifics({
       ...streetContributions(),
       // `base` for anything language-neutral enough that falling through to it is right,
       // `en` for anything that is plainly English and should be shadowed by a locale that
@@ -1056,7 +1102,7 @@ export async function run() {
         'commerce.product_name.adjective': PRODUCT_ADJECTIVES,
         'commerce.product_name.material': PRODUCT_MATERIALS,
       },
-    },
+    }),
     stats: { lists: 38 },
   }
 }
