@@ -14,8 +14,8 @@ jobs:
     name: macOS
     runs-on: macos-15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 26
 
@@ -23,7 +23,7 @@ jobs:
       # cache and re-fetches. A hit still re-verifies every artifact against its
       # integrity hash in lib/sources.mjs, so this costs nothing in safety.
       - name: Cache pinned upstreams
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: Tools/adapters/.cache
           key: corpus-sources-${{ runner.os }}-${{ hashFiles('Tools/adapters/sources/*.json') }}
@@ -96,13 +96,13 @@ jobs:
       - name: Install archive tools
         run: apt-get update -qq && apt-get install -y -qq xz-utils unzip
 
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 26
 
       - name: Cache pinned upstreams
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: Tools/adapters/.cache
           key: corpus-sources-${{ runner.os }}-${{ hashFiles('Tools/adapters/sources/*.json') }}
@@ -117,28 +117,33 @@ jobs:
 
       - run: swift test
 
-  # Best-effort. Swift on Windows is the least mature of the three toolchains; a failure
-  # here should prompt a portability fix, not block a release.
+  # Enforced, now that it passes.
+  #
+  # This was continue-on-error while Windows could not get through the build, which was the
+  # right call then and the wrong one the moment it went green: an allowed failure is a
+  # standing exemption, and the next regression would have been invisible inside it. The
+  # three things that had to be fixed to get here -- a Foundation-only String API, an ESM
+  # loader that rejects `D:\...`, and CRLF being a single Swift Character -- were all
+  # silent everywhere else, which is the argument for keeping this honest.
   windows:
-    name: Windows (best-effort)
+    name: Windows
     runs-on: windows-latest
-    continue-on-error: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: compnerd/gha-setup-swift@main
         with:
-          branch: swift-6.3.3-release
-          tag: 6.3.3-RELEASE
-      - uses: actions/setup-node@v4
+          swift-version: swift-6.3.3-release
+          swift-build: 6.3.3-RELEASE
+      - uses: actions/setup-node@v7
         with:
           node-version: 26
 
       # The other two jobs cache the pinned upstreams and this one did not, so it re-fetched
       # all fifty-one artifacts on every run -- the only job fully exposed to a transient
       # upstream, and it duly failed on a PubChem 503 that had nothing to do with Windows.
-      # A best-effort job that fails for unrelated reasons stops being read at all.
+      # A job that fails for reasons unrelated to what it tests stops being read at all.
       - name: Cache pinned upstreams
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: Tools/adapters/.cache
           key: corpus-sources-${{ runner.os }}-${{ hashFiles('Tools/adapters/sources/*.json') }}
