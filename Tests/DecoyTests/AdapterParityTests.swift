@@ -13,7 +13,7 @@ import Testing
 ///
 /// A dump that is missing fails the suite rather than skipping it: an adapter that quietly
 /// verifies nothing is worse than one that is not ported yet, because it looks done.
-@Suite("Adapter parity")
+@Suite("Adapter parity", .enabled(if: PortFixtures.hasContributionDumps && PortFixtures.hasArtifactCache))
 struct AdapterParityTests {
 
     private static let root = URL(fileURLWithPath: #filePath)

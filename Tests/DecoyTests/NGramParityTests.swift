@@ -13,7 +13,7 @@ import Testing
 /// Comparing against the committed intermediate JSON rather than against a fixture is
 /// deliberate: the fixture would be something I wrote, and the thing that has to be
 /// reproduced is what shipped.
-@Suite("N-gram trainer parity")
+@Suite("N-gram trainer parity", .enabled(if: PortFixtures.hasIntermediateJSON))
 struct NGramParityTests {
 
     private static let out = URL(fileURLWithPath: #filePath)

@@ -78,7 +78,9 @@ struct XLSXTests {
         #expect(built == ["0", "", "1"], "the gap at B must survive as an empty cell")
     }
 
-    @Test("every real workbook reads identically to the JavaScript")
+    @Test(
+        "every real workbook reads identically to the JavaScript",
+        .enabled(if: PortFixtures.hasReference("/tmp/xlsx-node.json")))
     func realWorkbooks() throws {
         guard let data = try? Data(contentsOf: Self.reference),
             let expected = try? JSONSerialization.jsonObject(with: data) as? [String: Any]

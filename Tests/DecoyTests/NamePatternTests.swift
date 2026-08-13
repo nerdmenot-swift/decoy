@@ -67,7 +67,9 @@ struct NamePatternTests {
             NamePatterns.namePattern(resolves: has, surnameFirst: false, separator: " ").count == 3)
     }
 
-    @Test("Swift reproduces every locale's pattern")
+    @Test(
+        "Swift reproduces every locale's pattern",
+        .enabled(if: PortFixtures.hasReference("/tmp/patterns-node.json")))
     func parity() throws {
         guard let data = try? Data(contentsOf: Self.reference),
             let expected = try? JSONSerialization.jsonObject(with: data) as? [String: [[String: Any]]]

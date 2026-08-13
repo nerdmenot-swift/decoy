@@ -72,7 +72,9 @@ struct BloomFilterTests {
         #expect(ones > 0)
     }
 
-    @Test("Swift reproduces every shipped filter")
+    @Test(
+        "Swift reproduces every shipped filter",
+        .enabled(if: PortFixtures.hasReference("/tmp/models-node.json")))
     func parity() throws {
         guard let data = try? Data(contentsOf: Self.reference),
             let expected = try? JSONSerialization.jsonObject(with: data) as? [String: [String: Any]]

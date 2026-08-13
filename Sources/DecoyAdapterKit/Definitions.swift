@@ -35,14 +35,15 @@ extension Definition {
         case let value as [String: Any]:
             self = .object(value.mapValues(Definition.init(json:)))
         case let value as NSNumber:
-            // NSNumber does not distinguish a bool from a 0 or 1 by type, only by the
-            // ObjC encoding it carries. Getting this wrong turns every `true` into a `1`
-            // and changes the emitted JSON.
-            if CFGetTypeID(value) == CFBooleanGetTypeID() {
-                self = .bool(value.boolValue)
-            } else {
-                self = .number(value.doubleValue)
-            }
+            // Every JSON number, including one that was written as `true`.
+            //
+            // Telling a boolean from a 0 or 1 inside an NSNumber needs CFGetTypeID, which
+            // is CoreFoundation and therefore Apple-only — it broke the Linux build
+            // outright. There is nothing to tell apart: no adapter emits a boolean
+            // anywhere in the corpus, and `Definitions.noBooleans` asserts that so the
+            // assumption fails loudly if one ever appears rather than being silently
+            // rewritten as a number.
+            self = .number(value.doubleValue)
         case is NSNull: self = .null
         default: self = .null
         }

@@ -77,6 +77,37 @@ struct OrchestratorTests {
         #expect(serbian.allSatisfy(roster.contains))
     }
 
+    /// The assumption that let the bool case go.
+    ///
+    /// Distinguishing a boolean from a 0 or 1 inside an NSNumber needs CFGetTypeID, which
+    /// is CoreFoundation and Apple-only — it broke the Linux build outright. Dropping it is
+    /// only safe while no adapter emits one, so that is asserted rather than assumed.
+    @Test(
+        "no adapter contributes a boolean",
+        .enabled(if: PortFixtures.hasContributionDumps))
+    func noBooleans() throws {
+        func booleans(in value: Definition) -> Int {
+            switch value {
+            case .bool: return 1
+            case .list(let items): return items.reduce(0) { $0 + booleans(in: $1) }
+            case .object(let fields): return fields.values.reduce(0) { $0 + booleans(in: $1) }
+            default: return 0
+            }
+        }
+        var found = 0
+        var scanned = 0
+        for adapter in Self.adapters() {
+            for (_, paths) in adapter.contributions {
+                for (_, value) in paths {
+                    found += booleans(in: value)
+                    scanned += 1
+                }
+            }
+        }
+        #expect(scanned > 0, "no contributions scanned")
+        #expect(found == 0, "a boolean appeared; Definition needs a portable bool decode")
+    }
+
     @Test("two adapters claiming one path is refused, not resolved")
     func conflict() {
         let orchestrator = Orchestrator(roster: ["en"])
@@ -111,7 +142,9 @@ struct OrchestratorTests {
         #expect(first?.keys.sorted() == ["female", "male"])
     }
 
-    @Test("merging all 32 real adapters reproduces what the JavaScript emitted")
+    @Test(
+        "merging all 32 real adapters reproduces what the JavaScript emitted",
+        .enabled(if: PortFixtures.hasContributionDumps))
     func parity() throws {
         let roster = Self.roster()
         let adapters = Self.adapters()

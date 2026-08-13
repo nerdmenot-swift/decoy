@@ -12,7 +12,7 @@ import Testing
 ///
 /// If this suite passes, the port cannot silently accept an artifact the old pipeline
 /// would have rejected, which is the only property that matters here.
-@Suite("Integrity against the real pinned artifacts")
+@Suite("Integrity against the real pinned artifacts", .enabled(if: PortFixtures.hasArtifactCache))
 struct IntegrityTests {
 
     private static let root = URL(fileURLWithPath: #filePath)

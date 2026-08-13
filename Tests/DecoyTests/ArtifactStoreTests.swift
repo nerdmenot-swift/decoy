@@ -9,7 +9,7 @@ import Testing
 /// cache filename, or accepts a file the old one would have rejected, the first Swift run
 /// silently re-downloads fifty-one artifacts or — much worse — builds a corpus from bytes
 /// nothing checked.
-@Suite("Artifact store")
+@Suite("Artifact store", .enabled(if: PortFixtures.hasArtifactCache))
 struct ArtifactStoreTests {
 
     private static let root = URL(fileURLWithPath: #filePath)
