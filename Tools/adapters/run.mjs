@@ -19,7 +19,7 @@
 
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 import { MODELLED_FIELDS, loadBlocklists, trainLocale } from './lib/models.mjs'
 import { applyNamePatterns, loadNameFormats } from './lib/patterns.mjs'
@@ -178,7 +178,10 @@ async function main() {
   // rather than all at once.
   const adapters = []
   for (const file of adapterFiles) {
-    adapters.push(await import(join(here, 'adapters', file)))
+    // pathToFileURL, not the bare path: Node's ESM loader rejects an absolute Windows
+    // path because it reads `D:\\...` as a URL with scheme `d:`. On macOS and Linux a
+    // leading slash happens to parse, which is why this only ever failed on Windows.
+    adapters.push(await import(pathToFileURL(join(here, 'adapters', file)).href))
   }
   adapters.sort((a, b) => (a.fallback ? 1 : 0) - (b.fallback ? 1 : 0))
 

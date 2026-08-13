@@ -90,6 +90,12 @@ jobs:
     runs-on: ubuntu-latest
     container: swift:6.3
     steps:
+      # The Swift image is Debian slim and carries neither. GNU tar shells out to a
+      # separate `xz` binary for .tar.xz, and zips go through `unzip` rather than whichever
+      # tar the host has, so both are needed to unpack the pinned artifacts.
+      - name: Install archive tools
+        run: apt-get update -qq && apt-get install -y -qq xz-utils unzip
+
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:

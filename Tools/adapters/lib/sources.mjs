@@ -187,9 +187,32 @@ async function extract(archive, destination, format) {
   await mkdir(destination, { recursive: true })
   // `tar` handles zip on macOS via libarchive but not with GNU tar on Linux, so zips go
   // through `unzip` explicitly rather than relying on which tar the host happens to have.
-  if (format === 'zip') await run('unzip', ['-q', '-o', archive, '-d', destination])
-  else if (format === 'tar.xz') await run('tar', ['xJf', archive, '-C', destination])
-  else await run('tar', ['xzf', archive, '-C', destination])
+  const [command, args] =
+    format === 'zip'
+      ? ['unzip', ['-q', '-o', archive, '-d', destination]]
+      : format === 'tar.xz'
+        ? ['tar', ['xJf', archive, '-C', destination]]
+        : ['tar', ['xzf', archive, '-C', destination]]
+  try {
+    await run(command, args)
+  } catch (error) {
+    // GNU tar shells out to a separate `xz` binary, and the official Swift Linux image
+    // does not carry one -- so this failed with "xz: Cannot exec: No such file or
+    // directory" buried in a child process's stderr, which reads like a corrupt archive
+    // rather than a missing package. Node has no built-in xz, so shelling out is right;
+    // saying which tool is absent is the part that was missing.
+    const missing = /Cannot exec|not found|ENOENT/i.test(`${error.stderr ?? ''}${error.message}`)
+    const tool = format === 'zip' ? 'unzip' : format === 'tar.xz' ? 'xz' : 'tar'
+    throw new Error(
+      `could not unpack ${archive} (${format})` +
+        (missing
+          ? `: \`${tool}\` is not installed.\n` +
+            `Install it (Debian/Ubuntu: apt-get install -y ${
+              tool === 'xz' ? 'xz-utils' : tool
+            }; macOS: preinstalled) and re-run.`
+          : `\n${error.stderr ?? error.message}`),
+    )
+  }
   return destination
 }
 
