@@ -139,9 +139,19 @@ for (const [code, languageID] of Object.entries(LANGUAGES)) {
   const forLocale = {}
   for (const [kind, classID] of Object.entries(CLASSES)) {
     const labels = await ask(queryFor(classID, languageID, code))
+    // A failed query used to `continue`, which wrote the locale with that category simply
+    // absent -- indistinguishable from "Wikidata has no Danish female given names". That is
+    // exactly what happened: `da` shipped with none, Danish full names fell back to English
+    // entirely, and the only trace was a line on stderr in a run nobody kept.
+    //
+    // Failing here loses the locale rather than corrupting it. The file is written after
+    // every locale and the loop resumes from what is on disk, so re-running picks up where
+    // this stopped.
     if (labels === null) {
-      process.stderr.write(`${code} ${kind}: endpoint gave up\n`)
-      continue
+      throw new Error(
+        `${code} ${kind}: endpoint gave up after retries. Re-run to resume -- do not ` +
+          `commit a snapshot with a category missing, it reads as an absence of data.`,
+      )
     }
     const kept = [...new Set(labels.filter(usable))].sort()
     if (kept.length >= 40) forLocale[kind] = kept
