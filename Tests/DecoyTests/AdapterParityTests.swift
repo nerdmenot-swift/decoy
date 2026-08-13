@@ -33,6 +33,8 @@ struct AdapterParityTests {
         IANATZDBAdapter(),
         PersianWordsAdapter(),
         LatinWordsAdapter(),
+        MIMETypesAdapter(),
+        EmojiAdapter(),
     ]
 
     private static func roster() -> (locales: [String], cldr: [String: String?]) {
@@ -84,7 +86,15 @@ struct AdapterParityTests {
         guard let mine else { return "missing entirely" }
         switch (mine, theirs) {
         case (.list(let a), .list(let b)):
-            if a.count != b.count { return "\(a.count) entries vs \(b.count)" }
+            if a.count != b.count {
+                // Counts alone localise nothing. The first index where the two diverge is
+                // what says *which* entry was gained or lost.
+                let firstDiff = zip(a, b).enumerated().first { $0.element.0 != $0.element.1 }
+                let where_ = firstDiff.map {
+                    " — first divergence at \($0.offset): \(compact($0.element.0)) vs \(compact($0.element.1))"
+                } ?? " — identical up to the shorter one"
+                return "\(a.count) entries vs \(b.count)\(where_)"
+            }
             for (index, pair) in zip(a, b).enumerated() where pair.0 != pair.1 {
                 return "entry \(index): \(compact(pair.0)) vs \(compact(pair.1))"
             }

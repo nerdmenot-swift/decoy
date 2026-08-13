@@ -75,7 +75,15 @@ export async function run({ artifacts }) {
     }
 
     // The emoji itself is the first token after the `# ` that follows the status field.
-    const emoji = line.split('#')[1]?.trim().split(/\s+/)[0]
+    //
+    // Split at the *first* `#` rather than on every one. `split('#')` walks UTF-16 code
+    // units, so it cut through the keycap emoji U+0023 U+FE0F U+20E3 -- whose first unit
+    // is `#` -- and left a fragment that trimmed to nothing. That silently dropped the one
+    // emoji in the file containing the comment character, while its sibling `*️⃣` came
+    // through fine. Found by the Swift port, where `components(separatedBy:)` splits on
+    // grapheme clusters and kept it.
+    const comment = line.indexOf('#')
+    const emoji = comment < 0 ? undefined : line.slice(comment + 1).trim().split(/\s+/)[0]
     if (!emoji) continue
 
     ;(byCategory[category] ??= []).push(emoji)
