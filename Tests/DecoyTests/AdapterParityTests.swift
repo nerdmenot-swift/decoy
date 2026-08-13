@@ -37,6 +37,7 @@ struct AdapterParityTests {
         EmojiAdapter(),
         WikidataColoursAdapter(),
         WikidataTermsAdapter(),
+        IANAWebAdapter(),
     ]
 
     private static func roster() -> (locales: [String], cldr: [String: String?]) {
