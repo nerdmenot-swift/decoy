@@ -38,6 +38,10 @@ struct AdapterParityTests {
         WikidataColoursAdapter(),
         WikidataTermsAdapter(),
         IANAWebAdapter(),
+        SIUnitsAdapter(),
+        ISO639Adapter(),
+        ISO3166Adapter(),
+        ISO31662Adapter(),
     ]
 
     private static func roster() -> (locales: [String], cldr: [String: String?]) {
