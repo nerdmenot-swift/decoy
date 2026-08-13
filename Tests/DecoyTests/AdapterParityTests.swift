@@ -28,6 +28,8 @@ struct AdapterParityTests {
         OccupationsAdapter(),
         PeriodicTableAdapter(),
         USSurnamesAdapter(),
+        AirportsAdapter(),
+        ProgrammingLanguagesAdapter(),
     ]
 
     private static func roster() -> (locales: [String], cldr: [String: String?]) {
@@ -74,6 +76,53 @@ struct AdapterParityTests {
         return raw.mapValues { $0.mapValues(Definition.init(json:)) }
     }
 
+    /// Where two values first diverge, in a line rather than a memory dump.
+    static func difference(_ mine: Definition?, _ theirs: Definition) -> String {
+        guard let mine else { return "missing entirely" }
+        switch (mine, theirs) {
+        case (.list(let a), .list(let b)):
+            if a.count != b.count { return "\(a.count) entries vs \(b.count)" }
+            for (index, pair) in zip(a, b).enumerated() where pair.0 != pair.1 {
+                return "entry \(index): \(compact(pair.0)) vs \(compact(pair.1))"
+            }
+            return "same length, no differing entry found"
+        case (.object(let a), .object(let b)):
+            let onlyMine = Set(a.keys).subtracting(b.keys).sorted()
+            let onlyTheirs = Set(b.keys).subtracting(a.keys).sorted()
+            if !onlyMine.isEmpty || !onlyTheirs.isEmpty {
+                return "extra keys \(onlyMine), missing keys \(onlyTheirs)"
+            }
+            for key in a.keys.sorted() where a[key] != b[key] {
+                return "key '\(key)': \(compact(a[key]!)) vs \(compact(b[key]!))"
+            }
+            return "objects differ but no differing key found"
+        default:
+            return "\(compact(mine)) vs \(compact(theirs))"
+        }
+    }
+
+    /// A value in a few characters, for an error message.
+    static func compact(_ value: Definition) -> String {
+        switch value {
+        case .string(let text): return "\"\(text.prefix(40))\""
+        case .number(let number): return String(number)
+        case .bool(let flag): return String(flag)
+        case .null: return "null"
+        case .list(let items): return "[\(items.count) entries]"
+        case .object(let fields):
+            let inner = fields.keys.sorted().prefix(4)
+                .map { "\($0)=\(shallow(fields[$0]!))" }
+                .joined(separator: " ")
+            return "{\(inner)}"
+        }
+    }
+
+    static func shallow(_ value: Definition) -> String {
+        if case .string(let text) = value { return "\"\(text.prefix(24))\"" }
+        if case .number(let number) = value { return String(number) }
+        return "…"
+    }
+
     @Test("every ported adapter reproduces its dump exactly")
     func parity() throws {
         let (locales, cldr) = Self.roster()
@@ -111,7 +160,12 @@ struct AdapterParityTests {
                     "\(id)/\(code): different paths")
 
                 for (path, value) in paths.sorted(by: { $0.key < $1.key }) {
-                    #expect(mine[path] == value, "\(id)/\(code).\(path)")
+                    if mine[path] != value {
+                        // Reporting the whole value is useless at this size: one adapter
+                        // prints 200 KB of Definition and buries the one row that moved.
+                        Issue.record(
+                            "\(id)/\(code).\(path) — \(Self.difference(mine[path], value))")
+                    }
                     comparedPaths += 1
                 }
             }
