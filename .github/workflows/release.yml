@@ -1,0 +1,224 @@
+# Publishes the command-line tools when a version tag is pushed.
+#
+# The library itself needs no publishing step — SwiftPM resolves a package from a git tag,
+# so tagging *is* the release for anybody writing `.package(url:from:)`. What a release
+# adds is the three corpus tools as binaries, for people who want to inspect or validate a
+# `.decoy` file without checking out a Swift toolchain.
+#
+# Tagging is the trigger rather than a manual dispatch, so the artifacts can only ever
+# correspond to a commit that exists and is named.
+name: Release
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: write
+
+jobs:
+  # Nothing is built until the tag and the source agree. A release whose binaries report a
+  # different version than the tag that produced them is worse than no release: it is
+  # wrong in a way nobody notices until they are debugging something else.
+  verify:
+    name: Verify
+    runs-on: macos-15
+    outputs:
+      version: ${{ steps.check.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tag matches Decoy.version
+        id: check
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          source=$(grep -oE 'static let version = "[^"]+"' Sources/Decoy/Decoy.swift \
+                   | grep -oE '"[^"]+"' | tr -d '"')
+          echo "tag=$tag source=$source"
+          if [ "$tag" != "$source" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME says $tag but Sources/Decoy/Decoy.swift says $source. Update Decoy.version, or tag the version the source declares."
+            exit 1
+          fi
+          echo "version=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Corpus version is declared
+        run: |
+          corpus=$(grep -oE '"version": "[^"]+"' Tools/adapters/corpus-version.json \
+                   | grep -oE '"[0-9][^"]*"' | tr -d '"')
+          [ -n "$corpus" ] || { echo "::error::No corpus version declared."; exit 1; }
+          echo "corpus $corpus"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+
+      - run: swift build
+
+      # The corpus is built before testing because roughly thirty suites are gated on
+      # Corpus/binary existing and *skip* when it does not. Running `swift test` alone would
+      # go green having exercised the ten-path stub, and gate a release on almost nothing.
+      - name: Build corpus
+        run: |
+          node Tools/adapters/run.mjs
+          swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary
+
+      - run: swift test
+
+  build:
+    name: ${{ matrix.name }}
+    needs: verify
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: macOS (universal)
+            runs-on: macos-15
+            asset: decoy-tools-${{ needs.verify.outputs.version }}-macos-universal.tar.gz
+          - name: Linux (x86_64)
+            runs-on: ubuntu-latest
+            container: swift:6.3
+            asset: decoy-tools-${{ needs.verify.outputs.version }}-linux-x86_64.tar.gz
+          - name: Windows (x86_64)
+            runs-on: windows-latest
+            asset: decoy-tools-${{ needs.verify.outputs.version }}-windows-x86_64.zip
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: compnerd/gha-setup-swift@main
+        if: runner.os == 'Windows'
+        with:
+          branch: swift-6.3.3-release
+          tag: 6.3.3-RELEASE
+
+      # A universal binary rather than two downloads: the tools are small, and asking
+      # somebody to know their own architecture to inspect a data file is a poor trade.
+      #
+      # Two builds and `lipo` rather than `swift build --arch arm64 --arch x86_64`. The
+      # latter is shorter but routes through xcbuild, so it needs a full Xcode and fails on
+      # a Command Line Tools install with an error about a missing XCBuild.framework. This
+      # form works with either, which means it can be checked before it is relied on.
+      - name: Build (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          swift build -c release --triple arm64-apple-macosx
+          swift build -c release --triple x86_64-apple-macosx
+          mkdir -p stage
+          for tool in decoy-inspect decoy-validate decoy-compile-corpus; do
+            lipo -create -output "stage/$tool" \
+              ".build/arm64-apple-macosx/release/$tool" \
+              ".build/x86_64-apple-macosx/release/$tool"
+            lipo -info "stage/$tool"
+          done
+
+      # -static-stdlib links the Swift runtime in, so the binary runs on a machine with no
+      # Swift installed. That is the whole point of shipping one.
+      - name: Build (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          swift build -c release -Xswiftc -static-stdlib
+          mkdir -p stage
+          for tool in decoy-inspect decoy-validate decoy-compile-corpus; do
+            cp ".build/release/$tool" stage/
+          done
+
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          swift build -c release
+          New-Item -ItemType Directory -Force -Path stage | Out-Null
+          foreach ($tool in @('decoy-inspect','decoy-validate','decoy-compile-corpus')) {
+            Copy-Item ".build\release\$tool.exe" stage\
+          }
+
+      # Every archive carries the licence and attribution. The tools read a corpus whose
+      # whole argument is that it can name its sources; shipping them stripped of that
+      # would be a poor advertisement for the point.
+      - name: Package
+        shell: bash
+        run: |
+          cp LICENSE NOTICE stage/
+          cd stage
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            7z a -tzip "../${{ matrix.asset }}" ./*
+          else
+            tar czf "../${{ matrix.asset }}" ./*
+          fi
+
+      - name: Checksum
+        shell: bash
+        run: |
+          if command -v sha256sum >/dev/null; then
+            sha256sum "${{ matrix.asset }}" > "${{ matrix.asset }}.sha256"
+          else
+            shasum -a 256 "${{ matrix.asset }}" > "${{ matrix.asset }}.sha256"
+          fi
+          cat "${{ matrix.asset }}.sha256"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset }}
+          path: |
+            ${{ matrix.asset }}
+            ${{ matrix.asset }}.sha256
+
+  publish:
+    name: Publish
+    needs: [verify, build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Collect checksums
+        run: |
+          cd dist
+          cat *.sha256 | sed 's|  .*/|  |' > SHA256SUMS
+          rm -f *.sha256
+          ls -la
+
+      - name: Release notes
+        run: |
+          corpus=$(grep -oE '"version": "[^"]+"' Tools/adapters/corpus-version.json \
+                   | grep -oE '"[0-9][^"]*"' | tr -d '"')
+          cat > notes.md <<EOF
+          ## Using the library
+
+          \`\`\`swift
+          .package(url: "https://github.com/nerdmenot-swift/decoy", from: "${{ needs.verify.outputs.version }}")
+          \`\`\`
+
+          Add \`Decoy\` and at least one \`DecoyLocale*\` product to your target. The default
+          corpus is a ten-path smoke-test stub, not a working locale.
+
+          ## Command-line tools
+
+          \`decoy-inspect\`, \`decoy-validate\` and \`decoy-compile-corpus\`, for reading and
+          checking a \`.decoy\` file without a Swift toolchain. Verify a download against
+          \`SHA256SUMS\` before running it.
+
+          Linux binaries link the Swift runtime statically and need nothing installed. The
+          Windows build does **not**: it needs the Swift runtime for Windows on the machine.
+
+          ## Corpus
+
+          Corpus version \`$corpus\`. Generated values are reproducible with respect to a
+          corpus version — the same seed and the same corpus give the same rows. A major
+          corpus bump changes existing values deliberately.
+          EOF
+          cat notes.md
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --notes-file notes.md \
+            --verify-tag \
+            dist/*

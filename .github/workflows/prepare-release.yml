@@ -1,0 +1,81 @@
+# Sets the version and pushes the tag that triggers Release.
+#
+# Run from the Actions tab with the version you want. It exists because the version lives
+# in source (`Decoy.version`) and in the tag, and doing that by hand is how the two come
+# to disagree — which is the same failure the generator counts had three times over.
+#
+# It deliberately does not decide the number for you. Whether a change is major is a
+# judgement about what it does to somebody's existing fixtures, and nothing in a workflow
+# can make that call.
+name: Prepare release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release, without the v (e.g. 1.0.0)'
+        required: true
+        type: string
+      dry-run:
+        description: 'Show what would change without committing or tagging'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    name: Prepare ${{ inputs.version }}
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate
+        run: |
+          version="${{ inputs.version }}"
+          if ! printf '%s' "$version" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$'; then
+            echo "::error::'$version' is not semver. Use 1.0.0, or 1.0.0-rc.1."
+            exit 1
+          fi
+          if git rev-parse "v$version" >/dev/null 2>&1; then
+            echo "::error::Tag v$version already exists. A released version is never re-cut."
+            exit 1
+          fi
+
+      - name: Set Decoy.version
+        run: |
+          version="${{ inputs.version }}"
+          current=$(grep -oE 'static let version = "[^"]+"' Sources/Decoy/Decoy.swift \
+                    | grep -oE '"[^"]+"' | tr -d '"')
+          echo "$current -> $version"
+          sed -i '' "s/static let version = \"$current\"/static let version = \"$version\"/" \
+            Sources/Decoy/Decoy.swift
+          grep -n 'static let version' Sources/Decoy/Decoy.swift
+
+      # The tag is what people install, so it is cut from a commit that is known to build
+      # and pass rather than one that is merely well-formed.
+      - run: swift build
+      - run: swift test
+
+      - name: Commit and tag
+        if: ${{ !inputs.dry-run }}
+        run: |
+          version="${{ inputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Sources/Decoy/Decoy.swift
+          git commit -m "Release $version"
+          git tag -a "v$version" -m "v$version"
+          git push origin HEAD:"${GITHUB_REF_NAME}"
+          git push origin "v$version"
+          echo "Pushed v$version — Release will build and publish the tools."
+
+      - name: Dry run summary
+        if: ${{ inputs.dry-run }}
+        run: |
+          echo "Dry run. Would commit and tag v${{ inputs.version }}:"
+          git --no-pager diff -- Sources/Decoy/Decoy.swift
