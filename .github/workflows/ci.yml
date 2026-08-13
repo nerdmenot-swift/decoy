@@ -133,6 +133,16 @@ jobs:
         with:
           node-version: 26
 
+      # The other two jobs cache the pinned upstreams and this one did not, so it re-fetched
+      # all fifty-one artifacts on every run -- the only job fully exposed to a transient
+      # upstream, and it duly failed on a PubChem 503 that had nothing to do with Windows.
+      # A best-effort job that fails for unrelated reasons stops being read at all.
+      - name: Cache pinned upstreams
+        uses: actions/cache@v4
+        with:
+          path: Tools/adapters/.cache
+          key: corpus-sources-${{ runner.os }}-${{ hashFiles('Tools/adapters/sources/*.json') }}
+
       - run: swift --version
       - run: swift build
 
