@@ -21,7 +21,7 @@ struct OrchestratorTests {
         .deletingLastPathComponent()
         .deletingLastPathComponent()
         .appendingPathComponent("Tools/adapters")
-    private static let dumps = root.appendingPathComponent("out/contributions")
+    private static let dumps = root.appendingPathComponent("parity")
     private static let emitted = root.appendingPathComponent("out/locales")
 
     private static func roster() -> Set<String> {

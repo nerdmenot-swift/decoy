@@ -38,7 +38,7 @@ enum PortFixtures {
     /// The per-adapter contribution dumps.
     static var hasContributionDumps: Bool {
         FileManager.default.fileExists(
-            atPath: adapters.appendingPathComponent("out/contributions/iana-tld.json").path)
+            atPath: adapters.appendingPathComponent("parity/iana-tld.json").path)
     }
 
     /// The verified upstream artifacts.

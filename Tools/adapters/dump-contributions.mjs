@@ -13,7 +13,8 @@
  * ported one at a time and diffed against its own dump. A regression is attributable to a
  * single file rather than to the pipeline.
  *
- * Output is regenerable and not committed; it is a fixture for the port, not a build input.
+ * Output lands in Tools/adapters/parity/. Regenerable and not committed; it is a fixture
+ * for the port, not a build input.
  */
 import { mkdir, readdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
@@ -22,7 +23,10 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { loadSource } from './lib/sources.mjs'
 
 const here = dirname(fileURLToPath(import.meta.url))
-const out = join(here, 'out', 'contributions')
+// Deliberately *not* under out/: run.mjs clears that directory wholesale on every run,
+// which silently deleted these and left the adapter parity suite skipping while the
+// summary still said 337 tests passed.
+const out = join(here, 'parity')
 
 const { readFile } = await import('node:fs/promises')
 const roster = JSON.parse(await readFile(join(here, 'locales.json'), 'utf8'))

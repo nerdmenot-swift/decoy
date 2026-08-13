@@ -10,6 +10,8 @@ Package.resolved
 # Adapter workspace. `out/` is regenerable from the adapters; `.cache/` holds verified
 # upstream tarballs, which are reproducible from the pinned integrity hashes.
 /Tools/adapters/out/
+# Port-parity fixtures: each adapter's output, dumped for the Swift port to diff against.
+/Tools/adapters/parity/
 /Tools/adapters/.cache/
 
 # Compiled corpus — a build artifact, reproducible from the adapters.

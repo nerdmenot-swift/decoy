@@ -16,15 +16,23 @@ public struct AdapterInput: Sendable {
     /// Decoy code to CLDR code, where the automatic rule gets it wrong. A null value means
     /// the locale has no CLDR equivalent and CLDR-sourced adapters should skip it.
     public let cldrOverrides: [String: String?]
+    /// `Tools/adapters/data`, holding committed snapshots.
+    ///
+    /// Two sources are queried rather than downloaded — Wikidata answers SPARQL, and a
+    /// query is not a file with a hash — so the result is fetched deliberately by a
+    /// separate script, reviewed, and committed. That makes the build reproducible without
+    /// pretending a live endpoint is a pinned artifact.
+    public let dataDirectory: URL
 
     public init(
         artifacts: [String: URL], locales: [String], chains: [String: [String]],
-        cldrOverrides: [String: String?]
+        cldrOverrides: [String: String?], dataDirectory: URL
     ) {
         self.artifacts = artifacts
         self.locales = locales
         self.chains = chains
         self.cldrOverrides = cldrOverrides
+        self.dataDirectory = dataDirectory
     }
 
     /// An artifact by name, or a readable failure naming the adapter that wanted it.

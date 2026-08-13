@@ -35,6 +35,8 @@ struct AdapterParityTests {
         LatinWordsAdapter(),
         MIMETypesAdapter(),
         EmojiAdapter(),
+        WikidataColoursAdapter(),
+        WikidataTermsAdapter(),
     ]
 
     private static func roster() -> (locales: [String], cldr: [String: String?]) {
@@ -73,7 +75,7 @@ struct AdapterParityTests {
     }
 
     private static func dump(_ id: String) -> [String: [String: Definition]]? {
-        let url = root.appendingPathComponent("out/contributions/\(id).json")
+        let url = root.appendingPathComponent("parity/\(id).json")
         guard let data = try? Data(contentsOf: url),
             let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
             let raw = object["contributions"] as? [String: [String: Any]]
@@ -159,7 +161,8 @@ struct AdapterParityTests {
 
             let input = AdapterInput(
                 artifacts: try Self.artifacts(for: adapter), locales: locales,
-                chains: chains, cldrOverrides: cldr)
+                chains: chains, cldrOverrides: cldr,
+                dataDirectory: Self.root.appendingPathComponent("data"))
             let produced = try adapter.run(input).contributions
 
             #expect(
