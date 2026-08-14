@@ -1,0 +1,1551 @@
+{
+  "attributeTo" : "wikidata",
+  "contributions" : {
+    "ar" : {
+      "location.direction.cardinal" : [
+        "شمال",
+        "شرق",
+        "جنوب",
+        "غرب"
+      ],
+      "location.direction.ordinal" : [
+        "شمال شرقي",
+        "شمال غربي",
+        "جنوب شرقي",
+        "جنوب غربي"
+      ],
+      "person.sex" : [
+        "ذكر",
+        "أنثى"
+      ],
+      "person.western_zodiac_sign" : [
+        "برج الحمل",
+        "برج الثور",
+        "برج الجوزاء",
+        "برج السرطان",
+        "برج الأسد",
+        "برج العذراء",
+        "برج الميزان",
+        "برج العقرب",
+        "برج القوس",
+        "برج الجدي",
+        "برج الدلو",
+        "برج الحوت"
+      ]
+    },
+    "az" : {
+      "location.direction.cardinal" : [
+        "şimal",
+        "Şərq",
+        "cənub",
+        "Qərb"
+      ],
+      "location.direction.ordinal" : [
+        "Şimal-şərq",
+        "Şimal-qərb",
+        "Cənub-şərq",
+        "Cənub-qərb"
+      ],
+      "person.sex" : [
+        "kişi",
+        "qadın"
+      ],
+      "person.western_zodiac_sign" : [
+        "Qoç",
+        "Buğa",
+        "Əkizlər",
+        "Xərçəng",
+        "Şir",
+        "Qız",
+        "Tərəzi bürcü",
+        "Əqrəb",
+        "Oxatan",
+        "Oğlaq",
+        "Dolça",
+        "Balıqlar"
+      ]
+    },
+    "bn_BD" : {
+      "location.direction.cardinal" : [
+        "উত্তর",
+        "পূর্ব",
+        "দক্ষিণ",
+        "পশ্চিম"
+      ],
+      "location.direction.ordinal" : [
+        "উত্তর পূর্ব",
+        "উত্তর পশ্চিম",
+        "দক্ষিণ পূর্ব",
+        "দক্ষিণ পশ্চিম"
+      ],
+      "person.sex" : [
+        "পুরুষ",
+        "নারী"
+      ]
+    },
+    "cs_CZ" : {
+      "location.direction.cardinal" : [
+        "sever",
+        "východ",
+        "jih",
+        "západ"
+      ],
+      "location.direction.ordinal" : [
+        "severovýchod",
+        "severozápad",
+        "jihovýchod",
+        "jihozápad"
+      ],
+      "person.sex" : [
+        "muž",
+        "žena"
+      ],
+      "person.western_zodiac_sign" : [
+        "Beran",
+        "Býk",
+        "Blíženci",
+        "Rak",
+        "Lev",
+        "Panna",
+        "Váhy",
+        "Štír",
+        "Střelec",
+        "Kozoroh",
+        "Vodnář",
+        "Ryby"
+      ]
+    },
+    "cy" : {
+      "location.direction.cardinal" : [
+        "gogledd",
+        "dwyrain",
+        "de",
+        "gorllewin"
+      ],
+      "person.sex" : [
+        "gwrywaidd",
+        "benywaidd"
+      ],
+      "person.western_zodiac_sign" : [
+        "Yr Hwrdd",
+        "Y Tarw",
+        "Y Gefeilliaid",
+        "Y Cranc",
+        "Y Llew",
+        "Y Forwyn",
+        "Y Fantol",
+        "Y Sgorpion",
+        "Y Saethydd",
+        "Yr Afr",
+        "Y Dyfrwr",
+        "Y Pysgod"
+      ]
+    },
+    "da" : {
+      "location.direction.cardinal" : [
+        "nord",
+        "øst",
+        "syd",
+        "vest"
+      ],
+      "location.direction.ordinal" : [
+        "nordøst",
+        "nordvest",
+        "sydøst",
+        "sydvest"
+      ],
+      "person.sex" : [
+        "mand",
+        "kvinde"
+      ],
+      "person.western_zodiac_sign" : [
+        "Vædderen",
+        "Tyren",
+        "Tvillingerne",
+        "Krebsen",
+        "Løven",
+        "Jomfruen",
+        "Vægten",
+        "Skorpionen",
+        "Skytten",
+        "Stenbukken",
+        "Vandmanden",
+        "Fiskene"
+      ]
+    },
+    "de" : {
+      "location.direction.cardinal" : [
+        "Norden",
+        "Osten",
+        "Süden",
+        "Westen"
+      ],
+      "location.direction.ordinal" : [
+        "Nordost",
+        "Nordwest",
+        "Südost",
+        "Südwest"
+      ],
+      "person.sex" : [
+        "männlich",
+        "weiblich"
+      ],
+      "person.western_zodiac_sign" : [
+        "Widder",
+        "Stier",
+        "Zwillinge",
+        "Krebs",
+        "Löwe",
+        "Jungfrau",
+        "Waage",
+        "Skorpion",
+        "Schütze",
+        "Steinbock",
+        "Wassermann",
+        "Fische"
+      ]
+    },
+    "de_AT" : {
+      "location.direction.cardinal" : [
+        "Norden",
+        "Osten",
+        "Süden",
+        "Westen"
+      ],
+      "location.direction.ordinal" : [
+        "Nordost",
+        "Nordwest",
+        "Südost",
+        "Südwest"
+      ],
+      "person.sex" : [
+        "männlich",
+        "weiblich"
+      ],
+      "person.western_zodiac_sign" : [
+        "Widder",
+        "Stier",
+        "Zwillinge",
+        "Krebs",
+        "Löwe",
+        "Jungfrau",
+        "Waage",
+        "Skorpion",
+        "Schütze",
+        "Steinbock",
+        "Wassermann",
+        "Fische"
+      ]
+    },
+    "de_CH" : {
+      "location.direction.cardinal" : [
+        "Norden",
+        "Osten",
+        "Süden",
+        "Westen"
+      ],
+      "location.direction.ordinal" : [
+        "Nordost",
+        "Nordwest",
+        "Südost",
+        "Südwest"
+      ],
+      "person.sex" : [
+        "männlich",
+        "weiblich"
+      ],
+      "person.western_zodiac_sign" : [
+        "Widder",
+        "Stier",
+        "Zwillinge",
+        "Krebs",
+        "Löwe",
+        "Jungfrau",
+        "Waage",
+        "Skorpion",
+        "Schütze",
+        "Steinbock",
+        "Wassermann",
+        "Fische"
+      ]
+    },
+    "el" : {
+      "location.direction.cardinal" : [
+        "βορράς",
+        "ανατολή",
+        "νότος",
+        "δύση"
+      ],
+      "location.direction.ordinal" : [
+        "βορειοανατολικά",
+        "βορειοδυτικά",
+        "νοτιοανατολικά",
+        "νοτιοδυτικά"
+      ],
+      "person.sex" : [
+        "άνδρας",
+        "γυναίκα"
+      ],
+      "person.western_zodiac_sign" : [
+        "Κριός",
+        "Ταύρος",
+        "Δίδυμοι",
+        "Καρκίνος",
+        "Λέων",
+        "Παρθένος",
+        "Ζυγός",
+        "Σκορπιός",
+        "Τοξότης",
+        "Αιγόκερως",
+        "Υδροχόος",
+        "Ιχθύες"
+      ]
+    },
+    "es" : {
+      "location.direction.cardinal" : [
+        "norte",
+        "este",
+        "sur",
+        "oeste"
+      ],
+      "location.direction.ordinal" : [
+        "nordeste",
+        "noroeste",
+        "sureste",
+        "suroeste"
+      ],
+      "person.sex" : [
+        "masculino",
+        "femenino"
+      ],
+      "person.western_zodiac_sign" : [
+        "Aries",
+        "Tauro",
+        "Géminis",
+        "Cáncer",
+        "Leo",
+        "Virgo",
+        "Libra",
+        "Escorpio",
+        "Sagitario",
+        "Capricornio",
+        "Acuario",
+        "Piscis"
+      ]
+    },
+    "es_MX" : {
+      "location.direction.cardinal" : [
+        "norte",
+        "este",
+        "sur",
+        "oeste"
+      ],
+      "location.direction.ordinal" : [
+        "nordeste",
+        "noroeste",
+        "sureste",
+        "suroeste"
+      ],
+      "person.sex" : [
+        "masculino",
+        "femenino"
+      ],
+      "person.western_zodiac_sign" : [
+        "Aries",
+        "Tauro",
+        "Géminis",
+        "Cáncer",
+        "Leo",
+        "Virgo",
+        "Libra",
+        "Escorpio",
+        "Sagitario",
+        "Capricornio",
+        "Acuario",
+        "Piscis"
+      ]
+    },
+    "fa" : {
+      "location.direction.cardinal" : [
+        "شمال",
+        "خاور",
+        "جنوب",
+        "باختر"
+      ],
+      "location.direction.ordinal" : [
+        "شمال شرقی",
+        "شمال غربی",
+        "جنوب شرقی",
+        "جنوب غربی"
+      ],
+      "person.sex" : [
+        "مذکر",
+        "مؤنث"
+      ],
+      "person.western_zodiac_sign" : [
+        "برج حمل",
+        "برج ثور",
+        "برج جوزا",
+        "برج سرطان",
+        "برج اسد",
+        "برج سنبله",
+        "برج میزان",
+        "برج عقرب",
+        "برج قوس",
+        "برج جدی",
+        "برج دلو",
+        "برج حوت"
+      ]
+    },
+    "fi" : {
+      "location.direction.cardinal" : [
+        "pohjoinen",
+        "itä",
+        "etelä",
+        "länsi"
+      ],
+      "location.direction.ordinal" : [
+        "koillinen",
+        "luode",
+        "kaakko",
+        "lounas"
+      ],
+      "person.sex" : [
+        "mies",
+        "nainen"
+      ],
+      "person.western_zodiac_sign" : [
+        "Oinas",
+        "Härkä",
+        "Kaksoset",
+        "Krapu",
+        "Leijona",
+        "Neitsyt",
+        "Vaaka",
+        "Skorpioni",
+        "Jousimies",
+        "Kauris",
+        "Vesimies",
+        "Kalat"
+      ]
+    },
+    "fr" : {
+      "location.direction.cardinal" : [
+        "nord",
+        "est",
+        "sud",
+        "ouest"
+      ],
+      "location.direction.ordinal" : [
+        "nord-est",
+        "nord-ouest",
+        "sud-est",
+        "sud-ouest"
+      ],
+      "person.sex" : [
+        "masculin",
+        "féminin"
+      ],
+      "person.western_zodiac_sign" : [
+        "Bélier",
+        "Taureau",
+        "Gémeaux",
+        "Cancer",
+        "Lion",
+        "Vierge",
+        "Balance",
+        "Scorpion",
+        "Sagittaire",
+        "Capricorne",
+        "Verseau",
+        "Poissons"
+      ]
+    },
+    "fr_BE" : {
+      "location.direction.cardinal" : [
+        "nord",
+        "est",
+        "sud",
+        "ouest"
+      ],
+      "location.direction.ordinal" : [
+        "nord-est",
+        "nord-ouest",
+        "sud-est",
+        "sud-ouest"
+      ],
+      "person.sex" : [
+        "masculin",
+        "féminin"
+      ],
+      "person.western_zodiac_sign" : [
+        "Bélier",
+        "Taureau",
+        "Gémeaux",
+        "Cancer",
+        "Lion",
+        "Vierge",
+        "Balance",
+        "Scorpion",
+        "Sagittaire",
+        "Capricorne",
+        "Verseau",
+        "Poissons"
+      ]
+    },
+    "fr_CA" : {
+      "location.direction.cardinal" : [
+        "nord",
+        "est",
+        "sud",
+        "ouest"
+      ],
+      "location.direction.ordinal" : [
+        "nord-est",
+        "nord-ouest",
+        "sud-est",
+        "sud-ouest"
+      ],
+      "person.sex" : [
+        "masculin",
+        "féminin"
+      ],
+      "person.western_zodiac_sign" : [
+        "Bélier",
+        "Taureau",
+        "Gémeaux",
+        "Cancer",
+        "Lion",
+        "Vierge",
+        "Balance",
+        "Scorpion",
+        "Sagittaire",
+        "Capricorne",
+        "Verseau",
+        "Poissons"
+      ]
+    },
+    "fr_CH" : {
+      "location.direction.cardinal" : [
+        "nord",
+        "est",
+        "sud",
+        "ouest"
+      ],
+      "location.direction.ordinal" : [
+        "nord-est",
+        "nord-ouest",
+        "sud-est",
+        "sud-ouest"
+      ],
+      "person.sex" : [
+        "masculin",
+        "féminin"
+      ],
+      "person.western_zodiac_sign" : [
+        "Bélier",
+        "Taureau",
+        "Gémeaux",
+        "Cancer",
+        "Lion",
+        "Vierge",
+        "Balance",
+        "Scorpion",
+        "Sagittaire",
+        "Capricorne",
+        "Verseau",
+        "Poissons"
+      ]
+    },
+    "fr_LU" : {
+      "location.direction.cardinal" : [
+        "nord",
+        "est",
+        "sud",
+        "ouest"
+      ],
+      "location.direction.ordinal" : [
+        "nord-est",
+        "nord-ouest",
+        "sud-est",
+        "sud-ouest"
+      ],
+      "person.sex" : [
+        "masculin",
+        "féminin"
+      ],
+      "person.western_zodiac_sign" : [
+        "Bélier",
+        "Taureau",
+        "Gémeaux",
+        "Cancer",
+        "Lion",
+        "Vierge",
+        "Balance",
+        "Scorpion",
+        "Sagittaire",
+        "Capricorne",
+        "Verseau",
+        "Poissons"
+      ]
+    },
+    "fr_SN" : {
+      "location.direction.cardinal" : [
+        "nord",
+        "est",
+        "sud",
+        "ouest"
+      ],
+      "location.direction.ordinal" : [
+        "nord-est",
+        "nord-ouest",
+        "sud-est",
+        "sud-ouest"
+      ],
+      "person.sex" : [
+        "masculin",
+        "féminin"
+      ],
+      "person.western_zodiac_sign" : [
+        "Bélier",
+        "Taureau",
+        "Gémeaux",
+        "Cancer",
+        "Lion",
+        "Vierge",
+        "Balance",
+        "Scorpion",
+        "Sagittaire",
+        "Capricorne",
+        "Verseau",
+        "Poissons"
+      ]
+    },
+    "he" : {
+      "location.direction.cardinal" : [
+        "צפון",
+        "מזרח",
+        "דרום",
+        "מערב"
+      ],
+      "location.direction.ordinal" : [
+        "צפון-מזרח",
+        "צפון-מערב",
+        "דרום-מזרח",
+        "דרום-מערב"
+      ],
+      "person.sex" : [
+        "זכר",
+        "נקבה"
+      ],
+      "person.western_zodiac_sign" : [
+        "מזל טלה",
+        "מזל שור",
+        "מזל תאומים",
+        "מזל סרטן",
+        "מזל אריה",
+        "מזל בתולה",
+        "מזל מאזניים",
+        "מזל עקרב",
+        "מזל קשת",
+        "מזל גדי",
+        "מזל דלי",
+        "מזל דגים"
+      ]
+    },
+    "hr" : {
+      "location.direction.cardinal" : [
+        "sjever",
+        "istok",
+        "jug",
+        "zapad"
+      ],
+      "location.direction.ordinal" : [
+        "sjeveroistok",
+        "sjeverozapad",
+        "jugoistok",
+        "jugozapad"
+      ],
+      "person.sex" : [
+        "muško",
+        "žensko"
+      ],
+      "person.western_zodiac_sign" : [
+        "Ovan",
+        "Bik",
+        "Blizanci",
+        "Rak",
+        "Lav",
+        "Djevica",
+        "Vaga",
+        "Škorpion",
+        "Strijelac",
+        "Jarac",
+        "Vodenjak",
+        "Ribe"
+      ]
+    },
+    "hu" : {
+      "location.direction.cardinal" : [
+        "észak",
+        "kelet",
+        "dél",
+        "nyugat"
+      ],
+      "location.direction.ordinal" : [
+        "északkelet",
+        "északnyugat",
+        "délkelet",
+        "délnyugat"
+      ],
+      "person.sex" : [
+        "férfi",
+        "nő"
+      ],
+      "person.western_zodiac_sign" : [
+        "Kos",
+        "Bika",
+        "Ikrek",
+        "Rák",
+        "Oroszlán",
+        "Szűz",
+        "Mérleg",
+        "Skorpió",
+        "Nyilas",
+        "Bak",
+        "Vízöntő",
+        "Halak"
+      ]
+    },
+    "hy" : {
+      "location.direction.cardinal" : [
+        "հյուսիս",
+        "արևելք",
+        "հարավ",
+        "արևմուտք"
+      ],
+      "location.direction.ordinal" : [
+        "հյուսիս-արևելք",
+        "հյուսիս-արևմուտք",
+        "հարավ-արևելք",
+        "հարավ-արևմուտք"
+      ],
+      "person.sex" : [
+        "արական",
+        "իգական"
+      ]
+    },
+    "id_ID" : {
+      "location.direction.cardinal" : [
+        "utara",
+        "timur",
+        "selatan",
+        "barat"
+      ],
+      "location.direction.ordinal" : [
+        "timur laut",
+        "barat laut",
+        "tenggara",
+        "Barat daya"
+      ],
+      "person.sex" : [
+        "laki-laki",
+        "perempuan"
+      ],
+      "person.western_zodiac_sign" : [
+        "Aries",
+        "Taurus",
+        "Gemini",
+        "Kanser",
+        "Leo",
+        "Virgo (astrologi)",
+        "Libra",
+        "Skorpio",
+        "Sagitarius",
+        "Kaprikornus (astrologi)",
+        "Akuarius",
+        "Pisces"
+      ]
+    },
+    "it" : {
+      "location.direction.cardinal" : [
+        "nord",
+        "est",
+        "sud",
+        "ovest"
+      ],
+      "location.direction.ordinal" : [
+        "nord-est",
+        "nord-ovest",
+        "sud-est",
+        "sud-ovest"
+      ],
+      "person.sex" : [
+        "maschio",
+        "femmina"
+      ],
+      "person.western_zodiac_sign" : [
+        "Ariete",
+        "Toro",
+        "Gemelli",
+        "Cancro",
+        "Leone",
+        "Vergine",
+        "Bilancia",
+        "Scorpione",
+        "Sagittario",
+        "Capricorno",
+        "Acquario",
+        "Pesci"
+      ]
+    },
+    "ja" : {
+      "location.direction.cardinal" : [
+        "北",
+        "東",
+        "南",
+        "西"
+      ],
+      "location.direction.ordinal" : [
+        "北東",
+        "北西",
+        "南東",
+        "南西"
+      ],
+      "person.sex" : [
+        "男性",
+        "女性"
+      ],
+      "person.western_zodiac_sign" : [
+        "白羊宮",
+        "金牛宮",
+        "双児宮",
+        "巨蟹宮",
+        "獅子宮",
+        "処女宮",
+        "天秤宮",
+        "天蝎宮",
+        "人馬宮",
+        "磨羯宮",
+        "宝瓶宮",
+        "双魚宮"
+      ]
+    },
+    "ka_GE" : {
+      "location.direction.cardinal" : [
+        "ჩრდილოეთი",
+        "აღმოსავლეთი",
+        "სამხრეთი",
+        "დასავლეთი"
+      ],
+      "person.sex" : [
+        "მამრობითი",
+        "მდედრობითი"
+      ],
+      "person.western_zodiac_sign" : [
+        "ვერძი",
+        "კურო",
+        "მარჩბივი",
+        "კირჩხიბი",
+        "ლომი",
+        "ქალწული",
+        "სასწორი",
+        "ღრიანკალი",
+        "მშვილდოსანი",
+        "თხის რქა",
+        "მერწყული",
+        "თევზები"
+      ]
+    },
+    "ko" : {
+      "location.direction.cardinal" : [
+        "북쪽",
+        "동쪽",
+        "남쪽",
+        "서쪽"
+      ],
+      "location.direction.ordinal" : [
+        "북동쪽",
+        "북서쪽",
+        "남동쪽",
+        "남서쪽"
+      ],
+      "person.sex" : [
+        "남성",
+        "여성"
+      ],
+      "person.western_zodiac_sign" : [
+        "양자리",
+        "황소자리",
+        "쌍둥이자리",
+        "게자리",
+        "사자자리",
+        "처녀자리",
+        "천칭자리",
+        "전갈자리",
+        "사수자리",
+        "염소자리",
+        "물병자리",
+        "물고기자리"
+      ]
+    },
+    "lv" : {
+      "location.direction.cardinal" : [
+        "ziemeļi",
+        "austrumi",
+        "dienvidi",
+        "rietumi"
+      ],
+      "location.direction.ordinal" : [
+        "ziemeļaustrumi",
+        "ziemeļrietumi",
+        "dienvidaustrumi",
+        "dienvidrietumi"
+      ],
+      "person.sex" : [
+        "vīrietis",
+        "sieviete"
+      ],
+      "person.western_zodiac_sign" : [
+        "Auns",
+        "Vērsis",
+        "Dvīņi",
+        "Vēzis",
+        "Lauva",
+        "Jaunava",
+        "Svari",
+        "Skorpions",
+        "Strēlnieks",
+        "Mežāzis",
+        "Ūdensvīrs",
+        "Zivis"
+      ]
+    },
+    "mk" : {
+      "location.direction.cardinal" : [
+        "север",
+        "исток",
+        "југ",
+        "запад"
+      ],
+      "location.direction.ordinal" : [
+        "североисток",
+        "северозапад",
+        "југоисток",
+        "Југозапад"
+      ],
+      "person.sex" : [
+        "машки",
+        "женски"
+      ],
+      "person.western_zodiac_sign" : [
+        "Овен",
+        "Бик",
+        "Близнаци",
+        "Рак",
+        "Лав",
+        "Девица",
+        "Вага",
+        "Скорпија",
+        "Стрелец",
+        "Јарец",
+        "Водолија",
+        "Риби"
+      ]
+    },
+    "nb_NO" : {
+      "location.direction.cardinal" : [
+        "nord",
+        "øst",
+        "sør",
+        "vest"
+      ],
+      "location.direction.ordinal" : [
+        "nordøst",
+        "nordvest",
+        "sørøst",
+        "sørvest"
+      ],
+      "person.sex" : [
+        "mann",
+        "kvinne"
+      ],
+      "person.western_zodiac_sign" : [
+        "Væren",
+        "Tyren",
+        "Tvillingene",
+        "Krepsen",
+        "Løven",
+        "Jomfruen",
+        "Vekten",
+        "Skorpionen",
+        "Skytten",
+        "Steinbukken",
+        "Vannmannen",
+        "Fiskene"
+      ]
+    },
+    "nl" : {
+      "location.direction.cardinal" : [
+        "noord",
+        "oost",
+        "zuid",
+        "west"
+      ],
+      "location.direction.ordinal" : [
+        "noordoost",
+        "noordwest",
+        "zuidoost",
+        "zuidwest"
+      ],
+      "person.sex" : [
+        "mannelijk",
+        "vrouwelijk"
+      ],
+      "person.western_zodiac_sign" : [
+        "Ram",
+        "Stier",
+        "Tweelingen",
+        "Kreeft",
+        "Leeuw",
+        "Maagd",
+        "Weegschaal",
+        "Schorpioen",
+        "Boogschutter",
+        "Steenbok",
+        "Waterman",
+        "Vissen"
+      ]
+    },
+    "nl_BE" : {
+      "location.direction.cardinal" : [
+        "noord",
+        "oost",
+        "zuid",
+        "west"
+      ],
+      "location.direction.ordinal" : [
+        "noordoost",
+        "noordwest",
+        "zuidoost",
+        "zuidwest"
+      ],
+      "person.sex" : [
+        "mannelijk",
+        "vrouwelijk"
+      ],
+      "person.western_zodiac_sign" : [
+        "Ram",
+        "Stier",
+        "Tweelingen",
+        "Kreeft",
+        "Leeuw",
+        "Maagd",
+        "Weegschaal",
+        "Schorpioen",
+        "Boogschutter",
+        "Steenbok",
+        "Waterman",
+        "Vissen"
+      ]
+    },
+    "pl" : {
+      "location.direction.cardinal" : [
+        "północ",
+        "wschód",
+        "południe",
+        "zachód"
+      ],
+      "location.direction.ordinal" : [
+        "północny wschód",
+        "północny zachód",
+        "południowy wschód",
+        "południowy zachód"
+      ],
+      "person.sex" : [
+        "mężczyzna",
+        "kobieta"
+      ],
+      "person.western_zodiac_sign" : [
+        "Baran",
+        "byk",
+        "Bliźnięta",
+        "Rak",
+        "Lew",
+        "Panna",
+        "Waga",
+        "Skorpion",
+        "Strzelec",
+        "Koziorożec",
+        "Wodnik",
+        "Ryby"
+      ]
+    },
+    "pt_BR" : {
+      "location.direction.cardinal" : [
+        "norte",
+        "leste",
+        "sul",
+        "oeste"
+      ],
+      "location.direction.ordinal" : [
+        "nordeste",
+        "noroeste",
+        "sudeste",
+        "sudoeste"
+      ],
+      "person.sex" : [
+        "masculino",
+        "feminino"
+      ],
+      "person.western_zodiac_sign" : [
+        "Carneiro",
+        "Touro",
+        "Gêmeos",
+        "Caranguejo",
+        "Leão",
+        "Virgem",
+        "Balança",
+        "Escorpião",
+        "Sagitário",
+        "Capricórnio",
+        "Aquário",
+        "Peixes"
+      ]
+    },
+    "pt_PT" : {
+      "location.direction.cardinal" : [
+        "norte",
+        "leste",
+        "sul",
+        "oeste"
+      ],
+      "location.direction.ordinal" : [
+        "nordeste",
+        "noroeste",
+        "sudeste",
+        "sudoeste"
+      ],
+      "person.sex" : [
+        "masculino",
+        "feminino"
+      ],
+      "person.western_zodiac_sign" : [
+        "Carneiro",
+        "Touro",
+        "Gêmeos",
+        "Caranguejo",
+        "Leão",
+        "Virgem",
+        "Balança",
+        "Escorpião",
+        "Sagitário",
+        "Capricórnio",
+        "Aquário",
+        "Peixes"
+      ]
+    },
+    "ro" : {
+      "location.direction.cardinal" : [
+        "nord",
+        "est",
+        "sud",
+        "vest"
+      ],
+      "location.direction.ordinal" : [
+        "nord-est",
+        "nord-vest",
+        "sud-est",
+        "sud-vest"
+      ],
+      "person.sex" : [
+        "bărbat",
+        "femeie"
+      ],
+      "person.western_zodiac_sign" : [
+        "Berbec",
+        "Taur",
+        "Gemeni",
+        "Rac",
+        "Leu",
+        "Fecioară",
+        "Balanță",
+        "Scorpion",
+        "Săgetător",
+        "Capricorn",
+        "Vărsător",
+        "Pești"
+      ]
+    },
+    "ro_MD" : {
+      "location.direction.cardinal" : [
+        "nord",
+        "est",
+        "sud",
+        "vest"
+      ],
+      "location.direction.ordinal" : [
+        "nord-est",
+        "nord-vest",
+        "sud-est",
+        "sud-vest"
+      ],
+      "person.sex" : [
+        "bărbat",
+        "femeie"
+      ],
+      "person.western_zodiac_sign" : [
+        "Berbec",
+        "Taur",
+        "Gemeni",
+        "Rac",
+        "Leu",
+        "Fecioară",
+        "Balanță",
+        "Scorpion",
+        "Săgetător",
+        "Capricorn",
+        "Vărsător",
+        "Pești"
+      ]
+    },
+    "ru" : {
+      "location.direction.cardinal" : [
+        "север",
+        "восток",
+        "юг",
+        "запад"
+      ],
+      "location.direction.ordinal" : [
+        "северо-восток",
+        "северо-запад",
+        "юго-восток",
+        "юго-запад"
+      ],
+      "person.sex" : [
+        "мужской пол",
+        "женский пол"
+      ],
+      "person.western_zodiac_sign" : [
+        "Овен",
+        "Телец",
+        "Близнецы",
+        "Рак",
+        "Лев",
+        "Дева",
+        "Весы",
+        "Скорпион",
+        "Стрелец",
+        "Козерог",
+        "Водолей",
+        "Рыба"
+      ]
+    },
+    "sk" : {
+      "location.direction.cardinal" : [
+        "sever",
+        "východ",
+        "juh",
+        "západ"
+      ],
+      "location.direction.ordinal" : [
+        "severovýchod",
+        "severozápad",
+        "juhovýchod",
+        "juhozápad"
+      ],
+      "person.sex" : [
+        "muž",
+        "žena"
+      ],
+      "person.western_zodiac_sign" : [
+        "Baran",
+        "Býk",
+        "Blíženci",
+        "Rak",
+        "Lev",
+        "Panna",
+        "Váhy",
+        "Škorpión",
+        "Strelec",
+        "Kozorožec",
+        "Vodnár",
+        "Ryby"
+      ]
+    },
+    "sl_SI" : {
+      "location.direction.cardinal" : [
+        "sever",
+        "vzhod",
+        "jug",
+        "zahod"
+      ],
+      "location.direction.ordinal" : [
+        "severovzhod",
+        "severozahod",
+        "jugovzhod",
+        "jugozahod"
+      ],
+      "person.sex" : [
+        "moški",
+        "ženska"
+      ],
+      "person.western_zodiac_sign" : [
+        "oven",
+        "bik",
+        "dvojčka",
+        "rak",
+        "lev",
+        "devica",
+        "tehtnica",
+        "škorpijon",
+        "strelec",
+        "kozorog",
+        "vodnar",
+        "ribi"
+      ]
+    },
+    "sr_RS_latin" : {
+      "location.direction.cardinal" : [
+        "север",
+        "исток",
+        "југ",
+        "запад"
+      ],
+      "location.direction.ordinal" : [
+        "североисток",
+        "северозапад",
+        "југоисток",
+        "југозапад"
+      ],
+      "person.sex" : [
+        "мушки",
+        "женски"
+      ],
+      "person.western_zodiac_sign" : [
+        "Ован (астролошки знак)",
+        "Бик",
+        "Близанци",
+        "Рак",
+        "Лав",
+        "Девица (астролошки знак)",
+        "Вага",
+        "Шкорпион",
+        "Стрелац",
+        "Јарац",
+        "Водолија",
+        "Рибе (астролошки знак)"
+      ]
+    },
+    "sv" : {
+      "location.direction.cardinal" : [
+        "norr",
+        "öster",
+        "söder",
+        "väster"
+      ],
+      "location.direction.ordinal" : [
+        "nordöst",
+        "nordväst",
+        "sydöst",
+        "sydväst"
+      ],
+      "person.sex" : [
+        "man",
+        "kvinna"
+      ],
+      "person.western_zodiac_sign" : [
+        "Väduren",
+        "Oxen",
+        "Tvillingarna",
+        "Kräftan",
+        "Lejonet",
+        "Jungfrun",
+        "Vågen",
+        "Skorpionen",
+        "Skytten",
+        "Stenbocken",
+        "Vattumannen",
+        "Fiskarna"
+      ]
+    },
+    "tr" : {
+      "location.direction.cardinal" : [
+        "kuzey",
+        "doğu",
+        "güney",
+        "batı"
+      ],
+      "location.direction.ordinal" : [
+        "kuzeydoğu",
+        "kuzeybatı",
+        "güneydoğu",
+        "güneybatı"
+      ],
+      "person.sex" : [
+        "erkek",
+        "kadın"
+      ],
+      "person.western_zodiac_sign" : [
+        "Koç",
+        "Boğa burcu",
+        "İkizler burcu",
+        "Yengeç burcu",
+        "Aslan",
+        "Başak burcu",
+        "Terazi burcu",
+        "Akrep burcu",
+        "Yay burcu",
+        "Oğlak burcu",
+        "Kova burcu",
+        "Balık burcu"
+      ]
+    },
+    "uk" : {
+      "location.direction.cardinal" : [
+        "північ",
+        "схід",
+        "південь",
+        "захід"
+      ],
+      "location.direction.ordinal" : [
+        "північний схід",
+        "північний захід",
+        "південний схід",
+        "південний захід"
+      ],
+      "person.sex" : [
+        "чоловіча",
+        "жіноча"
+      ],
+      "person.western_zodiac_sign" : [
+        "Овен",
+        "Телець",
+        "Близнюки",
+        "Рак",
+        "Лев",
+        "Діва",
+        "Терези",
+        "Скорпіон",
+        "Стрілець",
+        "Козоріг",
+        "Водолій",
+        "Риби"
+      ]
+    },
+    "vi" : {
+      "location.direction.cardinal" : [
+        "hướng bắc",
+        "hướng đông",
+        "hướng nam",
+        "hướng tây"
+      ],
+      "location.direction.ordinal" : [
+        "đông bắc",
+        "tây bắc",
+        "đông nam",
+        "tây nam"
+      ],
+      "person.sex" : [
+        "nam",
+        "nữ"
+      ],
+      "person.western_zodiac_sign" : [
+        "Bạch Dương",
+        "Kim Ngưu",
+        "Song Tử",
+        "Cự Giải",
+        "Sư Tử",
+        "Thất Nữ",
+        "Thiên Bình",
+        "Thiên Hạt",
+        "Nhân Mã",
+        "Ma Kết",
+        "Bảo Bình",
+        "Song Ngư"
+      ]
+    },
+    "yo_NG" : {
+      "location.direction.cardinal" : [
+        "àríwá",
+        "ilà oòrùn",
+        "gúúsù",
+        "ìwọ̀ oòrùn"
+      ],
+      "person.sex" : [
+        "akọ",
+        "abo"
+      ]
+    },
+    "zh_CN" : {
+      "location.direction.cardinal" : [
+        "北",
+        "東",
+        "南",
+        "西"
+      ],
+      "location.direction.ordinal" : [
+        "东北",
+        "西北",
+        "東南",
+        "西南"
+      ],
+      "person.sex" : [
+        "男",
+        "女"
+      ],
+      "person.western_zodiac_sign" : [
+        "白羊宮",
+        "金牛宮",
+        "雙子宮",
+        "巨蟹宮",
+        "獅子宮",
+        "室女宮",
+        "天秤宮",
+        "天蝎宫",
+        "人马宫",
+        "摩羯宮",
+        "寶瓶宮",
+        "雙魚宮"
+      ]
+    },
+    "zh_TW" : {
+      "location.direction.cardinal" : [
+        "北",
+        "東",
+        "南",
+        "西"
+      ],
+      "location.direction.ordinal" : [
+        "东北",
+        "西北",
+        "東南",
+        "西南"
+      ],
+      "person.sex" : [
+        "男",
+        "女"
+      ],
+      "person.western_zodiac_sign" : [
+        "白羊宮",
+        "金牛宮",
+        "雙子宮",
+        "巨蟹宮",
+        "獅子宮",
+        "室女宮",
+        "天秤宮",
+        "天蝎宫",
+        "人马宫",
+        "摩羯宮",
+        "寶瓶宮",
+        "雙魚宮"
+      ]
+    }
+  },
+  "fallback" : false,
+  "id" : "wikidata-terms",
+  "sourceByLocale" : null,
+  "sources" : [
+    "wikidata"
+  ]
+}

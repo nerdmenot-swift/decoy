@@ -10,8 +10,6 @@ Package.resolved
 # Adapter workspace. `out/` is regenerable from the adapters; `.cache/` holds verified
 # upstream tarballs, which are reproducible from the pinned integrity hashes.
 /Tools/adapters/out/
-# Port-parity fixtures: each adapter's output, dumped for the Swift port to diff against.
-/Tools/adapters/parity/
 /Tools/adapters/.cache/
 
 # Compiled corpus — a build artifact, reproducible from the adapters.
@@ -21,3 +19,7 @@ Package.resolved
 # proto toolchain install logs
 proto-*.log
 /.website-extract/
+
+# Never committed. The root package.json that pulled one in was a stray, and the
+# website keeps its own under website/.
+node_modules/

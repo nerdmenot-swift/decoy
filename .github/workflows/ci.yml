@@ -15,13 +15,9 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 26
-
       # Keyed on the source descriptors, so adding or re-pinning a source misses the
       # cache and re-fetches. A hit still re-verifies every artifact against its
-      # integrity hash in lib/sources.mjs, so this costs nothing in safety.
+      # integrity hash in ArtifactStore, so this costs nothing in safety.
       - name: Cache pinned upstreams
         uses: actions/cache@v6
         with:
@@ -32,11 +28,10 @@ jobs:
       - run: swift build
 
       # Without a compiled corpus the integration suites skip rather than fail, so a
-      # regression in an adapter or in the compiler would go unnoticed. No npm here by
-      # design: Tools/adapters has no manifest and no dependencies.
+      # regression in an adapter or in the compiler would go unnoticed.
       - name: Build corpus
         run: |
-          node Tools/adapters/run.mjs
+          swift run -c release decoy-build-corpus
           swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary
 
       - run: swift test
@@ -97,10 +92,6 @@ jobs:
         run: apt-get update -qq && apt-get install -y -qq xz-utils unzip
 
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 26
-
       - name: Cache pinned upstreams
         uses: actions/cache@v6
         with:
@@ -112,7 +103,7 @@ jobs:
 
       - name: Build corpus
         run: |
-          node Tools/adapters/run.mjs
+          swift run -c release decoy-build-corpus
           swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary
 
       - run: swift test
@@ -134,10 +125,6 @@ jobs:
         with:
           swift-version: swift-6.3.3-release
           swift-build: 6.3.3-RELEASE
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 26
-
       # The other two jobs cache the pinned upstreams and this one did not, so it re-fetched
       # all fifty-one artifacts on every run -- the only job fully exposed to a transient
       # upstream, and it duly failed on a PubChem 503 that had nothing to do with Windows.
@@ -156,7 +143,7 @@ jobs:
       # which is exactly the platform where a byte-order or path assumption would show up.
       - name: Build corpus
         run: |
-          node Tools/adapters/run.mjs
+          swift run -c release decoy-build-corpus
           swift run decoy-compile-corpus Tools/adapters/out Corpus/binary
 
       - run: swift test

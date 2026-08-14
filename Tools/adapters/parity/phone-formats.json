@@ -1,0 +1,1035 @@
+{
+  "attributeTo" : "libphonenumber",
+  "contributions" : {
+    "ar" : {
+      "phone_number.format.human" : [
+        "0### ### ####",
+        "0## ########"
+      ],
+      "phone_number.format.international" : [
+        "+20 ### ### ####",
+        "+20 ## ########"
+      ],
+      "phone_number.format.national" : [
+        "0### ### ####",
+        "0## ########"
+      ]
+    },
+    "az" : {
+      "phone_number.format.human" : [
+        "0### ## ## ##",
+        "(0## ### ## ##)",
+        "0## ### ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+994 ### ## ## ##",
+        "+994 ## ### ## ##"
+      ],
+      "phone_number.format.national" : [
+        "0### ## ## ##",
+        "(0## ### ## ##)",
+        "0## ### ## ##"
+      ]
+    },
+    "bn_BD" : {
+      "phone_number.format.human" : [
+        "0###-#######",
+        "0####-######"
+      ],
+      "phone_number.format.international" : [
+        "+880 ###-#######",
+        "+880 ####-######"
+      ],
+      "phone_number.format.national" : [
+        "0###-#######",
+        "0####-######"
+      ]
+    },
+    "cs_CZ" : {
+      "phone_number.format.human" : [
+        "### ### ###"
+      ],
+      "phone_number.format.international" : [
+        "+420 ### ### ###"
+      ],
+      "phone_number.format.national" : [
+        "### ### ###"
+      ]
+    },
+    "cy" : {
+      "phone_number.format.human" : [
+        "0##### #####",
+        "0#### ######",
+        "0## #### ####",
+        "0### ### ####"
+      ],
+      "phone_number.format.international" : [
+        "+44 ##### #####",
+        "+44 #### ######",
+        "+44 ## #### ####",
+        "+44 ### ### ####"
+      ],
+      "phone_number.format.national" : [
+        "0##### #####",
+        "0#### ######",
+        "0## #### ####",
+        "0### ### ####"
+      ]
+    },
+    "da" : {
+      "phone_number.format.human" : [
+        "## ## ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+45 ## ## ## ##"
+      ],
+      "phone_number.format.national" : [
+        "## ## ## ##"
+      ]
+    },
+    "de" : {
+      "phone_number.format.human" : [
+        "0## #########",
+        "0### ########",
+        "0#### #######",
+        "0##### ######",
+        "0### # #######",
+        "0### #### ####"
+      ],
+      "phone_number.format.international" : [
+        "+49 ## #########",
+        "+49 ### ########",
+        "+49 #### #######",
+        "+49 ##### ######",
+        "+49 ### # #######",
+        "+49 ### #### ####"
+      ],
+      "phone_number.format.national" : [
+        "0## #########",
+        "0### ########",
+        "0#### #######",
+        "0##### ######",
+        "0### # #######",
+        "0### #### ####"
+      ]
+    },
+    "de_AT" : {
+      "phone_number.format.human" : [
+        "0# ############",
+        "0## #####",
+        "0### ##########",
+        "0#### #########",
+        "0## ### ####",
+        "0## #### #######"
+      ],
+      "phone_number.format.international" : [
+        "+43 # ############",
+        "+43 ## #####",
+        "+43 ### ##########",
+        "+43 #### #########",
+        "+43 ## ### ####",
+        "+43 ## #### #######"
+      ],
+      "phone_number.format.national" : [
+        "0# ############",
+        "0## #####",
+        "0### ##########",
+        "0#### #########",
+        "0## ### ####",
+        "0## #### #######"
+      ]
+    },
+    "de_CH" : {
+      "phone_number.format.human" : [
+        "0### ### ###",
+        "0## ### ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+41 ### ### ###",
+        "+41 ## ### ## ##"
+      ],
+      "phone_number.format.national" : [
+        "0### ### ###",
+        "0## ### ## ##"
+      ]
+    },
+    "el" : {
+      "phone_number.format.human" : [
+        "## #### ####",
+        "#### ######",
+        "### ### ####"
+      ],
+      "phone_number.format.international" : [
+        "+30 ## #### ####",
+        "+30 #### ######",
+        "+30 ### ### ####"
+      ],
+      "phone_number.format.national" : [
+        "## #### ####",
+        "#### ######",
+        "### ### ####"
+      ]
+    },
+    "en" : {
+      "phone_number.format.human" : [
+        "(!##) !##-####"
+      ],
+      "phone_number.format.international" : [
+        "+1 (!##) !##-####"
+      ],
+      "phone_number.format.national" : [
+        "(!##) !##-####"
+      ]
+    },
+    "en_AU" : {
+      "phone_number.format.human" : [
+        "0## ### ####",
+        "0### ### ###",
+        "(0# #### ####)"
+      ],
+      "phone_number.format.international" : [
+        "+61 ## ### ####",
+        "+61 ### ### ###",
+        "+61 # #### ####"
+      ],
+      "phone_number.format.national" : [
+        "0## ### ####",
+        "0### ### ###",
+        "(0# #### ####)"
+      ]
+    },
+    "en_AU_ocker" : {
+      "phone_number.format.human" : [
+        "0## ### ####",
+        "0### ### ###",
+        "(0# #### ####)"
+      ],
+      "phone_number.format.international" : [
+        "+61 ## ### ####",
+        "+61 ### ### ###",
+        "+61 # #### ####"
+      ],
+      "phone_number.format.national" : [
+        "0## ### ####",
+        "0### ### ###",
+        "(0# #### ####)"
+      ]
+    },
+    "en_BORK" : {
+      "phone_number.format.human" : [
+        "(!##) !##-####"
+      ],
+      "phone_number.format.international" : [
+        "+1 (!##) !##-####"
+      ],
+      "phone_number.format.national" : [
+        "(!##) !##-####"
+      ]
+    },
+    "en_CA" : {
+      "phone_number.format.human" : [
+        "(!##) !##-####"
+      ],
+      "phone_number.format.international" : [
+        "+1 (!##) !##-####"
+      ],
+      "phone_number.format.national" : [
+        "(!##) !##-####"
+      ]
+    },
+    "en_GB" : {
+      "phone_number.format.human" : [
+        "0##### #####",
+        "0#### ######",
+        "0## #### ####",
+        "0### ### ####"
+      ],
+      "phone_number.format.international" : [
+        "+44 ##### #####",
+        "+44 #### ######",
+        "+44 ## #### ####",
+        "+44 ### ### ####"
+      ],
+      "phone_number.format.national" : [
+        "0##### #####",
+        "0#### ######",
+        "0## #### ####",
+        "0### ### ####"
+      ]
+    },
+    "en_GH" : {
+      "phone_number.format.human" : [
+        "0## ### ####"
+      ],
+      "phone_number.format.international" : [
+        "+233 ## ### ####"
+      ],
+      "phone_number.format.national" : [
+        "0## ### ####"
+      ]
+    },
+    "en_HK" : {
+      "phone_number.format.human" : [
+        "### #####",
+        "#### ####"
+      ],
+      "phone_number.format.international" : [
+        "+852 ### #####",
+        "+852 #### ####"
+      ],
+      "phone_number.format.national" : [
+        "### #####",
+        "#### ####"
+      ]
+    },
+    "en_IE" : {
+      "phone_number.format.human" : [
+        "(0# #### ####)",
+        "(0## ### ####)",
+        "0### ### ###",
+        "(0### ### ###)",
+        "0## ### ####"
+      ],
+      "phone_number.format.international" : [
+        "+353 # #### ####",
+        "+353 ## ### ####",
+        "+353 ### ### ###"
+      ],
+      "phone_number.format.national" : [
+        "(0# #### ####)",
+        "(0## ### ####)",
+        "0### ### ###",
+        "(0### ### ###)",
+        "0## ### ####"
+      ]
+    },
+    "en_IN" : {
+      "phone_number.format.human" : [
+        "### ### ####",
+        "0## #### ####",
+        "0### ### ####",
+        "0#### ### ###",
+        "0##### #####",
+        "#### ## ####"
+      ],
+      "phone_number.format.international" : [
+        "+91 ### ### ####",
+        "+91 ## #### ####",
+        "+91 #### ### ###",
+        "+91 ##### #####",
+        "+91 #### ## ####"
+      ],
+      "phone_number.format.national" : [
+        "### ### ####",
+        "0## #### ####",
+        "0### ### ####",
+        "0#### ### ###",
+        "0##### #####",
+        "#### ## ####"
+      ]
+    },
+    "en_NG" : {
+      "phone_number.format.human" : [
+        "0### ### ####",
+        "0#### ## ####"
+      ],
+      "phone_number.format.international" : [
+        "+234 ### ### ####",
+        "+234 #### ## ####"
+      ],
+      "phone_number.format.national" : [
+        "0### ### ####",
+        "0#### ## ####"
+      ]
+    },
+    "en_US" : {
+      "phone_number.format.human" : [
+        "(!##) !##-####"
+      ],
+      "phone_number.format.international" : [
+        "+1 (!##) !##-####"
+      ],
+      "phone_number.format.national" : [
+        "(!##) !##-####"
+      ]
+    },
+    "en_ZA" : {
+      "phone_number.format.human" : [
+        "0### ### ###",
+        "0## ### ####"
+      ],
+      "phone_number.format.international" : [
+        "+27 ### ### ###",
+        "+27 ## ### ####"
+      ],
+      "phone_number.format.national" : [
+        "0### ### ###",
+        "0## ### ####"
+      ]
+    },
+    "es" : {
+      "phone_number.format.human" : [
+        "### ### ###",
+        "### ## ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+34 ### ### ###",
+        "+34 ### ## ## ##"
+      ],
+      "phone_number.format.national" : [
+        "### ### ###",
+        "### ## ## ##"
+      ]
+    },
+    "es_MX" : {
+      "phone_number.format.human" : [
+        "## #### ####",
+        "### ### ####"
+      ],
+      "phone_number.format.international" : [
+        "+52 ## #### ####",
+        "+52 ### ### ####"
+      ],
+      "phone_number.format.national" : [
+        "## #### ####",
+        "### ### ####"
+      ]
+    },
+    "fa" : {
+      "phone_number.format.human" : [
+        "0### ### ####",
+        "0## #### ####"
+      ],
+      "phone_number.format.international" : [
+        "+98 ### ### ####",
+        "+98 ## #### ####"
+      ],
+      "phone_number.format.national" : [
+        "0### ### ####",
+        "0## #### ####"
+      ]
+    },
+    "fi" : {
+      "phone_number.format.human" : [
+        "######",
+        "0### #######",
+        "0## ########",
+        "0# #########"
+      ],
+      "phone_number.format.international" : [
+        "+358 ######",
+        "+358 ### #######",
+        "+358 ## ########",
+        "+358 # #########"
+      ],
+      "phone_number.format.national" : [
+        "######",
+        "0### #######",
+        "0## ########",
+        "0# #########"
+      ]
+    },
+    "fr" : {
+      "phone_number.format.human" : [
+        "0 ### ## ## ##",
+        "0# ## ## ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+33 ### ## ## ##",
+        "+33 # ## ## ## ##"
+      ],
+      "phone_number.format.national" : [
+        "0 ### ## ## ##",
+        "0# ## ## ## ##"
+      ]
+    },
+    "fr_BE" : {
+      "phone_number.format.human" : [
+        "0### ## ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+32 ### ## ## ##"
+      ],
+      "phone_number.format.national" : [
+        "0### ## ## ##"
+      ]
+    },
+    "fr_CA" : {
+      "phone_number.format.human" : [
+        "(!##) !##-####"
+      ],
+      "phone_number.format.international" : [
+        "+1 (!##) !##-####"
+      ],
+      "phone_number.format.national" : [
+        "(!##) !##-####"
+      ]
+    },
+    "fr_CH" : {
+      "phone_number.format.human" : [
+        "0### ### ###",
+        "0## ### ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+41 ### ### ###",
+        "+41 ## ### ## ##"
+      ],
+      "phone_number.format.national" : [
+        "0### ### ###",
+        "0## ### ## ##"
+      ]
+    },
+    "fr_LU" : {
+      "phone_number.format.human" : [
+        "## ## ## ###",
+        "### ### ###",
+        "## ## ## ## #"
+      ],
+      "phone_number.format.international" : [
+        "+352 ## ## ## ###",
+        "+352 ### ### ###",
+        "+352 ## ## ## ## #"
+      ],
+      "phone_number.format.national" : [
+        "## ## ## ###",
+        "### ### ###",
+        "## ## ## ## #"
+      ]
+    },
+    "fr_SN" : {
+      "phone_number.format.human" : [
+        "### ## ## ##",
+        "## ### ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+221 ### ## ## ##",
+        "+221 ## ### ## ##"
+      ],
+      "phone_number.format.national" : [
+        "### ## ## ##",
+        "## ### ## ##"
+      ]
+    },
+    "he" : {
+      "phone_number.format.human" : [
+        "0##-###-####"
+      ],
+      "phone_number.format.international" : [
+        "+972 ##-###-####"
+      ],
+      "phone_number.format.national" : [
+        "0##-###-####"
+      ]
+    },
+    "hr" : {
+      "phone_number.format.human" : [
+        "0### ## ###",
+        "0# #### ###",
+        "0## ### ####",
+        "0### ### ###"
+      ],
+      "phone_number.format.international" : [
+        "+385 ### ## ###",
+        "+385 # #### ###",
+        "+385 ## ### ####",
+        "+385 ### ### ###"
+      ],
+      "phone_number.format.national" : [
+        "0### ## ###",
+        "0# #### ###",
+        "0## ### ####",
+        "0### ### ###"
+      ]
+    },
+    "hu" : {
+      "phone_number.format.human" : [
+        "06 ## ### ####"
+      ],
+      "phone_number.format.international" : [
+        "+36 ## ### ####"
+      ],
+      "phone_number.format.national" : [
+        "06 ## ### ####"
+      ]
+    },
+    "hy" : {
+      "phone_number.format.human" : [
+        "0 ### ## ###",
+        "(0### #####)",
+        "(0## ######)",
+        "0## ######"
+      ],
+      "phone_number.format.international" : [
+        "+374 ### ## ###",
+        "+374 ### #####",
+        "+374 ## ######"
+      ],
+      "phone_number.format.national" : [
+        "0 ### ## ###",
+        "(0### #####)",
+        "(0## ######)",
+        "0## ######"
+      ]
+    },
+    "id_ID" : {
+      "phone_number.format.human" : [
+        "(0## #########)",
+        "0### #######",
+        "(0### ########)",
+        "0###-####-###",
+        "0### ########",
+        "0### ### ####",
+        "0### # ### ###",
+        "0###-####-#####",
+        "### ### ### ###"
+      ],
+      "phone_number.format.international" : [
+        "+62 ## #########",
+        "+62 ### #######",
+        "+62 ### ########",
+        "+62 ###-####-###",
+        "+62 ### ### ####",
+        "+62 ### # ### ###",
+        "+62 ###-####-#####",
+        "+62 ### ### ### ###"
+      ],
+      "phone_number.format.national" : [
+        "(0## #########)",
+        "0### #######",
+        "(0### ########)",
+        "0###-####-###",
+        "0### ########",
+        "0### ### ####",
+        "0### # ### ###",
+        "0###-####-#####",
+        "### ### ### ###"
+      ]
+    },
+    "it" : {
+      "phone_number.format.human" : [
+        "### ######",
+        "#### ######",
+        "## #### ####",
+        "### ### ####"
+      ],
+      "phone_number.format.international" : [
+        "+39 ### ######",
+        "+39 #### ######",
+        "+39 ## #### ####",
+        "+39 ### ### ####"
+      ],
+      "phone_number.format.national" : [
+        "### ######",
+        "#### ######",
+        "## #### ####",
+        "### ### ####"
+      ]
+    },
+    "ja" : {
+      "phone_number.format.human" : [
+        "##########",
+        "####-##-####",
+        "0###-###-####",
+        "0##-####-####",
+        "####-###-###"
+      ],
+      "phone_number.format.international" : [
+        "+81 ##########",
+        "+81 ####-##-####",
+        "+81 ###-###-####",
+        "+81 ##-####-####",
+        "+81 ####-###-###"
+      ],
+      "phone_number.format.national" : [
+        "##########",
+        "####-##-####",
+        "0###-###-####",
+        "0##-####-####",
+        "####-###-###"
+      ]
+    },
+    "ka_GE" : {
+      "phone_number.format.human" : [
+        "0### ### ###",
+        "0## ### ## ##",
+        "### ## ## ##",
+        "0### ## ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+995 ### ### ###",
+        "+995 ## ### ## ##",
+        "+995 ### ## ## ##"
+      ],
+      "phone_number.format.national" : [
+        "0### ### ###",
+        "0## ### ## ##",
+        "### ## ## ##",
+        "0### ## ## ##"
+      ]
+    },
+    "ko" : {
+      "phone_number.format.human" : [
+        "0#-####-####",
+        "0##-###-####",
+        "0##-####-####"
+      ],
+      "phone_number.format.international" : [
+        "+82 #-####-####",
+        "+82 ##-###-####",
+        "+82 ##-####-####"
+      ],
+      "phone_number.format.national" : [
+        "0#-####-####",
+        "0##-###-####",
+        "0##-####-####"
+      ]
+    },
+    "lv" : {
+      "phone_number.format.human" : [
+        "## ### ###"
+      ],
+      "phone_number.format.international" : [
+        "+371 ## ### ###"
+      ],
+      "phone_number.format.national" : [
+        "## ### ###"
+      ]
+    },
+    "mk" : {
+      "phone_number.format.human" : [
+        "0# ### ####",
+        "0## ### ###",
+        "0### # ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+389 # ### ####",
+        "+389 ## ### ###",
+        "+389 ### # ## ##"
+      ],
+      "phone_number.format.national" : [
+        "0# ### ####",
+        "0## ### ###",
+        "0### # ## ##"
+      ]
+    },
+    "nb_NO" : {
+      "phone_number.format.human" : [
+        "### ## ###",
+        "## ## ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+47 ### ## ###",
+        "+47 ## ## ## ##"
+      ],
+      "phone_number.format.national" : [
+        "### ## ###",
+        "## ## ## ##"
+      ]
+    },
+    "nl" : {
+      "phone_number.format.human" : [
+        "0### ######",
+        "0## #######",
+        "0# ########",
+        "0### ### ###",
+        "0## ### ####"
+      ],
+      "phone_number.format.international" : [
+        "+31 ### ######",
+        "+31 ## #######",
+        "+31 # ########",
+        "+31 ### ### ###",
+        "+31 ## ### ####"
+      ],
+      "phone_number.format.national" : [
+        "0### ######",
+        "0## #######",
+        "0# ########",
+        "0### ### ###",
+        "0## ### ####"
+      ]
+    },
+    "nl_BE" : {
+      "phone_number.format.human" : [
+        "0### ## ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+32 ### ## ## ##"
+      ],
+      "phone_number.format.national" : [
+        "0### ## ## ##"
+      ]
+    },
+    "pl" : {
+      "phone_number.format.human" : [
+        "### ### ###",
+        "## ### ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+48 ### ### ###",
+        "+48 ## ### ## ##"
+      ],
+      "phone_number.format.national" : [
+        "### ### ###",
+        "## ### ## ##"
+      ]
+    },
+    "pt_BR" : {
+      "phone_number.format.human" : [
+        "0### ### ####",
+        "(## ####-####)"
+      ],
+      "phone_number.format.international" : [
+        "+55 ### ### ####",
+        "+55 ## ####-####"
+      ],
+      "phone_number.format.national" : [
+        "0### ### ####",
+        "(## ####-####)"
+      ]
+    },
+    "pt_PT" : {
+      "phone_number.format.human" : [
+        "## ### ####",
+        "### ### ###"
+      ],
+      "phone_number.format.international" : [
+        "+351 ## ### ####",
+        "+351 ### ### ###"
+      ],
+      "phone_number.format.national" : [
+        "## ### ####",
+        "### ### ###"
+      ]
+    },
+    "ro" : {
+      "phone_number.format.human" : [
+        "0## ### ####",
+        "0### ### ###"
+      ],
+      "phone_number.format.international" : [
+        "+40 ## ### ####",
+        "+40 ### ### ###"
+      ],
+      "phone_number.format.national" : [
+        "0## ### ####",
+        "0### ### ###"
+      ]
+    },
+    "ro_MD" : {
+      "phone_number.format.human" : [
+        "0### #####",
+        "0## ### ###",
+        "0### ## ###"
+      ],
+      "phone_number.format.international" : [
+        "+373 ### #####",
+        "+373 ## ### ###",
+        "+373 ### ## ###"
+      ],
+      "phone_number.format.national" : [
+        "0### #####",
+        "0## ### ###",
+        "0### ## ###"
+      ]
+    },
+    "ru" : {
+      "phone_number.format.human" : [
+        "8 (#### ## ## ##)",
+        "8 (##### # ## ##)",
+        "8 (### ### ####)",
+        "8 (### ###-##-##)"
+      ],
+      "phone_number.format.international" : [
+        "+7 #### ## ## ##",
+        "+7 ##### # ## ##",
+        "+7 ### ### ####",
+        "+7 ### ###-##-##"
+      ],
+      "phone_number.format.national" : [
+        "8 (#### ## ## ##)",
+        "8 (##### # ## ##)",
+        "8 (### ### ####)",
+        "8 (### ###-##-##)"
+      ]
+    },
+    "sk" : {
+      "phone_number.format.human" : [
+        "0# ### ### ##",
+        "0### ### ###",
+        "0## ### ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+421 # ### ### ##",
+        "+421 ### ### ###",
+        "+421 ## ### ## ##"
+      ],
+      "phone_number.format.national" : [
+        "0# ### ### ##",
+        "0### ### ###",
+        "0## ### ## ##"
+      ]
+    },
+    "sl_SI" : {
+      "phone_number.format.human" : [
+        "0## ######",
+        "0### #####",
+        "0## ### ###",
+        "(0# ### ## ##)"
+      ],
+      "phone_number.format.international" : [
+        "+386 ## ######",
+        "+386 ### #####",
+        "+386 ## ### ###",
+        "+386 # ### ## ##"
+      ],
+      "phone_number.format.national" : [
+        "0## ######",
+        "0### #####",
+        "0## ### ###",
+        "(0# ### ## ##)"
+      ]
+    },
+    "sr_RS_latin" : {
+      "phone_number.format.human" : [
+        "0### #######",
+        "0## ########"
+      ],
+      "phone_number.format.international" : [
+        "+381 ### #######",
+        "+381 ## ########"
+      ],
+      "phone_number.format.national" : [
+        "0### #######",
+        "0## ########"
+      ]
+    },
+    "sv" : {
+      "phone_number.format.human" : [
+        "0###-### ###",
+        "0##-### ## ##",
+        "0#-### ### ##",
+        "0###-## ## ##"
+      ],
+      "phone_number.format.international" : [
+        "+46 ###-### ###",
+        "+46 ##-### ## ##",
+        "+46 #-### ### ##",
+        "+46 ###-## ## ##"
+      ],
+      "phone_number.format.national" : [
+        "0###-### ###",
+        "0##-### ## ##",
+        "0#-### ### ##",
+        "0###-## ## ##"
+      ]
+    },
+    "tr" : {
+      "phone_number.format.human" : [
+        "0### ### ####",
+        "0### ### ## ##",
+        "(0### ### ## ##)"
+      ],
+      "phone_number.format.international" : [
+        "+90 ### ### ####",
+        "+90 ### ### ## ##"
+      ],
+      "phone_number.format.national" : [
+        "0### ### ####",
+        "0### ### ## ##",
+        "(0### ### ## ##)"
+      ]
+    },
+    "uk" : {
+      "phone_number.format.human" : [
+        "0### ### ###",
+        "0#### #####",
+        "0## ### ####"
+      ],
+      "phone_number.format.international" : [
+        "+380 ### ### ###",
+        "+380 #### #####",
+        "+380 ## ### ####"
+      ],
+      "phone_number.format.national" : [
+        "0### ### ###",
+        "0#### #####",
+        "0## ### ####"
+      ]
+    },
+    "vi" : {
+      "phone_number.format.human" : [
+        "#### #####",
+        "0## ### ## ##",
+        "0### ### ###"
+      ],
+      "phone_number.format.international" : [
+        "+84 #### #####",
+        "+84 ## ### ## ##",
+        "+84 ### ### ###"
+      ],
+      "phone_number.format.national" : [
+        "#### #####",
+        "0## ### ## ##",
+        "0### ### ###"
+      ]
+    },
+    "yo_NG" : {
+      "phone_number.format.human" : [
+        "0### ### ####",
+        "0#### ## ####"
+      ],
+      "phone_number.format.international" : [
+        "+234 ### ### ####",
+        "+234 #### ## ####"
+      ],
+      "phone_number.format.national" : [
+        "0### ### ####",
+        "0#### ## ####"
+      ]
+    },
+    "zh_CN" : {
+      "phone_number.format.human" : [
+        "### ########",
+        "0#### ### ####",
+        "0### #### ####",
+        "### #### ####"
+      ],
+      "phone_number.format.international" : [
+        "+86 ### ########",
+        "+86 #### ### ####",
+        "+86 ### #### ####"
+      ],
+      "phone_number.format.national" : [
+        "### ########",
+        "0#### ### ####",
+        "0### #### ####",
+        "### #### ####"
+      ]
+    },
+    "zh_TW" : {
+      "phone_number.format.human" : [
+        "0## ### ####",
+        "0# #### ####",
+        "0### ### ###"
+      ],
+      "phone_number.format.international" : [
+        "+886 ## ### ####",
+        "+886 # #### ####",
+        "+886 ### ### ###"
+      ],
+      "phone_number.format.national" : [
+        "0## ### ####",
+        "0# #### ####",
+        "0### ### ###"
+      ]
+    }
+  },
+  "fallback" : false,
+  "id" : "phone-formats",
+  "sourceByLocale" : null,
+  "sources" : [
+    "libphonenumber",
+    "cldr-48"
+  ]
+}

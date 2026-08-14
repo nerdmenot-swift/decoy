@@ -45,6 +45,21 @@ let root: URL = {
 
 let outDirectory = root.appendingPathComponent("out")
 
+/// `--write-baselines` re-records each adapter's contribution under `parity/`.
+///
+/// These began as the port's scaffolding: every adapter's output was frozen from the
+/// JavaScript before any of it was rewritten, so a ported adapter could be checked against
+/// what its predecessor actually produced rather than against a re-description of what it
+/// was supposed to produce. With the JavaScript gone they would have become unregenerable
+/// fixtures, correct today and impossible to update the first time an upstream is
+/// legitimately re-pinned — the kind of check people delete rather than fix.
+///
+/// So they are regenerable from here instead, and what they are for has changed with them:
+/// not "does Swift match JavaScript" but "did this adapter's output move". A re-pin
+/// regenerates them and the diff is reviewed like any other.
+let writeBaselines = arguments.contains("--write-baselines")
+let baselineDirectory = root.appendingPathComponent("parity")
+
 func note(_ line: String) {
     FileHandle.standardError.write(Data((line + "\n").utf8))
 }
@@ -207,6 +222,11 @@ var sourceOrder: [String] = []
 
 // MARK: - Run the adapters
 
+if writeBaselines {
+    try? FileManager.default.createDirectory(
+        at: baselineDirectory, withIntermediateDirectories: true)
+}
+
 var contributions: [Orchestrator.Contribution] = []
 
 for adapter in adapters {
@@ -242,6 +262,27 @@ for adapter in adapters {
     let summary = output.stats.filter { !$0.1.isEmpty }
         .map { "\($0.0)=\($0.1)" }.joined(separator: " ")
     if !summary.isEmpty { note("  \(summary)") }
+
+    if writeBaselines {
+        let record: [String: Any] = [
+            "id": id,
+            "sources": sources,
+            // The source the tables are credited to, which is the first one unless
+            // the adapter names another.
+            "attributeTo": type(of: adapter).attributeTo ?? sources[0],
+            "fallback": false,
+            "contributions": output.contributions.mapValues { $0.mapValues(\.json) },
+            "sourceByLocale": output.sourceByLocale as Any? ?? NSNull(),
+        ]
+        do {
+            let data = try JSONSerialization.data(
+                withJSONObject: record,
+                options: [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes])
+            try data.write(to: baselineDirectory.appendingPathComponent("\(id).json"))
+        } catch {
+            fail("could not write the \(id) baseline: \(error)")
+        }
+    }
 
     contributions.append(
         Orchestrator.Contribution(

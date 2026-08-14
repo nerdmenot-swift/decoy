@@ -1,0 +1,555 @@
+{
+  "attributeTo" : "decoy-authored",
+  "contributions" : {
+    "en" : {
+      "beverage.age_statement" : [
+        "10 Year Old",
+        "12 Year Old",
+        "15 Year Old",
+        "18 Year Old",
+        "21 Year Old",
+        "25 Year Old",
+        "Small Batch",
+        "Cask Strength",
+        "Single Cask",
+        "Sherry Finish"
+      ],
+      "beverage.beer_pattern" : [
+        {
+          "value" : "{{whimsy.adjective}} {{whimsy.creature}} {{beverage.beer_style}}",
+          "weight" : 5
+        },
+        {
+          "value" : "{{whimsy.creature}} {{beverage.beer_style}}",
+          "weight" : 2
+        },
+        {
+          "value" : "{{whimsy.place}} {{beverage.beer_style}}",
+          "weight" : 2
+        }
+      ],
+      "beverage.beer_style" : [
+        "IPA",
+        "Pale Ale",
+        "Stout",
+        "Porter",
+        "Lager",
+        "Pilsner",
+        "Saison",
+        "Gose",
+        "Bitter",
+        "Wheat Beer",
+        "Amber Ale",
+        "Barleywine",
+        "Dubbel",
+        "Tripel",
+        "Sour",
+        "Helles",
+        "Bock",
+        "Brown Ale",
+        "Kölsch",
+        "Mild"
+      ],
+      "beverage.brewery_pattern" : [
+        "{{whimsy.place}} Brewing Co.",
+        "{{whimsy.creature}} & Sons",
+        "The {{whimsy.adjective}} {{whimsy.object}} Brewery"
+      ],
+      "beverage.cocktail_pattern" : [
+        "The {{whimsy.adjective}} {{whimsy.object}}",
+        "The {{whimsy.creature}}",
+        "{{whimsy.adjective}} {{whimsy.place}}",
+        "The {{whimsy.object}} Sour"
+      ],
+      "beverage.grape" : [
+        "Merlot",
+        "Syrah",
+        "Riesling",
+        "Chardonnay",
+        "Pinot Noir",
+        "Sauvignon Blanc",
+        "Cabernet Sauvignon",
+        "Grenache",
+        "Tempranillo",
+        "Nebbiolo",
+        "Sangiovese",
+        "Malbec",
+        "Viognier",
+        "Gewürztraminer",
+        "Chenin Blanc",
+        "Barbera",
+        "Carménère",
+        "Albariño"
+      ],
+      "beverage.whisky_pattern" : [
+        {
+          "value" : "Glen {{whimsy.place}} {{beverage.age_statement}}",
+          "weight" : 4
+        },
+        {
+          "value" : "{{whimsy.place}} {{beverage.age_statement}}",
+          "weight" : 3
+        },
+        {
+          "value" : "{{whimsy.creature}}'s Reserve {{beverage.age_statement}}",
+          "weight" : 2
+        }
+      ],
+      "beverage.wine_pattern" : [
+        "{{whimsy.adjective}} {{whimsy.place}} {{beverage.grape}}",
+        "{{whimsy.place}} Estate {{beverage.grape}}",
+        "{{whimsy.creature}} Ridge {{beverage.grape}}"
+      ],
+      "sport.club_pattern" : [
+        {
+          "value" : "{{whimsy.place}} {{sport.club_suffix}}",
+          "weight" : 5
+        },
+        {
+          "value" : "{{whimsy.creature}} {{sport.club_suffix}}",
+          "weight" : 3
+        },
+        {
+          "value" : "{{whimsy.adjective}} {{whimsy.place}} FC",
+          "weight" : 2
+        },
+        {
+          "value" : "{{whimsy.place}} {{whimsy.creature}}s",
+          "weight" : 2
+        }
+      ],
+      "sport.club_suffix" : [
+        "United",
+        "City",
+        "Rovers",
+        "Wanderers",
+        "Athletic",
+        "Albion",
+        "Town",
+        "County",
+        "Rangers",
+        "Thistle",
+        "Harriers",
+        "Casuals",
+        "Academicals",
+        "Victoria"
+      ],
+      "sport.discipline" : [
+        "Football",
+        "Cricket",
+        "Rugby Union",
+        "Rugby League",
+        "Basketball",
+        "Ice Hockey",
+        "Field Hockey",
+        "Athletics",
+        "Cycling",
+        "Rowing",
+        "Netball",
+        "Handball",
+        "Volleyball",
+        "Sailing",
+        "Fencing",
+        "Archery",
+        "Judo",
+        "Swimming",
+        "Badminton",
+        "Squash"
+      ],
+      "sport.trophy_pattern" : [
+        "The {{whimsy.object}} Cup",
+        "The {{whimsy.adjective}} {{whimsy.object}} Trophy",
+        "The {{whimsy.place}} Shield"
+      ],
+      "sport.venue_pattern" : [
+        "The {{whimsy.object}} Ground",
+        "{{whimsy.place}} Park",
+        "{{whimsy.adjective}} {{whimsy.place}} Stadium",
+        "The {{whimsy.place}} Arena"
+      ],
+      "whimsy.adjective" : [
+        "Amber",
+        "Ancient",
+        "Auburn",
+        "Bitter",
+        "Brazen",
+        "Brittle",
+        "Copper",
+        "Crimson",
+        "Cursive",
+        "Dappled",
+        "Distant",
+        "Drifting",
+        "Eager",
+        "Earnest",
+        "Endless",
+        "Feral",
+        "Fleeting",
+        "Frosted",
+        "Gilded",
+        "Glacial",
+        "Grateful",
+        "Hollow",
+        "Humming",
+        "Hushed",
+        "Idle",
+        "Immense",
+        "Iron",
+        "Jagged",
+        "Jovial",
+        "Keen",
+        "Kindred",
+        "Lucid",
+        "Luminous",
+        "Molten",
+        "Mottled",
+        "Muted",
+        "Nimble",
+        "Northern",
+        "Noble",
+        "Opaline",
+        "Orbital",
+        "Patient",
+        "Pewter",
+        "Prudent",
+        "Quiet",
+        "Quilted",
+        "Restless",
+        "Roaming",
+        "Rugged",
+        "Sable",
+        "Silent",
+        "Solemn",
+        "Tidal",
+        "Tireless",
+        "Twilight",
+        "Umbral",
+        "Upright",
+        "Vagrant",
+        "Velvet",
+        "Vivid",
+        "Wandering",
+        "Weathered",
+        "Willing",
+        "Zealous",
+        "Zesty"
+      ],
+      "whimsy.band_pattern" : [
+        {
+          "value" : "The {{whimsy.adjective}} {{whimsy.creature}}s",
+          "weight" : 4
+        },
+        {
+          "value" : "The {{whimsy.object}}s",
+          "weight" : 2
+        },
+        {
+          "value" : "{{whimsy.adjective}} {{whimsy.place}}",
+          "weight" : 2
+        },
+        {
+          "value" : "{{whimsy.creature}} {{whimsy.object}}",
+          "weight" : 1
+        }
+      ],
+      "whimsy.board_game_pattern" : [
+        {
+          "value" : "The {{whimsy.place}} Expedition",
+          "weight" : 3
+        },
+        {
+          "value" : "{{whimsy.adjective}} {{whimsy.object}}",
+          "weight" : 3
+        },
+        {
+          "value" : "{{whimsy.creature}} & {{whimsy.object}}",
+          "weight" : 2
+        },
+        {
+          "value" : "Rise of the {{whimsy.creature}}s",
+          "weight" : 2
+        },
+        {
+          "value" : "{{whimsy.place}}: {{whimsy.adjective}} {{whimsy.object}}",
+          "weight" : 1
+        }
+      ],
+      "whimsy.buzz_topic" : [
+        "Event Sourcing",
+        "Service Meshes",
+        "Monorepos",
+        "Feature Flags",
+        "Observability",
+        "Schema Migrations",
+        "Caching",
+        "Retries",
+        "Idempotency",
+        "Blue-Green Deploys",
+        "Distributed Tracing",
+        "Rate Limiting",
+        "Eventual Consistency",
+        "Circuit Breakers",
+        "Immutable Infrastructure",
+        "Chaos Testing",
+        "Zero-Downtime Cutovers",
+        "Backpressure",
+        "Sharding",
+        "Message Queues",
+        "Config Management",
+        "Dependency Pinning",
+        "Type Safety",
+        "Code Review",
+        "Incident Response",
+        "On-Call Rotations",
+        "Load Shedding",
+        "Batch Jobs",
+        "Data Lineage",
+        "Access Control",
+        "Secret Rotation",
+        "Cold Starts",
+        "Connection Pooling",
+        "Log Aggregation",
+        "Canary Releases",
+        "Rollback Strategy",
+        "Test Fixtures",
+        "Seed Data"
+      ],
+      "whimsy.codename_pattern" : [
+        "Operation {{whimsy.adjective}} {{whimsy.object}}",
+        "Operation {{whimsy.adjective}} {{whimsy.creature}}",
+        "Project {{whimsy.object}}",
+        "Project {{whimsy.adjective}} {{whimsy.place}}"
+      ],
+      "whimsy.creature" : [
+        "Antelope",
+        "Adder",
+        "Badger",
+        "Bittern",
+        "Curlew",
+        "Cormorant",
+        "Dunlin",
+        "Dipper",
+        "Egret",
+        "Ermine",
+        "Falcon",
+        "Ferret",
+        "Gannet",
+        "Gecko",
+        "Heron",
+        "Hedgehog",
+        "Iguana",
+        "Impala",
+        "Jackal",
+        "Jerboa",
+        "Kestrel",
+        "Kingfisher",
+        "Lemur",
+        "Lapwing",
+        "Magpie",
+        "Marmot",
+        "Narwhal",
+        "Nightjar",
+        "Ocelot",
+        "Osprey",
+        "Panther",
+        "Pelican",
+        "Quail",
+        "Quokka",
+        "Raven",
+        "Roebuck",
+        "Stoat",
+        "Sturgeon",
+        "Tapir",
+        "Tern",
+        "Urchin",
+        "Umbrette",
+        "Viper",
+        "Vole",
+        "Warbler",
+        "Wombat",
+        "Yak",
+        "Zebu"
+      ],
+      "whimsy.excuse" : [
+        "the certificate expired again",
+        "someone rotated the key without telling anyone",
+        "a migration ran twice",
+        "the cron job and the deploy landed in the same minute",
+        "DNS",
+        "the retry storm made it worse",
+        "a config flag was set in staging and not in production",
+        "the disk filled with logs about the disk filling",
+        "the load balancer health check was checking itself",
+        "an upstream changed a field type without a version bump",
+        "the clock on one node drifted",
+        "a dependency published a patch release",
+        "the feature flag defaulted to on",
+        "the backup restore had never been tested",
+        "a regex was greedy",
+        "someone force-pushed to main"
+      ],
+      "whimsy.game_mechanic" : [
+        "Deck-Building",
+        "Worker Placement",
+        "Area Control",
+        "Tile Placement",
+        "Roll and Write",
+        "Set Collection",
+        "Push Your Luck",
+        "Hidden Role",
+        "Engine Building",
+        "Drafting",
+        "Cooperative",
+        "Legacy",
+        "Trick-Taking",
+        "Auction",
+        "Route Building",
+        "Deduction"
+      ],
+      "whimsy.horse_pattern" : [
+        "{{whimsy.adjective}} {{whimsy.object}}",
+        "{{whimsy.adjective}} {{whimsy.place}}",
+        "{{whimsy.creature}} Song",
+        "{{whimsy.adjective}} Dancer"
+      ],
+      "whimsy.object" : [
+        "Anvil",
+        "Atlas",
+        "Beacon",
+        "Bellows",
+        "Cipher",
+        "Compass",
+        "Crucible",
+        "Dial",
+        "Ledger",
+        "Lantern",
+        "Lattice",
+        "Meridian",
+        "Mortar",
+        "Obelisk",
+        "Pennant",
+        "Prism",
+        "Quiver",
+        "Rampart",
+        "Sextant",
+        "Signal",
+        "Spindle",
+        "Tessera",
+        "Thimble",
+        "Turnstile",
+        "Vessel",
+        "Weathervane"
+      ],
+      "whimsy.paint_pattern" : [
+        "{{whimsy.adjective}} {{whimsy.place}}",
+        "{{whimsy.adjective}} {{whimsy.object}}",
+        "{{whimsy.creature}} Feather",
+        "{{whimsy.adjective}} Morning"
+      ],
+      "whimsy.place" : [
+        "Basin",
+        "Cairn",
+        "Causeway",
+        "Cove",
+        "Delta",
+        "Escarpment",
+        "Estuary",
+        "Fjord",
+        "Foothill",
+        "Harbour",
+        "Headland",
+        "Hollow",
+        "Isthmus",
+        "Lagoon",
+        "Marsh",
+        "Moor",
+        "Narrows",
+        "Plateau",
+        "Quarry",
+        "Ravine",
+        "Reef",
+        "Ridge",
+        "Shoal",
+        "Steppe",
+        "Thicket",
+        "Tundra"
+      ],
+      "whimsy.pub_pattern" : [
+        {
+          "value" : "The {{whimsy.creature}} & {{whimsy.object}}",
+          "weight" : 4
+        },
+        {
+          "value" : "The {{whimsy.adjective}} {{whimsy.creature}}",
+          "weight" : 4
+        },
+        {
+          "value" : "The {{whimsy.object}} & Crown",
+          "weight" : 2
+        },
+        {
+          "value" : "The Old {{whimsy.object}}",
+          "weight" : 2
+        },
+        {
+          "value" : "The {{whimsy.creature}}s Arms",
+          "weight" : 2
+        }
+      ],
+      "whimsy.room_pattern" : [
+        "The {{whimsy.object}}",
+        "The {{whimsy.place}}",
+        "{{whimsy.adjective}} {{whimsy.place}}",
+        "The {{whimsy.creature}}"
+      ],
+      "whimsy.ship_pattern" : [
+        "HMS {{whimsy.object}}",
+        "The {{whimsy.adjective}} {{whimsy.creature}}",
+        "The {{whimsy.object}} of {{whimsy.place}}",
+        "The {{whimsy.adjective}} {{whimsy.place}}"
+      ],
+      "whimsy.ssid" : [
+        "Pretty Fly for a WiFi",
+        "Bill Wi the Science Fi",
+        "The LAN Before Time",
+        "Drop It Like Its Hotspot",
+        "Wu-Tang LAN",
+        "Silence of the LANs",
+        "Nacho WiFi",
+        "Panic at the Cisco",
+        "Get Off My LAN",
+        "It Burns When IP",
+        "LAN Solo",
+        "The Promised LAN",
+        "Abraham Linksys",
+        "Router? I Hardly Know Her",
+        "Winternet Is Coming",
+        "No More Mister WiFi",
+        "Hide Yo Kids Hide Yo WiFi",
+        "Tell My WiFi Love Her",
+        "Untrusted Network",
+        "FBI Surveillance Van"
+      ],
+      "whimsy.talk_pattern" : [
+        "{{whimsy.buzz_topic}} at Scale",
+        "Considered Harmful: Rethinking {{whimsy.buzz_topic}}",
+        "What I Learned Migrating {{whimsy.buzz_topic}}",
+        "{{whimsy.buzz_topic}}: A Postmortem",
+        "Stop Doing {{whimsy.buzz_topic}}",
+        "The Hidden Cost of {{whimsy.buzz_topic}}",
+        "{{whimsy.buzz_topic}} Without the Tears",
+        "{{whimsy.buzz_topic}}: Lessons from {{whimsy.place}}",
+        "From {{whimsy.object}} to {{whimsy.buzz_topic}}",
+        "{{whimsy.buzz_topic}} and the {{whimsy.adjective}} {{whimsy.object}}",
+        "Why We Rewrote {{whimsy.buzz_topic}} in {{whimsy.place}}",
+        "Ten Years of {{whimsy.buzz_topic}}: A {{whimsy.adjective}} Retrospective"
+      ]
+    }
+  },
+  "fallback" : false,
+  "id" : "authored-whimsy",
+  "sourceByLocale" : null,
+  "sources" : [
+    "decoy-authored"
+  ]
+}

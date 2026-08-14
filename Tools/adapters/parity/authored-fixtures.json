@@ -1,0 +1,486 @@
+{
+  "attributeTo" : "decoy-authored",
+  "contributions" : {
+    "en" : {
+      "beverage.coffee_pattern" : [
+        "{{whimsy.adjective}} {{whimsy.place}} {{beverage.roast}}",
+        "{{whimsy.object}} {{beverage.roast}}",
+        "The {{whimsy.adjective}} {{whimsy.creature}} {{beverage.roast}}",
+        "{{whimsy.place}} Reserve {{beverage.roast}}"
+      ],
+      "beverage.roast" : [
+        "Light Roast",
+        "Medium Roast",
+        "Dark Roast",
+        "Filter Roast",
+        "Espresso Roast",
+        "Washed",
+        "Natural",
+        "Honey Process",
+        "Anaerobic",
+        "Decaf"
+      ],
+      "beverage.tea_base" : [
+        "Black Tea",
+        "Green Tea",
+        "White Tea",
+        "Oolong",
+        "Rooibos",
+        "Chai",
+        "Herbal Infusion",
+        "Pu-erh",
+        "Matcha",
+        "Yerba Mate"
+      ],
+      "beverage.tea_pattern" : [
+        "{{whimsy.adjective}} {{whimsy.place}} {{beverage.tea_base}}",
+        "{{whimsy.object}} {{beverage.tea_base}}",
+        "{{whimsy.place}} Morning {{beverage.tea_base}}",
+        "{{whimsy.adjective}} {{whimsy.creature}} {{beverage.tea_base}}"
+      ],
+      "commerce.review_aspect" : [
+        "the build quality",
+        "the packaging",
+        "the finish",
+        "the weight",
+        "the instructions",
+        "the battery life",
+        "the fit",
+        "the colour",
+        "the price",
+        "the delivery",
+        "the stitching",
+        "the grip",
+        "the noise",
+        "the size",
+        "the materials"
+      ],
+      "commerce.review_complaint" : [
+        "not what the photos suggest",
+        "a let-down for the money",
+        "flimsier than it looks",
+        "awkward to use",
+        "noticeably worse than the previous version",
+        "fine until it broke",
+        "the weak point",
+        "not as described"
+      ],
+      "commerce.review_pattern" : [
+        {
+          "value" : "Really pleased with this — {{commerce.review_aspect}} is {{commerce.review_praise}}.",
+          "weight" : 5
+        },
+        {
+          "value" : "Arrived early and {{commerce.review_aspect}} is {{commerce.review_praise}}.",
+          "weight" : 4
+        },
+        {
+          "value" : "Second one I have bought, because {{commerce.review_aspect}} is {{commerce.review_praise}}.",
+          "weight" : 3
+        },
+        {
+          "value" : "Does the job — {{commerce.review_aspect}} is {{commerce.review_praise}}, though {{commerce.review_aspect}} could be better.",
+          "weight" : 3
+        },
+        {
+          "value" : "Mixed: {{commerce.review_aspect}} is {{commerce.review_praise}} but {{commerce.review_aspect}} is {{commerce.review_complaint}}.",
+          "weight" : 2
+        },
+        {
+          "value" : "Disappointed — {{commerce.review_aspect}} is {{commerce.review_complaint}}.",
+          "weight" : 2
+        },
+        {
+          "value" : "Returned it. Frankly {{commerce.review_aspect}} was {{commerce.review_complaint}}, and support took a week to reply.",
+          "weight" : 1
+        }
+      ],
+      "commerce.review_praise" : [
+        "better than I expected",
+        "exactly as described",
+        "worth every penny",
+        "well thought through",
+        "sturdier than it looks",
+        "genuinely excellent",
+        "a noticeable step up",
+        "hard to fault"
+      ],
+      "commerce.review_title_pattern" : [
+        {
+          "value" : "Exactly what I wanted",
+          "weight" : 3
+        },
+        {
+          "value" : "Would buy again",
+          "weight" : 3
+        },
+        {
+          "value" : "Good, with one caveat",
+          "weight" : 2
+        },
+        {
+          "value" : "Does what it says",
+          "weight" : 2
+        },
+        {
+          "value" : "Not for me",
+          "weight" : 1
+        },
+        {
+          "value" : "Save your money",
+          "weight" : 1
+        }
+      ],
+      "system.error_component" : [
+        "auth-service",
+        "billing",
+        "search-indexer",
+        "payments",
+        "notification-worker",
+        "session-store",
+        "media-pipeline",
+        "reporting",
+        "sync-agent",
+        "gateway",
+        "user-directory",
+        "audit-log",
+        "scheduler",
+        "export-worker",
+        "webhook-dispatcher"
+      ],
+      "system.error_constraint" : [
+        "users_email_key",
+        "orders_pkey",
+        "accounts_tenant_id_fkey",
+        "sessions_token_key",
+        "invoices_number_key",
+        "idx_events_created_at",
+        "projects_slug_key",
+        "memberships_user_id_org_id_key",
+        "documents_owner_id_fkey",
+        "subscriptions_pkey"
+      ],
+      "system.error_database" : [
+        "duplicate key value violates unique constraint \"{{system.error_constraint}}\"",
+        "deadlock detected while waiting for ShareLock on transaction 4####",
+        "could not serialize access due to concurrent update",
+        "relation \"{{system.error_component}}\" does not exist",
+        "null value in column \"tenant_id\" violates not-null constraint",
+        "insert or update on table \"sessions\" violates foreign key constraint \"{{system.error_constraint}}\"",
+        "canceling statement due to statement timeout",
+        "value too long for type character varying(255)",
+        "connection to server was lost during query execution",
+        "too many connections for role \"{{system.error_component}}\""
+      ],
+      "system.error_http" : [
+        "upstream {{system.error_component}} returned 503 after 3 attempts",
+        "request to {{system.error_component}} timed out after 3#00ms",
+        "TLS handshake failed: certificate has expired",
+        "unexpected content-type \"text/html\" from {{system.error_component}}, expected JSON",
+        "connection reset by peer while reading response body",
+        "too many redirects following {{system.error_component}} callback",
+        "rate limit exceeded: retry after 6# seconds",
+        "malformed chunked encoding in response from {{system.error_component}}"
+      ],
+      "system.error_runtime" : [
+        "nil dereference in {{system.error_component}} while handling a queued job",
+        "index out of range: 1# with length 8",
+        "context deadline exceeded",
+        "out of memory: cannot allocate 512MiB for {{system.error_component}}",
+        "panic recovered in {{system.error_component}}: send on closed channel",
+        "goroutine leak detected: 4## routines blocked on the same mutex",
+        "unmarshalling failed: unexpected token at position 2##",
+        "circular dependency detected while initialising {{system.error_component}}"
+      ],
+      "system.error_validation" : [
+        "email must be a valid address",
+        "password must be at least 12 characters",
+        "value must be one of: draft, review, published",
+        "start date must fall before end date",
+        "quantity must be a positive integer",
+        "this field is required",
+        "postcode does not match the format for the selected country",
+        "a project with this slug already exists",
+        "file exceeds the 25MB limit",
+        "currency must match the account currency"
+      ],
+      "whimsy.cuisine" : [
+        "Italian",
+        "Lebanese",
+        "Vietnamese",
+        "Georgian",
+        "Peruvian",
+        "Ethiopian",
+        "Basque",
+        "Sichuan",
+        "Portuguese",
+        "Korean",
+        "Turkish",
+        "Nordic",
+        "Creole",
+        "Gujarati",
+        "Sicilian",
+        "Yucatecan"
+      ],
+      "whimsy.dish_base" : [
+        "Celeriac",
+        "Barley",
+        "Squash",
+        "Fennel",
+        "Chard",
+        "Artichoke",
+        "Aubergine",
+        "Pumpkin",
+        "Leek",
+        "Beetroot",
+        "Cauliflower",
+        "Parsnip",
+        "Chickpea",
+        "Lentil"
+      ],
+      "whimsy.dish_form" : [
+        "Ragout",
+        "Terrine",
+        "Broth",
+        "Gratin",
+        "Velouté",
+        "Tartare",
+        "Galette"
+      ],
+      "whimsy.dish_pattern" : [
+        "{{whimsy.dish_treatment}} {{whimsy.dish_base}} with {{whimsy.dish_side}}",
+        "{{whimsy.dish_treatment}} {{whimsy.dish_base}}, {{whimsy.dish_side}}",
+        "{{whimsy.dish_base}} {{whimsy.dish_form}} with {{whimsy.dish_side}}"
+      ],
+      "whimsy.dish_side" : [
+        "burnt butter",
+        "wild garlic",
+        "preserved lemon",
+        "brown crab",
+        "toasted hazelnut",
+        "smoked yoghurt",
+        "pickled walnut",
+        "charred spring onion",
+        "black garlic",
+        "sea buckthorn",
+        "horseradish cream",
+        "green peppercorn"
+      ],
+      "whimsy.dish_treatment" : [
+        "Charred",
+        "Slow-Roasted",
+        "Cured",
+        "Smoked",
+        "Braised",
+        "Confit",
+        "Pickled",
+        "Blackened",
+        "Poached",
+        "Griddled",
+        "Salt-Baked",
+        "Twice-Cooked"
+      ],
+      "whimsy.faculty" : [
+        "Engineering",
+        "Applied Mathematics",
+        "Comparative Literature",
+        "Marine Biology",
+        "Public Health",
+        "Archaeology",
+        "Music",
+        "Political Economy",
+        "Veterinary Medicine",
+        "Earth Sciences",
+        "Linguistics",
+        "Architecture"
+      ],
+      "whimsy.peak_pattern" : [
+        "Mount {{whimsy.object}}",
+        "{{whimsy.adjective}} {{whimsy.place}}",
+        "The {{whimsy.creature}}s Tooth",
+        "{{whimsy.object}} Pike",
+        "{{whimsy.adjective}} Crag"
+      ],
+      "whimsy.power" : [
+        "Flight",
+        "Invisibility",
+        "Telekinesis",
+        "Regeneration",
+        "Super Speed",
+        "Shapeshifting",
+        "Precognition",
+        "Phasing",
+        "Elasticity",
+        "Magnetism",
+        "Sonic Scream",
+        "Duplication",
+        "Illusion",
+        "Density Control",
+        "Weather Control",
+        "Technopathy"
+      ],
+      "whimsy.restaurant_pattern" : [
+        {
+          "value" : "The {{whimsy.adjective}} {{whimsy.object}}",
+          "weight" : 4
+        },
+        {
+          "value" : "The {{whimsy.adjective}} {{whimsy.creature}}",
+          "weight" : 4
+        },
+        {
+          "value" : "{{whimsy.place}} & {{whimsy.object}}",
+          "weight" : 3
+        },
+        {
+          "value" : "The {{whimsy.place}} Kitchen",
+          "weight" : 3
+        },
+        {
+          "value" : "{{whimsy.creature}} & Sons",
+          "weight" : 2
+        },
+        {
+          "value" : "The Old {{whimsy.place}}",
+          "weight" : 2
+        }
+      ],
+      "whimsy.school_kind" : [
+        "Academy",
+        "Grammar School",
+        "High School",
+        "Preparatory School",
+        "College",
+        "Community School",
+        "Free School",
+        "Comprehensive"
+      ],
+      "whimsy.school_pattern" : [
+        {
+          "value" : "{{whimsy.place}} {{whimsy.school_kind}}",
+          "weight" : 4
+        },
+        {
+          "value" : "{{whimsy.adjective}} {{whimsy.place}} {{whimsy.school_kind}}",
+          "weight" : 2
+        },
+        {
+          "value" : "The {{whimsy.place}} {{whimsy.school_kind}}",
+          "weight" : 2
+        },
+        {
+          "value" : "{{whimsy.object}} {{whimsy.school_kind}}",
+          "weight" : 1
+        }
+      ],
+      "whimsy.star_pattern" : [
+        "{{whimsy.object}} Majoris",
+        "{{whimsy.adjective}} {{whimsy.creature}}i",
+        "HD 1#####",
+        "{{whimsy.place}} Borealis"
+      ],
+      "whimsy.superhero_pattern" : [
+        {
+          "value" : "The {{whimsy.adjective}} {{whimsy.creature}}",
+          "weight" : 3
+        },
+        {
+          "value" : "Captain {{whimsy.object}}",
+          "weight" : 3
+        },
+        {
+          "value" : "The {{whimsy.object}} of {{whimsy.place}}",
+          "weight" : 2
+        },
+        {
+          "value" : "{{whimsy.adjective}} {{whimsy.object}}",
+          "weight" : 2
+        },
+        {
+          "value" : "Doctor {{whimsy.place}}",
+          "weight" : 1
+        }
+      ],
+      "whimsy.tech_adjective" : [
+        "redundant",
+        "auxiliary",
+        "digital",
+        "solid-state",
+        "multi-byte",
+        "primary",
+        "back-end",
+        "cross-platform",
+        "virtual",
+        "optical",
+        "neural",
+        "wireless",
+        "open-source",
+        "mobile",
+        "haptic",
+        "bluetooth"
+      ],
+      "whimsy.tech_gerund" : [
+        "bypassing",
+        "quantifying",
+        "indexing",
+        "transmitting",
+        "synthesizing",
+        "compressing",
+        "overriding",
+        "rebooting",
+        "calculating",
+        "parsing",
+        "navigating",
+        "connecting",
+        "generating",
+        "copying"
+      ],
+      "whimsy.tech_noun" : [
+        "protocol",
+        "bus",
+        "matrix",
+        "firewall",
+        "bandwidth",
+        "array",
+        "interface",
+        "circuit",
+        "driver",
+        "monitor",
+        "card",
+        "sensor",
+        "feed",
+        "panel",
+        "port",
+        "transmitter"
+      ],
+      "whimsy.tech_verb" : [
+        "bypass",
+        "quantify",
+        "index",
+        "transmit",
+        "synthesize",
+        "compress",
+        "override",
+        "reboot",
+        "calculate",
+        "parse",
+        "navigate",
+        "connect",
+        "generate",
+        "copy"
+      ],
+      "whimsy.technobabble_pattern" : [
+        "If we {{whimsy.tech_verb}} the {{whimsy.tech_noun}}, we can get to the {{whimsy.tech_adjective}} {{whimsy.tech_noun}} through the {{whimsy.tech_adjective}} {{whimsy.tech_noun}}",
+        "We need to {{whimsy.tech_verb}} the {{whimsy.tech_adjective}} {{whimsy.tech_noun}}",
+        "Try to {{whimsy.tech_verb}} the {{whimsy.tech_noun}}, maybe it will {{whimsy.tech_verb}} the {{whimsy.tech_adjective}} {{whimsy.tech_noun}}",
+        "You cannot {{whimsy.tech_verb}} the {{whimsy.tech_noun}} without {{whimsy.tech_gerund}} the {{whimsy.tech_adjective}} {{whimsy.tech_noun}}"
+      ]
+    }
+  },
+  "fallback" : false,
+  "id" : "authored-fixtures",
+  "sourceByLocale" : null,
+  "sources" : [
+    "decoy-authored"
+  ]
+}

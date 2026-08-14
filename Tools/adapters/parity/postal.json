@@ -1,0 +1,481 @@
+{
+  "attributeTo" : "libaddressinput",
+  "contributions" : {
+    "ar" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}}\n{{location.state}}\n{{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "az" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\nAZ {{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "bn_BD" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} - {{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "cs_CZ" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "### ##"
+      ]
+    },
+    "cy" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}}\n{{location.state}}\n{{location.zipCode}}"
+      ]
+    },
+    "da" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "de" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "de_AT" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "de_CH" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\nCH-{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "el" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "### ##"
+      ]
+    },
+    "en" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.state}} {{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "en_AU" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.state}} {{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "en_AU_ocker" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.state}} {{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "en_BORK" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.state}} {{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "en_CA" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.state}} {{location.zipCode}}"
+      ]
+    },
+    "en_GB" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}}\n{{location.state}}\n{{location.zipCode}}"
+      ]
+    },
+    "en_HK" : {
+      "location.postal_address" : [
+        "{{location.state}}\n{{location.streetAddress}}\n{{person.name}}"
+      ]
+    },
+    "en_IE" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}}\n{{location.state}}"
+      ]
+    },
+    "en_IN" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.zipCode}}\n{{location.state}}"
+      ],
+      "location.postcode" : [
+        "######"
+      ]
+    },
+    "en_NG" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.zipCode}}\n{{location.state}}"
+      ]
+    },
+    "en_US" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.state}} {{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "en_ZA" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}}\n{{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "es" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}} {{location.state}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "es_MX" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}, {{location.state}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "fa" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.state}}\n{{location.city}},\n{{location.streetAddress}}\n{{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "#####-#####"
+      ]
+    },
+    "fi" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\nFI-{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "fr" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "## ###"
+      ]
+    },
+    "fr_BE" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "fr_CA" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.state}} {{location.zipCode}}"
+      ]
+    },
+    "fr_CH" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\nCH-{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "fr_LU" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\nL-{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "fr_SN" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "he" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "hr" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\nHR-{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "hu" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.city}}\n{{location.streetAddress}}\n{{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "hy" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}}\n{{location.city}}\n{{location.state}}"
+      ]
+    },
+    "id_ID" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}}\n{{location.state}} {{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "it" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}} {{location.state}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "ja" : {
+      "location.postal_address" : [
+        "〒{{location.zipCode}}\n{{location.state}}{{location.city}}\n{{location.streetAddress}}\n{{person.name}}"
+      ],
+      "location.postcode" : [
+        "###-####"
+      ]
+    },
+    "ka_GE" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "ko" : {
+      "location.postal_address" : [
+        "{{location.state}} {{location.city}}\n{{location.streetAddress}}\n{{person.name}}\n{{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "###-###"
+      ]
+    },
+    "lv" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}}, {{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "LV-####"
+      ]
+    },
+    "mk" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "nb_NO" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "nl" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "#### ??"
+      ]
+    },
+    "nl_BE" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "pl" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "##-###"
+      ]
+    },
+    "pt_BR" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}}-{{location.state}}\n{{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "#####-###"
+      ]
+    },
+    "pt_PT" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "####-###"
+      ]
+    },
+    "ro" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "######"
+      ]
+    },
+    "ro_MD" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\nMD-{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "ru" : {
+      "location.postal_address" : [
+        "{{location.zipCode}} {{location.city}}\n{{location.streetAddress}}\n{{person.name}}"
+      ],
+      "location.postcode" : [
+        "######"
+      ]
+    },
+    "sk" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "### ##"
+      ]
+    },
+    "sl_SI" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\nSI- {{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "####"
+      ]
+    },
+    "sr_RS_latin" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "######"
+      ]
+    },
+    "sv" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\nSE-{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "### ##"
+      ]
+    },
+    "tr" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "uk" : {
+      "location.postal_address" : [
+        "{{location.zipCode}} {{location.city}}\n{{location.streetAddress}}\n{{person.name}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
+    "vi" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}}\n{{location.state}}"
+      ],
+      "location.postcode" : [
+        "######"
+      ]
+    },
+    "yo_NG" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.zipCode}}\n{{location.state}}"
+      ]
+    },
+    "zh_CN" : {
+      "location.postal_address" : [
+        "{{location.zipCode}}\n{{location.state}}{{location.city}}\n{{location.streetAddress}}\n{{person.name}}"
+      ],
+      "location.postcode" : [
+        "######"
+      ]
+    },
+    "zh_TW" : {
+      "location.postal_address" : [
+        "{{location.zipCode}}\n{{location.state}}{{location.city}}\n{{location.streetAddress}}\n{{person.name}}"
+      ],
+      "location.postcode" : [
+        "###"
+      ]
+    }
+  },
+  "fallback" : false,
+  "id" : "postal",
+  "sourceByLocale" : null,
+  "sources" : [
+    "libaddressinput",
+    "cldr-48"
+  ]
+}

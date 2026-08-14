@@ -48,10 +48,6 @@ jobs:
           [ -n "$corpus" ] || { echo "::error::No corpus version declared."; exit 1; }
           echo "corpus $corpus"
 
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 26
-
       - run: swift build
 
       # The corpus is built before testing because roughly thirty suites are gated on
@@ -59,7 +55,7 @@ jobs:
       # go green having exercised the ten-path stub, and gate a release on almost nothing.
       - name: Build corpus
         run: |
-          node Tools/adapters/run.mjs
+          swift run -c release decoy-build-corpus
           swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary
 
       - run: swift test

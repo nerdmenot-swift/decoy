@@ -3,16 +3,22 @@ import Testing
 
 @testable import DecoyAdapterKit
 
-/// Every ported adapter against the JavaScript's output for the same artifacts.
+/// Every adapter against the baseline of what it last produced.
 ///
-/// The harness is the point. Each adapter's contribution was dumped to
-/// `out/contributions/<id>.json` before any of them were ported, so a ported adapter is
-/// checked against what its predecessor actually produced rather than against a
-/// re-description of what it was supposed to produce. Adding an adapter to `ported` below
-/// is the whole of wiring it up.
+/// The harness began as the port's scaffolding: each adapter's contribution was frozen from
+/// the JavaScript before any of it was rewritten, so a ported adapter was checked against
+/// what its predecessor actually produced rather than against a re-description of what it
+/// was supposed to produce. All thirty-two matched, and the baselines under
+/// `Tools/adapters/parity/` are still those values.
 ///
-/// A dump that is missing fails the suite rather than skipping it: an adapter that quietly
-/// verifies nothing is worse than one that is not ported yet, because it looks done.
+/// What they are for has changed with the JavaScript's removal. They are no longer a claim
+/// that two implementations agree — they are the record of what each adapter emits, so a
+/// change to one shows up as a diff in the path it moved rather than as a corpus that is
+/// quietly different. Regenerate them deliberately with
+/// `swift run decoy-build-corpus --write-baselines` when an upstream is re-pinned.
+///
+/// A baseline that is missing fails the suite rather than skipping it: an adapter that
+/// quietly verifies nothing is worse than one that is not wired up, because it looks done.
 @Suite("Adapter parity", .enabled(if: PortFixtures.hasContributionDumps && PortFixtures.hasArtifactCache))
 struct AdapterParityTests {
 
@@ -174,7 +180,7 @@ struct AdapterParityTests {
             let id = adapter.adapterID
             guard let expected = Self.dump(id) else {
                 Issue.record(
-                    "no dump for \(id) — run `node Tools/adapters/dump-contributions.mjs`")
+                    "no baseline for \(id) — run `swift run decoy-build-corpus --write-baselines`")
                 continue
             }
 

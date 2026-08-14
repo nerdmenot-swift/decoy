@@ -1,16 +1,15 @@
 import Foundation
 
-/// Whether the fixtures the port-parity suites compare against are present.
+/// Whether the fixtures the pipeline suites compare against are present.
 ///
-/// Those suites exist to prove the Swift pipeline reproduces the JavaScript one, and they
-/// do it by diffing against what the JavaScript actually emitted: the intermediate JSON,
-/// the per-adapter contribution dumps, and a few reference files. All of that is generated,
-/// none of it is committed, and a fresh clone has none of it.
+/// Two of the three are build outputs a fresh clone does not have: the intermediate JSON
+/// and the verified upstream artifacts. The adapter baselines *are* committed, because with
+/// the JavaScript gone they are the only record of what each adapter emits.
 ///
-/// The suites deliberately *fail* when a fixture they expect is missing — a parity check
-/// that quietly compares nothing is worse than one that has not been written, because it
-/// looks done. That is right on a machine doing the port and wrong in CI, where the
-/// fixtures legitimately do not exist and the failure says nothing about the commit.
+/// The suites deliberately *fail* when a fixture they expect is missing — a check that
+/// quietly compares nothing is worse than one that has not been written, because it looks
+/// done. That is right on a machine with a populated cache and wrong in a job that
+/// legitimately has none, where the failure says nothing about the commit.
 ///
 /// So the suites are gated here instead. Absent fixtures means skipped, which swift-testing
 /// reports as a skip rather than a pass, and present fixtures means the strict behaviour is
@@ -19,8 +18,7 @@ import Foundation
 ///
 /// To run them, build the fixtures first:
 ///
-///     node Tools/adapters/run.mjs
-///     node Tools/adapters/dump-contributions.mjs
+///     swift run decoy-build-corpus
 enum PortFixtures {
 
     static let adapters = URL(fileURLWithPath: #filePath)
@@ -35,7 +33,7 @@ enum PortFixtures {
             atPath: adapters.appendingPathComponent("out/locales/en.json").path)
     }
 
-    /// The per-adapter contribution dumps.
+    /// The per-adapter baselines. Committed, so this is true on a fresh clone.
     static var hasContributionDumps: Bool {
         FileManager.default.fileExists(
             atPath: adapters.appendingPathComponent("parity/iana-tld.json").path)
