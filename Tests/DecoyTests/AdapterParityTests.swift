@@ -48,6 +48,8 @@ struct AdapterParityTests {
         WordNetAdapter(),
         WikidataNamesAdapter(),
         PostalAdapter(),
+        LegalEntitiesAdapter(),
+        PhoneFormatsAdapter(),
     ]
 
     private static func roster() -> (locales: [String], cldr: [String: String?]) {
