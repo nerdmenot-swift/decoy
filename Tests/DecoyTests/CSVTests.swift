@@ -44,4 +44,24 @@ struct CSVTests {
         // No trailing newline: the last row must still arrive.
         #expect(CSV.parse("a,b\nc,d") == [["a", "b"], ["c", "d"]])
     }
+
+    /// The same fault line again, in the plain-text splitter the adapters share.
+    ///
+    /// This one only failed on Linux. Foundation's `components(separatedBy: "\n")` searches
+    /// by UTF-16 code unit on Darwin and through a grapheme-aware path in
+    /// swift-corelibs-foundation, so a CRLF register split into 46,000 lines on a Mac and
+    /// into one on the Linux CI job — where the header check then reported that the schema
+    /// had changed and quoted the entire file back as evidence.
+    @Test("Lines.split behaves like split('\\n') on every ending")
+    func splitting() {
+        #expect(Lines.split("a\nb\nc") == ["a", "b", "c"])
+        // The carriage return stays on the end of the line, exactly where JavaScript
+        // leaves it, because the callers trim it themselves.
+        #expect(Lines.split("a\r\nb\r\nc") == ["a\r", "b\r", "c"])
+        // A bare CR is not a line ending to `split('\n')` and must not become one.
+        #expect(Lines.split("a\rb") == ["a\rb"])
+        // A trailing newline yields a trailing empty line, which callers skip on content.
+        #expect(Lines.split("a\n") == ["a", ""])
+        #expect(Lines.split("") == [""])
+    }
 }

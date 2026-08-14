@@ -78,7 +78,7 @@ public struct ProgrammingLanguagesAdapter: Adapter {
     /// ordering the JavaScript iterated rather than the directory's.
     static func exports(in indexSource: String) -> [(name: String, file: String)] {
         var found: [(String, String)] = []
-        for line in indexSource.components(separatedBy: "\n") {
+        for line in Lines.split(indexSource) {
             guard line.hasPrefix("export { default as ") else { continue }
             // The export name carries whichever quote the generator chose, for the same
             // reason `unquote` has to: a name containing an apostrophe is double-quoted.

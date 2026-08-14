@@ -140,8 +140,7 @@ public struct PostalAdapter: Adapter {
 
         // Dropping fields leaves blank lines and doubled spaces behind.
         return
-            out
-            .components(separatedBy: "\n")
+            Lines.split(out)
             .map { line -> String in
                 var collapsed = ""
                 var lastWasSpace = false
@@ -168,7 +167,7 @@ public struct PostalAdapter: Adapter {
             as: UTF8.self)
 
         var byRegion: [String: [String: Any]] = [:]
-        for line in text.components(separatedBy: "\n") {
+        for line in Lines.split(text) {
             guard line.hasPrefix("data/"), let equals = line.firstIndex(of: "=") else { continue }
             let region = String(line[line.index(line.startIndex, offsetBy: 5)..<equals])
             guard region.count == 2, region.allSatisfy({ $0.isUppercase && $0.isLetter })

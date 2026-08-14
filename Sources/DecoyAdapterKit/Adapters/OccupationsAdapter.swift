@@ -24,7 +24,7 @@ public struct OccupationsAdapter: Adapter {
         let file = directory.appendingPathComponent("\(root)/Occupation Data.txt")
         let text = String(decoding: try Data(contentsOf: file), as: UTF8.self)
 
-        let lines = text.components(separatedBy: "\n")
+        let lines = Lines.split(text)
         let header = (lines.first ?? "").components(separatedBy: "\t")
         guard header.count > 1, header[1] == "Title" else {
             throw AdapterFailure.shapeChanged(

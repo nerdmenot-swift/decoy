@@ -37,7 +37,7 @@ public struct USSurnamesAdapter: Adapter {
         let file = directory.appendingPathComponent("Names_2010Census.csv")
         let csv = String(decoding: try Data(contentsOf: file), as: UTF8.self)
 
-        let lines = csv.components(separatedBy: "\n")
+        let lines = Lines.split(csv)
         let header = (lines.first ?? "").components(separatedBy: ",")
         guard let nameColumn = header.firstIndex(of: "name"),
             let countColumn = header.firstIndex(of: "count")

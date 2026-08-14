@@ -158,10 +158,11 @@ public enum Models {
         var lists: [String: [String]] = [:]
         for file in try manager.contentsOfDirectory(atPath: base.path).sorted()
         where isLanguageFile(file) {
-            let terms = String(
-                decoding: try Data(contentsOf: base.appendingPathComponent(file)),
-                as: UTF8.self
-            ).components(separatedBy: "\n").filter { !$0.isEmpty }
+            let terms = Lines.split(
+                String(
+                    decoding: try Data(contentsOf: base.appendingPathComponent(file)),
+                    as: UTF8.self)
+            ).filter { !$0.isEmpty }
             if !terms.isEmpty { lists[file] = terms }
         }
 

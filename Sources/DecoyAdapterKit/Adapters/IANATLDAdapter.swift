@@ -26,7 +26,7 @@ public struct IANATLDAdapter: Adapter {
         // Split on "\n" alone, matching the JavaScript. `\.isNewline` would additionally
         // treat a lone CR as a separator, and CRLF as one — either of which changes what a
         // line is if IANA ever republishes with different endings.
-        let lines = text.components(separatedBy: "\n")
+        let lines = Lines.split(text)
 
         // Reported, not asserted. IANA bumps this serial on every regeneration whether or
         // not a TLD changed, so failing on it would fail the build daily; the descriptor's

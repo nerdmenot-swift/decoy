@@ -38,7 +38,7 @@ public struct EmojiAdapter: Adapter {
         var subgroup = ""
         var skipped = 0
 
-        for line in text.components(separatedBy: "\n") {
+        for line in Lines.split(text) {
             if line.hasPrefix("# group:") {
                 group = String(line.dropFirst("# group:".count))
                     .trimmingCharacters(in: .whitespaces)

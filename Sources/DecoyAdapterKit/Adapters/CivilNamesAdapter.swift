@@ -123,13 +123,13 @@ public struct CivilNamesAdapter: Adapter {
 
     /// Lines, with a leading byte order mark dropped.
     ///
-    /// `components(separatedBy:)` rather than `split(separator: "\n")`: CRLF is a single
-    /// Swift `Character`, so splitting on the newline character finds nothing in these
-    /// files at all.
+    /// `Lines.split` rather than `split(separator: "\n")`: CRLF is a single Swift
+    /// `Character`, so splitting on the newline character finds nothing in these files at
+    /// all — and every one of them is CRLF.
     static func lines(_ text: String, stripMark: Bool = true) -> [String] {
         var body = text
         if stripMark, body.hasPrefix("\u{FEFF}") { body.removeFirst() }
-        return body.components(separatedBy: "\n")
+        return Lines.split(body)
     }
 
     static func failure(_ detail: String) -> AdapterFailure {

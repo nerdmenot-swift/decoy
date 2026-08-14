@@ -14,7 +14,7 @@ public struct IANATZDBAdapter: Adapter {
     /// codes and coordinates, which nothing here wants.
     static func zones(in table: String) -> [String] {
         var found = Set<String>()
-        for line in table.components(separatedBy: "\n") {
+        for line in Lines.split(table) {
             if line.hasPrefix("#") || line.trimmingCharacters(in: .whitespaces).isEmpty {
                 continue
             }

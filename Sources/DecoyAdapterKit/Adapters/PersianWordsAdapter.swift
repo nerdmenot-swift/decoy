@@ -19,7 +19,7 @@ public struct PersianWordsAdapter: Adapter {
         let text = String(decoding: try Data(contentsOf: file), as: UTF8.self)
 
         // The first line of a .dic file is the entry count, not an entry.
-        let lines = text.components(separatedBy: "\n").dropFirst()
+        let lines = Lines.split(text).dropFirst()
 
         var words: [String] = []
         for line in lines {
