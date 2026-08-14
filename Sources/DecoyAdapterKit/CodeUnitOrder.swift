@@ -33,4 +33,20 @@ public enum CodeUnitOrder {
     public static func sorted(_ strings: [String]) -> [String] {
         strings.sorted(by: before)
     }
+
+    /// A dictionary or set key that distinguishes what JavaScript distinguishes.
+    ///
+    /// The same divergence as `before`, on the equality side: Swift's `String` hashes and
+    /// compares by canonical equivalence, so a `Dictionary` keyed on `String` merges two
+    /// spellings a JavaScript `Map` keeps apart.
+    ///
+    /// Taiwan's surname register is where this surfaced. It records 周 twice — as U+5468
+    /// and as U+2F83F, the compatibility ideograph, which has a *canonical* decomposition
+    /// to it. Grouping by `String` summed the two into 282,210 bearers; JavaScript kept
+    /// them apart, and the 25 people under the compatibility spelling then fell below the
+    /// bearer threshold and were dropped, leaving 282,185. A 25-person difference in one
+    /// weight, from two tables that look identical in any editor.
+    public static func key(_ text: String) -> [UInt16] {
+        Array(text.utf16)
+    }
 }
