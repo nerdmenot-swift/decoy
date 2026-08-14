@@ -45,6 +45,7 @@ struct AdapterParityTests {
         ISO4217Adapter(),
         CLDRDatesAdapter(),
         CitiesAdapter(),
+        WordNetAdapter(),
     ]
 
     private static func roster() -> (locales: [String], cldr: [String: String?]) {
