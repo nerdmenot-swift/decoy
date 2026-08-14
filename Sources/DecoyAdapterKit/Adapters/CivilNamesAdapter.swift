@@ -589,7 +589,7 @@ public struct CivilNamesAdapter: Adapter {
             country: "IL", locales: ["he"], source: "cbs-shemot",
             files: ["israeli-names"], parse: cbsShemot),
         // Neither an artifact nor a file: PxWeb answers a POST, so there is nothing to pin.
-        // `fetch-statistics-names.mjs` runs by hand and its output is committed.
+        // `decoy-fetch statistics-names` runs by hand and its output is committed.
         Registry(
             country: "NO", locales: ["nb_NO"], source: "ssb-fornavn", committed: "NO"),
         Registry(
@@ -742,7 +742,7 @@ public struct CivilNamesAdapter: Adapter {
                 guard let rows = try committed()[country] else {
                     throw Self.failure(
                         "\(registry.source): no '\(country)' in data/statistics-names.json — "
-                            + "run Tools/adapters/fetch-statistics-names.mjs")
+                            + "run `swift run decoy-fetch statistics-names`")
                 }
                 try apply(registry, rows)
                 continue

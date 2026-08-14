@@ -124,11 +124,13 @@ Tools/adapters/
   sources/<id>.json     pinned descriptor: URL, integrity hash, licence, version
   locales.json          the locale roster
   corpus-version.json   the corpus version, declared once
+  data/*.json           snapshots of the sources that answer a query, not a URL
   parity/<id>.json      what each adapter last emitted, diffed on every run
 
 Sources/DecoyAdapterKit/
   Adapters/<Name>.swift the transform, one per upstream
   ArtifactStore.swift   fetch, verify, cache, extract
+  Queries/              the query snapshots, refreshed by hand with `decoy-fetch`
 ```
 
 Rebuild it with `swift run decoy-build-corpus`, then `swift run decoy-compile-corpus`.

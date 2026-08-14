@@ -51,6 +51,7 @@ let package = Package(
     products: [
         .library(name: "Decoy", targets: ["Decoy"]),
         .executable(name: "decoy-build-corpus", targets: ["DecoyCorpusBuilder"]),
+        .executable(name: "decoy-fetch", targets: ["DecoyQueryFetcher"]),
         .executable(name: "decoy-compile-corpus", targets: ["DecoyCorpusCompiler"]),
         .executable(name: "decoy-inspect", targets: ["DecoyCorpusInspector"]),
         .executable(name: "decoy-validate", targets: ["DecoyCorpusValidator"]),
@@ -80,6 +81,13 @@ let package = Package(
         .executableTarget(
             name: "DecoyCorpusBuilder",
             dependencies: ["Decoy", "DecoyAdapterKit"],
+            swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
+        // The four snapshots that come from a query rather than a file. Run by hand; see
+        // the tool's own header for why they are committed rather than hashed.
+        .executableTarget(
+            name: "DecoyQueryFetcher",
+            dependencies: ["DecoyAdapterKit"],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         // A host build tool, so unlike the library it may use Foundation freely.

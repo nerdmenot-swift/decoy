@@ -18,10 +18,10 @@ public struct AdapterInput: Sendable {
     public let cldrOverrides: [String: String?]
     /// `Tools/adapters/data`, holding committed snapshots.
     ///
-    /// Two sources are queried rather than downloaded — Wikidata answers SPARQL, and a
-    /// query is not a file with a hash — so the result is fetched deliberately by a
-    /// separate script, reviewed, and committed. That makes the build reproducible without
-    /// pretending a live endpoint is a pinned artifact.
+    /// Some sources are queried rather than downloaded — Wikidata answers SPARQL and the
+    /// statistical offices answer PxWeb, and a query is not a file with a hash — so the
+    /// result is fetched deliberately by `decoy-fetch`, reviewed, and committed. That makes
+    /// the build reproducible without pretending a live endpoint is a pinned artifact.
     public let dataDirectory: URL
 
     public init(
