@@ -138,17 +138,22 @@ public struct ArtifactStore: Sendable {
         try FileManager.default.createDirectory(
             at: destination, withIntermediateDirectories: true)
 
-        // `tar` reads zip on macOS via libarchive but GNU tar does not, so zips go through
-        // `unzip` explicitly rather than relying on which tar the host happens to have.
+        // Which tool, and how it is invoked, differs by platform — see `Shell`.
         let format = artifact.format ?? "tgz"
-        let (tool, arguments): (String, [String]) =
-            format == "zip"
-            ? ("unzip", ["-q", "-o", path.path, "-d", destination.path])
-            : format == "tar.xz"
-                ? ("tar", ["xJf", path.path, "-C", destination.path])
-                : ("tar", ["xzf", path.path, "-C", destination.path])
+        let (tool, arguments) = Shell.extraction(
+            format: format, archive: path.path, into: destination.path)
 
-        let result = try run(tool, arguments)
+        let result: (status: Int32, output: Data, stderr: String)
+        do {
+            result = try Shell.run(tool, arguments)
+        } catch Shell.Failure.toolMissing(let name) {
+            // Reported as an extraction failure so it carries the install instructions
+            // rather than only the fact that PATH does not have it.
+            throw Failure.extractionFailed(
+                archive: path.lastPathComponent, format: format, tool: name,
+                detail: "`\(name)` is not on PATH")
+        }
+
         guard result.status == 0 else {
             // GNU tar shells out to a separate `xz` binary and the Swift Linux image has
             // none, which surfaced as "xz: Cannot exec" nested in a child's stderr and read
@@ -165,17 +170,4 @@ public struct ArtifactStore: Sendable {
         return destination
     }
 
-    private func run(_ tool: String, _ arguments: [String]) throws -> (status: Int32, stderr: String)
-    {
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-        process.arguments = [tool] + arguments
-        let errors = Pipe()
-        process.standardError = errors
-        process.standardOutput = Pipe()
-        try process.run()
-        let stderr = errors.fileHandleForReading.readDataToEndOfFile()
-        process.waitUntilExit()
-        return (process.terminationStatus, String(decoding: stderr, as: UTF8.self))
-    }
 }

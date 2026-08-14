@@ -44,17 +44,10 @@ public enum XLSX {
 
     /// A member's bytes, inflated by `unzip`.
     static func member(_ name: String, in workbook: URL) throws -> String? {
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-        process.arguments = ["unzip", "-p", workbook.path, name]
-        let output = Pipe()
-        process.standardOutput = output
-        process.standardError = Pipe()
-        try process.run()
-        let data = output.fileHandleForReading.readDataToEndOfFile()
-        process.waitUntilExit()
-        guard process.terminationStatus == 0, !data.isEmpty else { return nil }
-        return String(decoding: data, as: UTF8.self)
+        let (tool, arguments) = Shell.member(name, of: workbook.path)
+        let result = try Shell.run(tool, arguments, captureOutput: true)
+        guard result.status == 0, !result.output.isEmpty else { return nil }
+        return String(decoding: result.output, as: UTF8.self)
     }
 
     // MARK: - XML scanning
