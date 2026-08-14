@@ -11,36 +11,12 @@ public struct ISO31662Adapter: Adapter {
 
     public init() {}
 
-    /// The region a locale belongs to, from its own code or CLDR's likely subtags.
-    ///
-    /// `en_GB` says so outright; `de` does not, and CLDR's likely-subtags table is what
-    /// says German most likely means Germany.
-    static func region(for code: String, likelySubtags: [String: Any]) -> String? {
-        for segment in code.split(separator: "_").dropFirst()
-        where segment.count == 2 && segment.allSatisfy({ $0.isUppercase && $0.isLetter }) {
-            return String(segment)
-        }
-        let language = String(code.split(separator: "_")[0])
-        let likely =
-            (likelySubtags[language] as? String)
-            ?? (likelySubtags[code.replacingOccurrences(of: "_", with: "-")] as? String)
-        guard let last = likely?.split(separator: "-").last.map(String.init),
-            last.count == 2, last.allSatisfy({ $0.isUppercase && $0.isLetter })
-        else { return nil }
-        return last
-    }
-
     public func run(_ input: AdapterInput) throws -> AdapterOutput {
         let core = try input.artifact("core", for: Self.id)
         let subdivisionsRoot = try input.artifact("subdivisions", for: Self.id)
 
-        let likelyFile = core.appendingPathComponent("package/supplemental/likelySubtags.json")
-        guard
-            let likelyRoot = try JSONSerialization.jsonObject(with: Data(contentsOf: likelyFile))
-                as? [String: Any],
-            let likelySubtags = CLDR.at(likelyRoot, "supplemental", "likelySubtags")
-                as? [String: Any]
-        else {
+        let likelySubtags = try CLDR.likelySubtags(under: core)
+        guard !likelySubtags.isEmpty else {
             throw AdapterFailure.shapeChanged(
                 adapter: Self.id, detail: "CLDR likelySubtags.json is not the expected shape")
         }
@@ -83,7 +59,7 @@ public struct ISO31662Adapter: Adapter {
         var withoutSubdivisions: [String] = []
 
         for locale in input.locales where locale != "base" {
-            let region = Self.region(for: locale, likelySubtags: likelySubtags)
+            let region = CLDR.region(for: locale, likelySubtags: likelySubtags)
             guard let region, let rows = byRegion[region], !rows.isEmpty else {
                 if let region { withoutSubdivisions.append("\(locale)(\(region))") }
                 continue

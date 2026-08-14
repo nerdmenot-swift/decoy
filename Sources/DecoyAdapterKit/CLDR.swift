@@ -40,6 +40,36 @@ public enum CLDR {
         return nil
     }
 
+    /// The region a locale belongs to, from its own code or CLDR's likely subtags.
+    ///
+    /// `en_GB` says so outright; `de` does not, and CLDR's likely-subtags table is what
+    /// says German most likely means Germany. Shared because both the subdivision adapter
+    /// and the city adapter key their data by country, and a third would have copied it.
+    public static func region(for code: String, likelySubtags: [String: Any]) -> String? {
+        for segment in code.split(separator: "_").dropFirst()
+        where segment.count == 2 && segment.allSatisfy({ $0.isUppercase && $0.isLetter }) {
+            return String(segment)
+        }
+        let language = String(code.split(separator: "_")[0])
+        let likely =
+            (likelySubtags[language] as? String)
+            ?? (likelySubtags[code.replacingOccurrences(of: "_", with: "-")] as? String)
+        guard let last = likely?.split(separator: "-").last.map(String.init),
+            last.count == 2, last.allSatisfy({ $0.isUppercase && $0.isLetter })
+        else { return nil }
+        return last
+    }
+
+    /// The supplemental likely-subtags table.
+    public static func likelySubtags(under core: URL) throws -> [String: Any] {
+        let file = core.appendingPathComponent("package/supplemental/likelySubtags.json")
+        guard let root = try JSONSerialization.jsonObject(with: Data(contentsOf: file))
+                as? [String: Any],
+            let table = at(root, "supplemental", "likelySubtags") as? [String: Any]
+        else { return [:] }
+        return table
+    }
+
     /// A nested value out of a decoded CLDR entry.
     public static func at(_ node: [String: Any], _ path: String...) -> Any? {
         var cursor: Any? = node
