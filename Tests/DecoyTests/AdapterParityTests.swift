@@ -51,6 +51,9 @@ struct AdapterParityTests {
         LegalEntitiesAdapter(),
         PhoneFormatsAdapter(),
         AuthoredCommerceAdapter(),
+        AuthoredListsAdapter.whimsy(),
+        AuthoredListsAdapter.fixtures(),
+        AuthoredListsAdapter.commonKnowledge(),
     ]
 
     private static func roster() -> (locales: [String], cldr: [String: String?]) {
@@ -166,7 +169,7 @@ struct AdapterParityTests {
 
         var comparedPaths = 0
         for adapter in Self.ported {
-            let id = type(of: adapter).id
+            let id = adapter.adapterID
             guard let expected = Self.dump(id) else {
                 Issue.record(
                     "no dump for \(id) — run `node Tools/adapters/dump-contributions.mjs`")

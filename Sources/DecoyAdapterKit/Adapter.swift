@@ -91,9 +91,17 @@ public protocol Adapter: Sendable {
     static var attributeTo: String? { get }
 
     func run(_ input: AdapterInput) throws -> AdapterOutput
+
+    /// Which adapter this *instance* is, for the handful that stand in for several.
+    ///
+    /// Defaults to the type's id, which is right for every adapter reading one upstream.
+    /// AuthoredListsAdapter is one type serving three ids, because the three differ only
+    /// in which data file they read and writing three identical types to satisfy a static
+    /// would be ceremony.
+    var adapterID: String { get }
 }
 
 extension Adapter {
     public static var attributeTo: String? { nil }
-    public var id: String { Self.id }
+    public var adapterID: String { Self.id }
 }
