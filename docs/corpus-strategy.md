@@ -73,11 +73,12 @@ This is the whole strategy. Everything below follows from it.
 `Tools/adapters/` holds *programs*, not strings:
 
 ```
-sources/<id>.json      pinned descriptor: URL, integrity hash, licence, version
-adapters/<id>.mjs      the transform
-lib/sources.mjs        fetch, verify, cache, extract
-locales.json           the locale roster Decoy targets
-run.mjs                orchestrator → out/locales/*.json + manifest.json
+Tools/adapters/sources/<id>.json        pinned descriptor: URL, hash, licence, version
+Tools/adapters/locales.json             the locale roster Decoy targets
+Tools/adapters/parity/<id>.json         what each adapter last emitted
+Sources/DecoyAdapterKit/Adapters/       the transforms, one per upstream
+Sources/DecoyAdapterKit/ArtifactStore   fetch, verify, cache, extract
+Sources/DecoyCorpusBuilder/             orchestrator → out/locales/*.json + manifest.json
 ```
 
 Each adapter declares one or more sources; each source pins every artifact to an SRI
@@ -86,11 +87,12 @@ tampered cache would otherwise produce a corpus that passes every check on the m
 that built it and nowhere else. A hash mismatch aborts with the expected and actual
 digests and instructions to verify and re-pin.
 
-`node run.mjs` produces the intermediate JSON; `decoy-compile-corpus` produces the
+`decoy-build-corpus` produces the intermediate JSON; `decoy-compile-corpus` produces the
 binary. Nothing else writes data. There is **no package manifest and no dependency
-install** anywhere in the toolchain — every source, faker-js included, is a pinned
-tarball fetched into the gitignored cache. The mechanism for removing a dependency on
-someone else's package should not itself require a package manager.
+install** anywhere in the toolchain — every source is a pinned tarball fetched into the
+gitignored cache, and the pipeline itself is Swift with zero dependencies. The mechanism
+for removing a dependency on someone else's package should not itself require a package
+manager.
 
 **Built so far** — thirty-two adapters, forty-nine sources, and no faker-js:
 
@@ -136,21 +138,17 @@ someone else's package should not itself require a package manager.
 | `civil-names` (IL) | CBS | data.gov.il terms | Hebrew given names, weighted, all four population groups merged |
 
 
-**faker-js is an adapter like any other, and the lowest-precedence one.** It is fetched
-as a pinned npm tarball into the gitignored cache and read by importing its ESM entry
-point directly — faker-js has zero runtime dependencies, so there is nothing to resolve.
-Nothing about faker-js is committed here, and no package manager is involved: the whole
-toolchain is plain `.mjs` files run by `node run.mjs`, with no package manifest at all.
+**faker-js was an adapter like any other, and the lowest-precedence one.** It is gone.
+It declared `fallback`, so every other adapter overrode it wherever they overlapped, and
+a field stopped being faker-derived the moment something else covered it — no
+coordinating change anywhere. That is what let it be removed a path at a time rather than
+in one frightening commit, and the removal was `rm` of two files.
 
-Because it declares `fallback`, every other adapter overrides it wherever they overlap.
-A field stops being faker-derived the moment something else covers it, with no
-coordinating change anywhere. The migration ends as `rm adapters/faker-js.mjs
-sources/faker-js.json`, and the adapter already handles its own absence.
-
-It also carries the one check that cannot outlive it: Decoy derives fallback chains from
-the locale roster rather than storing them, and the faker adapter asserts those derived
-chains against faker's own resolution for all 76 locales. When faker goes, the chain rule
-is asserted by nothing but its own tests. That is a real, and easily forgotten, cost.
+It carried one check that did not outlive it. Decoy derives fallback chains from the
+locale roster rather than storing them, and the faker adapter asserted those derived
+chains against faker's own resolution for all 76 locales. The chain rule is now asserted
+by its own tests and by nothing else. That was a real cost, and it is recorded here
+because it is the kind that is easy to forget having paid.
 
 ### Provenance is per path — **Built**
 
@@ -733,7 +731,7 @@ of engineering produces it.
    **The corpus already builds without it, and that is now a fact rather than a claim.**
 
    ```
-   node Tools/adapters/run.mjs --without faker-js
+   swift run decoy-build-corpus --without faker-js
    ```
 
    Seventy-five locales, every generator producing a value, nothing trapping. Getting

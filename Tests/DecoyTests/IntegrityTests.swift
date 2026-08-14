@@ -25,7 +25,7 @@ struct IntegrityTests {
     private struct Descriptor: Decodable {
         struct Artifact: Decodable {
             let name: String
-            /// Absent on eleven artifacts. `lib/sources.mjs` falls through to `tar xzf` for
+            /// Absent on eleven artifacts. The pipeline falls through to `tar xzf` for
             /// anything that is not `zip` or `tar.xz`, so absent means tgz — and a decoder
             /// that required this silently dropped six whole descriptors.
             let format: String?
@@ -62,7 +62,7 @@ struct IntegrityTests {
         return (ok, failed)
     }
 
-    /// The cache path `lib/sources.mjs` uses, which the port has to agree with.
+    /// The cache path the builder uses, which an existing cache depends on.
     private static func cachedPath(_ id: String, _ artifact: Descriptor.Artifact) -> URL {
         let suffix: String
         if artifact.format == "file" {
@@ -106,7 +106,7 @@ struct IntegrityTests {
         // the "green having tested nothing" failure the corpus-gated suites already had.
         if checked == 0 {
             Issue.record(
-                "no cached artifacts, so nothing was verified — run `node Tools/adapters/run.mjs`")
+                "no cached artifacts, so nothing was verified — run `swift run decoy-build-corpus`")
         }
         // The count is asserted, not printed. 51 artifacts are declared across the
         // descriptors; anything less means the enumeration lost some, which is how this

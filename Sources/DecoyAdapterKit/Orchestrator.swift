@@ -2,10 +2,11 @@ import Foundation
 
 /// Combines every adapter's contribution into one set of locale definitions.
 ///
-/// The rules are `run.mjs`'s and are not restated here beyond what the port has to be
-/// careful about. One thing is deliberately *not* carried over: the `fallback` path and
-/// `mergeBeneath`, forty lines of subtle "lay this underneath unless something below it is
-/// claimed" logic that existed so faker-js could be removed one field at a time. faker is
+/// The rules came from the JavaScript pipeline and are not restated here beyond what the
+/// port had to be careful about. One thing is deliberately *not* carried over: the
+/// `fallback` path and `mergeBeneath`, forty lines of subtle "lay this underneath unless
+/// something below it is claimed" logic that existed so faker-js could be removed one
+/// field at a time. faker is
 /// gone and nothing declares `fallback` any more, so porting it would have been porting
 /// dead code — and dead code with enough subtlety in it to look load-bearing.
 public struct Orchestrator {
@@ -46,7 +47,7 @@ public struct Orchestrator {
                 return
                     "\(adapter) declares itself a fallback, and the fallback merge was not "
                     + "carried into the Swift pipeline because nothing used it once faker-js "
-                    + "was removed. Reinstate mergeBeneath from run.mjs before relying on it."
+                    + "was removed with faker-js. Reinstate mergeBeneath before relying on it."
             }
         }
     }
@@ -62,7 +63,7 @@ public struct Orchestrator {
     public init(roster: Set<String>) { self.roster = roster }
 
     /// Merges in the order given. Order is the adapters' filename order, which is what
-    /// `run.mjs` iterates, and it matters only for which of two conflicting adapters is
+    /// the builder iterates, and it matters only for which of two conflicting adapters is
     /// named first in the error — a conflict is refused rather than resolved.
     public func merge(_ adapters: [Contribution]) throws -> Result {
         var definitions: [String: [String: Definition]] = [:]

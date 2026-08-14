@@ -99,7 +99,7 @@ decoded once at first access. Committed source, reviewable in a diff.
 ## Rebuilding from scratch
 
 ```
-node Tools/adapters/run.mjs                                   # sources → JSON
+swift run decoy-build-corpus                                  # sources → JSON
 swift run decoy-compile-corpus Tools/adapters/out Corpus/binary
 ```
 

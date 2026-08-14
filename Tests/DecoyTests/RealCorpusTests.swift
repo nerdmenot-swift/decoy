@@ -8,7 +8,7 @@ import Testing
 /// The blobs are build artifacts, not committed, so these are skipped when absent
 /// rather than failing:
 ///
-///     cd Tools/adapters && node run.mjs
+///     swift run decoy-build-corpus
 ///     swift run decoy-compile-corpus Tools/adapters/out Corpus/binary
 ///
 /// The version comes from `Tools/adapters/corpus-version.json`, so there is no flag to

@@ -150,7 +150,7 @@ struct OrchestratorTests {
         let adapters = Self.adapters()
         guard !adapters.isEmpty else {
             Issue.record(
-                "no contribution dumps — run `node Tools/adapters/dump-contributions.mjs`")
+                "no adapter baselines — run `swift run decoy-build-corpus --write-baselines`")
             return
         }
         #expect(adapters.count == 32, "expected 32 adapters, loaded \(adapters.count)")

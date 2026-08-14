@@ -86,7 +86,7 @@ let fileManager = FileManager.default
 
 let manifestURL = options.input.appendingPathComponent("manifest.json")
 guard let manifestData = try? Data(contentsOf: manifestURL) else {
-    fail("cannot read \(manifestURL.path) — run `node run.mjs` in Tools/adapters first")
+    fail("cannot read \(manifestURL.path) — run `swift run decoy-build-corpus` first")
 }
 let manifest = try JSONDecoder().decode(Manifest.self, from: manifestData)
 

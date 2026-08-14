@@ -6,7 +6,7 @@ import Foundation
 
 /// Resolves a pinned artifact to a file on disk: cache, then vendor, then the network.
 ///
-/// The order is deliberate and is the same one `lib/sources.mjs` uses. A cached copy is
+/// The order is deliberate. A cached copy is
 /// re-verified rather than trusted — a corrupted or tampered cache would otherwise produce
 /// a corpus that passes every check on the machine that built it and nowhere else.
 public struct ArtifactStore: Sendable {

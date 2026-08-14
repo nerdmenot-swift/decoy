@@ -77,7 +77,7 @@ struct AdapterParityTests {
         return (codes, overrides)
     }
 
-    /// The artifacts an adapter's sources unpacked to, as `lib/sources.mjs` named them.
+    /// The artifacts an adapter's sources unpacked to, under the names their descriptors give them.
     private static func artifacts(for adapter: any Adapter) throws -> [String: URL] {
         let store = ArtifactStore(root: root)
         var found: [String: URL] = [:]

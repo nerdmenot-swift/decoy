@@ -9,7 +9,7 @@ public struct SourceDescriptor: Decodable, Sendable {
 
     public struct Artifact: Decodable, Sendable {
         public let name: String
-        /// Absent on eleven of the fifty-one. `lib/sources.mjs` falls through to `tar xzf`
+        /// Absent on eleven of the fifty-one. The pipeline falls through to `tar xzf`
         /// for anything that is not `zip` or `tar.xz`, so absent means tgz. Requiring it
         /// here is what made the first pass of the integrity check silently skip six whole
         /// descriptors while reporting success.

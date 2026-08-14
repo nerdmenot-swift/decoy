@@ -130,7 +130,7 @@ guard !blobs.isEmpty else {
 
             The corpus is a build artifact and is not committed. Build it first:
 
-                node Tools/adapters/run.mjs
+                swift run decoy-build-corpus
                 swift run decoy-compile-corpus Tools/adapters/out Corpus/binary
 
             """.utf8))
@@ -489,7 +489,7 @@ if let data = try? Data(contentsOf: options.manifest),
     report(
         .warning, "adapter",
         "no manifest at \(options.manifest.path), so nothing checked which sources actually "
-            + "contributed. Run `node Tools/adapters/run.mjs` first.")
+            + "contributed. Run `swift run decoy-build-corpus` first.")
 }
 
 // MARK: - Check: every template token expands to something

@@ -122,15 +122,18 @@ against an integrity hash, and recorded in the corpus with its licence:
 ```
 Tools/adapters/
   sources/<id>.json     pinned descriptor: URL, integrity hash, licence, version
-  adapters/<id>.mjs     the transform
   locales.json          the locale roster
   corpus-version.json   the corpus version, declared once
-  run.mjs               orchestrator
+  parity/<id>.json      what each adapter last emitted, diffed on every run
+
+Sources/DecoyAdapterKit/
+  Adapters/<Name>.swift the transform, one per upstream
+  ArtifactStore.swift   fetch, verify, cache, extract
 ```
 
-Rebuild it with `node Tools/adapters/run.mjs`, then `swift run decoy-compile-corpus`.
-There is no package manifest and nothing to install: they are plain `.mjs` files, because
-a toolchain whose job is to keep shipped data accountable should not itself depend on a
+Rebuild it with `swift run decoy-build-corpus`, then `swift run decoy-compile-corpus`.
+There is nothing to install beyond the Swift toolchain, and no dependency at all: a
+toolchain whose job is to keep shipped data accountable should not itself depend on a
 package it cannot audit.
 
 Countries, languages, currencies, time zones, media types, subdivisions, cities,

@@ -113,7 +113,7 @@ struct SurfaceCountTests {
                 which is a build artifact and is not committed. This run exercised
                 the ten-path built-in stub instead.
 
-                    node Tools/adapters/run.mjs
+                    swift run decoy-build-corpus
                     swift run decoy-compile-corpus Tools/adapters/out Corpus/binary
 
                 ────────────────────────────────────────────────────────────────────

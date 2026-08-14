@@ -23,7 +23,7 @@ struct ArtifactStoreTests {
         return try JSONDecoder().decode(SourceDescriptor.self, from: Data(contentsOf: url))
     }
 
-    /// The cache naming rule, which has to match `lib/sources.mjs` exactly.
+    /// The cache naming rule, which decides whether an existing cache is still readable.
     @Test("cache filenames match the ones already on disk")
     func cacheNaming() throws {
         let store = ArtifactStore(root: Self.root)

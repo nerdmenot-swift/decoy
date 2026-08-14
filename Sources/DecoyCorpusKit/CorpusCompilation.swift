@@ -55,7 +55,7 @@ public struct Manifest: Decodable {
     ///
     /// The fallback here used to synthesise a faker-js record from `fakerVersion` and
     /// `extractedAt`, for manifests written before faker-js became an adapter like any
-    /// other. No such manifest can be produced any more — `run.mjs` is the only writer
+    /// other. No such manifest can be produced any more — the builder is the only writer
     /// and has emitted `sources` since — so the branch was unreachable and the two
     /// fields it read were decoded from nothing.
     public var sourceRecords: [SourceRecord] { sources ?? [] }
