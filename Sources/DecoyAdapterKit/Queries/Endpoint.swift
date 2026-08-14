@@ -1,5 +1,10 @@
 import Foundation
 
+// URLSession lives in a separate module off Apple platforms, the same as in ArtifactStore.
+#if canImport(FoundationNetworking)
+    import FoundationNetworking
+#endif
+
 /// The two endpoints that answer a query rather than publish a file.
 ///
 /// Every other source Decoy uses is a URL with an integrity hash, which is what makes a
