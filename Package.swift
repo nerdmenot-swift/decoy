@@ -52,6 +52,7 @@ let package = Package(
         .library(name: "Decoy", targets: ["Decoy"]),
         .executable(name: "decoy-build-corpus", targets: ["DecoyCorpusBuilder"]),
         .executable(name: "decoy-fetch", targets: ["DecoyQueryFetcher"]),
+        .executable(name: "decoy-assets", targets: ["DecoyAssetBuilder"]),
         .executable(name: "decoy-compile-corpus", targets: ["DecoyCorpusCompiler"]),
         .executable(name: "decoy-inspect", targets: ["DecoyCorpusInspector"]),
         .executable(name: "decoy-validate", targets: ["DecoyCorpusValidator"]),
@@ -87,6 +88,13 @@ let package = Package(
         // the tool's own header for why they are committed rather than hashed.
         .executableTarget(
             name: "DecoyQueryFetcher",
+            dependencies: ["DecoyAdapterKit"],
+            swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
+        // The brand assets, drawn from computed geometry. Nothing else depends on it and
+        // it is run only when the mark changes.
+        .executableTarget(
+            name: "DecoyAssetBuilder",
             dependencies: ["DecoyAdapterKit"],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
