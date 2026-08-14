@@ -284,7 +284,7 @@ const BUILDING_NUMBER = ['%##', '%###', '%####', '%#']
  * blocks rather than naming streets, and `location.postal_address` already renders them
  * that way.
  */
-const STREET_TYPES = {
+export const STREET_TYPES = {
   // Germanic: compounded onto the surname, lower case.
   de: ['straße', 'weg', 'gasse', 'platz', 'allee', 'ring', 'damm', 'ufer', 'steig', 'hof'],
   nl: ['straat', 'weg', 'laan', 'plein', 'gracht', 'kade', 'dijk', 'singel', 'hof'],
@@ -310,7 +310,7 @@ const STREET_TYPES = {
 }
 
 /** Which locales take which language's street formation. */
-const STREET_LOCALES = {
+export const STREET_LOCALES = {
   de: ['de', 'de_AT', 'de_CH'],
   nl: ['nl', 'nl_BE'],
   sv: ['sv'],
@@ -324,10 +324,10 @@ const STREET_LOCALES = {
   en_GB: ['en_GB'],
 }
 
-const COMPOUNDING = new Set(['de', 'nl', 'sv', 'da', 'nb'])
+export const COMPOUNDING = new Set(['de', 'nl', 'sv', 'da', 'nb'])
 // English and Turkish both put the type last as a separate word: `Yıldırım Bulvarı`,
 // `Bramson Road`.
-const TYPE_TRAILS = new Set(['tr', 'en_GB'])
+export const TYPE_TRAILS = new Set(['tr', 'en_GB'])
 
 /**
  * The pattern that composes a street name in one language.
@@ -369,8 +369,8 @@ function streetPatternFor(language) {
  * elsewhere produced `Simonring 38722`, which is not a German address. European numbering
  * restarts per street, so one to three digits is the range.
  */
-const NUMBER_LEADS = new Set(['fr', 'en_GB'])
-const EUROPEAN_BUILDING_NUMBER = ['%', '%#', '%##']
+export const NUMBER_LEADS = new Set(['fr', 'en_GB'])
+export const EUROPEAN_BUILDING_NUMBER = ['%', '%#', '%##']
 
 function streetAddressFor(language) {
   if (NUMBER_LEADS.has(language)) {
@@ -706,7 +706,7 @@ const JOB_TYPES = [
  * Company names run the other way from English too: the legal form trails the name rather
  * than being joined to it, and 株式会社 is written out where English abbreviates to Ltd.
  */
-const JAPANESE = {
+export const JAPANESE = {
   // `#` is filled by the same substitution that turns `###` into a house number.
   'location.building_number': ['%丁目%番%号', '%#丁目%番%号', '%丁目%#番%号'],
   'location.street_address': {
@@ -1004,7 +1004,7 @@ const PRODUCT_MATERIALS = [
  * Spanish honorifics from `es`, fr_CA and fr_SN take French from `fr`, and the en_*
  * family takes English from `en`, all of which is correct.
  */
-const NO_PREFIXED_HONORIFIC = [
+export const NO_PREFIXED_HONORIFIC = [
   'ar', 'az', 'bn_BD', 'cs_CZ', 'cy', 'da', 'el', 'fa', 'fi', 'he', 'hr', 'hu', 'hy',
   'id_ID', 'ka_GE', 'ko', 'lv', 'mk', 'nb_NO', 'pl', 'pt_BR', 'ro', 'ro_MD', 'ru', 'sk',
   'sl_SI', 'sr_RS_latin', 'sv', 'tr', 'uk', 'vi', 'yo_NG', 'zh_CN', 'zh_TW',

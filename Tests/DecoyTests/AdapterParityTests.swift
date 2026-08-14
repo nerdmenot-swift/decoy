@@ -54,6 +54,7 @@ struct AdapterParityTests {
         AuthoredListsAdapter.whimsy(),
         AuthoredListsAdapter.fixtures(),
         AuthoredListsAdapter.commonKnowledge(),
+        AuthoredAdapter(),
     ]
 
     private static func roster() -> (locales: [String], cldr: [String: String?]) {
