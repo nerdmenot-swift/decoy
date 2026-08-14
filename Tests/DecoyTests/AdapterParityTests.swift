@@ -46,6 +46,8 @@ struct AdapterParityTests {
         CLDRDatesAdapter(),
         CitiesAdapter(),
         WordNetAdapter(),
+        WikidataNamesAdapter(),
+        PostalAdapter(),
     ]
 
     private static func roster() -> (locales: [String], cldr: [String: String?]) {
