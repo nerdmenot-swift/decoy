@@ -42,6 +42,8 @@ struct AdapterParityTests {
         ISO639Adapter(),
         ISO3166Adapter(),
         ISO31662Adapter(),
+        ISO4217Adapter(),
+        CLDRDatesAdapter(),
     ]
 
     private static func roster() -> (locales: [String], cldr: [String: String?]) {
