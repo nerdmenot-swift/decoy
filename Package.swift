@@ -39,8 +39,8 @@ let package = Package(
     // NOTE: `platforms` declares Apple minimums ONLY. Linux and Windows are
     // supported implicitly and cannot be listed here -- PackageDescription has
     // no case for them. Portability comes from the core target importing no
-    // Foundation, and is meant to be checked by the three jobs in ci.yml -- which
-    // has never executed, because this repository has no remote.
+    // Foundation, and is checked by the three jobs in ci.yml -- each of which builds
+    // a corpus from the pinned sources and runs the full suite against it.
     platforms: [
         .macOS(.v13),
         .iOS(.v16),
@@ -58,7 +58,7 @@ let package = Package(
         .executable(name: "decoy-validate", targets: ["DecoyCorpusValidator"]),
     ] + localeProducts,
     targets: [
-        // The corpus build pipeline, being ported from Tools/adapters/*.mjs. Kept out of
+        // The corpus build pipeline. Kept out of
         // the Decoy library entirely: none of it ships to anybody who installs the package.
         .target(
             name: "DecoyAdapterKit",
@@ -114,7 +114,7 @@ let package = Package(
         // that expand to nothing, licence metadata contradicting the text beside it.
         .executableTarget(
             name: "DecoyCorpusValidator",
-            dependencies: ["Decoy"],
+            dependencies: ["Decoy", "DecoyAdapterKit"],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .testTarget(

@@ -100,7 +100,7 @@ struct BloomFilterTests {
                 let sourcePath = modelPath.replacingOccurrences(of: "_model", with: "")
                 guard let words = Self.values(definitions, sourcePath) else { continue }
 
-                // Base64, not an array of numbers — models.mjs encodes the filter before
+                // Base64, not an array of numbers — the trainer encodes the filter before
                 // writing it. Three separate attempts to read it as an array failed
                 // silently, each one indistinguishable from "this model has no filter",
                 // and each caught only because the suite asserts how many it compared

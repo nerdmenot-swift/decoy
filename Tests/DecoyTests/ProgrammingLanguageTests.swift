@@ -2,7 +2,7 @@ import Testing
 
 @testable import Decoy
 
-/// A corpus shaped like the one `programming-languages.mjs` produces.
+/// A corpus shaped like the one `ProgrammingLanguagesAdapter` produces.
 ///
 /// Built inline rather than read from a compiled blob because the locale modules shipped
 /// today are still generated from the faker-derived corpus, which has no

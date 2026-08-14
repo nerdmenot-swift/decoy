@@ -3,8 +3,22 @@ title: Command-line tools
 description: Inspecting, validating and compiling the corpus.
 ---
 
-Three executables ship with the package. They exist because "what data do we actually
-have" stopped being answerable by reading somebody else's repository.
+Six executables ship with the package. Three read and check a corpus, which exist because
+"what data do we actually have" stopped being answerable by reading somebody else's
+repository; three build one.
+
+| | |
+|---|---|
+| `decoy-inspect` | read a compiled corpus: paths, coverage, provenance, NOTICE |
+| `decoy-validate` | check a contribution before it lands |
+| `decoy-compile-corpus` | intermediate JSON → binary blobs, and optionally Swift modules |
+| `decoy-build-corpus` | pinned sources → intermediate JSON |
+| `decoy-fetch` | refresh the snapshots of sources that answer a query |
+| `decoy-assets` | redraw the brand assets from computed geometry |
+
+None of them is needed to *use* Decoy — a locale module is committed Swift source. They are
+here because the corpus is a build artifact and the tools that produce it should be as
+inspectable as the data.
 
 ## decoy-inspect
 
@@ -88,9 +102,9 @@ decoy-compile-corpus <in> <out> [--emit-swift <dir> --locales de,ja]
 
 ```
 $ swift run decoy-compile-corpus Tools/adapters/out Corpus/binary
-corpus version  : 58.0.0
+corpus version  : 59.2.0
 locales compiled: 64
-binary out      : 13099 KB
+binary out      : 13098 KB
 ```
 
 `--emit-swift` writes a `DecoyLocale<CODE>` module: the blob as a base64 `StaticString`
@@ -106,9 +120,9 @@ swift run decoy-compile-corpus Tools/adapters/out Corpus/binary
 The first step fetches every pinned artifact, verifies each against its SRI hash and
 caches it. A cached copy is re-verified rather than trusted on later runs.
 
-Four sources answer a query rather than publishing a file — Wikidata over SPARQL, and the
-Norwegian and Slovenian statistics offices over PxWeb — so there is nothing to hash. Those
-are refreshed deliberately and their results committed:
+Three sources answer a query rather than publishing a file — Wikidata over SPARQL, and the
+Norwegian and Slovenian statistics offices over PxWeb — so there is nothing to hash. They
+are refreshed deliberately, as four snapshots, and their results committed:
 
 ```
 swift run decoy-fetch all            # or: wikidata-names, wikidata-colours,

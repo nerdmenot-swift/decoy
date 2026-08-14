@@ -1,4 +1,5 @@
 import Decoy
+import DecoyAdapterKit
 import Foundation
 
 /// Checks a corpus contribution before it reaches the corpus.
@@ -29,7 +30,6 @@ import Foundation
 struct Options {
     var corpus = URL(fileURLWithPath: "Corpus/binary")
     var sources = URL(fileURLWithPath: "Tools/adapters/sources")
-    var adapters = URL(fileURLWithPath: "Tools/adapters/adapters")
     var licenses = URL(fileURLWithPath: "LICENSES")
     var generators = URL(fileURLWithPath: "Sources/Decoy")
     var manifest = URL(fileURLWithPath: "Tools/adapters/out/manifest.json")
@@ -41,7 +41,6 @@ let usage = """
 
       --corpus <dir>       compiled blobs          (default Corpus/binary)
       --sources <dir>      source descriptors      (default Tools/adapters/sources)
-      --adapters <dir>     adapter programs        (default Tools/adapters/adapters)
       --licenses <dir>     committed licence texts (default LICENSES)
       --generators <dir>   Swift generator sources (default Sources/Decoy)
       --manifest <file>    adapter output manifest (default Tools/adapters/out/manifest.json)
@@ -68,7 +67,6 @@ func parseOptions() -> Options {
         switch args[i] {
         case "--corpus": options.corpus = value("--corpus")
         case "--sources": options.sources = value("--sources")
-        case "--adapters": options.adapters = value("--adapters")
         case "--licenses": options.licenses = value("--licenses")
         case "--generators": options.generators = value("--generators")
         case "--manifest": options.manifest = value("--manifest")
@@ -411,37 +409,24 @@ for id in licenceTexts.sorted() where descriptors[id] == nil {
 
 // MARK: - Check: adapters and descriptors know about each other
 
+// Asked of the adapters rather than read off their source.
+//
+// This used to scan `Tools/adapters/adapters/*.mjs` for `export const source =`. When the
+// pipeline became Swift the directory went with it, and the scan quietly found zero
+// adapters while the summary line below went on reporting a count — a check that looks
+// green having compared nothing, which is the exact failure this tool exists to catch.
+//
+// Scanning `.swift` files for `static let sources` would have been the same mistake in a
+// new costume. The adapters are compiled and declare their sources in the type system, so
+// the validator links them and asks.
 var adapterSources: [String: String] = [:]
-for file in directoryContents(options.adapters, suffix: ".mjs") {
-    let name = file.deletingPathExtension().lastPathComponent
-    guard let text = try? String(contentsOf: file, encoding: .utf8) else { continue }
-    // `export const source = 'mime-db'`, read rather than executed: running a contributor's
-    // adapter to find out what it claims is the wrong order of operations.
-    //
-    // Anchored to the start of a line. Without that it matched the phrase inside a doc
-    // comment in wordnet.mjs and reported the source id as a paragraph of prose.
-    // `= ` included on purpose. Matching the bare phrase also matched `export const
-    // sources` in wordnet.mjs, whose value is computed from a table of fifteen members,
-    // and the id came back as a paragraph of the comment above it.
-    guard let range = text.range(of: "export const source ="),
-        let open = text[range.upperBound...].firstIndex(where: { $0 == "'" || $0 == "\"" }),
-        let close = text[text.index(after: open)...].firstIndex(where: { $0 == "'" || $0 == "\"" })
-    else {
-        if !text.contains("export const sources") {
-            report(
-                .warning, "adapter",
-                "\(name).mjs exports no `source` — nothing to attribute its data to")
-        }
-        // An adapter naming several sources computes the list, so it cannot be read
-        // statically. The manifest check below covers those.
-        continue
-    }
-    let id = String(text[text.index(after: open)..<close])
-    adapterSources[name] = id
-    if descriptors[id] == nil {
+for adapter in Adapters.all {
+    let ids = adapter.adapterSources
+    adapterSources[adapter.adapterID] = ids.first ?? ""
+    for id in ids where descriptors[id] == nil {
         report(
             .error, "adapter",
-            "\(name).mjs names source '\(id)', which has no descriptor in "
+            "\(adapter.adapterID) names source '\(id)', which has no descriptor in "
                 + options.sources.lastPathComponent)
     }
 }

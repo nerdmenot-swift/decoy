@@ -28,41 +28,11 @@ struct AdapterParityTests {
         .deletingLastPathComponent()
         .appendingPathComponent("Tools/adapters")
 
-    /// Ported adapters, checked against their dumps.
-    private static let ported: [any Adapter] = [
-        IANATLDAdapter(),
-        OccupationsAdapter(),
-        PeriodicTableAdapter(),
-        USSurnamesAdapter(),
-        AirportsAdapter(),
-        ProgrammingLanguagesAdapter(),
-        IANATZDBAdapter(),
-        PersianWordsAdapter(),
-        LatinWordsAdapter(),
-        MIMETypesAdapter(),
-        EmojiAdapter(),
-        WikidataColoursAdapter(),
-        WikidataTermsAdapter(),
-        IANAWebAdapter(),
-        SIUnitsAdapter(),
-        ISO639Adapter(),
-        ISO3166Adapter(),
-        ISO31662Adapter(),
-        ISO4217Adapter(),
-        CLDRDatesAdapter(),
-        CitiesAdapter(),
-        WordNetAdapter(),
-        WikidataNamesAdapter(),
-        PostalAdapter(),
-        LegalEntitiesAdapter(),
-        PhoneFormatsAdapter(),
-        AuthoredCommerceAdapter(),
-        AuthoredListsAdapter.whimsy(),
-        AuthoredListsAdapter.fixtures(),
-        AuthoredListsAdapter.commonKnowledge(),
-        AuthoredAdapter(),
-        CivilNamesAdapter(),
-    ]
+    /// Every adapter, from the one registry the builder also runs.
+    ///
+    /// Not a second list. When there were two, adding an adapter to the builder and
+    /// forgetting this one would have left it shipping data that nothing compared.
+    private static let ported: [any Adapter] = Adapters.all
 
     private static func roster() -> (locales: [String], cldr: [String: String?]) {
         guard let data = try? Data(contentsOf: root.appendingPathComponent("locales.json")),

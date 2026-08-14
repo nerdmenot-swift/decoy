@@ -69,51 +69,12 @@ func fail(_ line: String) -> Never {
     exit(1)
 }
 
-// MARK: - The adapters, in the order the JavaScript ran them
-//
-// Named explicitly rather than discovered. The JavaScript sorted its `adapters/` directory
-// and imported each file, which meant the set of adapters was whatever happened to be on
-// disk; here it is a list somebody edited. The order is the old filename order, and it
-// matters only for which of two conflicting adapters is named first in the error — a
-// conflict is refused rather than resolved.
-let allAdapters: [any Adapter] = [
-    AirportsAdapter(),
-    AuthoredCommerceAdapter(),
-    AuthoredListsAdapter.fixtures(),
-    AuthoredListsAdapter.whimsy(),
-    AuthoredAdapter(),
-    CitiesAdapter(),
-    CivilNamesAdapter(),
-    CLDRDatesAdapter(),
-    AuthoredListsAdapter.commonKnowledge(),
-    EmojiAdapter(),
-    IANATLDAdapter(),
-    IANATZDBAdapter(),
-    IANAWebAdapter(),
-    ISO31662Adapter(),
-    ISO3166Adapter(),
-    ISO4217Adapter(),
-    ISO639Adapter(),
-    LatinWordsAdapter(),
-    LegalEntitiesAdapter(),
-    MIMETypesAdapter(),
-    OccupationsAdapter(),
-    PeriodicTableAdapter(),
-    PersianWordsAdapter(),
-    PhoneFormatsAdapter(),
-    PostalAdapter(),
-    ProgrammingLanguagesAdapter(),
-    SIUnitsAdapter(),
-    USSurnamesAdapter(),
-    WikidataColoursAdapter(),
-    WikidataNamesAdapter(),
-    WikidataTermsAdapter(),
-    WordNetAdapter(),
-]
+// MARK: - The adapters
 
-/// Object nodes whose keys are data. The compiler emits a `__keys` table for these and for
-/// nothing else.
-let keyTables = ["system.mime_type"]
+// Named explicitly rather than discovered, and named in one place — see `Adapters.all`,
+// which the builder, the validator and the parity suite all read.
+let allAdapters = Adapters.all
+let keyTables = Adapters.keyTables
 
 let adapters = allAdapters.filter { !excluded.contains($0.adapterID) }
 if !excluded.isEmpty {

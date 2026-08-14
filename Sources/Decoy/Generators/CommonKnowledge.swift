@@ -2,7 +2,7 @@
 // rather than fetched from a registry.
 //
 // These are the categories the project refused for months, on a rule that turned out to
-// be stricter than its own reasoning — see `Tools/adapters/adapters/common-knowledge.mjs`
+// be stricter than its own reasoning — see `Tools/adapters/data/authored/common-knowledge.json`
 // for that argument. What matters at the call site is the guarantee: these values are
 // *facts*, so unlike `whimsy` they can be wrong, and unlike `location` they were not
 // checked against anything. Accuracy is high and unverified.

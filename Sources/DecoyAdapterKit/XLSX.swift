@@ -9,7 +9,7 @@ import Foundation
 /// ## What changed in the port
 ///
 /// The JavaScript had to parse the ZIP container by hand: Node gives you raw inflate but
-/// not zip, so `lib/xlsx.mjs` reads the central directory itself. Swift has neither, but it
+/// not zip, so the JavaScript read the central directory itself. Swift has neither, but it
 /// already requires `unzip` to unpack pinned archives — so the container is handed to the
 /// tool that is already a dependency, and about a hundred lines of central-directory
 /// parsing simply do not need to exist. A hand-rolled DEFLATE would have been the

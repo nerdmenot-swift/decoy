@@ -55,7 +55,7 @@ public struct WordFaker {
     /// These three were briefly deleted along with faker's lists, on the reasoning that
     /// nobody needs a generated preposition. That was the wrong trade: a feature should
     /// not disappear because no institution publishes a list of English prepositions.
-    /// They are a closed class, so what is written in `authored.mjs` is very nearly the
+    /// They are a closed class, so what the authored data records is very nearly the
     /// complete set rather than a sample of one.
     public mutating func preposition() -> String { faker.require("word.preposition") }
     public mutating func verb() -> String { faker.require("word.verb") }

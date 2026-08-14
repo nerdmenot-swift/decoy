@@ -489,7 +489,7 @@ let locale = DecoyLocaleEN.locale.overlaid(by: try Corpus(bytes: b.build()))
 
 `overlaid(by:)` pushes it to the front, so it wins for the paths it defines and falls
 through for everything else. `CorpusBuilder` lives in the Foundation-free module rather
-than in the compiler precisely so this needs no Node and no fork.
+than in the compiler precisely so this needs neither the build pipeline nor a fork.
 
 **2. A locale Decoy does not ship — Built.** Add the code to `Tools/adapters/locales.json`,
 run the adapters, then add a `Package.swift` entry. Chains are derived from the roster,
@@ -726,12 +726,15 @@ of engineering produces it.
 7. ~~Coverage gate in CI, and `decoy-validate` for contributions~~ — **done**. The gate
    runs against a committed baseline on every build; `decoy-validate` checks a change
    before it lands and runs in CI on errors only.
-8. Coverage gates reach threshold → `rm adapters/faker-js.mjs sources/faker-js.json`
+8. ~~Coverage gates reach threshold → drop the faker-js adapter and its descriptor~~ —
+   **done**. It was two files, and removing them was the whole of it.
 
-   **The corpus already builds without it, and that is now a fact rather than a claim.**
+   `--without <id>` is what made that safe to check rather than argue about, and it
+   outlived the question it was built for: any adapter can be pulled and the result
+   measured.
 
    ```
-   swift run decoy-build-corpus --without faker-js
+   swift run decoy-build-corpus --without <adapter-id>
    ```
 
    Seventy-five locales, every generator producing a value, nothing trapping. Getting
@@ -789,7 +792,7 @@ of engineering produces it.
      publishers), vocabulary for nine languages whose wordnets are CC BY-SA or CeCILL.
    - **No registry exists, because the data is invented.** Company name components, buzz
      phrases, colour names, car makes. **Decoy writes these itself**, in
-     `adapters/authored.mjs`, under the same Apache-2.0 licence as the code.
+     `Tools/adapters/data/authored/`, under the same Apache-2.0 licence as the code.
 
      That is a deliberate exception to the rule this document opens with — *no data is
      hand-edited* — and the exception is narrow. The rule exists to stop an unaudited list

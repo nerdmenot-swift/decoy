@@ -5,7 +5,7 @@
  * purple accent, system-UI typography and generous rounding. All four are replaced here
  * rather than tinted, because a themed default still reads as a default.
  *
- * The palette is the logo's, reconciled in Assets/build.mjs. Text colours are held to
+ * The palette is the logo's, reconciled in Sources/DecoyAssetBuilder. Text colours are held to
  * WCAG AA; the mark's own teal is not among them, since #328191 measures 4.21:1 on
  * paper — fine for shapes, failing for body text — so links take a darkened sibling.
  */

@@ -77,7 +77,7 @@ struct NGramParityTests {
         return try? JSONDecoder().decode(StoredModel.self, from: data)
     }
 
-    /// Every field the pipeline models, as `lib/models.mjs` lists them.
+    /// Every field the pipeline models, as `Models.modelledFields` lists them.
     private static let modelled = [
         ("person.first_name.female", "person.first_name_model.female"),
         ("person.first_name.male", "person.first_name_model.male"),

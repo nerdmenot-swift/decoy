@@ -116,8 +116,9 @@ rather than block a release.
 ## The corpus is a build artifact
 
 No data is hand-edited, and none is committed. `Tools/adapters/` holds *programs* that
-derive the corpus from thirty-nine sources — thirty-five pinned upstreams and one written here — each fetched by URL, verified
-against an integrity hash, and recorded in the corpus with its licence:
+derive the corpus from forty-nine sources — forty-four pinned upstreams fetched by URL and
+verified against an integrity hash, three queried and their answers committed, and two
+written here — each recorded in the corpus with its licence:
 
 ```
 Tools/adapters/
@@ -130,13 +131,17 @@ Tools/adapters/
 Sources/DecoyAdapterKit/
   Adapters/<Name>.swift the transform, one per upstream
   ArtifactStore.swift   fetch, verify, cache, extract
-  Queries/              the query snapshots, refreshed by hand with `decoy-fetch`
+  Queries/              the fetchers behind `decoy-fetch`, run by hand
 ```
 
 Rebuild it with `swift run decoy-build-corpus`, then `swift run decoy-compile-corpus`.
-There is nothing to install beyond the Swift toolchain, and no dependency at all: a
+
+The package has no dependencies — no `.package(…)` entries, and the hashing, the archive
+readers, the n-gram trainer and the rest are written out rather than pulled in, because a
 toolchain whose job is to keep shipped data accountable should not itself depend on a
-package it cannot audit.
+package it cannot audit. The build does shell out to `tar`, `unzip` and `gzip`, which macOS
+has already and Debian needs `xz-utils` and `unzip` for; hand-rolling zip and DEFLATE is a
+great deal of risk for a build step.
 
 Countries, languages, currencies, time zones, media types, subdivisions, cities,
 programming languages, elements, units and English surnames come from registries — CLDR,
@@ -164,12 +169,12 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
 - [x] Multi-platform package skeleton, Foundation-free core, `swiftLanguageMode(.v6)`
 - [x] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
-- [x] Adapter pipeline: 49 sources, integrity-verified, provenance per path
-- [x] [Locale support matrix](docs/locale-support.md) — which fields each of the 64 locales
+- [x] Adapter pipeline: 49 sources — 44 integrity-verified, 5 committed snapshots — provenance per path
+- [x] [Locale support matrix](docs/locale-support.md) — which fields each of the 63 locales
       supplies itself, and which fall through to English. Generated from the corpus and
       checked in CI, so it cannot describe a corpus that is no longer shipping.
 - [x] JSON → binary corpus format + Swift reader
-- [x] 315 generators across 28 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
+- [x] 319 generators across 29 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
 - [x] All 64 locales compile; `en`, `de`, `ja` ship as importable Swift modules
 - [x] `decoy-inspect`: enumeration, coverage, generated attribution
 - [ ] CI actually run — this repository has no remote, so every step in `ci.yml`

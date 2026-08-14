@@ -1,28 +1,20 @@
-import Foundation
 import Testing
 
 @testable import DecoyAdapterKit
 
-/// The Swift workbook reader against the JavaScript's reading of the same five files.
+/// The workbook reader's scanner, at the level nothing upstream can check for it.
 ///
 /// Five national registers ship xlsx and nothing else — Israel, Finland, Spain, the UK and
 /// Sweden — and between them they hold the given names for those locales. A reader that is
 /// subtly wrong does not fail; it drops a column, or slides one, and a locale quietly ends
 /// up with surnames in its given-name list.
 ///
-/// The comparison is against `/tmp/xlsx-node.json`, dumped from the JavaScript reader. When
-/// that file is absent the suite says so rather than passing, because a silent skip here
-/// would be the third such trap in this session.
+/// Which is caught downstream, and better: `CivilNamesAdapter` reads all five workbooks and
+/// its committed baseline is compared path by path on every run. What is here is the part
+/// that has no downstream tell — a spacer row, a gap between cells, an entity in a shared
+/// string — where a mistake would look like the file rather than like the reader.
 @Suite("XLSX reader")
 struct XLSXTests {
-
-    private static let cache = URL(fileURLWithPath: #filePath)
-        .deletingLastPathComponent()
-        .deletingLastPathComponent()
-        .deletingLastPathComponent()
-        .appendingPathComponent("Tools/adapters/.cache")
-
-    private static let reference = URL(fileURLWithPath: "/tmp/xlsx-node.json")
 
     @Test("shared strings, positions and entities")
     func primitives() {
@@ -78,61 +70,15 @@ struct XLSXTests {
         #expect(built == ["0", "", "1"], "the gap at B must survive as an empty cell")
     }
 
-    @Test(
-        "every real workbook reads identically to the JavaScript",
-        .enabled(if: PortFixtures.hasReference("/tmp/xlsx-node.json")))
-    func realWorkbooks() throws {
-        guard let data = try? Data(contentsOf: Self.reference),
-            let expected = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-        else {
-            Issue.record(
-                "no /tmp/xlsx-node.json — dump it from lib/xlsx.mjs before trusting this suite")
-            return
-        }
-
-        var compared = 0
-        for (file, sheetsRaw) in expected {
-            guard let expectedSheets = sheetsRaw as? [String: [[String]]] else { continue }
-            let path = Self.cache.appendingPathComponent(file)
-            guard FileManager.default.fileExists(atPath: path.path) else { continue }
-
-            let actual = try XLSX.readWorkbook(at: path)
-            #expect(
-                Set(actual.keys) == Set(expectedSheets.keys),
-                "\(file): sheet names differ")
-
-            for (sheet, expectedRows) in expectedSheets {
-                guard let actualRows = actual[sheet] else { continue }
-                #expect(
-                    actualRows.count == expectedRows.count,
-                    "\(file)/\(sheet): \(actualRows.count) rows vs \(expectedRows.count)")
-
-                for (index, pair) in zip(actualRows, expectedRows).enumerated()
-                where pair.0 != pair.1 {
-                    // One known divergence, and the JavaScript is the one that is wrong.
-                    //
-                    // Its cell pattern is `<c\b([^>]*)(?:\/>|>…<\/c>)`, and the alternation
-                    // does not backtrack: for `<c r="A12"/>` the `[^>]*` swallows the
-                    // slash, the `\/>` branch fails, the `>` branch succeeds, and the
-                    // self-closing cell consumes the *next* cell. The value then lands in
-                    // the wrong column with its shared-string lookup skipped — `23570`
-                    // instead of `Miehet kaikki`.
-                    //
-                    // It survives only because it lands on `Saate`, the DVV cover note.
-                    // The adapter reads `Miehet ens` and `Naiset ens`, so nothing wrong
-                    // ever reaches the corpus. Named rather than tolerated: if this starts
-                    // happening on a sheet that is read, the test says so.
-                    if sheet == "Saate" { continue }
-                    let mine = pair.0.prefix(6).joined(separator: "|")
-                    let theirs = pair.1.prefix(6).joined(separator: "|")
-                    Issue.record("\(file)/\(sheet) row \(index): [\(mine)] vs [\(theirs)]")
-                    break
-                }
-                compared += 1
-            }
-        }
-        let complaint = "no workbooks compared — the cache is empty or the dump is stale"
-        #expect(compared > 0, "\(complaint)")
-        print("xlsx: compared \(compared) sheets against the JavaScript reader")
-    }
+    // A sheet-level comparison against the JavaScript reader used to live here, over a
+    // 41 MB dump of all five workbooks. It went when the JavaScript did — the dump was
+    // never committable at that size and can no longer be regenerated, so it would have
+    // become a suite that skipped everywhere except the one machine that still had the
+    // file in /tmp.
+    //
+    // Nothing is lost. `CivilNamesAdapter` is the only thing that reads a workbook, it
+    // reads all five, and its committed baseline is compared path by path on every run —
+    // so a reader that gets a cell wrong changes a name in Finland, Sweden, the UK, Spain
+    // or Israel, and the parity suite says which. The scanner tests above cover the parts
+    // that have no upstream to compare against.
 }

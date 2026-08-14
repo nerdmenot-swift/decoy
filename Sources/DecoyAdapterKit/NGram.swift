@@ -1,6 +1,6 @@
 /// Fits a character-level n-gram model to a word list.
 ///
-/// A direct port of `lib/ngram.mjs`, and the piece of the pipeline where "close enough" is
+/// A direct port of the JavaScript pipeline's n-gram module, and the piece where "close enough" is
 /// worthless: these models are what `novelNames()` draws from, they are baked into the
 /// corpus, and a subtly different trainer changes the names people generate without
 /// changing anything that looks like an error. So the port preserves ordering decisions
