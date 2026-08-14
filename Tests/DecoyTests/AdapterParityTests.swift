@@ -50,6 +50,7 @@ struct AdapterParityTests {
         PostalAdapter(),
         LegalEntitiesAdapter(),
         PhoneFormatsAdapter(),
+        AuthoredCommerceAdapter(),
     ]
 
     private static func roster() -> (locales: [String], cldr: [String: String?]) {

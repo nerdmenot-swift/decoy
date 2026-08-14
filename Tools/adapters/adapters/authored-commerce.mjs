@@ -68,7 +68,7 @@ export const source = 'decoy-authored'
  * `plural` marks the two languages whose nouns are listed in the plural, which is recorded
  * because it is the reason their adjectives need no gender.
  */
-const LANGUAGES = {
+export const LANGUAGES = {
   de: {
     plural: true,
     pattern: '{{commerce.productAdjective}} {{commerce.product}} aus {{commerce.productMaterial}}',
@@ -476,7 +476,7 @@ const LANGUAGES = {
  * `Comboio`/`Trem` to `Telemóvel`/`Celular`, and the European vocabulary would be wrong
  * rather than merely unlocalised.
  */
-const LOCALES = {
+export const LOCALES = {
   de: ['de', 'de_AT', 'de_CH'],
   nl: ['nl', 'nl_BE'],
   fr: ['fr', 'fr_BE', 'fr_CH', 'fr_LU'],
