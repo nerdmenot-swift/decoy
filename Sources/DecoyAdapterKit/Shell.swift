@@ -28,30 +28,61 @@ public enum Shell {
         }
     }
 
-    /// Where a tool actually lives.
+    /// The directories to search, and the one Windows keeps its tools in.
     ///
-    /// Resolved against `PATH` rather than delegated to `/usr/bin/env`, which does not exist
-    /// on Windows — and `Process` needs a real path either way, so nothing is lost by doing
-    /// the lookup here on every platform.
-    static func locate(_ tool: String) -> URL? {
+    /// Windows environment variables are case-insensitive and Swift's dictionary lookup is
+    /// not, so `environment["PATH"]` finds nothing on a runner that spells it `Path` — which
+    /// GitHub's does. That produced "`tar` is not installed" on a machine that ships tar.
+    static func searchDirectories() -> [String] {
+        let environment = ProcessInfo.processInfo.environment
+        let raw =
+            environment["PATH"]
+            ?? environment.first { $0.key.caseInsensitiveCompare("PATH") == .orderedSame }?
+                .value ?? ""
+
         #if os(Windows)
             let separator: Character = ";"
-            // A bare name is not executable on Windows; PATHEXT decides, and these are the
-            // only extensions anything here would be.
-            let suffixes = ["", ".exe", ".cmd", ".bat"]
+            // Named explicitly as well as searched for. `tar.exe` has shipped in System32
+            // since Windows 10 1803, and a PATH that somehow omits it should not turn into
+            // a build failure that reads like a missing package.
+            let system = environment["SystemRoot"] ?? environment["SYSTEMROOT"] ?? "C:\\Windows"
+            let known = ["\(system)\\System32"]
         #else
             let separator: Character = ":"
+            let known: [String] = ["/usr/bin", "/bin", "/usr/local/bin"]
+        #endif
+
+        return raw.split(separator: separator).map(String.init).filter { !$0.isEmpty } + known
+    }
+
+    /// Where a tool actually lives.
+    ///
+    /// Resolved against the search path rather than delegated to `/usr/bin/env`, which does
+    /// not exist on Windows — and `Process` needs a real path either way, so nothing is lost
+    /// by doing the lookup here on every platform.
+    static func locate(_ tool: String) -> URL? {
+        #if os(Windows)
+            // A bare name is not a program on Windows; the extension is part of the file.
+            let suffixes = ["", ".exe", ".cmd", ".bat"]
+        #else
             let suffixes = [""]
         #endif
 
-        let path = ProcessInfo.processInfo.environment["PATH"] ?? ""
-        for directory in path.split(separator: separator) where !directory.isEmpty {
+        for directory in searchDirectories() {
             for suffix in suffixes {
-                let candidate = URL(fileURLWithPath: String(directory))
+                let candidate = URL(fileURLWithPath: directory)
                     .appendingPathComponent(tool + suffix)
-                if FileManager.default.isExecutableFile(atPath: candidate.path) {
-                    return candidate
-                }
+                #if os(Windows)
+                    // `isExecutableFile` consults permissions that do not mean the same
+                    // thing here; an `.exe` on the search path is the program.
+                    if FileManager.default.fileExists(atPath: candidate.path) {
+                        return candidate
+                    }
+                #else
+                    if FileManager.default.isExecutableFile(atPath: candidate.path) {
+                        return candidate
+                    }
+                #endif
             }
         }
         return nil
