@@ -19,11 +19,6 @@ public indirect enum Definition: Sendable, Equatable {
         if case .object(let value) = self { return value }
         return nil
     }
-
-    /// Whether two values are both plain objects, which is the only case a merge descends.
-    static func bothObjects(_ a: Definition?, _ b: Definition?) -> Bool {
-        a?.asObject != nil && b?.asObject != nil
-    }
 }
 
 extension Definition {

@@ -35,13 +35,9 @@ for (index, argument) in arguments.enumerated() where argument == "--without" {
     if index + 1 < arguments.count { excluded.insert(arguments[index + 1]) }
 }
 
-let root: URL = {
-    if let index = arguments.firstIndex(of: "--root"), index + 1 < arguments.count {
-        return URL(fileURLWithPath: arguments[index + 1])
-    }
-    return URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-        .appendingPathComponent("Tools/adapters")
-}()
+let root = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+    .appendingPathComponent("Tools")
+    .appendingPathComponent("adapters")
 
 let outDirectory = root.appendingPathComponent("out")
 
