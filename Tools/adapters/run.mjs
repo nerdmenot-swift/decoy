@@ -325,7 +325,6 @@ async function main() {
   const manifest = {
     generator: 'decoy adapters',
     corpusVersion,
-    generatedAt: new Date().toISOString().slice(0, 10),
     sources: [...sources.values()],
     // Object nodes whose keys are data. Declared by the adapters that produce them; the
     // compiler emits a `__keys` table for these and for nothing else.

@@ -50,6 +50,7 @@ let package = Package(
     ],
     products: [
         .library(name: "Decoy", targets: ["Decoy"]),
+        .executable(name: "decoy-build-corpus", targets: ["DecoyCorpusBuilder"]),
         .executable(name: "decoy-compile-corpus", targets: ["DecoyCorpusCompiler"]),
         .executable(name: "decoy-inspect", targets: ["DecoyCorpusInspector"]),
         .executable(name: "decoy-validate", targets: ["DecoyCorpusValidator"]),
@@ -72,6 +73,13 @@ let package = Package(
         .target(
             name: "DecoyCorpusKit",
             dependencies: ["Decoy"],
+            swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
+        // The pipeline driver: acquires every pinned artifact, runs the adapters, merges
+        // their claims, trains the models and writes the intermediate the compiler reads.
+        .executableTarget(
+            name: "DecoyCorpusBuilder",
+            dependencies: ["Decoy", "DecoyAdapterKit"],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         // A host build tool, so unlike the library it may use Foundation freely.

@@ -353,7 +353,7 @@ if let swiftDirectory = options.emitSwift {
     }
 }
 
-print("sources         : \(manifest.provenance)")
+print("sources         : \(manifest.sourceSummary)")
 print("corpus version  : \(corpusVersion)")
 print("locales compiled: \(codes.count)")
 print("JSON in         : \(totalJSON / 1024) KB")

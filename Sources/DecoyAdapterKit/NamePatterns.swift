@@ -145,6 +145,37 @@ public enum NamePatterns {
         return variants
     }
 
+    /// Writes `person.name` for one locale, and says whether it did.
+    ///
+    /// Returns false where the chain supplies no given name or no surname: a pattern
+    /// referencing a name nothing in the chain supplies would trap at the call site rather
+    /// than fail the build, which is why this is checked at all.
+    public static func apply(
+        _ code: String, to definitions: inout [String: Definition], formats: Formats,
+        parents: [[String: Definition]]
+    ) -> Bool {
+        // Converted to the JSON shape `state(of:at:)` reads, which is also the shape the
+        // JavaScript held — `.null` becomes `NSNull`, which is how "deliberately empty"
+        // survives the trip and keeps blocking inheritance.
+        let own = Definition.object(definitions).json
+        let chain = parents.map { Definition.object($0).json as Any? }
+        let resolves = resolver(definitions: own, chain: chain)
+
+        guard resolves("person.first_name"), resolves("person.last_name") else { return false }
+
+        let shape = format(formats, for: code)
+        let variants = namePattern(
+            resolves: resolves, surnameFirst: shape.surnameFirst, separator: shape.separator)
+
+        var person = definitions["person"]?.asObject ?? [:]
+        person["name"] = .list(
+            variants.map {
+                .object(["value": .string($0.value), "weight": .number(Double($0.weight))])
+            })
+        definitions["person"] = .object(person)
+        return true
+    }
+
     /// Resolves a path through the chain, stopping where the chain says to stop.
     ///
     /// Two failures shaped this, both found by the validator rather than by reading.

@@ -21,26 +21,37 @@ public struct AuthoredListsAdapter: Adapter {
     public static let id = "authored-lists"
     public static let sources = ["decoy-authored"]
 
-    /// The adapter this instance stands in for, and the file holding its values.
+    /// The adapter this instance stands in for, the source it credits, and the file holding
+    /// its values.
     private let identifier: String
+    private let source: String
     private let file: String
 
-    public init(id: String, file: String) {
+    public init(id: String, source: String, file: String) {
         self.identifier = id
+        self.source = source
         self.file = file
     }
 
     public static func whimsy() -> AuthoredListsAdapter {
-        AuthoredListsAdapter(id: "authored-whimsy", file: "whimsy.json")
+        AuthoredListsAdapter(
+            id: "authored-whimsy", source: "decoy-authored", file: "whimsy.json")
     }
     public static func fixtures() -> AuthoredListsAdapter {
-        AuthoredListsAdapter(id: "authored-fixtures", file: "fixtures.json")
+        AuthoredListsAdapter(
+            id: "authored-fixtures", source: "decoy-authored", file: "fixtures.json")
     }
+    /// Its own descriptor, not `decoy-authored`. The other two are invented vocabulary;
+    /// this one records facts nobody publishes a register of, and says so under its own
+    /// licence and URL.
     public static func commonKnowledge() -> AuthoredListsAdapter {
-        AuthoredListsAdapter(id: "common-knowledge", file: "common-knowledge.json")
+        AuthoredListsAdapter(
+            id: "common-knowledge", source: "common-knowledge",
+            file: "common-knowledge.json")
     }
 
     public var adapterID: String { identifier }
+    public var adapterSources: [String] { [source] }
 
 
     public func run(_ input: AdapterInput) throws -> AdapterOutput {

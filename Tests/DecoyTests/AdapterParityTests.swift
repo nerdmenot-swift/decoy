@@ -76,7 +76,7 @@ struct AdapterParityTests {
         let store = ArtifactStore(root: root)
         var found: [String: URL] = [:]
 
-        for sourceID in type(of: adapter).sources {
+        for sourceID in adapter.adapterSources {
             let descriptorURL = root.appendingPathComponent("sources/\(sourceID).json")
             let descriptor = try JSONDecoder().decode(
                 SourceDescriptor.self, from: Data(contentsOf: descriptorURL))

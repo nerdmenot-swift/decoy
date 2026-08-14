@@ -44,7 +44,6 @@ public struct Manifest: Decodable {
     public let sources: [SourceRecord]?
     /// locale -> path -> source id.
     public let attribution: [String: [String: String]]?
-    public let generatedAt: String?
 
     /// Object nodes whose *keys* are data, declared by the adapter that produced them.
     ///
@@ -69,25 +68,17 @@ public struct Manifest: Decodable {
         return CorpusVersion(major: parts[0], minor: parts[1], patch: parts[2])
     }
 
-    /// A one-line provenance summary for generated source headers.
+    /// A one-line provenance summary, for generated source headers and the build log.
     ///
-    /// Each source carries its own retrieval date, so this reports when the intermediate
-    /// was *generated* — conflating the two would misdate the data itself.
-    public var provenance: String {
-        "\(sourceSummary); generated \(generatedAt ?? "unknown")"
-    }
-
-    /// The same summary without the generation date, for text that gets committed.
-    ///
-    /// The date belongs in a build log, not in a generated source file. It was
-    /// interpolated into every locale module header, which made emission
-    /// non-deterministic: CI re-emits the modules and diffs them, so the build failed on
-    /// any day but the one the modules were committed. Committing again bought exactly
-    /// one more day.
+    /// Carries no generation date. The date belonged in a build log rather than in a
+    /// generated source file, and it was interpolated into every locale module header —
+    /// which made emission non-deterministic. CI re-emits the modules and diffs them, so
+    /// the build failed on any day but the one the modules were committed, and committing
+    /// again bought exactly one more day.
     ///
     /// Nothing is lost by dropping it — every source carries its own `retrieved` date,
     /// which is the date that says something about the data rather than about the machine
-    /// that happened to run the compiler.
+    /// that happened to run the compiler. The pipeline no longer writes the field at all.
     public var sourceSummary: String {
         sourceRecords.map { "\($0.id) \($0.version) (\($0.license))" }
             .joined(separator: ", ")

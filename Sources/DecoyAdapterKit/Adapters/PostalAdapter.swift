@@ -27,7 +27,7 @@ public struct PostalAdapter: Adapter {
         if source.contains(where: { $0 == "|" || $0 == "(" || $0 == ")" }) { return nil }
 
         var mask = ""
-        var characters = Array(source)
+        let characters = Array(source)
         var index = 0
 
         while index < characters.count {

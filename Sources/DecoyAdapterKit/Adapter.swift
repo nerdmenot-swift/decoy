@@ -99,9 +99,19 @@ public protocol Adapter: Sendable {
     /// in which data file they read and writing three identical types to satisfy a static
     /// would be ceremony.
     var adapterID: String { get }
+
+    /// Which sources this *instance* reads, for the same handful.
+    ///
+    /// Instance rather than static for a reason that cost a wrong attribution: the three
+    /// authored-list adapters share a type but not an upstream — `common-knowledge` is its
+    /// own descriptor with its own licence and URL, while the other two are `decoy-authored`
+    /// — so a static let credited 76 English paths to the wrong source and left
+    /// `common-knowledge` out of the manifest, and therefore out of NOTICE, entirely.
+    var adapterSources: [String] { get }
 }
 
 extension Adapter {
     public static var attributeTo: String? { nil }
     public var adapterID: String { Self.id }
+    public var adapterSources: [String] { Self.sources }
 }
