@@ -168,8 +168,12 @@ public struct PersonFaker {
     /// spaceless — with an English given name, and produce `ChengAaliyah`. See
     /// ``LocaleCorpus/stringsAgreeing(_:requires:)``.
     public mutating func fullName(_ gender: Gender? = nil) -> String {
-        let coherent = faker.locale.agreeing(
-            on: ["person.first_name.female", "person.first_name.male"])
+        let coherent = faker.locale.agreeing(onAnyOf: [
+            ["person.first_name.female", "person.first_name.male"],
+            // Or a single ungendered list, which is how a source that counts names without
+            // recording who holds them can supply a locale at all.
+            ["person.first_name.generic"],
+        ])
         if coherent.chain.count != faker.locale.chain.count {
             // The whole composition is narrowed, not just the pattern: expanding against
             // the full chain would still pull the surname from the front of it.

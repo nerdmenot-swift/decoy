@@ -89,14 +89,29 @@ public struct LocaleCorpus: Sendable {
     /// building anything self-contradictory; it is the *composition* that has to agree
     /// with itself.
     public func agreeing(on requires: [String]) -> LocaleCorpus {
+        agreeing(onAnyOf: [requires])
+    }
+
+    /// The same, where a locale can satisfy the requirement in more than one way.
+    ///
+    /// A locale supplies its own given names either by carrying `person.first_name.female`
+    /// *and* `.male`, or by carrying `.generic` — Chinese does the second, because the
+    /// source that made `zh_CN` possible counts how many people hold a name and not who
+    /// they are. Asking only for the gendered pair sent `zh_CN` to English while its own
+    /// 131 given names sat one path away, unreachable through `fullName` and reachable
+    /// through `firstName`, which is the kind of inconsistency nothing would have reported.
+    public func agreeing(onAnyOf groups: [[String]]) -> LocaleCorpus {
         for index in chain.indices {
             let corpus = chain[index]
-            let carriesAll = requires.allSatisfy { required in
-                guard let entry = try? corpus.lookup(required) else { return false }
-                if case .explicitlyEmpty = entry { return false }
-                return true
+            let satisfies = groups.contains { group in
+                !group.isEmpty
+                    && group.allSatisfy { required in
+                        guard let entry = try? corpus.lookup(required) else { return false }
+                        if case .explicitlyEmpty = entry { return false }
+                        return true
+                    }
             }
-            if carriesAll { return LocaleCorpus(code: code, chain: Array(chain[index...])) }
+            if satisfies { return LocaleCorpus(code: code, chain: Array(chain[index...])) }
         }
         return self
     }

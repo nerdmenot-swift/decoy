@@ -42,6 +42,12 @@ public struct WikidataNamesAdapter: Adapter {
         "az": ["female", "male", "surname"],
         "he": ["female", "male"],
         "zh_TW": ["surname"],
+        // Wikidata gave `zh_CN` 41 surnames of which nine were romanisations and three
+        // were labels ending in the character for "surname". Most of the rest were rare
+        // compounds — 万俟, 南郭, 司空 — because those are what an encyclopaedia finds
+        // notable, so a Chinese fixture set read like an English one where everybody is
+        // called Featherstonehaugh. `chinese-names` supplies 745 ordinary ones instead.
+        "zh_CN": ["surname"],
     ]
 
     static func language(of code: String) -> String { String(code.split(separator: "_")[0]) }

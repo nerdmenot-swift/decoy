@@ -116,7 +116,7 @@ rather than block a release.
 ## The corpus is a build artifact
 
 No data is hand-edited, and none is committed. `Tools/adapters/` holds *programs* that
-derive the corpus from fifty sources — forty-five pinned upstreams fetched by URL and
+derive the corpus from fifty-one sources — forty-six pinned upstreams fetched by URL and
 verified against an integrity hash, three queried and their answers committed, and two
 written here — each recorded in the corpus with its licence:
 
@@ -169,7 +169,7 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
 - [x] Multi-platform package skeleton, Foundation-free core, `swiftLanguageMode(.v6)`
 - [x] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
-- [x] Adapter pipeline: 50 sources — 45 integrity-verified, 5 committed snapshots — provenance per path
+- [x] Adapter pipeline: 51 sources — 46 integrity-verified, 5 committed snapshots — provenance per path
 - [x] [Locale support matrix](docs/locale-support.md) — which fields each of the 63 locales
       supplies itself, and which fall through to English. Generated from the corpus and
       checked in CI, so it cannot describe a corpus that is no longer shipping.

@@ -62,9 +62,9 @@ struct LicenseIntegrityTests {
     @Test("the source count matches what the documentation claims")
     func sourceCountPinned() {
         #expect(
-            Self.descriptors.count == 50,
+            Self.descriptors.count == 51,
             """
-            \(Self.descriptors.count) source descriptors, expected 50.
+            \(Self.descriptors.count) source descriptors, expected 51.
             If that is intentional, update this literal, README.md and \
             docs/corpus-strategy.md together — they drifted apart once already.
             """

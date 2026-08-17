@@ -24,6 +24,7 @@ public enum Adapters {
             AuthoredListsAdapter.whimsy(),
             AuthoredAdapter(),
             CitiesAdapter(),
+            ChineseNamesAdapter(),
             CivilNamesAdapter(),
             CLDRDatesAdapter(),
             AuthoredListsAdapter.commonKnowledge(),

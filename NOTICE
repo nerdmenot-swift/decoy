@@ -190,6 +190,10 @@ LicenseRef-WhitakersWords
 
 MIT
 ---
+  chinesename — version 1bc2dbc1f282, retrieved 2026-08-17
+    Copyright (c) 2015 Dingyuan Wang
+    https://github.com/gumblex/chinesename
+    Full licence: LICENSES/chinesename.txt
   linguist — version 9.4.0, retrieved 2026-08-07
     Copyright (c) Ika <ikatyang@gmail.com>; language data from GitHub Linguist contributors
     https://github.com/github-linguist/linguist
