@@ -36,24 +36,15 @@ public struct SourceDescriptor: Decodable, Sendable {
     /// Exists because iana-tld's digest ignores its serial line by design, so the
     /// transcribed version drifted with nothing able to notice — the descriptor claimed
     /// 2026080700 while the file that compiled in said 2026081200.
-    public struct VersionFrom: Decodable, Sendable {
-        public let artifact: String
-        public let pattern: String
-    }
-
     public let id: String
     public let name: String?
     public let license: String
     /// The upstream's own copyright line, verbatim. Empty where it states none.
     public let copyright: String?
     public let url: String
-    public private(set) var version: String
+    public let version: String
     public let retrieved: String
-    public let versionFrom: VersionFrom?
     public let artifacts: [Artifact]?
-
-    /// Replaces the transcribed version with one read out of the data.
-    public mutating func adoptVersion(_ found: String) { version = found }
 
     /// The provenance record that travels with the data into the compiled corpus.
     public var provenance: Provenance {

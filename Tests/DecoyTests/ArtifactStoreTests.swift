@@ -109,26 +109,40 @@ struct ArtifactStoreTests {
         }
     }
 
-    /// `versionFrom` is what stops provenance naming a version that never shipped.
-    @Test("a source that states its own version has it read, not transcribed")
-    func versionFrom() throws {
-        var descriptor = try Self.descriptor("iana-tld")
-        let rule = try #require(descriptor.versionFrom)
-        let artifact = try #require(descriptor.artifacts?.first { $0.name == rule.artifact })
-        let store = ArtifactStore(root: Self.root)
-        let path = store.cacheDirectory
-            .appendingPathComponent("iana-tld-\(artifact.cacheSuffix)")
-
-        let text = String(decoding: try Data(contentsOf: path), as: UTF8.self)
-        let regex = try Regex(rule.pattern)
-        let line = try #require(text.split(separator: "\n").first).description
-        let match = try #require(try regex.firstMatch(in: line))
-        let found = String(line[match.range]).replacingOccurrences(of: "# Version ", with: "")
-
-        descriptor.adoptVersion(found)
-        #expect(descriptor.version == found)
+    /// A recorded version must not move when the data has not.
+    ///
+    /// `iana-tld` is the case that proves it. Its digest deliberately ignores the leading
+    /// `# Version` serial, because IANA republishes the root zone whenever it is
+    /// regenerated and the serial moves with all 1,438 entries identical. The descriptor
+    /// used to then *read* that same serial back as its version, which put a
+    /// daily-changing number into the provenance chunk — inside the committed blob — so a
+    /// rebuild on a new day produced different locale modules for a zone that had not
+    /// moved. CI caught it as stale modules, which reads like somebody forgot to
+    /// regenerate rather than like an upstream serial ticking over.
+    ///
+    /// The version is transcribed now. This asserts the two halves cannot drift apart
+    /// again: what the descriptor states is what the manifest records.
+    @Test("a version that is ignored for hashing is not adopted for provenance")
+    func versionIsStable() throws {
+        let descriptor = try Self.descriptor("iana-tld")
+        let artifact = try #require(descriptor.artifacts?.first)
         #expect(
-            descriptor.version != "2026080700",
-            "the transcribed version was stale; reading it from the data is the whole point")
+            artifact.ignoreLinesMatching == "^# Version",
+            "the digest no longer ignores the serial — this test guards the wrong thing")
+
+        let manifestURL = Self.root.appendingPathComponent("out/manifest.json")
+        guard let data = try? Data(contentsOf: manifestURL),
+            let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+            let sources = root["sources"] as? [[String: Any]]
+        else { return }
+
+        let recorded = sources.first { $0["id"] as? String == "iana-tld" }?["version"] as? String
+        #expect(
+            recorded == descriptor.version,
+            """
+            the manifest records \(recorded ?? "nothing") and the descriptor states \
+            \(descriptor.version). A version read out of a file whose serial changes daily \
+            churns the corpus for no reason; transcribe it instead.
+            """)
     }
 }

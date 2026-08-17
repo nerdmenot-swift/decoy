@@ -133,44 +133,25 @@ var sourceOrder: [String] = []
 /// Acquires, verifies and unpacks every artifact a source declares, and registers its
 /// provenance.
 @MainActor func load(_ id: String) async throws -> [String: URL] {
-    var source = try descriptor(id)
+    let source = try descriptor(id)
 
     var artifacts: [String: URL] = [:]
-    var downloads: [String: URL] = [:]
     for artifact in source.artifacts ?? [] {
         let path = try await store.acquire(artifact, source: id, log: note)
-        downloads[artifact.name] = path
         artifacts[artifact.name] = try store.materialise(artifact, at: path, source: id)
     }
 
-    // Where the artifact states its own version, that wins over the transcribed one.
+    // A version is transcribed, never read back out of the data.
     //
-    // IANA republishes the root zone file with a fresh serial whenever the zone is
-    // regenerated, so the descriptor's `version` goes stale silently: it claimed
-    // 2026080700 while the file that actually compiled in said 2026081200. Provenance
-    // naming the wrong version of a source is the one failure this project cannot afford.
-    if let from = source.versionFrom {
-        guard let path = downloads[from.artifact] else {
-            fail("\(id): versionFrom names unknown artifact '\(from.artifact)'")
-        }
-        let text = String(decoding: try Data(contentsOf: path), as: UTF8.self)
-        // `.anchorsMatchLines` is the `m` flag: `^` matches at each line, not only at the
-        // start of the file, and the pattern is written to rely on it.
-        guard
-            let expression = try? NSRegularExpression(
-                pattern: from.pattern, options: [.anchorsMatchLines]),
-            let match = expression.firstMatch(
-                in: text, range: NSRange(text.startIndex..., in: text)),
-            match.numberOfRanges > 1,
-            let range = Range(match.range(at: 1), in: text)
-        else {
-            fail(
-                "\(id): versionFrom pattern /\(from.pattern)/ matched nothing in "
-                    + "'\(from.artifact)'. Upstream changed its header; fix the pattern "
-                    + "rather than transcribing a version.")
-        }
-        source.adoptVersion(String(text[range]))
-    }
+    // Reading it was tried, for `iana-tld`, on the reasoning that a stale transcribed
+    // version is provenance naming something that never shipped. It is — and the cure was
+    // worse. IANA republishes the root zone with a fresh serial whenever the zone is
+    // regenerated, all 1,438 entries identical, which is exactly why that descriptor's
+    // digest ignores the serial line. Adopting the same number as the version put a
+    // daily-changing value in the provenance chunk, inside the committed blob, so every
+    // rebuild on a new day produced different locale modules for data that had not moved.
+    //
+    // A number that changes when the data does not is not a version of the data.
 
     if sourceRecords[source.id] == nil { sourceOrder.append(source.id) }
     sourceRecords[source.id] = source.provenance

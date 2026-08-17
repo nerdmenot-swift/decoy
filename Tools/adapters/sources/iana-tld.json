@@ -1,36 +1,40 @@
 {
-  "id": "iana-tld",
-  "name": "IANA Root Zone Database",
-  "license": "public-facts",
-  "copyright": "",
-  "url": "https://www.iana.org/domains/root/db",
-  "version": "2026080700",
-  "versionFrom": { "artifact": "tlds", "pattern": "^# Version (\\d+)" },
-  "retrieved": "2026-08-08",
-  "note": [
-    "IANA operates the root zone, so this is the authoritative list of top-level domains",
-    "rather than anyone's copy of it. Which strings are delegated is a matter of fact, not",
-    "authorship, so `public-facts` records that reasoning rather than asserting a grant",
-    "IANA has not made.",
-    "",
-    "The digest deliberately ignores the leading `# Version` serial. IANA republishes this",
-    "file with a fresh serial whenever the zone is regenerated, whether or not a TLD",
-    "changed -- it moved from 2026080600 to 2026080700 with all 1,438 entries identical.",
-    "Pinning the raw bytes failed the build daily for no reason, and a check that cries",
-    "wolf every morning is one everybody learns to bypass. Every line that becomes corpus",
-    "data is still covered, so a TLD appearing, disappearing or being injected still fails.",
-    "",
-    "`version` records the serial seen when the content was last verified. The adapter no",
-    "longer asserts it, because it is the one part of the file that changes meaninglessly."
-  ],
-  "artifacts": [
-    {
-      "name": "tlds",
-      "format": "file",
-      "filename": "tlds-alpha-by-domain.txt",
-      "url": "https://data.iana.org/TLD/tlds-alpha-by-domain.txt",
-      "integrity": "sha512-aCqPvOus1kgTV2ngAF5HtR4D2foe80rqUCqR9fIwj+svOxPjgDrPORVtnDgvtQsMwKHFjgTUQGF8CJTcn+tq8A==",
-      "ignoreLinesMatching": "^# Version"
-    }
-  ]
+ "id": "iana-tld",
+ "name": "IANA Root Zone Database",
+ "license": "public-facts",
+ "copyright": "",
+ "url": "https://www.iana.org/domains/root/db",
+ "version": "2026080700",
+ "retrieved": "2026-08-08",
+ "note": [
+  "IANA operates the root zone, so this is the authoritative list of top-level domains",
+  "rather than anyone's copy of it. Which strings are delegated is a matter of fact, not",
+  "authorship, so `public-facts` records that reasoning rather than asserting a grant",
+  "IANA has not made.",
+  "",
+  "The digest deliberately ignores the leading `# Version` serial. IANA republishes this",
+  "file with a fresh serial whenever the zone is regenerated, whether or not a TLD",
+  "changed -- it moved from 2026080600 to 2026080700 with all 1,438 entries identical.",
+  "Pinning the raw bytes failed the build daily for no reason, and a check that cries",
+  "wolf every morning is one everybody learns to bypass. Every line that becomes corpus",
+  "data is still covered, so a TLD appearing, disappearing or being injected still fails.",
+  "",
+  "`version` records the serial seen when the content was last verified, and is",
+  "transcribed rather than read back out of the file. Reading it was tried and was",
+  "self-contradictory: the digest ignores the serial precisely because it changes",
+  "without the data changing, and then the version adopted the very same number --",
+  "so every rebuild on a new day produced a different provenance chunk, a different",
+  "blob and a stale locale module, for a zone that had not moved. A number that",
+  "changes when the data does not is not a version of the data."
+ ],
+ "artifacts": [
+  {
+   "name": "tlds",
+   "format": "file",
+   "filename": "tlds-alpha-by-domain.txt",
+   "url": "https://data.iana.org/TLD/tlds-alpha-by-domain.txt",
+   "integrity": "sha512-aCqPvOus1kgTV2ngAF5HtR4D2foe80rqUCqR9fIwj+svOxPjgDrPORVtnDgvtQsMwKHFjgTUQGF8CJTcn+tq8A==",
+   "ignoreLinesMatching": "^# Version"
+  }
+ ]
 }
