@@ -1,15 +1,15 @@
 {
-  "_comment": [
-    "The corpus version, declared once and read by everything that needs it: run.mjs copies",
-    "it into out/manifest.json, decoy-compile-corpus reads it from there, and the Swift tests",
-    "read this file directly. Before this existed the number lived in the compiler's default,",
-    "whichever --corpus-version flag you happened to type, and two test files -- so every bump",
-    "broke two tests by hand and CI built 1.0.0 while the tests asserted 11.0.0.",
-    "",
-    "This is part of the reproducibility contract, not a build detail. generate(seed:) is only",
-    "reproducible with respect to a particular corpus. Adding data is a minor bump; changing or",
-    "removing an existing value is a MAJOR bump, because it silently changes every fixture an",
-    "existing user has already generated. See docs/corpus-strategy.md."
-  ],
-  "version": "59.2.0"
+ "_comment": [
+  "The corpus version, declared once and read by everything that needs it: run.mjs copies",
+  "it into out/manifest.json, decoy-compile-corpus reads it from there, and the Swift tests",
+  "read this file directly. Before this existed the number lived in the compiler's default,",
+  "whichever --corpus-version flag you happened to type, and two test files -- so every bump",
+  "broke two tests by hand and CI built 1.0.0 while the tests asserted 11.0.0.",
+  "",
+  "This is part of the reproducibility contract, not a build detail. generate(seed:) is only",
+  "reproducible with respect to a particular corpus. Adding data is a minor bump; changing or",
+  "removing an existing value is a MAJOR bump, because it silently changes every fixture an",
+  "existing user has already generated. See docs/corpus-strategy.md."
+ ],
+ "version": "59.3.0"
 }

@@ -12,9 +12,9 @@ Package.resolved
 /Tools/adapters/out/
 /Tools/adapters/.cache/
 
-# Compiled corpus — a build artifact, reproducible from the adapters.
-# Revisit when per-locale targets need blobs committed for distribution.
-/Corpus/binary/
+# The compiled corpus IS committed — see Corpus/README.md. It was ignored as "a build
+# artifact, reproducible from the adapters", which was true and stopped being enough:
+# reproducing it needs 49 upstreams reachable, and two already are not.
 
 # proto toolchain install logs
 proto-*.log

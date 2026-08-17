@@ -108,11 +108,11 @@ struct IntegrityTests {
             Issue.record(
                 "no cached artifacts, so nothing was verified — run `swift run decoy-build-corpus`")
         }
-        // The count is asserted, not printed. 51 artifacts are declared across the
+        // The count is asserted, not printed. 55 artifacts are declared across the
         // descriptors; anything less means the enumeration lost some, which is how this
         // suite first passed having silently skipped eleven of them.
         let declared = descriptors.reduce(0) { $0 + ($1.artifacts?.count ?? 0) }
-        #expect(declared == 51, "expected 51 declared artifacts, enumerated \(declared)")
+        #expect(declared == 55, "expected 55 declared artifacts, enumerated \(declared)")
         #expect(
             checked + missing.count == declared,
             "verified \(checked) + missing \(missing.count) should account for all \(declared)")

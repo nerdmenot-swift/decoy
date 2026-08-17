@@ -153,7 +153,7 @@ struct OrchestratorTests {
                 "no adapter baselines — run `swift run decoy-build-corpus --write-baselines`")
             return
         }
-        #expect(adapters.count == 32, "expected 32 adapters, loaded \(adapters.count)")
+        #expect(adapters.count == 33, "expected 33 adapters, loaded \(adapters.count)")
 
         let result = try Orchestrator(roster: roster).merge(adapters)
 

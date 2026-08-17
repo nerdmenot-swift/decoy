@@ -39,13 +39,13 @@ struct ArtifactStoreTests {
                     .appendingPathComponent("\(descriptor.id)-\(artifact.cacheSuffix)")
                 let complaint =
                     "\(descriptor.id)/\(artifact.name) — Swift would look at "
-                    + "\(expected.lastPathComponent), which is not what Node wrote"
+                    + "\(expected.lastPathComponent), which is not where it was cached"
                 #expect(
                     FileManager.default.fileExists(atPath: expected.path), "\(complaint)")
                 checked += 1
             }
         }
-        #expect(checked == 51, "expected 51 artifacts, checked \(checked)")
+        #expect(checked == 55, "expected 55 artifacts, checked \(checked)")
     }
 
     /// A cached file is re-verified, never trusted.

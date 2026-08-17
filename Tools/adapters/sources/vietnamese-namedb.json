@@ -1,0 +1,60 @@
+{
+ "id": "vietnamese-namedb",
+ "name": "Vietnamese Name Database (Tu dien Ho Ten trong Viet Nam)",
+ "license": "MIT",
+ "copyright": "Copyright (c) 2016 Van-Duyet Le",
+ "url": "https://github.com/duyet/vietnamese-namedb",
+ "version": "2129070dde24",
+ "retrieved": "2026-08-17",
+ "note": [
+  "Vietnamese given names, which no statistics office publishes. Vietnam registers births",
+  "but does not release name frequencies, and Wikidata has none tagged to Vietnamese --",
+  "fifty-seven surnames and no given names at all. Without this, `vi` draws Vietnamese",
+  "surnames and English given names, which reads as a bug to anyone Vietnamese.",
+  "",
+  "A community compilation rather than a register, and it is taken on the same reasoning",
+  "as `cities-json` and `airport-data`: the names themselves are facts about a language,",
+  "the compilation is MIT, and the alternative was nothing.",
+  "",
+  "What it therefore does not carry is weights. Every other given-name source here is a",
+  "population count, and a weighted draw reaches a common name far more often than a rare",
+  "one. This is a list of names that exist, so it ships unweighted -- the same decision",
+  "`az-adlar` records, and for the same reason: giving every entry an equal invented",
+  "weight would encode a uniform draw as though somebody had measured it.",
+  "",
+  "Pinned per file rather than as a repository tarball, and that is deliberate. The",
+  "repository also holds `uit_member.json`, 1.6 MB of what appear to be real university",
+  "members. Naming the four list files individually means the roster is never fetched,",
+  "never cached and never in a position to be read by mistake, which is a stronger",
+  "guarantee than choosing not to parse it.",
+  "",
+  "Pinned to a commit rather than to `master`: the repository is actively maintained, and",
+  "a moving reference is not a pin."
+ ],
+ "artifacts": [
+  {
+   "name": "vi-male",
+   "format": "file",
+   "url": "https://raw.githubusercontent.com/duyet/vietnamese-namedb/2129070dde2471a2a2c0ef24a32c6c02ebd71805/boy.txt",
+   "integrity": "sha512-9FT0MuvL/7xEP/cUvDWTN7vHLpY4ZhjItsc4MsDF82ZuH489DVKrZyMzEgSzCxhzQxY2Q5m0jr7Rk1UczLxqlw=="
+  },
+  {
+   "name": "vi-female",
+   "format": "file",
+   "url": "https://raw.githubusercontent.com/duyet/vietnamese-namedb/2129070dde2471a2a2c0ef24a32c6c02ebd71805/girl.txt",
+   "integrity": "sha512-snLNKW5ohlOiBPRL8V4cvAD/CM/m6V5vf4vdFy+2KRsBgxJd8kflDaZkZfbouiDD1hdwrfpxJb+R1A3niC+t4A=="
+  },
+  {
+   "name": "vi-male-single",
+   "format": "file",
+   "url": "https://raw.githubusercontent.com/duyet/vietnamese-namedb/2129070dde2471a2a2c0ef24a32c6c02ebd71805/boy_one_word.txt",
+   "integrity": "sha512-NwHxzKsnxSw7FAANErTMnn8bLrJHEM4fPKnvVYvHtopW14OWr08t5IQfGwZ5OFGysN2yeEHyf4Xvx3XRKb/z9A=="
+  },
+  {
+   "name": "vi-female-single",
+   "format": "file",
+   "url": "https://raw.githubusercontent.com/duyet/vietnamese-namedb/2129070dde2471a2a2c0ef24a32c6c02ebd71805/girl_one_word.txt",
+   "integrity": "sha512-+Yy0NXv9ocfcxVDkpfm+n6RpI2PhLu+Gc0pZifJwDdAYfNkRfmafZS68zt7lfeet7mybjhGOqDKRKWT1D14oZA=="
+  }
+ ]
+}
