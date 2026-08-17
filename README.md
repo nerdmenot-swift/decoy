@@ -113,12 +113,12 @@ full suite in its own CI job — Linux natively in a `swift:6.3` container rathe
 cross-compiling. Windows is best-effort: a failure there should prompt a portability fix
 rather than block a release.
 
-## The corpus is a build artifact
+## The corpus is derived, not written
 
-No data is hand-edited, and none is committed. `Tools/adapters/` holds *programs* that
-derive the corpus from fifty-one sources — forty-six pinned upstreams fetched by URL and
-verified against an integrity hash, three queried and their answers committed, and two
-written here — each recorded in the corpus with its licence:
+No data is hand-edited. `Tools/adapters/` holds *programs* that derive the corpus from
+fifty-one sources — forty-six pinned upstreams fetched by URL and verified against an
+integrity hash, three queried and their answers committed, and two written here — each
+recorded in the corpus with its licence:
 
 ```
 Tools/adapters/
@@ -134,6 +134,9 @@ Sources/DecoyAdapterKit/
   Queries/              the fetchers behind `decoy-fetch`, run by hand
 ```
 
+The compiled result **is** committed, under `Corpus/binary/` — see the note there. It was
+not, on the grounds that it is reproducible from the adapters, which was true and stopped
+being enough: reproducing it needs fifty-one upstreams to answer and two already do not.
 Rebuild it with `swift run decoy-build-corpus`, then `swift run decoy-compile-corpus`.
 
 The package has no dependencies — no `.package(…)` entries, and the hashing, the archive

@@ -46,14 +46,18 @@ if let warning = locale.fallbackWarning() {
 
 ## What falls back, and how you can tell
 
-Five locales carry their own surnames but no given names. Rather than pair a Han surname
-with an English given name, `fullName()` composes the whole name from one language:
+Three locales carry their own surnames and no given names — `zh_TW`, `id_ID` and `yo_NG`.
+Rather than pair a Han surname with an English given name, `fullName()` composes the whole
+name from one language:
 
 ```swift
-var f = Faker(seed: 11, locale: chineseLocale)
-f.person.fullName()   // "Aaliyah Bradley"  — obviously a fallback
-f.person.lastName()   // "蒲察"              — still native
+var f = Faker(seed: 11, locale: taiwaneseLocale)
+f.person.fullName()   // "Brenda Beil"  — obviously a fallback
+f.person.lastName()   // "黃"            — still native
 ```
+
+A caller asking only for a surname is not building anything self-contradictory, so it keeps
+the native one. It is the *composition* that has to agree with itself.
 
 Some fields are English everywhere by design: invented pub names, marketing adjectives,
 job descriptors. No registry publishes them in any language.

@@ -31,7 +31,9 @@ public struct IANATLDAdapter: Adapter {
         // Reported, not asserted. IANA bumps this serial on every regeneration whether or
         // not a TLD changed, so failing on it would fail the build daily; the descriptor's
         // digest ignores the serial line and covers the delegations, which is the real
-        // check. `versionFrom` in the descriptor reads it into provenance.
+        // check. The descriptor's `version` is transcribed rather than read from here:
+        // a number that moves when the data does not is not a version of the data, and
+        // reading it put a daily-changing value inside the committed blob.
         let serial =
             lines.first
             .flatMap { line -> String? in

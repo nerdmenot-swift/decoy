@@ -112,6 +112,16 @@ decoded once at first access. Committed source, reviewable in a diff.
 
 ## Rebuilding from scratch
 
+You do not have to. `Corpus/binary/` is committed — all 64 locales, about 5.5 MB — so a
+checkout has the corpus already and `decoy-inspect` works immediately. Rebuilding is for
+re-pinning a source, not for obtaining the data.
+
+That changed deliberately. Reproducing the corpus needs fifty-one upstreams to answer, and
+two of them already do not; a corpus that is perfectly good data should not become
+unbuildable because a ministry reorganised its website.
+
+When you do want to rebuild:
+
 ```
 swift run decoy-build-corpus                                  # sources → JSON
 swift run decoy-compile-corpus Tools/adapters/out Corpus/binary

@@ -91,10 +91,10 @@ public struct ArtifactStore: Sendable {
     /// Fetches, retrying the failures that are the network rather than the server.
     ///
     /// A 4xx is not retried: that is the server saying the request is wrong — a moved file,
-    /// a revoked dataset — and asking again four times only delays the report. 5xx and
-    /// transport failures are, because those come right on their own. The integrity hash
+    /// a revoked dataset — and asking again does not change the answer. 5xx and transport
+    /// failures are, because those come right on their own. The integrity hash
     /// still decides whether what arrives is correct; this only decides how often to ask.
-    func fetch(_ url: String, attempts: Int = 4) async throws -> [UInt8] {
+    func fetch(_ url: String, attempts: Int = 6) async throws -> [UInt8] {
         guard let target = URL(string: url) else {
             throw Failure.unreachable(url: url, attempts: 0, last: "not a URL")
         }
@@ -118,7 +118,12 @@ public struct ArtifactStore: Sendable {
                 last = error.localizedDescription
             }
             if attempt < attempts - 1 {
-                try await Task.sleep(nanoseconds: UInt64(3_000_000_000 * (attempt + 1)))
+                // Six attempts over about two minutes rather than four over eighteen
+                // seconds. PubChem answered 503 to all four and failed a build for a
+                // service that was back within the minute — and a fetch is the cheapest
+                // part of a job that takes ten, so patience costs nothing and impatience
+                // costs a red build somebody has to read and dismiss.
+                try await Task.sleep(nanoseconds: UInt64(5_000_000_000 * (attempt + 1)))
             }
         }
         throw Failure.unreachable(url: url, attempts: attempts, last: last)
