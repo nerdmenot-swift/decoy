@@ -32,11 +32,20 @@ does not — so fake-data generators and their corpora never end up linked into 
 The second entry is a separate product on purpose. `Decoy` is the engine and
 `DecoyLocaleEN` is the data; you pick the locales you want and pay for those only.
 
-## Always import a locale
+## Always pass a locale
 
-This is the one that catches people. `Faker`'s default corpus is a ten-path smoke-test
-stub — enough to prove the wiring, not enough to generate anybody. Ask it for a company
-name and it traps with a message telling you exactly this.
+`Faker` has no default one, and that is the point: the compiler asks you for it rather
+than letting `Faker()` build and then trap on the second line. There *is* a built-in
+corpus — `LocaleCorpus.builtIn` — but it defines eleven paths against the hundred and
+eighty-four the generators draw from, so almost everything would fail at run time. The
+generators that need no corpus at all, like checksums and UUIDs, take it explicitly:
+
+```swift
+var faker = Faker(seed: 1337, locale: .builtIn)   // no corpus needed here
+faker.crypto.ethereumAddress()
+```
+
+which reads as a decision rather than an accident.
 
 ```swift
 import Decoy
@@ -55,16 +64,27 @@ It must be a `var`. `Faker` is a struct that carries its own random state, so ea
 mutates it — that is what makes a run reproducible instead of depending on shared global
 state. Hold one per test, or let a [forge](/guides/forges/) hold it for you.
 
-Three locales ship as importable modules today — `DecoyLocaleEN`, `DecoyLocaleDE` and
-`DecoyLocaleJA`. Sixty-four compile; the rest are emitted on request, which is two
-commands and a line in `Package.swift`. See [Locales](/guides/locales/).
+Three locales ship as importable modules — `DecoyLocaleEN`, `DecoyLocaleDE` and
+`DecoyLocaleJA`. The corpus holds sixty-four, and the other sixty-one are reached through
+the `DecoyLocales` product, which carries every blob as a resource and loads one by code:
 
-## Why a module and not a resource file
+```swift
+import DecoyLocales
+let fr = try DecoyLocales.locale("fr")
+```
 
-Locales compile into your binary as ordinary Swift source — a base64 `StaticString`
-decoded once — so there is no resource loading at runtime and nothing to ship beside
-your executable. That deliberately avoids `Bundle.module`, which is the most
+See [Locales](/guides/locales/) for which to use when.
+
+## Why a module rather than a resource file
+
+A locale module compiles into your binary as ordinary Swift source — a base64
+`StaticString` decoded once — so there is no resource loading at run time and nothing to
+ship beside your executable. That avoids `Bundle.module`, which is the most
 platform-fragile corner of SwiftPM.
+
+`DecoyLocales` does use it, because sixty-four blobs cannot reasonably be sixty-four
+modules. That is the trade: reach for a module when your locale has one, and the resource
+product when it does not.
 
 One module per locale means importing `DecoyLocaleDE` costs you `de`, `en` and `base`
 and nothing else. SwiftPM compiles only the targets you actually depend on.

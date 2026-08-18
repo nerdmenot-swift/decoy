@@ -100,7 +100,7 @@ struct TimestampTests {
 @Suite("Date generation")
 struct DateGenerationTests {
 
-    private func faker(_ seed: UInt64 = 1337) -> Faker { Faker(seed: seed) }
+    private func faker(_ seed: UInt64 = 1337) -> Faker { Faker(seed: seed, locale: .builtIn) }
 
     /// The reproducibility property every other faker gets wrong: anchoring to the
     /// system clock means the same seed yields different fixtures tomorrow.
@@ -119,7 +119,7 @@ struct DateGenerationTests {
     @Test("the reference is overridable")
     func customReference() {
         let anchor = Timestamp(year: 1999, month: 6, day: 15)
-        var f = Faker(seed: 1, reference: anchor)
+        var f = Faker(seed: 1, locale: .builtIn, reference: anchor)
         let past = f.instant.past()
         #expect(past < anchor)
         #expect(past > Timestamp(year: 1998, month: 6, day: 14))

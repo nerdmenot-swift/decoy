@@ -267,7 +267,7 @@ struct ForgeTests {
 @Suite("Faker helpers")
 struct FakerHelperTests {
 
-    private func faker(_ seed: UInt64 = 1) -> Faker { Faker(seed: seed) }
+    private func faker(_ seed: UInt64 = 1) -> Faker { Faker(seed: seed, locale: .builtIn) }
 
     @Test("maybe produces a value at roughly the given rate")
     func maybeRate() {

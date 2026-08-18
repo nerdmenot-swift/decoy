@@ -70,12 +70,42 @@ not a gap.
 
 Missing is different and traps with the path named, because that is a build error.
 
-## Adding one to your build
+## Using a locale that has no module
+
+Three ship as compiled-in Swift modules — `DecoyLocaleEN`, `DecoyLocaleDE`, `DecoyLocaleJA`.
+The corpus holds sixty-four. For the rest, add the `DecoyLocales` product and ask for one by
+code:
+
+```swift
+import Decoy
+import DecoyLocales
+
+let fr = try DecoyLocales.locale("fr")
+var faker = Faker(seed: 1337, locale: fr)
+faker.person.fullName()   // "Félix Tillet"
+```
+
+`DecoyLocales.available` lists all sixty-four, and the fallback chain is resolved for you
+from the same rule the corpus was built with — `de_AT` through `de` through `en` to `base`.
+An unknown code throws rather than resolving: `"pt"` is not a locale here, and letting it
+quietly become English under a Portuguese name is the failure this library exists to make
+visible.
+
+Prefer a module when your locale has one. It costs nothing at run time, cannot fail, and
+needs no `try`. `DecoyLocales` carries every blob as a resource — about 13 MB — which is why
+it is a separate product rather than part of `Decoy`: nobody should pay for sixty-four
+locales to get German.
+
+## Compiling one into your own build
+
+If you want a locale as a module rather than a resource:
 
 ```
-swift run decoy-compile-corpus Tools/adapters/out Corpus/binary \
+swift run decoy-compile-corpus Corpus/binary Corpus/binary \
   --emit-swift Sources --locales pt_BR
 ```
 
 Then add the target and product to `Package.swift`. The generated module is committed
-Swift source, reviewable in a diff.
+Swift source, reviewable in a diff. This is a change to *Decoy's* manifest, so it suits a
+fork or a vendored copy; `DecoyLocales` is the answer when you are consuming the package
+normally.

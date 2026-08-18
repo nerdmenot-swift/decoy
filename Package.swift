@@ -56,8 +56,28 @@ let package = Package(
         .executable(name: "decoy-compile-corpus", targets: ["DecoyCorpusCompiler"]),
         .executable(name: "decoy-inspect", targets: ["DecoyCorpusInspector"]),
         .executable(name: "decoy-validate", targets: ["DecoyCorpusValidator"]),
+        .library(name: "DecoyLocales", targets: ["DecoyLocales"]),
     ] + localeProducts,
     targets: [
+        // Every locale, as resources, loaded at run time.
+        //
+        // A separate product because it is about 13 MB: somebody who wants German should
+        // import `DecoyLocaleDE` and pay for German. This is for the sixty-one locales that
+        // have no module, and for choosing one at run time.
+        //
+        // `path` points at the existing `Corpus/` directory rather than moving the blobs
+        // under `Sources/`. SwiftPM will not take a resource outside the target's own
+        // directory, and `Corpus/binary` is where every tool, document and CI step already
+        // writes and reads it.
+        .target(
+            name: "DecoyLocales",
+            dependencies: ["Decoy"],
+            path: "Corpus",
+            exclude: ["README.md", "coverage-baseline.json"],
+            sources: ["Loader"],
+            resources: [.copy("binary")],
+            swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
         // The corpus build pipeline. Kept out of
         // the Decoy library entirely: none of it ships to anybody who installs the package.
         .target(
@@ -120,7 +140,7 @@ let package = Package(
         .testTarget(
             name: "DecoyTests",
             dependencies: [
-                "Decoy", "DecoyCorpusKit", "DecoyAdapterKit",
+                "Decoy", "DecoyCorpusKit", "DecoyAdapterKit", "DecoyLocales",
                 "DecoyLocaleEN", "DecoyLocaleDE", "DecoyLocaleJA",
             ],
             swiftSettings: [.swiftLanguageMode(.v6)]

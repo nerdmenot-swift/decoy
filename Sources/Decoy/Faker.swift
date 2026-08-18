@@ -95,10 +95,28 @@ public struct Faker: Sendable {
     /// The default is evaluated per call, so two fakers made this way differ. Pass a seed
     /// when the values need to be the same twice, and read ``seed`` to recover the one
     /// that was chosen for you.
+    ///
+    /// ## `locale` has no default, on purpose
+    ///
+    /// It used to default to ``LocaleCorpus/builtIn``, which meant `Faker()` compiled and
+    /// then trapped on the second line: the stub defines eleven paths and the generators
+    /// draw from a hundred and eighty-four, so almost everything failed at run time with a
+    /// message nobody had asked to read.
+    ///
+    /// Requiring it moves that to the compiler, where the fix is visible in the signature
+    /// rather than in a crash. The generators that need no corpus at all — checksums,
+    /// UUIDs, `int(in:)`, `bothify` — are still reachable by saying so:
+    ///
+    /// ```swift
+    /// var faker = Faker(seed: 1337, locale: .builtIn)   // no corpus needed here
+    /// faker.crypto.ethereumAddress()
+    /// ```
+    ///
+    /// which reads as a decision instead of an accident.
     public init(
         seed: UInt64 = Decoy.randomSeed(),
         index: Int = 0,
-        locale: LocaleCorpus = .builtIn,
+        locale: LocaleCorpus,
         reference: Timestamp = .decoyReference,
         novelNames: Bool = false
     ) {

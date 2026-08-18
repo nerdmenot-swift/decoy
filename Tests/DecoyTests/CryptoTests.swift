@@ -83,7 +83,7 @@ struct CryptoTests {
 
     @Test("bitcoin addresses carry a verifying checksum")
     func bitcoinChecksum() {
-        var f = Faker(seed: 1337)
+        var f = Faker(seed: 1337, locale: .builtIn)
         for _ in 0..<100 {
             let address = f.crypto.bitcoinAddress()
             #expect(address.hasPrefix("1"), "P2PKH addresses start with 1, got \(address)")
@@ -93,7 +93,7 @@ struct CryptoTests {
 
     @Test("P2SH addresses carry a verifying checksum")
     func p2shChecksum() {
-        var f = Faker(seed: 99)
+        var f = Faker(seed: 99, locale: .builtIn)
         for _ in 0..<100 {
             let address = f.crypto.p2shAddress()
             #expect(address.hasPrefix("3"), "P2SH addresses start with 3, got \(address)")
@@ -103,7 +103,7 @@ struct CryptoTests {
 
     @Test("addresses never contain Base58's excluded characters")
     func base58Alphabet() {
-        var f = Faker(seed: 7)
+        var f = Faker(seed: 7, locale: .builtIn)
         for _ in 0..<200 {
             let address = f.crypto.bitcoinAddress()
             #expect(
@@ -115,7 +115,7 @@ struct CryptoTests {
 
     @Test("bech32 addresses verify against the BIP-173 polymod")
     func bech32Checksum() {
-        var f = Faker(seed: 2026)
+        var f = Faker(seed: 2026, locale: .builtIn)
         let charset = Array("qpzry9x8gf2tvdw0s3jn54khce6mua7l")
 
         for _ in 0..<100 {
@@ -143,7 +143,7 @@ struct CryptoTests {
 
     @Test("ethereum addresses are 0x and 40 hex digits")
     func ethereumShape() {
-        var f = Faker(seed: 5)
+        var f = Faker(seed: 5, locale: .builtIn)
         for _ in 0..<100 {
             let address = f.crypto.ethereumAddress()
             #expect(address.hasPrefix("0x"))
@@ -154,19 +154,19 @@ struct CryptoTests {
 
     @Test("digests have the right width")
     func digestWidths() {
-        var f = Faker(seed: 1)
+        var f = Faker(seed: 1, locale: .builtIn)
         #expect(f.crypto.md5().count == 32)
         #expect(f.crypto.sha1().count == 40)
         #expect(f.crypto.sha256().count == 64)
         #expect(f.crypto.sha512().count == 128)
-        var g = Faker(seed: 1)
+        var g = Faker(seed: 1, locale: .builtIn)
         #expect(g.crypto.md5().allSatisfy { $0.isHexDigit })
     }
 
     @Test("the same seed reproduces the same addresses")
     func deterministic() {
-        var a = Faker(seed: 4242)
-        var b = Faker(seed: 4242)
+        var a = Faker(seed: 4242, locale: .builtIn)
+        var b = Faker(seed: 4242, locale: .builtIn)
         #expect(a.crypto.bitcoinAddress() == b.crypto.bitcoinAddress())
         #expect(a.crypto.bech32Address() == b.crypto.bech32Address())
         #expect(a.crypto.sha256() == b.crypto.sha256())
@@ -174,7 +174,7 @@ struct CryptoTests {
 
     @Test("finance.bitcoinAddress now produces a valid address too")
     func financeDelegates() {
-        var f = Faker(seed: 11)
+        var f = Faker(seed: 11, locale: .builtIn)
         let address = f.finance.bitcoinAddress()
         #expect(base58CheckIsValid(address), "checksum failed for \(address)")
     }

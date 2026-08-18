@@ -12,7 +12,7 @@ import Testing
 struct IdentifierTests {
 
     private func faker(seed: UInt64 = 1337, index: Int = 0) -> Faker {
-        Faker(seed: seed, index: index)
+        Faker(seed: seed, index: index, locale: .builtIn)
     }
 
     @Test("v4 has the canonical shape")
@@ -87,7 +87,7 @@ struct IdentifierTests {
 
     @Test("v7 timestamps derive from the reference, not the clock")
     func v7UsesReference() {
-        var f = Faker(seed: 1337, reference: Timestamp(year: 2000, month: 1, day: 1))
+        var f = Faker(seed: 1337, locale: .builtIn, reference: Timestamp(year: 2000, month: 1, day: 1))
         let value = f.uuidV7()
 
         let hex = value.split(separator: "-").prefix(2).joined()
