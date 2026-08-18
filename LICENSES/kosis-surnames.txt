@@ -1,0 +1,13 @@
+Korea Open Government License (KOGL) Type 1: Attribution
+공공누리 제1유형: 출처표시
+
+Source: Statistics Korea (통계청), Population and Housing Census.
+
+Users are free to use the work commercially and to create derivative works,
+provided the source is indicated.
+
+Full terms: https://www.kogl.or.kr/info/license.do
+
+Recorded here rather than fetched because this source has no pinned artifact:
+KOSIS answers only to a registered API key, so the query is run by hand and its
+result committed. See Tools/adapters/sources/kosis-surnames.json.

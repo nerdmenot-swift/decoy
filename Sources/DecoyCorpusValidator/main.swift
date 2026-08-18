@@ -267,6 +267,10 @@ let apacheCompatible: [String: String] = [
     "LicenseRef-DataGovIL-1.0":
         "data.gov.il terms of use v1.0: attribution only, commercial use expressly "
         + "permitted, no share-alike; Israel retains copyright and the data is not relabelled",
+    "LicenseRef-KOGL-Type-1":
+        "Korea Open Government Licence Type 1: attribution only. Types 2, 3 and 4 add a "
+        + "non-commercial, no-derivatives or combined restriction and none of them is this "
+        + "one — the type is the whole question, so a KOGL source must name it",
     "LicenseRef-OGL-3.0":
         "UK Open Government Licence v3: attribution only, explicitly permits commercial "
         + "exploitation, and states its own alignment with CC BY 4.0",

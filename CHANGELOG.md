@@ -25,6 +25,9 @@ Not yet released. Entries are grouped by the corpus version in force when they l
 
 ### Changed
 
+- **NOTICE names only sources whose data ships.** A descriptor can now exist for a source
+  the corpus does not yet contain — `kosis-surnames` waits on a snapshot only an API key
+  can fetch — and crediting it would assert a provenance that is not there.
 - **Full names no longer mix two languages.** `ko` generated `Rivard혁진`, a US Census
   surname on a Korean given name; `es`, `bn_BD`, `cy` and `mk` did the same. A composed
   name now comes entirely from one language, so those five fall back to English rather

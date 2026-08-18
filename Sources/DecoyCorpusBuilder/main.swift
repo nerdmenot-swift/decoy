@@ -153,9 +153,23 @@ var sourceOrder: [String] = []
     //
     // A number that changes when the data does not is not a version of the data.
 
-    if sourceRecords[source.id] == nil { sourceOrder.append(source.id) }
-    sourceRecords[source.id] = source.provenance
+    // Held, not registered. A source is credited once its adapter has actually
+    // contributed something — see `credit`. Registering here instead put Statistics Korea
+    // in NOTICE for a snapshot that does not exist yet, which is the `common-knowledge`
+    // failure inverted: crediting data that does not ship rather than failing to credit
+    // data that does.
+    provenance[source.id] = source.provenance
     return artifacts
+}
+
+/// Every descriptor that has been read, whether or not its data reached the corpus.
+var provenance: [String: SourceDescriptor.Provenance] = [:]
+
+/// Records a source as one the corpus was built from.
+@MainActor func credit(_ id: String) {
+    guard let record = provenance[id] else { return }
+    if sourceRecords[id] == nil { sourceOrder.append(id) }
+    sourceRecords[id] = record
 }
 
 // MARK: - Run the adapters
@@ -200,6 +214,11 @@ for adapter in adapters {
     let summary = output.stats.filter { !$0.1.isEmpty }
         .map { "\($0.0)=\($0.1)" }.joined(separator: " ")
     if !summary.isEmpty { note("  \(summary)") }
+
+    // An adapter that produced nothing is not a source the corpus was built from. Every
+    // source it names is credited when it produced anything at all, because the format
+    // records one source per table and an adapter combining several cannot split them.
+    if !output.contributions.isEmpty { for sourceID in sources { credit(sourceID) } }
 
     if writeBaselines {
         let record: [String: Any] = [
@@ -256,6 +275,8 @@ do {
     let screen = try await load("ldnoobw")
     guard let words = screen["words"] else { fail("ldnoobw has no 'words' artifact") }
     blocklists = try Models.loadBlocklists(at: words)
+    // Credited unconditionally: the screen is compiled into every model that ships.
+    credit("ldnoobw")
 } catch {
     fail("\(error)")
 }
@@ -271,6 +292,8 @@ do {
     }
     nameFormats = try NamePatterns.loadFormats(
         coreDirectory: core, personNamesDirectory: personNames)
+    // Likewise: `person.name` is CLDR's, in every locale that has one.
+    credit("cldr-48")
 } catch {
     fail("\(error)")
 }

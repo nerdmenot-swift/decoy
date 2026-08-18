@@ -62,9 +62,9 @@ struct LicenseIntegrityTests {
     @Test("the source count matches what the documentation claims")
     func sourceCountPinned() {
         #expect(
-            Self.descriptors.count == 52,
+            Self.descriptors.count == 53,
             """
-            \(Self.descriptors.count) source descriptors, expected 52.
+            \(Self.descriptors.count) source descriptors, expected 53.
             If that is intentional, update this literal, README.md and \
             docs/corpus-strategy.md together — they drifted apart once already.
             """
@@ -242,17 +242,42 @@ struct LicenseIntegrityTests {
         }
     }
 
-    /// Attribution is the one obligation every source here imposes, and the one that is
-    /// easiest to fail silently — a source can be fetched, used and never named.
-    @Test("every source reaches NOTICE")
+    /// Attribution is the one obligation every source here imposes, and it fails silently
+    /// in both directions.
+    ///
+    /// Under-crediting is the one that bit first: `ldnoobw` was loaded after the manifest
+    /// was built, so it never reached NOTICE despite screening every model that ships.
+    ///
+    /// Over-crediting is the mirror, and is a claim rather than an omission. A descriptor
+    /// can exist for a source whose data is not in the corpus — `kosis-surnames` is one,
+    /// waiting on a snapshot only a key can fetch — and naming Statistics Korea in NOTICE
+    /// for data nobody has would be asserting a provenance that is not there.
+    ///
+    /// So the manifest decides, not the descriptor directory: what the build credited is
+    /// what must appear, and nothing else.
+    @Test("NOTICE names every source the corpus used, and no others")
     func everySourceIsAttributed() throws {
         let notice = try String(
             contentsOf: Self.root.appendingPathComponent("NOTICE"), encoding: .utf8)
-        for descriptor in Self.descriptors {
+
+        let manifestURL = Self.root
+            .appendingPathComponent("Tools/adapters/out/manifest.json")
+        guard let data = try? Data(contentsOf: manifestURL),
+            let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+            let sources = root["sources"] as? [[String: Any]]
+        else { return }
+        let credited = Set(sources.compactMap { $0["id"] as? String })
+
+        for id in credited.sorted() {
+            #expect(notice.contains(id), "\(id) is used but never named in NOTICE")
+        }
+        for descriptor in Self.descriptors where !credited.contains(descriptor.id) {
             #expect(
-                notice.contains(descriptor.id),
-                "\(descriptor.id) is fetched and used but never named in NOTICE"
-            )
+                !notice.contains(descriptor.id),
+                """
+                \(descriptor.id) is named in NOTICE but contributed nothing to the corpus. \
+                Attribution is a statement about what shipped.
+                """)
         }
     }
 

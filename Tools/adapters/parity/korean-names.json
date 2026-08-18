@@ -1,0 +1,12 @@
+{
+  "attributeTo" : "kosis-surnames",
+  "contributions" : {
+
+  },
+  "fallback" : false,
+  "id" : "korean-names",
+  "sourceByLocale" : null,
+  "sources" : [
+    "kosis-surnames"
+  ]
+}

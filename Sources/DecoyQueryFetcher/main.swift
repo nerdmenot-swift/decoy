@@ -7,6 +7,7 @@ import Foundation
 ///     swift run decoy-fetch wikidata-colours
 ///     swift run decoy-fetch wikidata-terms
 ///     swift run decoy-fetch statistics-names
+///     swift run decoy-fetch korean-surnames --table DT_XXXXXXX   (needs a KOSIS key)
 ///     swift run decoy-fetch all
 ///
 /// **Run by hand, not by the build.** Every other source Decoy uses is a URL with an
@@ -263,14 +264,84 @@ func statisticsNames() async {
     note("\nwrote \(countries.count) countries")
 }
 
+// MARK: - Korean surnames
+
+func koreanSurnames() async {
+    let arguments = CommandLine.arguments
+    func option(_ name: String) -> String? {
+        guard let index = arguments.firstIndex(of: name), index + 1 < arguments.count
+        else { return nil }
+        return arguments[index + 1]
+    }
+
+    guard let key = option("--api-key") ?? ProcessInfo.processInfo.environment["KOSIS_API_KEY"]
+    else { fail("\(KosisQuery.Failure.noKey)") }
+
+    // Not defaulted, because guessing it is how you silently fetch the wrong table. Both
+    // identifiers are in the URL of the table's own page on kosis.kr:
+    //   .../statHtml.do?orgId=101&tblId=DT_1IN1503
+    guard let table = option("--table") else {
+        fail("""
+            --table is required: the KOSIS table identifier, as it appears in the table's
+            own page URL (…statHtml.do?orgId=101&tblId=DT_XXXXXXX). Pass --org too if it is
+            not Statistics Korea (\(KosisQuery.statisticsKorea)).
+            """)
+    }
+    let org = option("--org") ?? KosisQuery.statisticsKorea
+    let period = option("--year") ?? "2015"
+    // Which column holds the surname is a property of the table, not of the API.
+    let column = option("--column") ?? "C1_NM"
+
+    guard let url = KosisQuery.url(key: key, org: org, table: table, period: period) else {
+        fail("could not build the request URL")
+    }
+    note("fetching \(org)/\(table) for \(period)")
+
+    var request = URLRequest(url: url)
+    request.setValue(Endpoint.agent, forHTTPHeaderField: "User-Agent")
+
+    let decoded: Any
+    do {
+        let (data, response) = try await URLSession.shared.data(for: request)
+        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+        guard (200..<300).contains(status) else { fail("KOSIS returned HTTP \(status)") }
+        decoded = try JSONSerialization.jsonObject(with: data)
+    } catch { fail("\(error)") }
+
+    let surnames: [(name: String, count: Double)]
+    do {
+        surnames = try KosisQuery.aggregate(
+            try KosisQuery.rows(from: decoded, classification: column))
+    } catch { fail("\(error)") }
+
+    note("\(surnames.count) surnames, commonest \(surnames.first?.name ?? "—")")
+    write(
+        "korean-surnames",
+        .object([
+            ("retrieved", .string(retrieved)),
+            ("source", .string("KOSIS \(org)/\(table), period \(period)")),
+            ("surnames", .array(surnames.map {
+                .object([("name", .string($0.name)), ("count", .double($0.count))])
+            })),
+        ]))
+    note("\nwrote korean-surnames.json — review it, then commit")
+}
+
 // MARK: - Dispatch
 
-let known = ["wikidata-names", "wikidata-colours", "wikidata-terms", "statistics-names"]
+/// Everything `all` runs: the snapshots that need nothing but a network.
+let unattended = [
+    "wikidata-names", "wikidata-colours", "wikidata-terms", "statistics-names",
+]
+/// Plus the ones that need something from the person running them, and so are named
+/// explicitly or not at all. `korean-surnames` wants a KOSIS key and a table identifier;
+/// folding it into `all` would fail the whole run for the other four.
+let known = unattended + ["korean-surnames"]
 guard arguments.count > 1 else {
     fail("name a snapshot to fetch: \(known.joined(separator: ", ")), or all")
 }
 
-let requested = arguments[1] == "all" ? known : [arguments[1]]
+let requested = arguments[1] == "all" ? unattended : [arguments[1]]
 for choice in requested where !known.contains(choice) {
     fail("unknown snapshot '\(choice)' — expected one of \(known.joined(separator: ", "))")
 }
@@ -281,6 +352,7 @@ for choice in requested {
     case "wikidata-names": await wikidataNames()
     case "wikidata-colours": await wikidataColours()
     case "wikidata-terms": await wikidataTerms()
+    case "korean-surnames": await koreanSurnames()
     default: await statisticsNames()
     }
 }
