@@ -105,6 +105,12 @@ Note the forge here has no `unique` rule. Chunks cannot see each other's values,
 `generate(rows:seed:)` refuses a forge that has one rather than emitting duplicates —
 uniqueness and independent chunks cannot both hold.
 
+## What changed, and whether it moves your fixtures
+
+[CHANGELOG.md](CHANGELOG.md). Decoy carries two version numbers — the corpus version is the
+fixture-stability contract, the package version covers the library — and generated output
+can move without the corpus moving. Anything that alters drawn values is marked.
+
 ## Platforms
 
 macOS, Linux, and Windows are all first-class targets; iOS/tvOS/watchOS/visionOS are
