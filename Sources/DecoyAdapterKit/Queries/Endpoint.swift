@@ -115,6 +115,40 @@ public enum Endpoint {
         return nil
     }
 
+    /// One GET, decoded as JSON, or a message saying what went wrong.
+    ///
+    /// Here rather than in the fetcher because `URLSession` lives in a separate module off
+    /// Apple platforms, and a caller that forgets the conditional import compiles on macOS
+    /// and fails on Linux and Windows — which it did, twice. Nothing outside this file
+    /// needs to know that.
+    public enum RequestFailure: Error, CustomStringConvertible {
+        case status(Int)
+        case transport(String)
+
+        public var description: String {
+            switch self {
+            case .status(let code): return "HTTP \(code)"
+            case .transport(let detail): return detail
+            }
+        }
+    }
+
+    public static func json(from url: URL) async throws -> Any {
+        var request = URLRequest(url: url)
+        request.setValue(agent, forHTTPHeaderField: "User-Agent")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+            guard (200..<300).contains(status) else { throw RequestFailure.status(status) }
+            return try JSONSerialization.jsonObject(with: data)
+        } catch let failure as RequestFailure {
+            throw failure
+        } catch {
+            throw RequestFailure.transport(error.localizedDescription)
+        }
+    }
+
     // MARK: - Shared shaping
 
     /// The value of a SPARQL binding, by variable name.

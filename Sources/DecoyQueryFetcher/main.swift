@@ -297,16 +297,8 @@ func koreanSurnames() async {
     }
     note("fetching \(org)/\(table) for \(period)")
 
-    var request = URLRequest(url: url)
-    request.setValue(Endpoint.agent, forHTTPHeaderField: "User-Agent")
-
     let decoded: Any
-    do {
-        let (data, response) = try await URLSession.shared.data(for: request)
-        let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-        guard (200..<300).contains(status) else { fail("KOSIS returned HTTP \(status)") }
-        decoded = try JSONSerialization.jsonObject(with: data)
-    } catch { fail("\(error)") }
+    do { decoded = try await Endpoint.json(from: url) } catch { fail("KOSIS: \(error)") }
 
     let surnames: [(name: String, count: Double)]
     do {
