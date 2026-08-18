@@ -46,9 +46,10 @@ if let warning = locale.fallbackWarning() {
 
 ## What falls back, and how you can tell
 
-Three locales carry their own surnames and no given names — `zh_TW`, `id_ID` and `yo_NG`.
-Rather than pair a Han surname with an English given name, `fullName()` composes the whole
-name from one language:
+Eight locales have half a name of their own. Three carry surnames and no given names —
+`zh_TW`, `id_ID`, `yo_NG` — and five carry given names and no surnames: `ko`, `es`,
+`bn_BD`, `cy`, `mk`. Either way, rather than pair a Han surname with an English given name,
+`fullName()` composes the whole name from one language:
 
 ```swift
 var f = Faker(seed: 11, locale: taiwaneseLocale)
@@ -57,7 +58,16 @@ f.person.lastName()   // "黃"            — still native
 ```
 
 A caller asking only for a surname is not building anything self-contradictory, so it keeps
-the native one. It is the *composition* that has to agree with itself.
+the native one — `ko`'s `firstName()` is still Hangul and `zh_TW`'s `lastName()` is still
+Han. It is the *composition* that has to agree with itself.
+
+English regional locales are the exception. `en_GB` has its own given names from the ONS
+and no surnames of its own, and borrowing English surnames is not a chimera because it is
+English — so it keeps them, and only locales whose language differs from the fallback's are
+narrowed.
+
+Where this bites, the real fix is surname data rather than a cleverer rule: give `es` or
+`ko` surnames of their own and they compose natively without anything here changing.
 
 Some fields are English everywhere by design: invented pub names, marketing adjectives,
 job descriptors. No registry publishes them in any language.

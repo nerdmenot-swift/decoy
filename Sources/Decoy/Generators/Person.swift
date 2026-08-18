@@ -168,12 +168,29 @@ public struct PersonFaker {
     /// spaceless — with an English given name, and produce `ChengAaliyah`. See
     /// ``LocaleCorpus/stringsAgreeing(_:requires:)``.
     public mutating func fullName(_ gender: Gender? = nil) -> String {
-        let coherent = faker.locale.agreeing(onAnyOf: [
+        // Given names *and* a surname from the same corpus, for a locale whose fallback is
+        // another language.
+        //
+        // Requiring only the given names was half the guarantee, and the half that let the
+        // mirror-image chimera through. `ko` carries 3,665 Korean given names and no
+        // surnames, so the chain narrowed to Korean, found no surname there, walked on to
+        // English and produced `Rivard혁진`. The same shape reached `bn_BD`, `cy`, `es` and
+        // `mk`.
+        //
+        // `en_GB` is the case that stops this being a blanket rule: it has its own given
+        // names from the ONS and no surnames of its own, and borrowing English surnames is
+        // not a chimera because it *is* English. So the surname is only required alongside
+        // when the locale's own language differs from the one at the end of every chain.
+        let language = faker.locale.code.split(separator: "_").first.map(String.init) ?? ""
+        let givenNames = [
             ["person.first_name.female", "person.first_name.male"],
             // Or a single ungendered list, which is how a source that counts names without
             // recording who holds them can supply a locale at all.
             ["person.first_name.generic"],
-        ])
+        ]
+        let surname = "person.last_name.generic"
+        let coherent = faker.locale.agreeing(
+            onAnyOf: language == "en" ? givenNames : givenNames.map { $0 + [surname] })
         if coherent.chain.count != faker.locale.chain.count {
             // The whole composition is narrowed, not just the pattern: expanding against
             // the full chain would still pull the surname from the front of it.
