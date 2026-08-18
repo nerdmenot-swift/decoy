@@ -17,6 +17,12 @@ Not yet released. Entries are grouped by the corpus version in force when they l
 
 ## Unreleased
 
+### Added
+
+- **`es` has Spanish surnames** — 27,661 from INE, weighted by how many people carry them,
+  so a Spanish name is `Maria Carmen Sandalinas` rather than a fully English fallback.
+  `es_MX` inherits them. **Changes generated output for `es` and `es_MX`.**
+
 ### Changed
 
 - **Full names no longer mix two languages.** `ko` generated `Rivard혁진`, a US Census

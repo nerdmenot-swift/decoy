@@ -1,0 +1,36 @@
+{
+ "id": "ine-apellidos",
+ "name": "Frecuencia de apellidos (Instituto Nacional de Estadística)",
+ "license": "CC-BY-4.0",
+ "copyright": "Instituto Nacional de Estadística (INE), Spain",
+ "url": "https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177009",
+ "version": "2025-01-01",
+ "retrieved": "2026-08-19",
+ "note": [
+  "Spanish surnames, which nothing else here could supply. INE publishes given names as",
+  "xlsx and surnames only as a legacy `.xls` — an OLE2 container full of BIFF8 records,",
+  "which no tool a build machine is guaranteed to have will convert. `libreoffice`,",
+  "`ssconvert` and `catdoc` are all real answers and none of them is installed anywhere,",
+  "so `CFB` and `XLS` read it directly. See those files for why that was the cheaper risk.",
+  "",
+  "Two sheets, split by how many people hold the surname. Only the first is read: 27,661",
+  "surnames held by 100 or more. The second carries 20 to 99, which is a long tail a",
+  "weighted draw would reach about never and 58,000 more rows in every locale module.",
+  "",
+  "The count taken is `Ambos apellidos` — how many people carry the surname in either",
+  "position. Spain gives everyone two, and counting only first surnames would halve the",
+  "weight of every name that is commoner as a mother's than as a father's.",
+  "",
+  "Before this, `es` had INE's given names and no surnames at all, so `fullName()` was",
+  "composed entirely in English rather than pairing María with a US Census surname — the",
+  "coherence rule doing its job over data that was not there."
+ ],
+ "artifacts": [
+  {
+   "name": "apellidos",
+   "format": "file",
+   "url": "https://www.ine.es/daco/daco42/nombyapel/apellidos_frecuencia.xls",
+   "integrity": "sha512-S8Oqo0gnnEGw1luroMiyX5tGEanC80TYWOIPvVOInFPuq1qwl1yUEuG8XeMOhIhAYsFf3uSJMcI6uyPcy2kMVQ=="
+  }
+ ]
+}

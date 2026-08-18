@@ -1,0 +1,27 @@
+Copyright Instituto Nacional de Estadística (INE), Spain.
+
+The INE states the licence for the statistical information on its website
+at https://ine.es/dyngs/AYU/index.htm?cid=125:
+
+    "La licencia de uso general a aplicar a la información estadística de
+     este sitio web, salvo que se indique lo contrario, es la Creative
+     Commons Reconocimiento 4.0 (CC BY 4.0)... incluso con finalidad
+     comercial citando la autoría."
+
+In English: the general licence applying to the statistical information on
+this website, unless otherwise indicated, is Creative Commons Attribution
+4.0 (CC BY 4.0) — including for commercial purposes, citing the author.
+
+CC BY 4.0 requires attribution and imposes no share-alike or
+non-commercial condition, so it is compatible with distributing Decoy
+under Apache-2.0. The attribution is discharged by naming the INE in
+NOTICE, alongside the licence identifier and the URL the data came from.
+
+Full licence text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+Decoy modifies the data: names are title-cased from the register's upper
+case, and those borne by fewer than 200 people are dropped. CC BY 4.0
+§3(a)(1)(B) requires modification to be indicated, which the corpus
+provenance records and this paragraph state.
+
+Source: https://www.ine.es/daco/daco42/nombyapel/nombres_por_edad_media.xlsx

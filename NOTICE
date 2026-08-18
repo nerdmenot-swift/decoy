@@ -80,6 +80,10 @@ CC-BY-4.0
     Copyright the dataset's contributors, via the UCI Machine Learning Repository
     https://archive.ics.uci.edu/dataset/591/gender+by+name
     Full licence: LICENSES/gender-by-name.txt
+  ine-apellidos — version 2025-01-01, retrieved 2026-08-19
+    Instituto Nacional de Estadística (INE), Spain
+    https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177009
+    Full licence: LICENSES/ine-apellidos.txt
   ine-nombres — version 2025-01-01, retrieved 2026-08-10
     Instituto Nacional de Estadística (INE), Spain
     https://www.ine.es/daco/daco42/nombyapel/nombyapel2.htm

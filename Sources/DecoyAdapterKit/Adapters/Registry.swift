@@ -46,6 +46,7 @@ public enum Adapters {
             PostalAdapter(),
             ProgrammingLanguagesAdapter(),
             SIUnitsAdapter(),
+            SpanishSurnamesAdapter(),
             USSurnamesAdapter(),
             VietnameseNamesAdapter(),
             WikidataColoursAdapter(),

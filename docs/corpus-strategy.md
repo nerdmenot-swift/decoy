@@ -94,7 +94,7 @@ gitignored cache, and the pipeline itself is Swift with zero dependencies. The m
 for removing a dependency on someone else's package should not itself require a package
 manager.
 
-**Built so far** — thirty-four adapters, fifty-one sources, and no faker-js:
+**Built so far** — thirty-five adapters, fifty-two sources, and no faker-js:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
