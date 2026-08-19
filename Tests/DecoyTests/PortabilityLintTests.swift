@@ -56,14 +56,19 @@ struct PortabilityLintTests {
                 """,
             instead: "Lines.split, or a scalar-level scan",
             allowed: [
-                // Both search LF-only files, and both are proved on Linux by something
-                // stronger than reading: the adapter's output is compared against its
-                // committed baseline on every CI run, and the compiler re-emits the locale
-                // modules and diffs them.
+                // Both search a file that is LF on every platform, which is what makes the
+                // call safe — the danger is a CRLF cluster, and neither input can have one.
+                // Linguist's is fetched rather than checked out, so git never rewrites its
+                // bytes; and its output is compared against a committed baseline on all
+                // three CI jobs, which would catch it if that ever changed.
                 "ProgrammingLanguagesAdapter.swift":
-                    "linguist's YAML is LF; the parity baseline compares its output on Linux",
+                    "linguist's generated source is LF, and a pinned artifact is not rewritten",
+                // Package.swift is checked out, so this one rests on .gitattributes pinning
+                // `* text=auto eol=lf` — including on Windows, where a default checkout
+                // would otherwise hand this search a CRLF file and it would silently find
+                // no locale list at all.
                 "DecoyCorpusCompiler/main.swift":
-                    "reads a file this repo generates, and the module-drift gate diffs it on Linux",
+                    "reads Package.swift, which .gitattributes keeps LF on every checkout",
             ]
         ),
         Rule(
