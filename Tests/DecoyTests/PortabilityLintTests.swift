@@ -122,18 +122,49 @@ struct PortabilityLintTests {
     /// the import rather than by where the call is — the failure is per-file.
     static let networking = ["URLSession", "URLRequest", "HTTPURLResponse"]
 
+    /// Every Swift file this repository writes.
+    ///
+    /// Both roots, because `DecoyLocales` is a shipped product that does not live under
+    /// `Sources` — it sits beside the corpus blobs it loads.
     private static var sources: [URL] {
-        let root = URL(fileURLWithPath: #filePath)
-            .deletingLastPathComponent().deletingLastPathComponent()
-            .deletingLastPathComponent().appendingPathComponent("Sources")
-        guard let walker = FileManager.default.enumerator(at: root, includingPropertiesForKeys: nil)
-        else { return [] }
-        return walker.compactMap { $0 as? URL }
+        let repository = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
+        return ["Sources", "Corpus/Loader"]
+            .map(repository.appendingPathComponent)
+            .flatMap { root -> [URL] in
+                let walker = FileManager.default.enumerator(
+                    at: root, includingPropertiesForKeys: nil)
+                return walker?.compactMap { $0 as? URL } ?? []
+            }
             .filter { $0.pathExtension == "swift" }
-            // The generated locale modules are one base64 literal each; nothing to lint,
-            // and a megabyte of string to scan per file.
-            .filter { !$0.lastPathComponent.hasPrefix("DecoyLocale") }
+            // The generated locale modules are one base64 literal each: nothing to lint, and
+            // a megabyte of string to scan per file. Matched on the directory rather than the
+            // filename, which would also skip the hand-written `DecoyLocales.swift`.
+            .filter { !$0.deletingLastPathComponent().lastPathComponent.hasPrefix("DecoyLocale") }
             .sorted { $0.path < $1.path }
+    }
+
+    /// The lint finds the code it claims to be linting.
+    ///
+    /// A scan that resolves to nothing passes every rule and prints nothing to say so. That
+    /// is not hypothetical here: `decoy-validate` used to check adapters by reading their
+    /// files, and when those files moved it went quietly to zero adapters while still
+    /// reporting success. A lint that cannot fail is worse than no lint, because it is
+    /// believed.
+    @Test("the scan reaches the source tree")
+    func scanIsNotEmpty() throws {
+        let found = Self.sources
+        // Loose on purpose: this catches a scan that has collapsed, not one that has drifted
+        // by a file. Pinning the count would make every new file a failing test.
+        #expect(
+            found.count > 50,
+            "the source scan found \(found.count) Swift files, so it is looking in the wrong place")
+        #expect(
+            found.contains { $0.lastPathComponent == "DecoyLocales.swift" },
+            "the scan missed Corpus/Loader, which ships")
+        #expect(
+            found.contains { $0.lastPathComponent == "Shell.swift" },
+            "the scan missed Sources, which is most of the code")
     }
 
     /// A line of code rather than a line about code.
