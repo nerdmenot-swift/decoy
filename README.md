@@ -119,6 +119,19 @@ full suite in its own CI job — Linux natively in a `swift:6.3` container rathe
 cross-compiling. Windows is best-effort: a failure there should prompt a portability fix
 rather than block a release.
 
+Running on three platforms catches a divergence once it reaches a test. Some do not:
+`URLSession` lives in `FoundationNetworking` off Apple platforms, and forgetting the
+conditional import compiles cleanly on a Mac. So `PortabilityLintTests` scans the sources
+for the calls that are known to mean something else elsewhere — Foundation's newline
+search, which splits a CRLF file differently on Linux; `isExecutableFile` and `PATH`,
+which read wrong on Windows; raw `Process`; Apple-only imports. Each rule carries what
+actually goes wrong and what to use instead, and each has a per-file allowlist so a
+deliberate use is recorded with its reason rather than argued with twice.
+
+The shipped library sidesteps the question entirely: nothing under `Sources/Decoy`
+imports Foundation, and code that stays in the standard library is portable by
+construction. Every portability bug this project has had was in the build tooling.
+
 ## The corpus is derived, not written
 
 No data is hand-edited. `Tools/adapters/` holds *programs* that derive the corpus from
