@@ -3,7 +3,7 @@
 Pinned artifacts that a build machine cannot fetch, committed so a cold clone can still
 build the corpus. Everything else is downloaded on demand into `../.cache/`.
 
-`lib/sources.mjs` looks here **after** the cache and **before** the network, and verifies
+`ArtifactStore` looks here **after** the cache and **before** the network, and verifies
 the file against the same integrity hash it would apply to a download. Vendoring changes
 where the bytes come from, not whether they are checked: a tampered vendored file fails
 exactly as a tampered cache does.

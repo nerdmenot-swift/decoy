@@ -5,9 +5,17 @@ fixtures.
 
 Reproducible by construction, portable across macOS, Linux, and Windows.
 
-> **Status: pre-alpha.** The API and the corpus are both still moving, and the corpus
-> version will keep bumping — which changes the data a given seed produces. Usable, but
-> do not pin fixtures you cannot regenerate. See the v1 scope below.
+> **Status: 1.0.** The API is stable and will follow semantic versioning from here.
+>
+> The corpus versions *separately*, and it will keep moving — it is at 60.2.0, and adding
+> data to a locale bumps it. A corpus bump changes what a given seed draws, so pin the
+> corpus version, not just the package version, if you are keeping generated fixtures.
+> [CHANGELOG.md](CHANGELOG.md) explains which of the two numbers answers which worry.
+>
+> Four locales — `ko`, `cy`, `mk`, `bn_BD` — have their own given names but no surnames
+> of their own, and `fullName()` falls through to English entirely for them rather than
+> pairing a Korean given name with a French surname. The
+> [locale support matrix](docs/locale-support.md) marks every such gap.
 
 ## Why
 
@@ -136,7 +144,7 @@ construction. Every portability bug this project has had was in the build toolin
 
 No data is hand-edited. `Tools/adapters/` holds *programs* that derive the corpus from
 fifty-three sources — forty-seven pinned upstreams fetched by URL and verified against an
-integrity hash, three queried and their answers committed, and two written here — each
+integrity hash, four queried and their answers committed, and two written here — each
 recorded in the corpus with its licence:
 
 ```
@@ -191,16 +199,17 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
 - [x] Multi-platform package skeleton, Foundation-free core, `swiftLanguageMode(.v6)`
 - [x] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
-- [x] Adapter pipeline: 53 sources — 47 integrity-verified, 6 committed snapshots — provenance per path
+- [x] Adapter pipeline: 53 sources — 47 integrity-verified, 4 queried, 2 authored — provenance per path
 - [x] [Locale support matrix](docs/locale-support.md) — which fields each of the 63 locales
       supplies itself, and which fall through to English. Generated from the corpus and
       checked in CI, so it cannot describe a corpus that is no longer shipping.
 - [x] JSON → binary corpus format + Swift reader
-- [x] 319 generators across 29 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
+- [x] 315 generators across 28 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
 - [x] All 64 locales compile; `en`, `de`, `ja` ship as importable Swift modules
 - [x] `decoy-inspect`: enumeration, coverage, generated attribution
-- [ ] CI actually run — this repository has no remote, so every step in `ci.yml`
-      has been executed locally instead, and none of it on Windows
+- [x] CI run on every push — macOS, Linux and Windows each build, compile a corpus and
+      run the full suite; `PortabilityLintTests` fails the build on the calls known to
+      mean something else on another platform
 
 Deferred: strict-mode rule checking (needs a macro, and macro plugins are
 host-executed and historically awkward under cross-compilation) and rule sets.

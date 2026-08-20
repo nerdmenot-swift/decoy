@@ -7,7 +7,7 @@
 
 /// The library version, surfaced for diagnostics and corpus-compatibility checks.
 public enum Decoy {
-    public static let version = "0.0.1"
+    public static let version = "1.0.0"
 
     /// A seed drawn from the system, for callers who do not need reproducibility.
     ///

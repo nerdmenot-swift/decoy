@@ -17,7 +17,7 @@
     "",
     "Marked `authored` because there is no artifact and no integrity hash: SSB publishes",
     "through PxWeb, which answers a POST rather than serving a file. So there is nothing to",
-    "pin. `fetch-statistics-names.mjs` runs by hand and its output is committed beside the",
+    "pin. `decoy-fetch statistics-names` runs by hand and its output is committed beside the",
     "query, which is re-runnable and diffable instead of hashed.",
     "",
     "Queried as json-stat2 rather than CSV, and not for taste: the CSV form mangles `Ø` to",

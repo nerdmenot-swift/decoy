@@ -4,7 +4,7 @@
     "from any upstream corpus -- it was seeded from the set faker-js happened to carry,",
     "but adding or dropping a locale is now an edit here rather than a consequence of",
     "somebody else's release. Fallback chains are derived from these codes by the rule",
-    "documented in run.mjs, not stored, so they cannot drift out of sync with the roster.",
+    "documented on DecoyLocales.chain(for:), not stored, so they cannot drift from the roster.",
     "",
     "`cldr` maps a Decoy code to its CLDR equivalent where the automatic rule (underscores",
     "to hyphens, then strip trailing segments) gets it wrong. `null` means the locale has",

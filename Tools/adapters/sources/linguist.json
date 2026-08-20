@@ -16,7 +16,7 @@
     "Taken via the npm redistribution rather than linguist's own languages.yml, for two",
     "reasons: GitHub's source tarballs are not byte-stable across regeneration, so there",
     "is nothing durable to pin a hash to, and languages.yml would need a YAML parser",
-    "where this ships plain ES modules node imports natively."
+    "where the npm build ships a plain module the adapter can read as text."
   ],
   "artifacts": [
     {

@@ -87,7 +87,7 @@ just introduced, is invisible in the noise.
 
 ```
 $ swift run decoy-validate --strict
-decoy-validate: 64 locales, 49 sources, 24 adapters
+decoy-validate: 64 locales, 53 sources, 36 adapters
 
 nothing to report.
 ```

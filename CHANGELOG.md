@@ -13,9 +13,16 @@ moving — a change to how a name is composed does it — so a release note sayi
 unchanged" is not the same as saying "your fixtures are unchanged". Both are recorded
 below, and anything that alters drawn values says so in bold.
 
-Not yet released. Entries are grouped by the corpus version in force when they landed.
+Entries are grouped by the corpus version in force when they landed.
 
-## Unreleased
+## 1.0.0
+
+The first release. The package version starts here and follows semantic versioning; the
+corpus is already at 60.2.0 and keeps its own numbering, so the two are not going to line
+up and are not meant to.
+
+Undated until tagged — the tag is the release, and this heading is written before it so
+the notes can be reviewed first.
 
 ### Added
 

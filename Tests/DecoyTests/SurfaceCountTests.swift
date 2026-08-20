@@ -67,8 +67,14 @@ struct SurfaceCountTests {
         let total = counts.values.reduce(0, +)
 
         // 28 namespaces and 315 methods. `DateFaker` is compiled only where Foundation
-        // is, so a build without it has 20 and 209 — both figures are in the README and
+        // is, so a build without it has 27 and 297 — both figures are in the README and
         // in docs/corpus-strategy.md, and both have to move together.
+        //
+        // The messages below quote the same literals the assertions use. They did not for
+        // a long time — they said 21, 227 and 209, figures from three bumps earlier — so a
+        // failing run would have named a target that nothing was checking. A test that
+        // misreports on failure is worse than a silent one, because the number it prints
+        // is the number somebody will go and put in the README.
         //
         // It went down rather than up for the first time when `cityPrefix()` and
         // `citySuffix()` were retired: nothing composed a city out of parts any more, so
@@ -79,12 +85,12 @@ struct SurfaceCountTests {
         // which is the whole point.
         #expect(
             counts.count == 28,
-            "namespaces: expected 21, found \(counts.count) — \(counts.keys.sorted())"
+            "namespaces: expected 28, found \(counts.count) — \(counts.keys.sorted())"
         )
         #expect(
             total == 315,
             """
-            generator methods: expected 227, found \(total).
+            generator methods: expected 315, found \(total).
             If that is intentional, update this literal, README.md and \
             docs/corpus-strategy.md together — they have drifted apart three times.
             Per namespace: \(counts.sorted { $0.key < $1.key })
@@ -92,7 +98,7 @@ struct SurfaceCountTests {
         )
 
         let withoutDate = total - (counts["DateFaker"] ?? 0)
-        #expect(withoutDate == 297, "without Foundation: expected 209, found \(withoutDate)")
+        #expect(withoutDate == 297, "without Foundation: expected 297, found \(withoutDate)")
     }
 
     /// The corpus suites skip rather than fail when the blobs are absent, which is right
