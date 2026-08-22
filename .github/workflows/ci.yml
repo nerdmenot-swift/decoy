@@ -4,6 +4,20 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Weekly, to find upstream rot before a contributor does. Forty-seven sources are fetched
+  # by URL, and a dead one does not announce itself -- it surfaces whenever somebody next
+  # rebuilds the corpus, which is the worst moment to discover it.
+  #
+  # The scheduled run deliberately skips the artifact cache (see below), because a cache hit
+  # would answer "is the cache still there" rather than "is the source still published",
+  # and go green on a URL that has 404'd for a month.
+  schedule:
+    - cron: '17 6 * * 1'
+
+# Read-only. The repository default is already read, so this is here to stop an
+# organisation-level change from silently widening what a pull request can do.
+permissions:
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -13,12 +27,14 @@ jobs:
   macos:
     name: macOS
     runs-on: macos-15
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
       # Keyed on the source descriptors, so adding or re-pinning a source misses the
       # cache and re-fetches. A hit still re-verifies every artifact against its
       # integrity hash in ArtifactStore, so this costs nothing in safety.
       - name: Cache pinned upstreams
+        if: github.event_name != 'schedule'
         uses: actions/cache@v6
         with:
           path: Tools/adapters/.cache
@@ -106,6 +122,7 @@ jobs:
   linux:
     name: Linux
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     container: swift:6.3
     steps:
       # The Swift image is Debian slim and carries neither. GNU tar shells out to a
@@ -116,6 +133,7 @@ jobs:
 
       - uses: actions/checkout@v7
       - name: Cache pinned upstreams
+        if: github.event_name != 'schedule'
         uses: actions/cache@v6
         with:
           path: Tools/adapters/.cache
@@ -131,6 +149,78 @@ jobs:
 
       - run: swift test
 
+      # The same suite, optimised. Everything shipped is built `-c release` -- the corpus
+      # tools above already are -- and until now no test had ever run against that
+      # configuration, so an optimiser-dependent difference in a library whose entire
+      # promise is identical output would have shipped unremarked.
+      #
+      # Here rather than on macOS because this runner is the cheap one and its corpus is
+      # already built. It roughly doubles this job; it is the only place the optimised
+      # build is exercised at all.
+      - name: Tests, optimised
+        run: swift test -c release
+
+  # Nothing in the package can see this, which is the point.
+  #
+  # Every other suite runs *inside* the package, where the products and their dependencies
+  # are already resolved. A consumer resolves them from outside, and that is where a broken
+  # `.product`, a locale module that does not build standalone, or a resource that is not
+  # actually bundled shows up. None of those is visible to `swift test`.
+  #
+  # It builds against the checkout rather than a published tag, because a pull request has
+  # no tag. Tag resolution is checked at release time, where a tag exists.
+  consumer:
+    name: Consumer
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container: swift:6.3
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build a package that depends on this one
+        run: |
+          mkdir -p /tmp/consumer/Sources
+          cat > /tmp/consumer/Package.swift <<'EOF'
+          // swift-tools-version: 6.0
+          import PackageDescription
+          let package = Package(
+              name: "consumer",
+              platforms: [.macOS(.v13)],
+              dependencies: [.package(path: "PACKAGE_PATH")],
+              targets: [.executableTarget(name: "consumer", dependencies: [
+                  .product(name: "Decoy", package: "decoy"),
+                  .product(name: "DecoyLocaleEN", package: "decoy"),
+                  .product(name: "DecoyLocales", package: "decoy"),
+              ], path: "Sources")]
+          )
+          EOF
+          sed -i "s|PACKAGE_PATH|$GITHUB_WORKSPACE|" /tmp/consumer/Package.swift
+
+          # The install page's snippet, run as a consumer runs it. DecoyLocales is
+          # exercised too because it loads its corpus from bundled resources, which is the
+          # part most likely to work in-package and fail outside it.
+          cat > /tmp/consumer/Sources/main.swift <<'EOF'
+          import Decoy
+          import DecoyLocaleEN
+          import DecoyLocales
+
+          var faker = Faker(seed: 1337, locale: DecoyLocaleEN.locale)
+          let name = faker.person.fullName()
+          guard name == "Riley Bonneau" else {
+              fatalError("install.md documents \"Riley Bonneau\", got \"\(name)\"")
+          }
+
+          let fr = try DecoyLocales.locale("fr")
+          var french = Faker(seed: 1337, locale: fr)
+          let french_name = french.person.fullName()
+          guard !french_name.isEmpty else { fatalError("DecoyLocales returned nothing") }
+
+          print("Decoy \(Decoy.version): \(name) / \(french_name)")
+          print("locales reachable at run time: \(DecoyLocales.available.count)")
+          EOF
+
+          cd /tmp/consumer && swift run consumer
+
   # Enforced, now that it passes.
   #
   # This was continue-on-error while Windows could not get through the build, which was the
@@ -142,9 +232,16 @@ jobs:
   windows:
     name: Windows
     runs-on: windows-latest
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
-      - uses: compnerd/gha-setup-swift@main
+      # Pinned to a commit, not to `main`. This is a third-party action, and it runs in
+      # the job that builds on Windows -- previously also the job that produced and signed
+      # release artifacts. A moving ref there means whoever controls that branch chooses
+      # what runs in a workflow holding a write token.
+      #
+      # Bump deliberately: read the diff, then move the SHA.
+      - uses: compnerd/gha-setup-swift@eeda069c5bc95ac8a9ac5cea7d4f588ae5420ca5
         with:
           swift-version: swift-6.3.3-release
           swift-build: 6.3.3-RELEASE
@@ -153,6 +250,7 @@ jobs:
       # upstream, and it duly failed on a PubChem 503 that had nothing to do with Windows.
       # A job that fails for reasons unrelated to what it tests stops being read at all.
       - name: Cache pinned upstreams
+        if: github.event_name != 'schedule'
         uses: actions/cache@v6
         with:
           path: Tools/adapters/.cache

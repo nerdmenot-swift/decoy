@@ -112,12 +112,12 @@ addresses put the number after the street; Japanese names have no space.
 var de = Faker(seed: 2024, locale: DecoyLocaleDE.locale)
 de.person.fullName()          // "Benning Blaha"
 de.location.streetAddress()   // "Grubergasse 17"
-de.commerce.productName()     // "Praktische Sofas aus Leder"
-de.finance.accountType()      // "Baufinanzierung"
+de.commerce.productName()     // "Leichte Hemden aus Seide"
+de.finance.accountType()      // "Sparkonto"
 
 var ja = Faker(seed: 2024, locale: DecoyLocaleJA.locale)
 ja.person.fullName()          // "竹川しゅうこ"
-ja.company.name()             // "小笠原合名会社"
+ja.company.name()             // "十文字製薬合名会社"
 ```
 
 Not everything is localised, and the library tells you which parts. Check the [locale

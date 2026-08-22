@@ -57,7 +57,7 @@ import DecoyLocaleEN
 var faker = Faker(seed: 1337, locale: DecoyLocaleEN.locale)
 
 faker.person.fullName()   // "Riley Bonneau"
-faker.company.name()      // "Crosslin inc."
+faker.company.name()      // "Foote COOP"
 ```
 
 It must be a `var`. `Faker` is a struct that carries its own random state, so each draw
