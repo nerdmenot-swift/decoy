@@ -24,6 +24,16 @@ up and are not meant to.
 Undated until tagged — the tag is the release, and this heading is written before it so
 the notes can be reviewed first.
 
+### Removed
+
+- **The Korean surname integration**, which shipped as a source, an adapter and a
+  `decoy-fetch` subcommand that between them produced nothing. KOSIS answers only to a
+  registered API key, so the adapter contributed an empty table on every build while the
+  source still counted toward the totals the documentation quotes. Half a feature is worse
+  than a documented gap: the gap is now only in [the locale matrix](docs/locale-support.md),
+  where it can be read. `ko` keeps its own given names and falls through to English for
+  surnames. The code is in the history if a key turns up.
+
 ### Added
 
 - **`es` has Spanish surnames** — 27,661 from INE, weighted by how many people carry them,

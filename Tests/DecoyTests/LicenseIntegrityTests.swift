@@ -62,9 +62,9 @@ struct LicenseIntegrityTests {
     @Test("the source count matches what the documentation claims")
     func sourceCountPinned() {
         #expect(
-            Self.descriptors.count == 53,
+            Self.descriptors.count == 52,
             """
-            \(Self.descriptors.count) source descriptors, expected 53.
+            \(Self.descriptors.count) source descriptors, expected 52.
             If that is intentional, update this literal, README.md and \
             docs/corpus-strategy.md together — they drifted apart once already.
             """
@@ -248,10 +248,12 @@ struct LicenseIntegrityTests {
     /// Under-crediting is the one that bit first: `ldnoobw` was loaded after the manifest
     /// was built, so it never reached NOTICE despite screening every model that ships.
     ///
-    /// Over-crediting is the mirror, and is a claim rather than an omission. A descriptor
-    /// can exist for a source whose data is not in the corpus — `kosis-surnames` is one,
-    /// waiting on a snapshot only a key can fetch — and naming Statistics Korea in NOTICE
-    /// for data nobody has would be asserting a provenance that is not there.
+    /// Over-crediting is the mirror, and is a claim rather than an omission. A descriptor can
+    /// exist for a source whose data is not in the corpus — `kosis-surnames` did, waiting on
+    /// a snapshot only an API key could fetch — and naming Statistics Korea in NOTICE for
+    /// data nobody had would have asserted a provenance that was not there. That source has
+    /// since been removed rather than left declared and empty, which is the better fix; this
+    /// check is what made the discrepancy visible in the first place.
     ///
     /// So the manifest decides, not the descriptor directory: what the build credited is
     /// what must appear, and nothing else.

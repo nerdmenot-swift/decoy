@@ -36,7 +36,6 @@ public enum Adapters {
             ISO3166Adapter(),
             ISO4217Adapter(),
             ISO639Adapter(),
-            KoreanNamesAdapter(),
             LatinWordsAdapter(),
             LegalEntitiesAdapter(),
             MIMETypesAdapter(),

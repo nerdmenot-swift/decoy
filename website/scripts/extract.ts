@@ -395,6 +395,23 @@ function writeSources() {
   const descriptors = readdirSync(dir).filter((f) => f.endsWith('.json'))
     .map((f) => JSON.parse(readFileSync(join(dir, f), 'utf8')))
   const pinned = descriptors.filter((s) => (s.artifacts || []).length > 0).length
+  // Derived too, and for the reason above rather than a different one. The prose below
+  // used to say "three answer a query" and "two are written here" as literals while the
+  // *total* was computed, so adding the Korean statistics office made the paragraph
+  // contradict its own first sentence: six remaining, three plus two explained.
+  //
+  // `authored: true` is not the discriminator: it marks "no pinned artifact", which is
+  // true of both kinds. What separates them is where the descriptor points — a source
+  // written here cites this repository, because that is literally where it was written.
+  const REPO_URL = 'https://github.com/nerdmenot-swift/decoy'
+  const unpinned = descriptors.filter((s) => !(s.artifacts || []).length)
+  const authored = unpinned.filter((s) => s.url === REPO_URL)
+  const queried = unpinned.filter((s) => s.url !== REPO_URL)
+  const list = (names) =>
+    names.length < 2 ? names.join('')
+      : `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`
+  const count = (n) =>
+    ['no', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'][n] ?? String(n)
   const rows = descriptors.map((s) => {
     const name = s.url ? `[${s.name}](${s.url})` : s.name
     return `| \`${s.id}\` | ${name} | \`${s.license}\` | ${s.retrieved || s.version || '—'} |`
@@ -411,10 +428,10 @@ ${rows.length} sources. ${pinned} are fetched from a pinned URL and verified aga
 integrity hash, so a changed upstream fails the build rather than quietly altering
 everyone's fixtures.
 
-The remaining ${rows.length - pinned} have no file to hash. Three answer a query rather than
-publishing a file — Wikidata over SPARQL, and the Norwegian and Slovenian statistics offices
-over PxWeb — so the query is run deliberately with \`decoy-fetch\` and its result committed,
-which anyone can re-run and diff. Two are written here, and say so.
+The remaining ${rows.length - pinned} have no file to hash. ${count(queried.length)} answer a query rather than
+publishing a file — ${list(queried.map((s) => '`' + s.id + '`'))} — so the query is run
+deliberately with \`decoy-fetch\` and its result committed, which anyone can re-run and
+diff. ${count(authored.length)} ${authored.length === 1 ? 'is' : 'are'} written here, and say so.
 
 | ID | Source | Licence | Retrieved |
 |---|---|---|---|
