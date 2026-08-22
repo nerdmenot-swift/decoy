@@ -68,7 +68,18 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add Sources/Decoy/Decoy.swift
-          git commit -m "Release $version"
+
+          # The version may already be correct -- someone can have bumped it in a normal
+          # commit, which is how 1.0.0 was prepared. `git commit` on an empty index exits
+          # non-zero, which would fail the run *before* tagging and read as "the release
+          # broke" rather than "there was nothing to change". The tag is the release; the
+          # commit is only how the version gets there when it is not there already.
+          if git diff --cached --quiet; then
+            echo "Decoy.version is already $version — tagging the existing commit."
+          else
+            git commit -m "Release $version"
+          fi
+
           git tag -a "v$version" -m "v$version"
           git push origin HEAD:"${GITHUB_REF_NAME}"
           git push origin "v$version"
