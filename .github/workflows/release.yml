@@ -9,9 +9,26 @@
 # correspond to a commit that exists and is named.
 name: Release
 
+# Two triggers, and the second is not a convenience.
+#
+# A tag pushed by `Prepare release` is pushed with the default GITHUB_TOKEN, and GitHub
+# deliberately does not start a workflow from an event that token created -- it is how they
+# stop a workflow triggering itself forever. So the tag appeared and nothing happened, which
+# is the worst shape a release failure can take: no error, no run, just silence.
+#
+# workflow_dispatch is one of the two documented exceptions to that rule, so `Prepare
+# release` dispatches this explicitly after pushing the tag. It also means a release can be
+# re-run against an existing tag without moving it, which is the only safe way to recover
+# from a failed publish.
 on:
   push:
     tags: ['v*.*.*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to release, with the v (e.g. v1.0.0)'
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -30,17 +47,19 @@ jobs:
       # release's corpus version out of git.
       - uses: actions/checkout@v7
         with:
+          ref: ${{ inputs.tag || github.ref_name }}
           fetch-depth: 0
 
       - name: Tag matches Decoy.version
         id: check
         run: |
-          tag="${GITHUB_REF_NAME#v}"
+          TAG="${{ inputs.tag || github.ref_name }}"
+          tag="${TAG#v}"
           source=$(grep -oE 'static let version = "[^"]+"' Sources/Decoy/Decoy.swift \
                    | grep -oE '"[^"]+"' | tr -d '"')
           echo "tag=$tag source=$source"
           if [ "$tag" != "$source" ]; then
-            echo "::error::Tag $GITHUB_REF_NAME says $tag but Sources/Decoy/Decoy.swift says $source. Update Decoy.version, or tag the version the source declares."
+            echo "::error::Tag $TAG says $tag but Sources/Decoy/Decoy.swift says $source. Update Decoy.version, or tag the version the source declares."
             exit 1
           fi
           echo "version=$tag" >> "$GITHUB_OUTPUT"
@@ -122,6 +141,8 @@ jobs:
             asset: decoy-tools-${{ needs.verify.outputs.version }}-windows-x86_64.zip
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
 
       - uses: compnerd/gha-setup-swift@main
         if: runner.os == 'Windows'
@@ -212,6 +233,8 @@ jobs:
       attestations: write
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
       - uses: actions/download-artifact@v8
         with:
           path: dist
@@ -278,8 +301,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" \
-            --title "$GITHUB_REF_NAME" \
+          TAG="${{ inputs.tag || github.ref_name }}"
+          gh release create "$TAG" \
+            --title "$TAG" \
             --notes-file notes.md \
             --verify-tag \
             dist/*

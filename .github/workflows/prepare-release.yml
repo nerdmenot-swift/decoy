@@ -111,7 +111,18 @@ jobs:
           git tag -a "v$version" -m "v$version"
           git push origin HEAD:"${GITHUB_REF_NAME}"
           git push origin "v$version"
-          echo "Pushed v$version — Release will build and publish the tools."
+
+          # Dispatch Release explicitly. Pushing the tag is not enough: this push used the
+          # default GITHUB_TOKEN, and GitHub does not start a workflow from an event that
+          # token created, so `on: push: tags` never fires here. The tag simply appeared and
+          # nothing happened -- silently, which is how the first 1.0.0 attempt "succeeded"
+          # while publishing nothing at all.
+          #
+          # workflow_dispatch is one of the two documented exceptions to that rule.
+          gh workflow run Release -f tag="v$version"
+          echo "Pushed v$version and dispatched Release."
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - name: Dry run summary
         if: ${{ inputs.dry-run }}
