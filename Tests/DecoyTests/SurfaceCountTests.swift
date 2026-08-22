@@ -67,8 +67,18 @@ struct SurfaceCountTests {
         let total = counts.values.reduce(0, +)
 
         // 28 namespaces and 315 methods. `DateFaker` is compiled only where Foundation
-        // is, so a build without it has 27 and 297 — both figures are in the README and
-        // in docs/corpus-strategy.md, and both have to move together.
+        // is, so a build without it has 27 and 297.
+        //
+        // These are NOT the numbers the README and the website quote, and the difference is
+        // deliberate. This counts `public func` inside a `*Faker` struct under Generators/.
+        // The published figure is 319 across 29, which is the surface a *caller* sees: it
+        // also counts the four UUID methods on `Faker` itself, which live in Faker.swift
+        // and are namespaced under nothing.
+        //
+        // Both are right about different sets, and saying so here is the point — somebody
+        // reading only this test "corrected" the README from 319 to 315 on the strength of
+        // it. website/scripts/extract.ts derives the published number by calling the
+        // library, so that one cannot go stale; this one pins the shape of the source.
         //
         // The messages below quote the same literals the assertions use. They did not for
         // a long time — they said 21, 227 and 209, figures from three bumps earlier — so a

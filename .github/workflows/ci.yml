@@ -24,6 +24,13 @@ jobs:
           path: Tools/adapters/.cache
           key: corpus-sources-${{ runner.os }}-${{ hashFiles('Tools/adapters/sources/*.json') }}
 
+      # Pinned, not `latest`. A docs build that floats on whatever bun shipped this week
+      # can start failing on a commit that changed nothing, and the whole argument of this
+      # repository is that a build is reproducible or it is not a build.
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+
       - run: swift --version
       - run: swift build
 
@@ -71,6 +78,22 @@ jobs:
       # warning here is new.
       - name: Contribution is well-formed
         run: swift run -c release decoy-validate --strict
+
+      # The site's API pages, source table and locale matrix are derived by calling the
+      # library, so they go stale when the library moves rather than when the site does.
+      # Checked here because this is the job that already has a compiled corpus — without
+      # one, extract.ts keeps the existing data and says so, which would let a stale page
+      # through a green run.
+      #
+      # This is not hypothetical. The reference index said 319 generators and a test that
+      # counts a *different* set said 315; someone reading only the test edited the docs to
+      # match it. Both numbers were right about different things, and the diff is what
+      # says so.
+      - name: Website content is current
+        run: |
+          cd website && bun install --frozen-lockfile && bun run extract && cd ..
+          git diff --exit-code -- website/src \
+            || { echo "::error::Generated website content is stale. Run 'bun run extract' in website/ and commit."; exit 1; }
 
       # A regression gate, not a quality bar. Fails when a locale carries less of its own
       # data than the committed baseline, which is what an adapter silently dropping

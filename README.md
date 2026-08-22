@@ -194,6 +194,13 @@ swift run decoy-inspect --notice Corpus/binary \
 See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
 [docs/corpus-format.md](docs/corpus-format.md) for the binary layout.
 
+## Releases
+
+Tagging is the release — SwiftPM resolves `.package(url:from:)` straight from a git tag —
+so a tag is never moved once it exists. Cutting one is a single manual workflow, and the
+package version and the corpus version mean different things:
+[docs/releasing.md](docs/releasing.md).
+
 ## v1 scope
 
 - [x] Multi-platform package skeleton, Foundation-free core, `swiftLanguageMode(.v6)`
@@ -204,7 +211,7 @@ See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and
       supplies itself, and which fall through to English. Generated from the corpus and
       checked in CI, so it cannot describe a corpus that is no longer shipping.
 - [x] JSON → binary corpus format + Swift reader
-- [x] 315 generators across 28 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
+- [x] 319 generators across 29 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
 - [x] All 64 locales compile; `en`, `de`, `ja` ship as importable Swift modules
 - [x] `decoy-inspect`: enumeration, coverage, generated attribution
 - [x] CI run on every push — macOS, Linux and Windows each build, compile a corpus and

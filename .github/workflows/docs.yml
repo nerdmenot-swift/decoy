@@ -1,0 +1,77 @@
+# Builds and deploys decoy.nerdmenot.in (website/ -> the decoy-docs Cloudflare Pages
+# project).
+#
+# ## Why this job does not run `bun run build`
+#
+# That script is `bun run extract && astro build`, and `extract` derives the API pages,
+# the source table and the locale matrix by *calling the library* — it needs a Swift
+# toolchain and a compiled corpus. Running it here would mean a second place that builds
+# Swift, and a deploy that can differ from what was reviewed in the pull request.
+#
+# So the generated content is committed, CI fails when it is stale (see "Website content
+# is current" in ci.yml), and this job builds exactly those reviewed files. The deploy
+# needs no Swift at all, which is why it takes a minute rather than fifteen.
+#
+# ## Secrets
+#
+# CLOUDFLARE_API_TOKEN — a token scoped to Cloudflare Pages: Edit on this account only.
+# CLOUDFLARE_ACCOUNT_ID — the account the decoy-docs project lives in.
+#
+# Neither is available to a fork's pull request, which is why deploy is guarded on the
+# push and dispatch events rather than on pull_request.
+name: Docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'website/**'
+      - '.github/workflows/docs.yml'
+  # Content is generated from the library, so a release should republish even when nothing
+  # under website/ changed — the version and the generator counts on the site come from it.
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: website
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+
+      - run: bun install --frozen-lockfile
+
+      # `astro build` alone, deliberately — see the note at the top of this file.
+      - run: bun run astro build
+
+      # A build that emits nothing still deploys successfully and replaces a working site
+      # with an empty one, so the output is checked before it is published rather than
+      # after somebody notices.
+      - name: Output is not empty
+        run: |
+          test -f dist/index.html || { echo "::error::dist/index.html is missing — the build produced no site."; exit 1; }
+          pages=$(find dist -name '*.html' | wc -l)
+          echo "built $pages pages"
+          [ "$pages" -gt 20 ] || { echo "::error::only $pages pages built, expected the full docs tree."; exit 1; }
+
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: website
+          command: pages deploy dist --project-name=decoy-docs
