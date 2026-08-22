@@ -58,8 +58,36 @@ jobs:
 
       # The tag is what people install, so it is cut from a commit that is known to build
       # and pass rather than one that is merely well-formed.
+      - name: Cache pinned upstreams
+        uses: actions/cache@v6
+        with:
+          path: Tools/adapters/.cache
+          key: corpus-sources-${{ runner.os }}-${{ hashFiles('Tools/adapters/sources/*.json') }}
+
       - run: swift build
+
+      # Built before testing, for the reason Release states and this workflow originally
+      # missed: about thirty suites are gated on the corpus and *skip* without one, so
+      # `swift test` alone would gate the tag on the ten-path stub. Two suites fail rather
+      # than skip -- they check they actually compared something -- which is how the hole
+      # was found, on the first real release.
+      #
+      # Corpus/binary is committed, but the intermediate under Tools/adapters/out is not,
+      # and that is what the parity and manifest suites read.
+      - name: Build corpus
+        run: |
+          swift run -c release decoy-build-corpus
+          swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary
+
       - run: swift test
+
+      # The corpus build writes into the working tree. Only the version bump may be
+      # committed, so anything the build regenerated is discarded before staging -- a tag
+      # that quietly carries a rebuilt corpus is a different release than the one reviewed.
+      - name: Working tree carries only the version change
+        run: |
+          git checkout -- Corpus/binary || true
+          git status --short
 
       - name: Commit and tag
         if: ${{ !inputs.dry-run }}
