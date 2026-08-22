@@ -24,6 +24,21 @@ up and are not meant to.
 Undated until tagged — the tag is the release, and this heading is written before it so
 the notes can be reviewed first.
 
+### Fixed
+
+- **Korean names work.** `ko` had no surnames of its own, so `fullName()` returned
+  `Albert Seaman`. The cause was not a missing source: `Endpoint.usable` required a label
+  to be at least two UTF-16 code units, which is right for Latin script and wrong for Han
+  and Hangul, where one character *is* a whole surname. Wikidata returns 143 Korean
+  surnames and five survived the filter — 김, 이, 박 among those discarded. The floor is now
+  script-aware, and `ko` draws 천혁진 rather than an English name.
+  **Changes generated output for `ko` and `ja`.**
+
+  Nothing could have caught this from the corpus: a filter that drops values leaves no
+  record of what it dropped, and the survivors read as a small language rather than a
+  broken rule. `zh_CN` and `zh_TW` are unaffected — both already draw surnames from
+  dedicated sources that outrank Wikidata.
+
 ### Removed
 
 - **The Korean surname integration**, which shipped as a source, an adapter and a

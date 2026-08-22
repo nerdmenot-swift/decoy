@@ -380,6 +380,12 @@ const heroLines = HERO_CALLS.map(
         {stats.locales} locales · {stats.generators} generators ·{' '}
         {stats.sources} licensed sources
       </span>
+      {/* Which build the numbers and samples above describe. The corpus version is the
+          one that matters for reproducing them: values move with it, not with the
+          package. */}
+      <span class="tabular">
+        Decoy {stats.version} · corpus {stats.corpus}
+      </span>
     </footer>
 
     <script define:vars={{ samples, cards, COLS: COLUMNS }}>

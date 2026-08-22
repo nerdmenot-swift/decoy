@@ -116,8 +116,8 @@ de.commerce.productName()     // "Leichte Hemden aus Seide"
 de.finance.accountType()      // "Sparkonto"
 
 var ja = Faker(seed: 2024, locale: DecoyLocaleJA.locale)
-ja.person.fullName()          // "竹川しゅうこ"
-ja.company.name()             // "十文字製薬合名会社"
+ja.person.fullName()          // "立花じゅんな"
+ja.company.name()             // "塚原製薬合名会社"
 ```
 
 Not everything is localised, and the library tells you which parts. Check the [locale

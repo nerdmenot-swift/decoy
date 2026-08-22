@@ -81,7 +81,7 @@ struct DocumentedSamplesTests {
     @Test("Japanese at seed 2024")
     func japanese() {
         var ja = Faker(seed: 2024, locale: DecoyLocaleJA.locale)
-        #expect(ja.person.fullName() == "竹川しゅうこ")
-        #expect(ja.company.name() == "十文字製薬合名会社")
+        #expect(ja.person.fullName() == "立花じゅんな")
+        #expect(ja.company.name() == "塚原製薬合名会社")
     }
 }

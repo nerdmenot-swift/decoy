@@ -171,17 +171,55 @@ public enum Endpoint {
     /// Wikidata labels carry disambiguators, trade names and transliterations — `Müller
     /// (Familienname)`, `Kassler Erde`, `John Smith`. Anything with a bracket, a digit or a
     /// space goes, which loses a few genuine compound surnames and keeps the list clean.
-    /// The bound is on UTF-16 code units, not on characters: `String.prototype.length`
-    /// counts code units, so a decomposed accent or an astral character costs two there and
-    /// one in Swift. Counting differently would keep or drop labels the snapshot does not.
+    /// The upper bound is on UTF-16 code units rather than characters, so a decomposed
+    /// accent or an astral character costs two.
+    ///
+    /// ## The lower bound is script-dependent, and used to not be
+    ///
+    /// A one-character label is noise in a Latin-script list — a stray initial, a
+    /// disambiguation fragment — so the floor was two, everywhere. In Han and Hangul a
+    /// single character is not a fragment of a name, it *is* the name: 김, 이, 박 are the
+    /// three commonest surnames in Korea, and 李, 王, 張 in China.
+    ///
+    /// So the floor silently deleted almost every CJK surname there is. Wikidata returns 143
+    /// Korean surnames and five survived; 445 Chinese and forty-two; Japanese lost 124 of
+    /// 4,000, which is smaller only because Japanese surnames are usually two characters.
+    /// The visible consequence was `ko` having no surnames of its own at all, so a Korean
+    /// full name came out as `Albert Seaman` — a locale reported as a data gap for months
+    /// when the data had been fetched and then thrown away.
+    ///
+    /// Nothing about this was detectable from the corpus: a rule that drops values leaves no
+    /// trace of what it dropped, and the count that survived looked like a small language
+    /// rather than a broken filter.
     public static func usable(_ label: String) -> Bool {
         let length = label.utf16.count
-        guard length >= 2, length <= 24 else { return false }
+        guard length >= (isIdeographic(label) ? 1 : 2), length <= 24 else { return false }
         for scalar in label.unicodeScalars {
             // `\s` plus the byte order mark, which JavaScript's `\s` includes.
             if scalar == "\u{FEFF}" || Character(scalar).isWhitespace { return false }
             if ("0"..."9").contains(scalar) { return false }
             if "()[]{}.,;:!?/\\".unicodeScalars.contains(scalar) { return false }
+        }
+        return true
+    }
+
+    /// Whether every scalar is a character that stands alone as a word.
+    ///
+    /// Han and Hangul only. Kana is deliberately excluded: a lone hiragana is a particle,
+    /// not a name, and Japanese surnames written in kana are multi-character anyway — so
+    /// admitting single kana would reintroduce exactly the noise the floor exists to stop.
+    static func isIdeographic(_ label: String) -> Bool {
+        guard !label.isEmpty else { return false }
+        for scalar in label.unicodeScalars {
+            switch scalar.value {
+            case 0x4E00...0x9FFF,  // CJK Unified Ideographs
+                0x3400...0x4DBF,  // Extension A
+                0xF900...0xFAFF,  // Compatibility Ideographs
+                0xAC00...0xD7A3:  // Hangul syllables
+                continue
+            default:
+                return false
+            }
         }
         return true
     }

@@ -113,13 +113,13 @@ struct GoldenOutputTests {
     func japanese() {
         #expect(
             Self.sample(DecoyLocaleJA.locale) == [
-                "昌利",
-                "立松",
-                "京村きよのり",
+                "東",
+                "稲葉",
+                "勝矢ぎんたろう",
                 "Iwai",
                 "9丁目56番2号",
                 "アルバニア",
-                "谷田部出版合同会社",
+                "角野出版合同会社",
                 "user331.user938@example.net",
                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/159.0.0.0 Safari/537.36",
                 "Ergonomic Wooden Chair",

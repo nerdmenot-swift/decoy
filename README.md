@@ -13,9 +13,10 @@ Reproducible by construction, portable across macOS, Linux, and Windows.
 > corpus version, not just the package version, if you are keeping generated fixtures.
 > [CHANGELOG.md](CHANGELOG.md) explains which of the two numbers answers which worry.
 >
-> Four locales — `ko`, `cy`, `mk`, `bn_BD` — have their own given names but no surnames
-> of their own, and `fullName()` falls through to English entirely for them rather than
-> pairing a Korean given name with a French surname. The
+> Four locales still produce English full names. `cy`, `mk` and `bn_BD` have their own
+> given names but no surnames; `zh_TW` has the reverse — Taiwanese surnames, no given
+> names. `fullName()` needs both and falls through entirely rather than pairing a Welsh
+> given name with a French surname. The
 > [locale support matrix](docs/locale-support.md) marks every such gap.
 
 ## Why
