@@ -43,6 +43,7 @@ public enum Adapters {
             PeriodicTableAdapter(),
             PersianWordsAdapter(),
             PhoneFormatsAdapter(),
+            PopularNamesAdapter(),
             PostalAdapter(),
             ProgrammingLanguagesAdapter(),
             SIUnitsAdapter(),

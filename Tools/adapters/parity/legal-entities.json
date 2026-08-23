@@ -1060,6 +1060,13 @@
         "TP"
       ]
     },
+    "ne_NP" : {
+      "company.legal_entity_type" : [
+        "Li",
+        "Limited",
+        "Pra.Li."
+      ]
+    },
     "nl" : {
       "company.legal_entity_type" : [
         "B.V.",

@@ -337,6 +337,14 @@
         "####"
       ]
     },
+    "ne_NP" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.zipCode}}"
+      ],
+      "location.postcode" : [
+        "#####"
+      ]
+    },
     "nl" : {
       "location.postal_address" : [
         "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}} {{location.city}}"

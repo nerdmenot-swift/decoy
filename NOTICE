@@ -118,6 +118,10 @@ CC0-1.0
   pesel-imiona — version 2026-01, retrieved 2026-08-10
     https://dane.gov.pl/pl/dataset/1667
     Full licence: LICENSES/pesel-imiona.txt
+  popular-names — version eb62e13, retrieved 2026-08-24
+    Compiled by Andy Boothe from Wikipedia's lists of most common given names and surnames
+    https://github.com/sigpwned/popular-names-by-country-dataset
+    Full licence: LICENSES/popular-names.txt
   wikidata — version 2026-08-09, retrieved 2026-08-09
     https://query.wikidata.org/
     Full licence: LICENSES/wikidata.txt

@@ -189,7 +189,7 @@ struct RealCorpusTests {
         )
         .filter { $0.pathExtension == "decoy" }
 
-        #expect(files.count == 65)
+        #expect(files.count == 66)
         for file in files {
             let corpus = try Corpus(bytes: [UInt8](try Data(contentsOf: file)))
             #expect(corpus.stringCount > 0, "\(file.lastPathComponent) is empty")

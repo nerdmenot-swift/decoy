@@ -1,0 +1,58 @@
+{
+  "_comment": [
+    "Nepali given names and surnames, which no registry publishes.",
+    "",
+    "Nepal has no equivalent of INSEE or the US Census surname file -- and neither does",
+    "India, Pakistan, Sri Lanka or Bangladesh. India's Census publishes around two hundred",
+    "tables under GODL and not one of them counts names. That absence is why South Asia",
+    "leans on Wikidata here while France, Spain, Poland, Norway, Sweden, Finland, Slovenia,",
+    "Israel and Taiwan each have a national source.",
+    "",
+    "This set is aggregate popularity -- how many people hold a name -- and not a roster of",
+    "people, which is the line that disqualified every other candidate found alongside it:",
+    "one built from a leaked Facebook dump, one from 'public records', one from unnamed",
+    "datasets, one scraped from Wiktionary and therefore CC BY-SA whatever its repository",
+    "says.",
+    "",
+    "It is CC0, and it is compiled from Wikipedia's lists of most common names. A scraper",
+    "cannot relicense its upstream, so what makes CC0 defensible here is that the extracted",
+    "content is facts nobody authored -- that Chaudhary is a common surname in Nepal -- the",
+    "same reasoning behind the `public-facts` label used elsewhere in this directory. The",
+    "licence is recorded as the publisher states it and the provenance is recorded here, so",
+    "the judgement is visible rather than implied.",
+    "",
+    "Only Nepal is taken. Sri Lanka has fifty surnames and no given names at all, so a",
+    "locale for it would answer entirely in English -- the same reason Telugu, Marathi and",
+    "Odia have no locale. India is covered better by Wikidata's Hindi, which carries 211",
+    "given names against this file's twenty.",
+    "",
+    "Nepali is written in Devanagari and these names are romanised. That is a deliberate",
+    "trade: the file's Nepali surnames carry both scripts but its given names are Latin",
+    "only, and pairing Devanagari surnames with Latin given names is the chimera this",
+    "corpus refuses. All-Latin is coherent, and romanised Nepali names are what passports,",
+    "airline systems and English-language records actually hold."
+  ],
+  "id": "popular-names",
+  "name": "Popular Names by Country",
+  "license": "CC0-1.0",
+  "copyright": "Compiled by Andy Boothe from Wikipedia's lists of most common given names and surnames",
+  "url": "https://github.com/sigpwned/popular-names-by-country-dataset",
+  "version": "eb62e13",
+  "retrieved": "2026-08-24",
+  "artifacts": [
+    {
+      "name": "forenames",
+      "format": "file",
+      "filename": "common-forenames-by-country.csv",
+      "url": "https://raw.githubusercontent.com/sigpwned/popular-names-by-country-dataset/eb62e13d4d62dd96cdfae79d293a02066352205f/common-forenames-by-country.csv",
+      "integrity": "sha512-hAimfo0aqLbkkKKZt+LYdGFNrMvduvDtJEalEmGpaH8VDUlBc+/d0KsQ86vtHJFcnlDCQPBbRr/oLFQS8+WqoA=="
+    },
+    {
+      "name": "surnames",
+      "format": "file",
+      "filename": "common-surnames-by-country.csv",
+      "url": "https://raw.githubusercontent.com/sigpwned/popular-names-by-country-dataset/eb62e13d4d62dd96cdfae79d293a02066352205f/common-surnames-by-country.csv",
+      "integrity": "sha512-YxEPlAbJpJcTvzXw8N/7+gprMWQfYvhze6OUUBgk6jvGySeidAaYDGUEt8k3tqdarcOSN070vbef4+nA8ZmMSg=="
+    }
+  ]
+}

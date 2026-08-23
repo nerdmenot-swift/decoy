@@ -48,6 +48,12 @@ public struct WikidataNamesAdapter: Adapter {
         "sl_SI": ["female", "male"],
         "az": ["female", "male", "surname"],
         "he": ["female", "male"],
+        // Nepali surnames yield to `popular-names`, and the reason is script rather than
+        // size. Wikidata's twelve are Devanagari; the only Nepali *given* names anybody
+        // publishes are romanised, so Devanagari surnames beside them would be a chimera
+        // inside one name. The romanised set of twenty-four keeps the whole name in one
+        // script. See PopularNamesAdapter for why Nepal is romanised at all.
+        "ne_NP": ["surname"],
         // Vietnamese given names yield to the name database, which carries 1,571 female and
         // 1,570 male against Wikidata's fifty-seven. They only collided once the floor came
         // down far enough to admit fifty-seven at all.

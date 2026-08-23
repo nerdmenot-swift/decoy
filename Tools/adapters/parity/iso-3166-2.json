@@ -11266,6 +11266,142 @@
         "01"
       ]
     },
+    "ne_NP" : {
+      "location.state" : [
+        {
+          "abbr" : "BA",
+          "name" : "Bagmati"
+        },
+        {
+          "abbr" : "BH",
+          "name" : "Bheri"
+        },
+        {
+          "abbr" : "1",
+          "name" : "Central"
+        },
+        {
+          "abbr" : "DH",
+          "name" : "Dhawalagiri"
+        },
+        {
+          "abbr" : "GA",
+          "name" : "Gandaki"
+        },
+        {
+          "abbr" : "P4",
+          "name" : "Gandaki²"
+        },
+        {
+          "abbr" : "JA",
+          "name" : "Janakpur"
+        },
+        {
+          "abbr" : "KA",
+          "name" : "Karnali"
+        },
+        {
+          "abbr" : "P6",
+          "name" : "Karnali²"
+        },
+        {
+          "abbr" : "KO",
+          "name" : "Kosi"
+        },
+        {
+          "abbr" : "LU",
+          "name" : "Lumbini"
+        },
+        {
+          "abbr" : "2",
+          "name" : "Madhya Pashchimanchal"
+        },
+        {
+          "abbr" : "MA",
+          "name" : "Mahakali"
+        },
+        {
+          "abbr" : "ME",
+          "name" : "Mechi"
+        },
+        {
+          "abbr" : "NA",
+          "name" : "Narayani"
+        },
+        {
+          "abbr" : "P1",
+          "name" : "Province 1"
+        },
+        {
+          "abbr" : "P2",
+          "name" : "Province 2"
+        },
+        {
+          "abbr" : "P3",
+          "name" : "Province 3"
+        },
+        {
+          "abbr" : "P5",
+          "name" : "Province 5"
+        },
+        {
+          "abbr" : "P7",
+          "name" : "Province 7"
+        },
+        {
+          "abbr" : "4",
+          "name" : "Purwanchal"
+        },
+        {
+          "abbr" : "RA",
+          "name" : "Rapti"
+        },
+        {
+          "abbr" : "SA",
+          "name" : "Sagarmatha"
+        },
+        {
+          "abbr" : "SE",
+          "name" : "Seti"
+        },
+        {
+          "abbr" : "5",
+          "name" : "Sudur Pashchimanchal"
+        },
+        {
+          "abbr" : "3",
+          "name" : "Western"
+        }
+      ],
+      "location.state_abbr" : [
+        "BA",
+        "BH",
+        "1",
+        "DH",
+        "GA",
+        "P4",
+        "JA",
+        "KA",
+        "P6",
+        "KO",
+        "LU",
+        "2",
+        "MA",
+        "ME",
+        "NA",
+        "P1",
+        "P2",
+        "P3",
+        "P5",
+        "P7",
+        "4",
+        "RA",
+        "SA",
+        "SE",
+        "5",
+        "3"
+      ]
+    },
     "nl" : {
       "location.state" : [
         {

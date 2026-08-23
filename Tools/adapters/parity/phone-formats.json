@@ -751,6 +751,17 @@
         "## ## ## ##"
       ]
     },
+    "ne_NP" : {
+      "phone_number.format.human" : [
+        "###-#######"
+      ],
+      "phone_number.format.international" : [
+        "+977 ###-#######"
+      ],
+      "phone_number.format.national" : [
+        "###-#######"
+      ]
+    },
     "nl" : {
       "phone_number.format.human" : [
         "0### ######",

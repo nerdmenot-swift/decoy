@@ -1,0 +1,63 @@
+{
+  "attributeTo" : "popular-names",
+  "contributions" : {
+    "ne_NP" : {
+      "person.first_name.female" : [
+        "Aasha",
+        "Asmita",
+        "Binita",
+        "Gita",
+        "Kabita",
+        "Niharika",
+        "Rabina",
+        "Shristi",
+        "Sita",
+        "Sunita"
+      ],
+      "person.first_name.male" : [
+        "Bibek",
+        "Bishal",
+        "Kamal",
+        "Kiran",
+        "Krishna",
+        "Mahesh",
+        "Manish",
+        "Prakash",
+        "Prem",
+        "Siddhartha"
+      ],
+      "person.last_name.generic" : [
+        "Bishwakarma",
+        "Chaudhary",
+        "Chetry",
+        "Chhetri",
+        "Chowdhury",
+        "Gurung",
+        "Lama",
+        "Magar",
+        "Maharjan",
+        "Nepali",
+        "Pariyar",
+        "Pokharel",
+        "Pokhrel",
+        "Rai",
+        "Rana",
+        "Sah",
+        "Shah",
+        "Sharma",
+        "Shrestha",
+        "Singh",
+        "Tamang",
+        "Thapa",
+        "Tharu",
+        "Yadav"
+      ]
+    }
+  },
+  "fallback" : false,
+  "id" : "popular-names",
+  "sourceByLocale" : null,
+  "sources" : [
+    "popular-names"
+  ]
+}

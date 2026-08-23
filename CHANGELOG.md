@@ -48,6 +48,29 @@ the notes can be reviewed first.
   Wikidata surnames collided with INE's 27,661 weighted ones, the build refused the
   conflict rather than picking a winner, and Wikidata now yields that path to the census.
 
+- **Nepal ships, as `ne_NP`** — Prakash Tharu, Siddhartha Pokharel, Sunita Chhetri.
+  Twenty given names and twenty-four surnames from *Popular Names by Country* (CC0), the
+  one candidate of five that is aggregate popularity rather than a roster of people. The
+  others were built from a leaked Facebook dump, from "public records", from unnamed
+  datasets, and scraped from Wiktionary.
+
+  Romanised, deliberately. The file's Nepali surnames carry Devanagari and its given names
+  do not, and Devanagari surnames beside Latin given names is a chimera inside one name.
+  All-Latin is coherent, and romanised Nepali names are what passports and English-language
+  records hold. Wikidata's twelve Devanagari Nepali surnames yield to it for that reason
+  rather than for size.
+
+  Ten given names a gender is thin, and it is the whole of what anybody publishes. Nepal
+  has no equivalent of INSEE or the US Census surname file, and neither does India,
+  Pakistan, Sri Lanka or Bangladesh — India's Census runs to some two hundred tables under
+  GODL and not one counts names. That absence is in the world's open data, not in the
+  search.
+
+  **Sri Lanka was looked at and refused.** Fifty surnames, no given names; Wikidata's only
+  Sinhala given names are six, in Sinhala script, and pairing those with Latin surnames is
+  the mixture this corpus exists to refuse. `si_LK` would answer entirely in English, which
+  is why Telugu, Marathi and Odia have no locale either.
+
 - **Hindi ships, as `hi_IN`.** 211 given names and nine surnames in Devanagari, from
   Wikidata. The data was already being fetched; Hindi had been cut in the twelve-locale
   removal for supplying no names of its own, which was true when the floor was forty and
