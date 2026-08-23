@@ -22,7 +22,9 @@ public struct WikidataNamesAdapter: Adapter {
         ("surname", "person.last_name.generic"),
     ]
 
-    private static let minimumNames = 40
+    /// The same floor the fetcher applies, re-checked here because the adapter is what
+    /// decides the corpus. See `WikidataQueries.minimumNames` for why it is ten.
+    private static let minimumNames = WikidataQueries.minimumNames
 
     /// Paths a national registry already fills, which this source yields to.
     ///
@@ -33,7 +35,12 @@ public struct WikidataNamesAdapter: Adapter {
         "en": ["female", "male", "surname"],
         "fr": ["female", "male"],
         "pl": ["female", "male"],
-        "es": ["female", "male"],
+        // Surnames yielded to INE as of the refetch that gave Wikidata Spanish surnames
+        // at all. It had none before — not because Wikidata lacks them, but because that
+        // query kept coming back truncated and the run recorded the category as absent.
+        // Once it succeeded, 3,815 arrived and collided with INE's 27,661 weighted ones.
+        // The census wins: it is the whole population rather than the notable part of it.
+        "es": ["female", "male", "surname"],
         "fi": ["female", "male"],
         "sv": ["female", "male", "surname"],
         "en_GB": ["female", "male"],

@@ -57,6 +57,12 @@ public enum Endpoint {
             var request = URLRequest(url: url)
             request.setValue("application/sparql-results+json", forHTTPHeaderField: "Accept")
             request.setValue(agent, forHTTPHeaderField: "User-Agent")
+            // URLSession's default is sixty seconds, and the heavy queries sit right on it:
+            // Spanish surnames take forty-nine on a good day. Exceeding it does not read as
+            // a timeout — the body arrives truncated and fails to parse, so the retry sees
+            // "malformed JSON" and tries again into the same wall, four times, and the run
+            // dies claiming the endpoint gave up. It had not; we hung up on it.
+            request.timeoutInterval = 300
 
             do {
                 let (data, response) = try await URLSession.shared.data(for: request)

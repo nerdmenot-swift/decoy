@@ -8,16 +8,16 @@ Reproducible by construction, portable across macOS, Linux, and Windows.
 > **Status: preparing 1.0.** The API is settled and the source declares `1.0.0`, but
 > nothing is tagged yet, so `from: "1.0.0"` will not resolve. The tag is the release.
 >
-> The corpus versions *separately*, and it will keep moving — it is at 60.2.0, and adding
+> The corpus versions *separately*, and it will keep moving — it is at 60.4.0, and adding
 > data to a locale bumps it. A corpus bump changes what a given seed draws, so pin the
 > corpus version, not just the package version, if you are keeping generated fixtures.
 > [CHANGELOG.md](CHANGELOG.md) explains which of the two numbers answers which worry.
 >
-> Four locales still produce English full names. `cy`, `mk` and `bn_BD` have their own
-> given names but no surnames; `zh_TW` has the reverse — Taiwanese surnames, no given
-> names. `fullName()` needs both and falls through entirely rather than pairing a Welsh
-> given name with a French surname. The
-> [locale support matrix](docs/locale-support.md) marks every such gap.
+> One locale still produces English full names: `mk`, which has Macedonian surnames and
+> male given names but only seven female ones — below the floor at which a list is worth
+> shipping. `fullName()` needs a coherent pair and falls through entirely rather than
+> putting a Macedonian given name beside a French surname. The
+> [locale support matrix](docs/locale-support.md) marks every gap.
 
 ## Why
 

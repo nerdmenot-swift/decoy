@@ -13,16 +13,16 @@
       "values" : 16623
     },
     "bn_BD" : {
-      "paths" : 32,
-      "values" : 2764
+      "paths" : 33,
+      "values" : 2785
     },
     "cs_CZ" : {
       "paths" : 36,
       "values" : 8734
     },
     "cy" : {
-      "paths" : 32,
-      "values" : 11210
+      "paths" : 33,
+      "values" : 11223
     },
     "da" : {
       "paths" : 43,
@@ -105,8 +105,8 @@
       "values" : 19900
     },
     "fa" : {
-      "paths" : 33,
-      "values" : 15392
+      "paths" : 34,
+      "values" : 15423
     },
     "fi" : {
       "paths" : 40,
@@ -141,8 +141,8 @@
       "values" : 6214
     },
     "hr" : {
-      "paths" : 37,
-      "values" : 11370
+      "paths" : 38,
+      "values" : 11399
     },
     "hu" : {
       "paths" : 37,
@@ -153,8 +153,8 @@
       "values" : 4389
     },
     "id_ID" : {
-      "paths" : 36,
-      "values" : 17677
+      "paths" : 38,
+      "values" : 17714
     },
     "it" : {
       "paths" : 62,
@@ -165,8 +165,8 @@
       "values" : 46578
     },
     "ka_GE" : {
-      "paths" : 31,
-      "values" : 1974
+      "paths" : 32,
+      "values" : 1987
     },
     "ko" : {
       "paths" : 34,
@@ -177,8 +177,8 @@
       "values" : 5691
     },
     "mk" : {
-      "paths" : 30,
-      "values" : 1573
+      "paths" : 31,
+      "values" : 1604
     },
     "nb_NO" : {
       "paths" : 44,
@@ -245,16 +245,16 @@
       "values" : 6737
     },
     "yo_NG" : {
-      "paths" : 27,
-      "values" : 3685
+      "paths" : 29,
+      "values" : 3711
     },
     "zh_CN" : {
-      "paths" : 36,
-      "values" : 20980
+      "paths" : 38,
+      "values" : 21046
     },
     "zh_TW" : {
-      "paths" : 31,
-      "values" : 1770
+      "paths" : 33,
+      "values" : 1836
     }
   }
 }

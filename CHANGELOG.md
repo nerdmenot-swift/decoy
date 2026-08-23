@@ -18,13 +18,38 @@ Entries are grouped by the corpus version in force when they landed.
 ## 1.0.0
 
 The first release. The package version starts here and follows semantic versioning; the
-corpus is already at 60.2.0 and keeps its own numbering, so the two are not going to line
+corpus is already at 60.4.0 and keeps its own numbering, so the two are not going to line
 up and are not meant to.
 
 Undated until tagged — the tag is the release, and this heading is written before it so
 the notes can be reviewed first.
 
 ### Fixed
+
+- **Nine locales stopped answering in English.** `cy`, `bn_BD`, `hr`, `fa`, `id_ID`,
+  `ka_GE`, `yo_NG`, `zh_TW` and `ko` now draw their own full names — Peredur Sinnott,
+  শামীম সেন, Ratko Šeks, مهران کمالی, ნიკოლოზ ჭიაურელი, 游霖任. Not one new source or
+  licence was involved. Three mechanisms had been discarding data the build was already
+  fetching:
+
+  - a minimum list length of 40, which threw away thirteen Welsh surnames, thirty-one
+    Macedonian and twenty-one Bengali. It is ten now, the same reasoning that already put
+    the colour floor at twelve. What forty actually chose, in those locales, was
+    `Riley Bonneau` over `Bevan`;
+  - a retry policy that read throttling as a dead endpoint. Three queries for one language
+    went out 1.2 seconds apart and the third came back truncated, which surfaces as
+    malformed JSON rather than as rate limiting; four retries inside a minute all landed in
+    the same window. Spanish surnames had **never once** been fetched successfully, so the
+    pipeline had recorded "Wikidata has no Spanish surnames" and carried on;
+  - and, in the release before this one, a minimum length of two UTF-16 units that deleted
+    almost every CJK surname there is.
+
+  **Changes generated output for all nine.** `es` is unaffected: its 3,815 newly-arrived
+  Wikidata surnames collided with INE's 27,661 weighted ones, the build refused the
+  conflict rather than picking a winner, and Wikidata now yields that path to the census.
+
+  `mk` still falls through. It has thirty-one surnames and forty-seven male given names,
+  and seven female ones.
 
 - **Korean names work.** `ko` had no surnames of its own, so `fullName()` returned
   `Albert Seaman`. The cause was not a missing source: `Endpoint.usable` required a label

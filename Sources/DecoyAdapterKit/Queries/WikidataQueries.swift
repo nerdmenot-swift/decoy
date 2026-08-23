@@ -45,7 +45,25 @@ public enum WikidataQueries {
     ]
 
     /// Below this a locale keeps whatever it had.
-    public static let minimumNames = 40
+    /// Below this a category is not written, and the locale keeps whatever it had.
+    ///
+    /// The floor exists so a query that half-worked cannot ship three names as though they
+    /// were a language. It was forty, which is a reasonable guess and was wrong: Wikidata
+    /// catalogues thirteen Welsh surnames, thirty-one Macedonian and twenty-one Bengali,
+    /// all real, all CC0, all already fetched — and forty threw every one of them away.
+    ///
+    /// What the floor actually chose, in those locales, was `Riley Bonneau` over `Bevan`.
+    /// A small list of the right language beats a large list of the wrong one, because the
+    /// point of a locale is that it is that locale. Thirteen surnames against Welsh's 230
+    /// given names is some three thousand distinct full names, which is not a repetition
+    /// problem.
+    ///
+    /// Ten, then — the same reasoning that already put `minimumColours` at twelve. A
+    /// language with few catalogued surnames is not a language with few surnames; it is one
+    /// Wikidata has not finished. The [locale matrix](../../../docs/locale-support.md)
+    /// publishes what each locale actually carries, so a thin list is visible rather than
+    /// implied.
+    public static let minimumNames = 10
 
     /// The triple order matters and is not stylistic.
     ///

@@ -79,7 +79,15 @@ func wikidataNames() async {
         for (kind, classID) in WikidataQueries.nameClasses {
             let query = WikidataQueries.nameQuery(
                 class: classID, language: languageID, code: code)
-            guard let bindings = await Endpoint.sparql(query, attempts: 4, backoff: 4, log: note)
+            // Six attempts backing off twenty seconds at a time, not four at four.
+            //
+            // The failure this answers looked like a dead endpoint and was not. Three
+            // queries for one language go out 1.2 seconds apart, and the third — surnames,
+            // the largest — came back truncated, which surfaces as "the data couldn't be
+            // read" rather than as throttling. Four retries inside a minute all landed in
+            // the same window and the run aborted saying Wikidata had given up. The same
+            // query, alone, returns four thousand rows in half a second.
+            guard let bindings = await Endpoint.sparql(query, attempts: 6, backoff: 20, log: note)
             else {
                 // A failed query used to be skipped, which wrote the locale with that
                 // category simply absent — indistinguishable from "Wikidata has no Danish
@@ -98,7 +106,9 @@ func wikidataNames() async {
                 kinds.append((kind, .array(kept.map(OrderedJSON.string))))
             }
             note("\(code) \(kind): \(kept.count) of \(labels.count)")
-            await Endpoint.pause(1.2)
+            // Three seconds, because 1.2 is what produced the truncation above. This is run
+            // by hand against shared infrastructure; the extra minute is not worth an abort.
+            await Endpoint.pause(3)
         }
 
         if !kinds.isEmpty {
