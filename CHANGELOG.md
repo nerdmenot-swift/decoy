@@ -48,8 +48,28 @@ the notes can be reviewed first.
   Wikidata surnames collided with INE's 27,661 weighted ones, the build refused the
   conflict rather than picking a winner, and Wikidata now yields that path to the census.
 
-  `mk` still falls through. It has thirty-one surnames and forty-seven male given names,
-  and seven female ones.
+- **No locale answers in English any more.** `mk` was the last, on a margin of three
+  names: thirty-one Macedonian surnames, forty-seven male given names, seven female. Two
+  changes reached it. The floor came down from ten to five, which admitted the seven. And
+  `fullName()` will now compose from a single gender where that is all a locale has, rather
+  than requiring both and falling through — which fixed `mk` on its own, before the seven
+  arrived.
+
+  That relaxation is only safe because of a second fix underneath it. With no gender asked
+  for and no ungendered pool, the library chose female or male on a coin toss and drew; a
+  locale holding only male given names lost half its draws to English, so `mk.firstName()`
+  had been returning `Gabriella` beside Macedonian surnames. It now chooses among the
+  genders the locale actually supplies. Locales carrying both are untouched — the coin is
+  still fair, and no existing stream moves.
+
+  `NameCoherenceTests` asserts this rather than trusting it: fifty locales supply their own
+  full name, none fall back. Its two categories used to be hand-written lists naming `ko`,
+  `es`, `bn_BD`, `cy` and `mk` as locales that *should* answer in English. Every one has
+  since been filled, so the test was pinning a corpus that no longer existed. Derived now.
+
+  **Changes generated output for `mk` and `vi`.** Vietnamese given names moved to the name
+  database, which carries 3,141 against Wikidata's 57 — they only collided once the floor
+  came down far enough to admit 57 at all.
 
 - **Korean names work.** `ko` had no surnames of its own, so `fullName()` returned
   `Albert Seaman`. The cause was not a missing source: `Endpoint.usable` required a label

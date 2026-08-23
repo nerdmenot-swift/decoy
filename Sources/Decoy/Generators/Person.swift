@@ -187,6 +187,14 @@ public struct PersonFaker {
             // Or a single ungendered list, which is how a source that counts names without
             // recording who holds them can supply a locale at all.
             ["person.first_name.generic"],
+            // Or one gender. Wikidata catalogues forty-seven Macedonian male given names
+            // and, until recently, no female ones — and a locale that can name half its
+            // people in its own language should do that rather than name all of them in
+            // somebody else's. Safe only because `gendered` now picks from the genders the
+            // locale supplies; with a blind coin toss this would have produced the English
+            // half of the name it was added to prevent.
+            ["person.first_name.male"],
+            ["person.first_name.female"],
         ]
         let surname = "person.last_name.generic"
         let coherent = faker.locale.agreeing(
@@ -299,7 +307,20 @@ public struct PersonFaker {
             if let value = faker.draw("\(path).generic") { return value }
             // No generic pool: choose a gender, then a name from that pool, rather
             // than merging pools the locale kept separate.
-            let picked: Gender = faker.bool() ? .female : .male
+            //
+            // Chosen from the genders the locale actually supplies, not from both on a
+            // coin toss. A locale carrying only male given names lost half its draws to
+            // `.female`, which found nothing of its own and walked the chain to English —
+            // so `mk` returned `Gabriella` beside a Macedonian surname. The coin is still
+            // fair where the locale supplies both, which is nearly everywhere, so no
+            // existing locale's stream moves.
+            let supplied = faker.locale.gendersSupplied(at: path)
+            let picked: Gender
+            switch (supplied.female, supplied.male) {
+            case (true, false): picked = .female
+            case (false, true): picked = .male
+            default: picked = faker.bool() ? .female : .male
+            }
             if let value = faker.draw("\(path).\(picked == .female ? "female" : "male")") {
                 return value
             }

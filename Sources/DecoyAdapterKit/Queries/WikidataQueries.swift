@@ -58,12 +58,19 @@ public enum WikidataQueries {
     /// given names is some three thousand distinct full names, which is not a repetition
     /// problem.
     ///
-    /// Ten, then — the same reasoning that already put `minimumColours` at twelve. A
-    /// language with few catalogued surnames is not a language with few surnames; it is one
-    /// Wikidata has not finished. The [locale matrix](../../../docs/locale-support.md)
-    /// publishes what each locale actually carries, so a thin list is visible rather than
-    /// implied.
-    public static let minimumNames = 10
+    /// Ten was the next guess and it was still one too many, by three names.
+    ///
+    /// `mk` has thirty-one Macedonian surnames and forty-seven male given names, and seven
+    /// female ones — so it was the last locale in the corpus answering in a language that
+    /// was not its own, on a margin of three. Five, then, which is the point where a list
+    /// stops being a list: below it a "language" is one or two names repeated, and that is
+    /// worse than an honest fallback because it looks deliberate.
+    ///
+    /// The reasoning is the same one that put `minimumColours` at twelve. A language with
+    /// few catalogued names is not a language with few names; it is one Wikidata has not
+    /// finished. The [locale matrix](../../../docs/locale-support.md) publishes what each
+    /// locale actually carries, so a thin list is visible rather than implied.
+    public static let minimumNames = 5
 
     /// The triple order matters and is not stylistic.
     ///

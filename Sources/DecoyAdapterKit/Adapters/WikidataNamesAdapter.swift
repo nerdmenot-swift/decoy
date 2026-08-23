@@ -48,6 +48,10 @@ public struct WikidataNamesAdapter: Adapter {
         "sl_SI": ["female", "male"],
         "az": ["female", "male", "surname"],
         "he": ["female", "male"],
+        // Vietnamese given names yield to the name database, which carries 1,571 female and
+        // 1,570 male against Wikidata's fifty-seven. They only collided once the floor came
+        // down far enough to admit fifty-seven at all.
+        "vi": ["female", "male"],
         "zh_TW": ["surname"],
         // Wikidata gave `zh_CN` 41 surnames of which nine were romanisations and three
         // were labels ending in the character for "surname". Most of the rest were rare

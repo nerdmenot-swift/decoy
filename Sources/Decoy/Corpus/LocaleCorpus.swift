@@ -116,6 +116,34 @@ public struct LocaleCorpus: Sendable {
         return self
     }
 
+    /// Which gendered sub-lists are supplied by the first corpus in the chain that has
+    /// either of them.
+    ///
+    /// Not "does the chain have `.female`" — the chain always does, because it ends at
+    /// English. The question is which genders the locale supplies *itself*, at the point
+    /// where it starts supplying any, so that a caller who did not ask for a gender can be
+    /// given one the locale can actually answer for.
+    ///
+    /// `mk` is the case. It carries forty-seven Macedonian male given names and no female
+    /// ones, so choosing a gender by coin toss sent half the draws to `.female`, found
+    /// nothing in Macedonian, walked to English, and returned `Gabriella` beside a
+    /// Macedonian surname. The coin was fair; the pool it was choosing between was not.
+    public func gendersSupplied(at path: String) -> (female: Bool, male: Bool) {
+        for corpus in chain {
+            let female = supplies(corpus, "\(path).female")
+            let male = supplies(corpus, "\(path).male")
+            if female || male { return (female, male) }
+        }
+        return (false, false)
+    }
+
+    /// Present, and not a declaration that the locale deliberately has none.
+    private func supplies(_ corpus: Corpus, _ path: String) -> Bool {
+        guard let entry = try? corpus.lookup(path) else { return false }
+        if case .explicitlyEmpty = entry { return false }
+        return true
+    }
+
     /// The composite table at `path`, if the chain has one.
     public func composite(_ path: String) -> CompositeTable? {
         guard case .composite(let table)? = resolve(path) else { return nil }
