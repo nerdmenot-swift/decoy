@@ -244,6 +244,14 @@
         "#####"
       ]
     },
+    "hi_IN" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.zipCode}}\n{{location.state}}"
+      ],
+      "location.postcode" : [
+        "######"
+      ]
+    },
     "hr" : {
       "location.postal_address" : [
         "{{person.name}}\n{{location.streetAddress}}\nHR-{{location.zipCode}} {{location.city}}"

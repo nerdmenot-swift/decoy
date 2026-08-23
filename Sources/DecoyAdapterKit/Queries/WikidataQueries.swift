@@ -42,6 +42,15 @@ public enum WikidataQueries {
         ("eo", "Q143"), ("hy", "Q8785"), ("ka", "Q8108"), ("ku", "Q36368"), ("mk", "Q9296"),
         ("mn", "Q9246"), ("ne", "Q33823"), ("sr", "Q9299"), ("ta", "Q5885"), ("ur", "Q1617"),
         ("uz", "Q9264"), ("yo", "Q34311"), ("zu", "Q10179"),
+        // South Asia, which this table had almost entirely missed: Telugu, Marathi and
+        // Tamil have seventy-five to eighty-five million speakers each and had never been
+        // asked about. Wikidata's answer is thin today — Gujarati has three surnames and
+        // no given names at all — and that is worth recording rather than assuming. Being
+        // in the table means the next refresh picks up whatever has been catalogued since;
+        // a language absent from it stays absent however much it grows.
+        ("pa", "Q58635"), ("gu", "Q5137"), ("mr", "Q1571"), ("te", "Q8097"),
+        ("kn", "Q33673"), ("ml", "Q36236"), ("si", "Q13267"), ("or", "Q33810"),
+        ("as", "Q29401"),
     ]
 
     /// Below this a locale keeps whatever it had.

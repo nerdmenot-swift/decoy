@@ -29993,6 +29993,915 @@
         }
       ]
     },
+    "hi_IN" : {
+      "location.language" : [
+        {
+          "alpha2" : "aa",
+          "alpha3" : "aar",
+          "name" : "अफ़ार"
+        },
+        {
+          "alpha2" : "ab",
+          "alpha3" : "abk",
+          "name" : "अब्ख़ाज़ियन"
+        },
+        {
+          "alpha2" : "ae",
+          "alpha3" : "ave",
+          "name" : "अवस्ताई"
+        },
+        {
+          "alpha2" : "af",
+          "alpha3" : "afr",
+          "name" : "अफ़्रीकी"
+        },
+        {
+          "alpha2" : "ak",
+          "alpha3" : "aka",
+          "name" : "अकन"
+        },
+        {
+          "alpha2" : "am",
+          "alpha3" : "amh",
+          "name" : "अम्हेरी"
+        },
+        {
+          "alpha2" : "an",
+          "alpha3" : "arg",
+          "name" : "अरागोनी"
+        },
+        {
+          "alpha2" : "ar",
+          "alpha3" : "ara",
+          "name" : "अरबी"
+        },
+        {
+          "alpha2" : "as",
+          "alpha3" : "asm",
+          "name" : "असमिया"
+        },
+        {
+          "alpha2" : "av",
+          "alpha3" : "ava",
+          "name" : "अवेरिक"
+        },
+        {
+          "alpha2" : "ay",
+          "alpha3" : "aym",
+          "name" : "आयमारा"
+        },
+        {
+          "alpha2" : "az",
+          "alpha3" : "aze",
+          "name" : "अज़रबैजानी"
+        },
+        {
+          "alpha2" : "ba",
+          "alpha3" : "bak",
+          "name" : "बशख़िर"
+        },
+        {
+          "alpha2" : "be",
+          "alpha3" : "bel",
+          "name" : "बेलारूसी"
+        },
+        {
+          "alpha2" : "bg",
+          "alpha3" : "bul",
+          "name" : "बुल्गारियाई"
+        },
+        {
+          "alpha2" : "bi",
+          "alpha3" : "bis",
+          "name" : "बिस्लामा"
+        },
+        {
+          "alpha2" : "bm",
+          "alpha3" : "bam",
+          "name" : "बाम्बारा"
+        },
+        {
+          "alpha2" : "bn",
+          "alpha3" : "ben",
+          "name" : "बंगाली"
+        },
+        {
+          "alpha2" : "bo",
+          "alpha3" : "bod",
+          "name" : "तिब्बती"
+        },
+        {
+          "alpha2" : "br",
+          "alpha3" : "bre",
+          "name" : "ब्रेटन"
+        },
+        {
+          "alpha2" : "bs",
+          "alpha3" : "bos",
+          "name" : "बोस्नियाई"
+        },
+        {
+          "alpha2" : "ca",
+          "alpha3" : "cat",
+          "name" : "कातालान"
+        },
+        {
+          "alpha2" : "ce",
+          "alpha3" : "che",
+          "name" : "चेचन"
+        },
+        {
+          "alpha2" : "ch",
+          "alpha3" : "cha",
+          "name" : "कमोरो"
+        },
+        {
+          "alpha2" : "co",
+          "alpha3" : "cos",
+          "name" : "कोर्सीकन"
+        },
+        {
+          "alpha2" : "cr",
+          "alpha3" : "cre",
+          "name" : "क्री"
+        },
+        {
+          "alpha2" : "cs",
+          "alpha3" : "ces",
+          "name" : "चेक"
+        },
+        {
+          "alpha2" : "cu",
+          "alpha3" : "chu",
+          "name" : "चर्च साल्विक"
+        },
+        {
+          "alpha2" : "cv",
+          "alpha3" : "chv",
+          "name" : "चूवाश"
+        },
+        {
+          "alpha2" : "cy",
+          "alpha3" : "cym",
+          "name" : "वेल्श"
+        },
+        {
+          "alpha2" : "da",
+          "alpha3" : "dan",
+          "name" : "डेनिश"
+        },
+        {
+          "alpha2" : "de",
+          "alpha3" : "deu",
+          "name" : "जर्मन"
+        },
+        {
+          "alpha2" : "dv",
+          "alpha3" : "div",
+          "name" : "दिवेही"
+        },
+        {
+          "alpha2" : "dz",
+          "alpha3" : "dzo",
+          "name" : "ज़ोन्गखा"
+        },
+        {
+          "alpha2" : "ee",
+          "alpha3" : "ewe",
+          "name" : "ईवे"
+        },
+        {
+          "alpha2" : "el",
+          "alpha3" : "ell",
+          "name" : "यूनानी"
+        },
+        {
+          "alpha2" : "en",
+          "alpha3" : "eng",
+          "name" : "अंग्रेज़ी"
+        },
+        {
+          "alpha2" : "eo",
+          "alpha3" : "epo",
+          "name" : "एस्पेरेंतो"
+        },
+        {
+          "alpha2" : "es",
+          "alpha3" : "spa",
+          "name" : "स्पेनिश"
+        },
+        {
+          "alpha2" : "et",
+          "alpha3" : "est",
+          "name" : "एस्टोनियाई"
+        },
+        {
+          "alpha2" : "eu",
+          "alpha3" : "eus",
+          "name" : "बास्क"
+        },
+        {
+          "alpha2" : "fa",
+          "alpha3" : "fas",
+          "name" : "फ़ारसी"
+        },
+        {
+          "alpha2" : "ff",
+          "alpha3" : "ful",
+          "name" : "फुलाह"
+        },
+        {
+          "alpha2" : "fi",
+          "alpha3" : "fin",
+          "name" : "फ़िनिश"
+        },
+        {
+          "alpha2" : "fj",
+          "alpha3" : "fij",
+          "name" : "फिजियन"
+        },
+        {
+          "alpha2" : "fo",
+          "alpha3" : "fao",
+          "name" : "फ़ैरोइज़"
+        },
+        {
+          "alpha2" : "fr",
+          "alpha3" : "fra",
+          "name" : "फ़्रेंच"
+        },
+        {
+          "alpha2" : "fy",
+          "alpha3" : "fry",
+          "name" : "पश्चिमी फ़्रिसियाई"
+        },
+        {
+          "alpha2" : "ga",
+          "alpha3" : "gle",
+          "name" : "आयरिश"
+        },
+        {
+          "alpha2" : "gd",
+          "alpha3" : "gla",
+          "name" : "स्कॉटिश गाएलिक"
+        },
+        {
+          "alpha2" : "gl",
+          "alpha3" : "glg",
+          "name" : "गैलिशियन"
+        },
+        {
+          "alpha2" : "gn",
+          "alpha3" : "grn",
+          "name" : "गुआरानी"
+        },
+        {
+          "alpha2" : "gu",
+          "alpha3" : "guj",
+          "name" : "गुजराती"
+        },
+        {
+          "alpha2" : "gv",
+          "alpha3" : "glv",
+          "name" : "मैंक्स"
+        },
+        {
+          "alpha2" : "ha",
+          "alpha3" : "hau",
+          "name" : "हौसा"
+        },
+        {
+          "alpha2" : "he",
+          "alpha3" : "heb",
+          "name" : "हिब्रू"
+        },
+        {
+          "alpha2" : "hi",
+          "alpha3" : "hin",
+          "name" : "हिन्दी"
+        },
+        {
+          "alpha2" : "ho",
+          "alpha3" : "hmo",
+          "name" : "हिरी मोटू"
+        },
+        {
+          "alpha2" : "hr",
+          "alpha3" : "hrv",
+          "name" : "क्रोएशियाई"
+        },
+        {
+          "alpha2" : "ht",
+          "alpha3" : "hat",
+          "name" : "हैतियाई"
+        },
+        {
+          "alpha2" : "hu",
+          "alpha3" : "hun",
+          "name" : "हंगेरियाई"
+        },
+        {
+          "alpha2" : "hy",
+          "alpha3" : "hye",
+          "name" : "आर्मेनियाई"
+        },
+        {
+          "alpha2" : "hz",
+          "alpha3" : "her",
+          "name" : "हरैरो"
+        },
+        {
+          "alpha2" : "ia",
+          "alpha3" : "ina",
+          "name" : "इंटरलिंगुआ"
+        },
+        {
+          "alpha2" : "id",
+          "alpha3" : "ind",
+          "name" : "इंडोनेशियाई"
+        },
+        {
+          "alpha2" : "ie",
+          "alpha3" : "ile",
+          "name" : "इंटरलिंग"
+        },
+        {
+          "alpha2" : "ig",
+          "alpha3" : "ibo",
+          "name" : "ईग्बो"
+        },
+        {
+          "alpha2" : "ii",
+          "alpha3" : "iii",
+          "name" : "सिचुआन यी"
+        },
+        {
+          "alpha2" : "ik",
+          "alpha3" : "ipk",
+          "name" : "इनुपियाक्"
+        },
+        {
+          "alpha2" : "io",
+          "alpha3" : "ido",
+          "name" : "इडौ"
+        },
+        {
+          "alpha2" : "is",
+          "alpha3" : "isl",
+          "name" : "आइसलैंडिक"
+        },
+        {
+          "alpha2" : "it",
+          "alpha3" : "ita",
+          "name" : "इतालवी"
+        },
+        {
+          "alpha2" : "iu",
+          "alpha3" : "iku",
+          "name" : "इनुक्टिटुट"
+        },
+        {
+          "alpha2" : "ja",
+          "alpha3" : "jpn",
+          "name" : "जापानी"
+        },
+        {
+          "alpha2" : "jv",
+          "alpha3" : "jav",
+          "name" : "जावानीज़"
+        },
+        {
+          "alpha2" : "ka",
+          "alpha3" : "kat",
+          "name" : "जॉर्जियाई"
+        },
+        {
+          "alpha2" : "kg",
+          "alpha3" : "kon",
+          "name" : "कोंगो"
+        },
+        {
+          "alpha2" : "ki",
+          "alpha3" : "kik",
+          "name" : "किकुयू"
+        },
+        {
+          "alpha2" : "kj",
+          "alpha3" : "kua",
+          "name" : "क्वान्यामा"
+        },
+        {
+          "alpha2" : "kk",
+          "alpha3" : "kaz",
+          "name" : "कज़ाख़"
+        },
+        {
+          "alpha2" : "kl",
+          "alpha3" : "kal",
+          "name" : "कलालीसुत"
+        },
+        {
+          "alpha2" : "km",
+          "alpha3" : "khm",
+          "name" : "खमेर"
+        },
+        {
+          "alpha2" : "kn",
+          "alpha3" : "kan",
+          "name" : "कन्नड़"
+        },
+        {
+          "alpha2" : "ko",
+          "alpha3" : "kor",
+          "name" : "कोरियाई"
+        },
+        {
+          "alpha2" : "kr",
+          "alpha3" : "kau",
+          "name" : "कनुरी"
+        },
+        {
+          "alpha2" : "ks",
+          "alpha3" : "kas",
+          "name" : "कश्मीरी"
+        },
+        {
+          "alpha2" : "ku",
+          "alpha3" : "kur",
+          "name" : "कुर्दिश"
+        },
+        {
+          "alpha2" : "kv",
+          "alpha3" : "kom",
+          "name" : "कोमी"
+        },
+        {
+          "alpha2" : "kw",
+          "alpha3" : "cor",
+          "name" : "कोर्निश"
+        },
+        {
+          "alpha2" : "ky",
+          "alpha3" : "kir",
+          "name" : "किर्गीज़"
+        },
+        {
+          "alpha2" : "la",
+          "alpha3" : "lat",
+          "name" : "लैटिन"
+        },
+        {
+          "alpha2" : "lb",
+          "alpha3" : "ltz",
+          "name" : "लग्ज़मबर्गी"
+        },
+        {
+          "alpha2" : "lg",
+          "alpha3" : "lug",
+          "name" : "गांडा"
+        },
+        {
+          "alpha2" : "li",
+          "alpha3" : "lim",
+          "name" : "लिंबर्गिश"
+        },
+        {
+          "alpha2" : "ln",
+          "alpha3" : "lin",
+          "name" : "लिंगाला"
+        },
+        {
+          "alpha2" : "lo",
+          "alpha3" : "lao",
+          "name" : "लाओ"
+        },
+        {
+          "alpha2" : "lt",
+          "alpha3" : "lit",
+          "name" : "लिथुआनियाई"
+        },
+        {
+          "alpha2" : "lu",
+          "alpha3" : "lub",
+          "name" : "ल्यूबा-कटांगा"
+        },
+        {
+          "alpha2" : "lv",
+          "alpha3" : "lav",
+          "name" : "लातवियाई"
+        },
+        {
+          "alpha2" : "mg",
+          "alpha3" : "mlg",
+          "name" : "मालागासी"
+        },
+        {
+          "alpha2" : "mh",
+          "alpha3" : "mah",
+          "name" : "मार्शलीज़"
+        },
+        {
+          "alpha2" : "mi",
+          "alpha3" : "mri",
+          "name" : "माओरी"
+        },
+        {
+          "alpha2" : "mk",
+          "alpha3" : "mkd",
+          "name" : "मकदूनियाई"
+        },
+        {
+          "alpha2" : "ml",
+          "alpha3" : "mal",
+          "name" : "मलयालम"
+        },
+        {
+          "alpha2" : "mn",
+          "alpha3" : "mon",
+          "name" : "मंगोलियाई"
+        },
+        {
+          "alpha2" : "mr",
+          "alpha3" : "mar",
+          "name" : "मराठी"
+        },
+        {
+          "alpha2" : "ms",
+          "alpha3" : "msa",
+          "name" : "मलय"
+        },
+        {
+          "alpha2" : "mt",
+          "alpha3" : "mlt",
+          "name" : "माल्टीज़"
+        },
+        {
+          "alpha2" : "my",
+          "alpha3" : "mya",
+          "name" : "बर्मीज़"
+        },
+        {
+          "alpha2" : "na",
+          "alpha3" : "nau",
+          "name" : "नाउरू"
+        },
+        {
+          "alpha2" : "nb",
+          "alpha3" : "nob",
+          "name" : "नॉर्वेजियाई बोकमाल"
+        },
+        {
+          "alpha2" : "nd",
+          "alpha3" : "nde",
+          "name" : "उत्तरी देबेल"
+        },
+        {
+          "alpha2" : "ne",
+          "alpha3" : "nep",
+          "name" : "नेपाली"
+        },
+        {
+          "alpha2" : "ng",
+          "alpha3" : "ndo",
+          "name" : "डोन्गा"
+        },
+        {
+          "alpha2" : "nl",
+          "alpha3" : "nld",
+          "name" : "डच"
+        },
+        {
+          "alpha2" : "nn",
+          "alpha3" : "nno",
+          "name" : "नॉर्वेजियाई नॉयनॉर्स्क"
+        },
+        {
+          "alpha2" : "no",
+          "alpha3" : "nor",
+          "name" : "नॉर्वेजियाई"
+        },
+        {
+          "alpha2" : "nr",
+          "alpha3" : "nbl",
+          "name" : "दक्षिण देबेल"
+        },
+        {
+          "alpha2" : "nv",
+          "alpha3" : "nav",
+          "name" : "नवाहो"
+        },
+        {
+          "alpha2" : "ny",
+          "alpha3" : "nya",
+          "name" : "न्यानजा"
+        },
+        {
+          "alpha2" : "oc",
+          "alpha3" : "oci",
+          "name" : "ओसीटान"
+        },
+        {
+          "alpha2" : "oj",
+          "alpha3" : "oji",
+          "name" : "ओजिब्वा"
+        },
+        {
+          "alpha2" : "om",
+          "alpha3" : "orm",
+          "name" : "ओरोमो"
+        },
+        {
+          "alpha2" : "or",
+          "alpha3" : "ori",
+          "name" : "ओड़िया"
+        },
+        {
+          "alpha2" : "os",
+          "alpha3" : "oss",
+          "name" : "ओस्सेटिक"
+        },
+        {
+          "alpha2" : "pa",
+          "alpha3" : "pan",
+          "name" : "पंजाबी"
+        },
+        {
+          "alpha2" : "pi",
+          "alpha3" : "pli",
+          "name" : "पाली"
+        },
+        {
+          "alpha2" : "pl",
+          "alpha3" : "pol",
+          "name" : "पोलिश"
+        },
+        {
+          "alpha2" : "ps",
+          "alpha3" : "pus",
+          "name" : "पश्तो"
+        },
+        {
+          "alpha2" : "pt",
+          "alpha3" : "por",
+          "name" : "पुर्तगाली"
+        },
+        {
+          "alpha2" : "qu",
+          "alpha3" : "que",
+          "name" : "क्वेचुआ"
+        },
+        {
+          "alpha2" : "rm",
+          "alpha3" : "roh",
+          "name" : "रोमान्श"
+        },
+        {
+          "alpha2" : "rn",
+          "alpha3" : "run",
+          "name" : "रुन्दी"
+        },
+        {
+          "alpha2" : "ro",
+          "alpha3" : "mol",
+          "name" : "रोमानियाई"
+        },
+        {
+          "alpha2" : "ru",
+          "alpha3" : "rus",
+          "name" : "रूसी"
+        },
+        {
+          "alpha2" : "rw",
+          "alpha3" : "kin",
+          "name" : "किन्यारवांडा"
+        },
+        {
+          "alpha2" : "sa",
+          "alpha3" : "san",
+          "name" : "संस्कृत"
+        },
+        {
+          "alpha2" : "sc",
+          "alpha3" : "srd",
+          "name" : "सार्दिनियन"
+        },
+        {
+          "alpha2" : "sd",
+          "alpha3" : "snd",
+          "name" : "सिंधी"
+        },
+        {
+          "alpha2" : "se",
+          "alpha3" : "sme",
+          "name" : "नॉर्दन सामी"
+        },
+        {
+          "alpha2" : "sg",
+          "alpha3" : "sag",
+          "name" : "सांगो"
+        },
+        {
+          "alpha2" : "si",
+          "alpha3" : "sin",
+          "name" : "सिंहली"
+        },
+        {
+          "alpha2" : "sk",
+          "alpha3" : "slk",
+          "name" : "स्लोवाक"
+        },
+        {
+          "alpha2" : "sl",
+          "alpha3" : "slv",
+          "name" : "स्लोवेनियाई"
+        },
+        {
+          "alpha2" : "sm",
+          "alpha3" : "smo",
+          "name" : "सामोन"
+        },
+        {
+          "alpha2" : "sn",
+          "alpha3" : "sna",
+          "name" : "शोणा"
+        },
+        {
+          "alpha2" : "so",
+          "alpha3" : "som",
+          "name" : "सोमाली"
+        },
+        {
+          "alpha2" : "sq",
+          "alpha3" : "sqi",
+          "name" : "अल्बानियाई"
+        },
+        {
+          "alpha2" : "sr",
+          "alpha3" : "srp",
+          "name" : "सर्बियाई"
+        },
+        {
+          "alpha2" : "ss",
+          "alpha3" : "ssw",
+          "name" : "स्वाती"
+        },
+        {
+          "alpha2" : "st",
+          "alpha3" : "sot",
+          "name" : "दक्षिणी सेसेथो"
+        },
+        {
+          "alpha2" : "su",
+          "alpha3" : "sun",
+          "name" : "सुंडानी"
+        },
+        {
+          "alpha2" : "sv",
+          "alpha3" : "swe",
+          "name" : "स्वीडिश"
+        },
+        {
+          "alpha2" : "sw",
+          "alpha3" : "swa",
+          "name" : "स्वाहिली"
+        },
+        {
+          "alpha2" : "ta",
+          "alpha3" : "tam",
+          "name" : "तमिल"
+        },
+        {
+          "alpha2" : "te",
+          "alpha3" : "tel",
+          "name" : "तेलुगू"
+        },
+        {
+          "alpha2" : "tg",
+          "alpha3" : "tgk",
+          "name" : "ताजिक"
+        },
+        {
+          "alpha2" : "th",
+          "alpha3" : "tha",
+          "name" : "थाई"
+        },
+        {
+          "alpha2" : "ti",
+          "alpha3" : "tir",
+          "name" : "तिग्रीन्या"
+        },
+        {
+          "alpha2" : "tk",
+          "alpha3" : "tuk",
+          "name" : "तुर्कमेन"
+        },
+        {
+          "alpha2" : "tn",
+          "alpha3" : "tsn",
+          "name" : "सेत्स्वाना"
+        },
+        {
+          "alpha2" : "to",
+          "alpha3" : "ton",
+          "name" : "टोंगन"
+        },
+        {
+          "alpha2" : "tr",
+          "alpha3" : "tur",
+          "name" : "तुर्की"
+        },
+        {
+          "alpha2" : "ts",
+          "alpha3" : "tso",
+          "name" : "सोंगा"
+        },
+        {
+          "alpha2" : "tt",
+          "alpha3" : "tat",
+          "name" : "तातार"
+        },
+        {
+          "alpha2" : "ty",
+          "alpha3" : "tah",
+          "name" : "ताहितियन"
+        },
+        {
+          "alpha2" : "ug",
+          "alpha3" : "uig",
+          "name" : "उईग़ूर"
+        },
+        {
+          "alpha2" : "uk",
+          "alpha3" : "ukr",
+          "name" : "यूक्रेनियाई"
+        },
+        {
+          "alpha2" : "ur",
+          "alpha3" : "urd",
+          "name" : "उर्दू"
+        },
+        {
+          "alpha2" : "uz",
+          "alpha3" : "uzb",
+          "name" : "उज़्बेक"
+        },
+        {
+          "alpha2" : "ve",
+          "alpha3" : "ven",
+          "name" : "वेन्दा"
+        },
+        {
+          "alpha2" : "vi",
+          "alpha3" : "vie",
+          "name" : "वियतनामी"
+        },
+        {
+          "alpha2" : "vo",
+          "alpha3" : "vol",
+          "name" : "वोलापुक"
+        },
+        {
+          "alpha2" : "wa",
+          "alpha3" : "wln",
+          "name" : "वाल्लून"
+        },
+        {
+          "alpha2" : "wo",
+          "alpha3" : "wol",
+          "name" : "वोलोफ़"
+        },
+        {
+          "alpha2" : "xh",
+          "alpha3" : "xho",
+          "name" : "ख़ोसा"
+        },
+        {
+          "alpha2" : "yi",
+          "alpha3" : "yid",
+          "name" : "यहूदी"
+        },
+        {
+          "alpha2" : "yo",
+          "alpha3" : "yor",
+          "name" : "योरूबा"
+        },
+        {
+          "alpha2" : "za",
+          "alpha3" : "zha",
+          "name" : "ज़ुआंग"
+        },
+        {
+          "alpha2" : "zh",
+          "alpha3" : "zho",
+          "name" : "चीनी"
+        },
+        {
+          "alpha2" : "zu",
+          "alpha3" : "zul",
+          "name" : "ज़ुलू"
+        }
+      ]
+    },
     "hr" : {
       "location.language" : [
         {

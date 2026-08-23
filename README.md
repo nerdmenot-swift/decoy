@@ -8,7 +8,7 @@ Reproducible by construction, portable across macOS, Linux, and Windows.
 > **Status: preparing 1.0.** The API is settled and the source declares `1.0.0`, but
 > nothing is tagged yet, so `from: "1.0.0"` will not resolve. The tag is the release.
 >
-> The corpus versions *separately*, and it will keep moving — it is at 60.5.0, and adding
+> The corpus versions *separately*, and it will keep moving — it is at 60.6.0, and adding
 > data to a locale bumps it. A corpus bump changes what a given seed draws, so pin the
 > corpus version, not just the package version, if you are keeping generated fixtures.
 > [CHANGELOG.md](CHANGELOG.md) explains which of the two numbers answers which worry.
@@ -209,12 +209,12 @@ package version and the corpus version mean different things:
 - [x] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
 - [x] Adapter pipeline: 52 sources — 47 integrity-verified, 3 queried, 2 authored — provenance per path
-- [x] [Locale support matrix](docs/locale-support.md) — which fields each of the 63 locales
+- [x] [Locale support matrix](docs/locale-support.md) — which fields each of the 64 locales
       supplies itself, and which fall through to English. Generated from the corpus and
       checked in CI, so it cannot describe a corpus that is no longer shipping.
 - [x] JSON → binary corpus format + Swift reader
 - [x] 319 generators across 29 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
-- [x] All 64 locales compile; `en`, `de`, `ja` ship as importable Swift modules
+- [x] All 65 locales compile; `en`, `de`, `ja` ship as importable Swift modules
 - [x] `decoy-inspect`: enumeration, coverage, generated attribution
 - [x] CI run on every push — macOS, Linux and Windows each build, compile a corpus and
       run the full suite; `PortabilityLintTests` fails the build on the calls known to

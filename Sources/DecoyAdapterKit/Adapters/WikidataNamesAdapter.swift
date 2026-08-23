@@ -61,6 +61,47 @@ public struct WikidataNamesAdapter: Adapter {
         "zh_CN": ["surname"],
     ]
 
+    /// The script a language's names are written in, where another script is a mistake
+    /// rather than a variant spelling.
+    ///
+    /// Wikidata labels are contributed by hand and the language tag is not enforced against
+    /// the characters, so a `hi` label can hold Bengali and a `pa` label Urdu. Small
+    /// numbers — one or two per list — but they compose: `hi_IN` produced
+    /// `स्वप्निल চৌধুরী`, a Devanagari given name beside a Bengali surname, which is a
+    /// chimera inside one name rather than across a fallback.
+    ///
+    /// Only for languages with a single settled script. Serbian is deliberately absent: it
+    /// is written in two, and `sr_RS_latin` is handled by the transliteration table above.
+    private static let expectedScript: [String: ClosedRange<UInt32>] = [
+        "hi": 0x0900...0x097F,  // Devanagari
+        "bn": 0x0980...0x09FF,  // Bengali
+        "pa": 0x0A00...0x0A7F,  // Gurmukhi
+        "gu": 0x0A80...0x0AFF,  // Gujarati
+        "or": 0x0B00...0x0B7F,  // Odia
+        "ta": 0x0B80...0x0BFF,  // Tamil
+        "te": 0x0C00...0x0C7F,  // Telugu
+        "kn": 0x0C80...0x0CFF,  // Kannada
+        "ml": 0x0D00...0x0D7F,  // Malayalam
+        "si": 0x0D80...0x0DFF,  // Sinhala
+        "ka": 0x10A0...0x10FF,  // Georgian
+        "hy": 0x0530...0x058F,  // Armenian
+        "el": 0x0370...0x03FF,  // Greek
+        "he": 0x0590...0x05FF,  // Hebrew
+        "ko": 0xAC00...0xD7A3,  // Hangul syllables
+    ]
+
+    /// Every letter in `value` belongs to `range`. Marks, spaces and punctuation pass.
+    static func inScript(_ value: String, _ range: ClosedRange<UInt32>) -> Bool {
+        guard !value.isEmpty else { return false }
+        var sawLetter = false
+        for scalar in value.unicodeScalars {
+            guard scalar.properties.isAlphabetic else { continue }
+            sawLetter = true
+            if !range.contains(scalar.value) { return false }
+        }
+        return sawLetter
+    }
+
     static func language(of code: String) -> String { String(code.split(separator: "_")[0]) }
 
     /// Serbian is written in both alphabets and Wikidata holds both under `sr`.
@@ -166,6 +207,9 @@ public struct WikidataNamesAdapter: Adapter {
                     list = converted
                 }
                 if hasScript { list = list.filter { Self.matchesScript($0, latin: latin) } }
+                if let range = Self.expectedScript[Self.language(of: code)] {
+                    list = list.filter { Self.inScript($0, range) }
+                }
 
                 if list.count < Self.minimumNames {
                     tooThin.append("\(code).\(kind)(\(list.count))")

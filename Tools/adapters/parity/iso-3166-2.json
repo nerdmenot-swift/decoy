@@ -8119,6 +8119,217 @@
         "TA"
       ]
     },
+    "hi_IN" : {
+      "location.state" : [
+        {
+          "abbr" : "AN",
+          "name" : "Andaman and Nicobar Islands"
+        },
+        {
+          "abbr" : "AP",
+          "name" : "Andhra Pradesh"
+        },
+        {
+          "abbr" : "AR",
+          "name" : "Arunachal Pradesh"
+        },
+        {
+          "abbr" : "AS",
+          "name" : "Assam"
+        },
+        {
+          "abbr" : "BR",
+          "name" : "Bihar"
+        },
+        {
+          "abbr" : "CH",
+          "name" : "Chandigarh"
+        },
+        {
+          "abbr" : "CT",
+          "name" : "Chhattisgarh"
+        },
+        {
+          "abbr" : "CG",
+          "name" : "Chhattīsgarh"
+        },
+        {
+          "abbr" : "DN",
+          "name" : "Dadra and Nagar Haveli"
+        },
+        {
+          "abbr" : "DD",
+          "name" : "Daman and Diu"
+        },
+        {
+          "abbr" : "DL",
+          "name" : "Delhi"
+        },
+        {
+          "abbr" : "DH",
+          "name" : "Dādra and Nagar Haveli and Damān and Diu"
+        },
+        {
+          "abbr" : "GA",
+          "name" : "Goa"
+        },
+        {
+          "abbr" : "GJ",
+          "name" : "Gujarat"
+        },
+        {
+          "abbr" : "HR",
+          "name" : "Haryana"
+        },
+        {
+          "abbr" : "HP",
+          "name" : "Himachal Pradesh"
+        },
+        {
+          "abbr" : "JK",
+          "name" : "Jammu and Kashmir"
+        },
+        {
+          "abbr" : "JH",
+          "name" : "Jharkhand"
+        },
+        {
+          "abbr" : "KA",
+          "name" : "Karnataka"
+        },
+        {
+          "abbr" : "KL",
+          "name" : "Kerala"
+        },
+        {
+          "abbr" : "LA",
+          "name" : "Ladakh"
+        },
+        {
+          "abbr" : "LD",
+          "name" : "Lakshadweep"
+        },
+        {
+          "abbr" : "MP",
+          "name" : "Madhya Pradesh"
+        },
+        {
+          "abbr" : "MH",
+          "name" : "Maharashtra"
+        },
+        {
+          "abbr" : "MN",
+          "name" : "Manipur"
+        },
+        {
+          "abbr" : "ML",
+          "name" : "Meghalaya"
+        },
+        {
+          "abbr" : "MZ",
+          "name" : "Mizoram"
+        },
+        {
+          "abbr" : "NL",
+          "name" : "Nagaland"
+        },
+        {
+          "abbr" : "OD",
+          "name" : "Odisha"
+        },
+        {
+          "abbr" : "PY",
+          "name" : "Puducherry"
+        },
+        {
+          "abbr" : "PB",
+          "name" : "Punjab"
+        },
+        {
+          "abbr" : "RJ",
+          "name" : "Rajasthan"
+        },
+        {
+          "abbr" : "SK",
+          "name" : "Sikkim"
+        },
+        {
+          "abbr" : "TN",
+          "name" : "Tamil Nadu"
+        },
+        {
+          "abbr" : "TG",
+          "name" : "Telangana"
+        },
+        {
+          "abbr" : "TS",
+          "name" : "Telangāna"
+        },
+        {
+          "abbr" : "TR",
+          "name" : "Tripura"
+        },
+        {
+          "abbr" : "UP",
+          "name" : "Uttar Pradesh"
+        },
+        {
+          "abbr" : "UT",
+          "name" : "Uttarakhand"
+        },
+        {
+          "abbr" : "UK",
+          "name" : "Uttarākhand"
+        },
+        {
+          "abbr" : "WB",
+          "name" : "West Bengal"
+        }
+      ],
+      "location.state_abbr" : [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CH",
+        "CT",
+        "CG",
+        "DN",
+        "DD",
+        "DL",
+        "DH",
+        "GA",
+        "GJ",
+        "HR",
+        "HP",
+        "JK",
+        "JH",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MP",
+        "MH",
+        "MN",
+        "ML",
+        "MZ",
+        "NL",
+        "OD",
+        "PY",
+        "PB",
+        "RJ",
+        "SK",
+        "TN",
+        "TG",
+        "TS",
+        "TR",
+        "UP",
+        "UT",
+        "UK",
+        "WB"
+      ]
+    },
     "hr" : {
       "location.state" : [
         {

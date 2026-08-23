@@ -29813,6 +29813,910 @@
         }
       ]
     },
+    "hi_IN" : {
+      "science.unit" : [
+        {
+          "name" : "गुरुत्व बल",
+          "symbol" : "गु"
+        },
+        {
+          "name" : "मीटर/से²",
+          "symbol" : "मी॰/व॰से॰"
+        },
+        {
+          "name" : "आर्क मिनट",
+          "symbol" : "′"
+        },
+        {
+          "name" : "आर्क सेकंड",
+          "symbol" : "″"
+        },
+        {
+          "name" : "अंश",
+          "symbol" : "°"
+        },
+        {
+          "name" : "रेडियन",
+          "symbol" : "rad"
+        },
+        {
+          "name" : "घूर्णन",
+          "symbol" : "r"
+        },
+        {
+          "name" : "स्टेरेडियन",
+          "symbol" : "sr"
+        },
+        {
+          "name" : "एकड़",
+          "symbol" : "एकड़"
+        },
+        {
+          "name" : "bu [JP]",
+          "symbol" : "bu [JP]"
+        },
+        {
+          "name" : "cho [JP]",
+          "symbol" : "cho [JP]"
+        },
+        {
+          "name" : "डोनम",
+          "symbol" : "डोनम"
+        },
+        {
+          "name" : "हेक्टेयर",
+          "symbol" : "हे॰"
+        },
+        {
+          "name" : "se [JP]",
+          "symbol" : "se [JP]"
+        },
+        {
+          "name" : "वर्ग सेंटीमीटर",
+          "symbol" : "वर्ग सेंमी"
+        },
+        {
+          "name" : "वर्गफ़ीट",
+          "symbol" : "व फ़ी"
+        },
+        {
+          "name" : "वर्ग इंच",
+          "symbol" : "व इं"
+        },
+        {
+          "name" : "वर्ग किलोमीटर",
+          "symbol" : "वर्ग कि॰मी॰"
+        },
+        {
+          "name" : "वर्ग मीटर",
+          "symbol" : "वर्ग मी॰"
+        },
+        {
+          "name" : "वर्ग मील",
+          "symbol" : "व मी"
+        },
+        {
+          "name" : "वर्ग गज",
+          "symbol" : "व ग"
+        },
+        {
+          "name" : "आइटम",
+          "symbol" : "आइटम"
+        },
+        {
+          "name" : "कैरट",
+          "symbol" : "kt"
+        },
+        {
+          "name" : "कैटाल",
+          "symbol" : "kat"
+        },
+        {
+          "name" : "मिलीग्राम प्रति डेसीलीटर",
+          "symbol" : "मि॰ग्रा॰/डे॰ली॰"
+        },
+        {
+          "name" : "मिलीमोल प्रति लीटर",
+          "symbol" : "मिलीमोल/ली॰"
+        },
+        {
+          "name" : "मोल",
+          "symbol" : "मोल"
+        },
+        {
+          "name" : "ग्लूकोज़",
+          "symbol" : "Glc"
+        },
+        {
+          "name" : "भाग",
+          "symbol" : "भाग"
+        },
+        {
+          "name" : "हिस्सा प्रति दस लाख",
+          "symbol" : "ppm"
+        },
+        {
+          "name" : "पार्ट्स प्रति बिलियन",
+          "symbol" : "ppb"
+        },
+        {
+          "name" : "प्रतिशत",
+          "symbol" : "%"
+        },
+        {
+          "name" : "प्रति हज़ार",
+          "symbol" : "‰"
+        },
+        {
+          "name" : "प्रति दस हज़ार",
+          "symbol" : "‱"
+        },
+        {
+          "name" : "लीटर प्रति 100 किलोमीटर",
+          "symbol" : "ली/100 किमी"
+        },
+        {
+          "name" : "लीटर प्रति किलोमीटर",
+          "symbol" : "ली/किमी"
+        },
+        {
+          "name" : "मील प्रति गैलन",
+          "symbol" : "mpg"
+        },
+        {
+          "name" : "मील प्रति इंपीरियल गैलन",
+          "symbol" : "mpg इंपीरियल"
+        },
+        {
+          "name" : "बिट",
+          "symbol" : "बिट"
+        },
+        {
+          "name" : "बाइट",
+          "symbol" : "बाइट"
+        },
+        {
+          "name" : "गीगाबिट",
+          "symbol" : "Gb"
+        },
+        {
+          "name" : "गीगाबाइट",
+          "symbol" : "GB"
+        },
+        {
+          "name" : "किलोबिट",
+          "symbol" : "kb"
+        },
+        {
+          "name" : "किलोबाइट",
+          "symbol" : "kB"
+        },
+        {
+          "name" : "मेगाबिट",
+          "symbol" : "Mb"
+        },
+        {
+          "name" : "मेगाबाइट",
+          "symbol" : "MB"
+        },
+        {
+          "name" : "पेटाबाइट",
+          "symbol" : "PB"
+        },
+        {
+          "name" : "टेराबिट",
+          "symbol" : "Tb"
+        },
+        {
+          "name" : "टेराबाइट",
+          "symbol" : "TB"
+        },
+        {
+          "name" : "शताब्दियाँ",
+          "symbol" : "श"
+        },
+        {
+          "name" : "दिन",
+          "symbol" : "दि"
+        },
+        {
+          "name" : "दशकों",
+          "symbol" : "दश."
+        },
+        {
+          "name" : "fortnight",
+          "symbol" : "fw"
+        },
+        {
+          "name" : "घंटे",
+          "symbol" : "घं"
+        },
+        {
+          "name" : "माइक्रोसेकंड",
+          "symbol" : "μs"
+        },
+        {
+          "name" : "मिलीसेकंड",
+          "symbol" : "मि॰से॰"
+        },
+        {
+          "name" : "मिनट",
+          "symbol" : "मि"
+        },
+        {
+          "name" : "महीना",
+          "symbol" : "माह"
+        },
+        {
+          "name" : "नैनो सेकंड",
+          "symbol" : "नैनो से"
+        },
+        {
+          "name" : "रातें",
+          "symbol" : "रातें"
+        },
+        {
+          "name" : "तिमाही",
+          "symbol" : "तिमा"
+        },
+        {
+          "name" : "सेकंड",
+          "symbol" : "से"
+        },
+        {
+          "name" : "सप्ताह",
+          "symbol" : "सप्ताह"
+        },
+        {
+          "name" : "वर्ष",
+          "symbol" : "व"
+        },
+        {
+          "name" : "एम्पीयर",
+          "symbol" : "ए॰"
+        },
+        {
+          "name" : "कूलाम",
+          "symbol" : "C"
+        },
+        {
+          "name" : "फैरड",
+          "symbol" : "F"
+        },
+        {
+          "name" : "हेनरी",
+          "symbol" : "H"
+        },
+        {
+          "name" : "मिली एम्‍पीयर",
+          "symbol" : "मि॰ ए॰"
+        },
+        {
+          "name" : "ओम",
+          "symbol" : "Ω"
+        },
+        {
+          "name" : "सीमेंस",
+          "symbol" : "S"
+        },
+        {
+          "name" : "वोल्ट",
+          "symbol" : "V"
+        },
+        {
+          "name" : "becquerels",
+          "symbol" : "Bq"
+        },
+        {
+          "name" : "ब्रिटिश थर्मल यूनिट",
+          "symbol" : "Btu"
+        },
+        {
+          "name" : "BTU-IT",
+          "symbol" : "BTU-IT"
+        },
+        {
+          "name" : "कैलोरी",
+          "symbol" : "कै"
+        },
+        {
+          "name" : "calories [IT]",
+          "symbol" : "cal-IT"
+        },
+        {
+          "name" : "इलेक्ट्रॉनवोल्ट",
+          "symbol" : "eV"
+        },
+        {
+          "name" : "कैलोरी",
+          "symbol" : "कै"
+        },
+        {
+          "name" : "grays",
+          "symbol" : "Gy"
+        },
+        {
+          "name" : "जूल",
+          "symbol" : "जू"
+        },
+        {
+          "name" : "किलो कैलोरी",
+          "symbol" : "kcal"
+        },
+        {
+          "name" : "किलो जूल",
+          "symbol" : "किजू"
+        },
+        {
+          "name" : "किलोवॉट घंटे",
+          "symbol" : "kWh"
+        },
+        {
+          "name" : "sieverts",
+          "symbol" : "Sv"
+        },
+        {
+          "name" : "यूएस थेर्म",
+          "symbol" : "यूएस थेर्म"
+        },
+        {
+          "name" : "किलोग्राम-फ़ोर्स",
+          "symbol" : "kgf"
+        },
+        {
+          "name" : "kWh/100km",
+          "symbol" : "kWh/100km"
+        },
+        {
+          "name" : "न्यूटन",
+          "symbol" : "न्यू॰"
+        },
+        {
+          "name" : "पाउंड-बल",
+          "symbol" : "lbf"
+        },
+        {
+          "name" : "गीगाहर्ट्ज़",
+          "symbol" : "GHz"
+        },
+        {
+          "name" : "हर्ट्ज़",
+          "symbol" : "Hz"
+        },
+        {
+          "name" : "किलोहर्ट्ज़",
+          "symbol" : "kHz"
+        },
+        {
+          "name" : "मेगाहर्ट्ज़",
+          "symbol" : "MHz"
+        },
+        {
+          "name" : "बिंदु",
+          "symbol" : "बिंदु"
+        },
+        {
+          "name" : "बिंदु प्रति सेंटीमीटर",
+          "symbol" : "dpcm"
+        },
+        {
+          "name" : "बिंदु प्रति इंच",
+          "symbol" : "dpi"
+        },
+        {
+          "name" : "टाइपोग्राफ़िक एम",
+          "symbol" : "em"
+        },
+        {
+          "name" : "मेगापिक्सेल",
+          "symbol" : "MP"
+        },
+        {
+          "name" : "पिक्सेल",
+          "symbol" : "px"
+        },
+        {
+          "name" : "पिक्सेल प्रति सेंटीमीटर",
+          "symbol" : "ppcm"
+        },
+        {
+          "name" : "पिक्सेल प्रति इंच",
+          "symbol" : "ppi"
+        },
+        {
+          "name" : "खगोलीय इकाइयाँ",
+          "symbol" : "au"
+        },
+        {
+          "name" : "सेंटीमीटर",
+          "symbol" : "सें॰मी॰"
+        },
+        {
+          "name" : "chain",
+          "symbol" : "chain"
+        },
+        {
+          "name" : "डेसीमीटर",
+          "symbol" : "डेमी"
+        },
+        {
+          "name" : "पृथ्वी की त्रिज्या",
+          "symbol" : "R⊕"
+        },
+        {
+          "name" : "फ़ैदम",
+          "symbol" : "फ़ै"
+        },
+        {
+          "name" : "फ़ीट",
+          "symbol" : "′"
+        },
+        {
+          "name" : "फ़र्लांग",
+          "symbol" : "फ़र्लांग"
+        },
+        {
+          "name" : "इंच",
+          "symbol" : "″"
+        },
+        {
+          "name" : "jo [JP]",
+          "symbol" : "jo [JP]"
+        },
+        {
+          "name" : "ken [JP]",
+          "symbol" : "ken [JP]"
+        },
+        {
+          "name" : "किलोमीटर",
+          "symbol" : "किमी"
+        },
+        {
+          "name" : "प्रकाश वर्ष",
+          "symbol" : "प्रव"
+        },
+        {
+          "name" : "मीटर",
+          "symbol" : "मी"
+        },
+        {
+          "name" : "माइक्रोमीटर",
+          "symbol" : "μm"
+        },
+        {
+          "name" : "मील",
+          "symbol" : "मील"
+        },
+        {
+          "name" : "मील-स्कैण्डिनेवियन",
+          "symbol" : "smi"
+        },
+        {
+          "name" : "मिलीमीटर",
+          "symbol" : "मिमी"
+        },
+        {
+          "name" : "नैनोमीटर",
+          "symbol" : "नैमी"
+        },
+        {
+          "name" : "नॉटिकल मील",
+          "symbol" : "nmi"
+        },
+        {
+          "name" : "पार्सेक",
+          "symbol" : "pc"
+        },
+        {
+          "name" : "पिकोमीटर",
+          "symbol" : "पि॰मी॰"
+        },
+        {
+          "name" : "pt",
+          "symbol" : "pt"
+        },
+        {
+          "name" : "ri [JP]",
+          "symbol" : "ri [JP]"
+        },
+        {
+          "name" : "rin [JP]",
+          "symbol" : "rin [JP]"
+        },
+        {
+          "name" : "rod",
+          "symbol" : "rod"
+        },
+        {
+          "name" : "shaku [cloth, JP]",
+          "symbol" : "shaku [cloth, JP]"
+        },
+        {
+          "name" : "shaku [JP]",
+          "symbol" : "shaku [JP]"
+        },
+        {
+          "name" : "सौर अर्धव्यास",
+          "symbol" : "R☉"
+        },
+        {
+          "name" : "sun [JP]",
+          "symbol" : "sun [JP]"
+        },
+        {
+          "name" : "यार्ड",
+          "symbol" : "यार्ड"
+        },
+        {
+          "name" : "कैन्डेला",
+          "symbol" : "cd"
+        },
+        {
+          "name" : "लुमेन",
+          "symbol" : "lm"
+        },
+        {
+          "name" : "लक्स",
+          "symbol" : "lx"
+        },
+        {
+          "name" : "सौर ज्योति",
+          "symbol" : "L☉"
+        },
+        {
+          "name" : "टेस्ला",
+          "symbol" : "T"
+        },
+        {
+          "name" : "वेबर",
+          "symbol" : "Wb"
+        },
+        {
+          "name" : "कैरेट",
+          "symbol" : "कै॰"
+        },
+        {
+          "name" : "डाल्टन",
+          "symbol" : "डाल्टन"
+        },
+        {
+          "name" : "पृथ्वी द्रव्यमान",
+          "symbol" : "M⊕"
+        },
+        {
+          "name" : "fun [JP]",
+          "symbol" : "fun [JP]"
+        },
+        {
+          "name" : "डेढ़ रत्ती",
+          "symbol" : "डेढ़ रत्ती"
+        },
+        {
+          "name" : "ग्राम",
+          "symbol" : "ग्रा"
+        },
+        {
+          "name" : "किलोग्राम",
+          "symbol" : "किग्रा"
+        },
+        {
+          "name" : "माइक्रोग्राम",
+          "symbol" : "मा॰ग्रा॰"
+        },
+        {
+          "name" : "मिलीग्राम",
+          "symbol" : "मिग्रा"
+        },
+        {
+          "name" : "औंस",
+          "symbol" : "औं॰"
+        },
+        {
+          "name" : "ट्राई औंस",
+          "symbol" : "ट्राई औंस"
+        },
+        {
+          "name" : "पौंड",
+          "symbol" : "#"
+        },
+        {
+          "name" : "slug",
+          "symbol" : "slug"
+        },
+        {
+          "name" : "सौर द्रव्यमान",
+          "symbol" : "M☉"
+        },
+        {
+          "name" : "14 पौंड का बट्टा",
+          "symbol" : "st"
+        },
+        {
+          "name" : "टन",
+          "symbol" : "टन"
+        },
+        {
+          "name" : "मीट्रिक टन",
+          "symbol" : "ट"
+        },
+        {
+          "name" : "वायुमण्डलीय दबाव",
+          "symbol" : "atm"
+        },
+        {
+          "name" : "बार",
+          "symbol" : "बार"
+        },
+        {
+          "name" : "gas E",
+          "symbol" : "gas E"
+        },
+        {
+          "name" : "हेक्टोपास्कल",
+          "symbol" : "hPa"
+        },
+        {
+          "name" : "मर्क्यूरी इंच",
+          "symbol" : "\" Hg"
+        },
+        {
+          "name" : "किलोपास्कल",
+          "symbol" : "किपा॰"
+        },
+        {
+          "name" : "मेगापास्कल",
+          "symbol" : "मेपा॰"
+        },
+        {
+          "name" : "मिलीबार",
+          "symbol" : "mb"
+        },
+        {
+          "name" : "मर्क्यूरी मिलीमीटर",
+          "symbol" : "mm Hg"
+        },
+        {
+          "name" : "मर्क्यूरी",
+          "symbol" : "Hg"
+        },
+        {
+          "name" : "पास्कल",
+          "symbol" : "पा॰"
+        },
+        {
+          "name" : "पाउंड प्रति वर्ग इंच",
+          "symbol" : "psi"
+        },
+        {
+          "name" : "ब्यूफ़ोर्ट",
+          "symbol" : "ब्यूफ़ोर्ट"
+        },
+        {
+          "name" : "किलोमीटर प्रति घंटा",
+          "symbol" : "किमी/घं"
+        },
+        {
+          "name" : "नॉट",
+          "symbol" : "नॉट"
+        },
+        {
+          "name" : "लाइट",
+          "symbol" : "लाइट"
+        },
+        {
+          "name" : "मीटर प्रति सेकंड",
+          "symbol" : "मी॰/से॰"
+        },
+        {
+          "name" : "मील प्रति घंटा",
+          "symbol" : "मीप्रघं"
+        },
+        {
+          "name" : "डिग्री सेल्सियस",
+          "symbol" : "°से॰"
+        },
+        {
+          "name" : "डिग्री फ़ेरनहाइट",
+          "symbol" : "°F"
+        },
+        {
+          "name" : "°",
+          "symbol" : "°"
+        },
+        {
+          "name" : "केल्विन",
+          "symbol" : "K"
+        },
+        {
+          "name" : "°R",
+          "symbol" : "°R"
+        },
+        {
+          "name" : "न्यूटन-मीटर",
+          "symbol" : "न्यू॰मी॰"
+        },
+        {
+          "name" : "पाउंड-फ़ुट",
+          "symbol" : "lbf⋅ft"
+        },
+        {
+          "name" : "एकड़ फ़ीट",
+          "symbol" : "एकड़ फ़ीट"
+        },
+        {
+          "name" : "बैरल",
+          "symbol" : "बैरल"
+        },
+        {
+          "name" : "बुशल",
+          "symbol" : "बु"
+        },
+        {
+          "name" : "सेंटीलीटर",
+          "symbol" : "सेंली"
+        },
+        {
+          "name" : "घन सेंटीमीटर",
+          "symbol" : "घन सेंमी"
+        },
+        {
+          "name" : "घन फ़ीट",
+          "symbol" : "घ॰ फ़ी॰"
+        },
+        {
+          "name" : "घन इंच",
+          "symbol" : "घन इंच"
+        },
+        {
+          "name" : "घन किलोमीटर",
+          "symbol" : "घन किमी"
+        },
+        {
+          "name" : "घन मीटर",
+          "symbol" : "घन मी"
+        },
+        {
+          "name" : "घन मील",
+          "symbol" : "घन मील"
+        },
+        {
+          "name" : "घन यार्ड",
+          "symbol" : "घन या॰"
+        },
+        {
+          "name" : "कप",
+          "symbol" : "कप"
+        },
+        {
+          "name" : "cup Imp.",
+          "symbol" : "cup Imp."
+        },
+        {
+          "name" : "cup [JP]",
+          "symbol" : "cup [JP]"
+        },
+        {
+          "name" : "मीट्रिक कप",
+          "symbol" : "मीट्रिक कप"
+        },
+        {
+          "name" : "डेसीलीटर",
+          "symbol" : "डेली"
+        },
+        {
+          "name" : "डेज़र्ट स्पून",
+          "symbol" : "dsp"
+        },
+        {
+          "name" : "इम्पीरियल डेज़र्टस्पून",
+          "symbol" : "dsp-Imp"
+        },
+        {
+          "name" : "ड्रम फ्लूइड",
+          "symbol" : "fl.dr."
+        },
+        {
+          "name" : "बूंद",
+          "symbol" : "बूंद"
+        },
+        {
+          "name" : "फ़्लूइड आउंस",
+          "symbol" : "fl oz"
+        },
+        {
+          "name" : "इम्पी॰ फ़्लुइड आउंस",
+          "symbol" : "fl oz Im"
+        },
+        {
+          "name" : "मेट्रिक फ़्लूड आउंस",
+          "symbol" : "fl oz m."
+        },
+        {
+          "name" : "गैलन",
+          "symbol" : "गै"
+        },
+        {
+          "name" : "इम्पीरियल गैलन",
+          "symbol" : "इम्पी गैलन"
+        },
+        {
+          "name" : "हेक्टोलीटर",
+          "symbol" : "हेली"
+        },
+        {
+          "name" : "जिगर",
+          "symbol" : "जिगर"
+        },
+        {
+          "name" : "koku [JP]",
+          "symbol" : "koku [JP]"
+        },
+        {
+          "name" : "kosaji [JP]",
+          "symbol" : "kosaji [JP]"
+        },
+        {
+          "name" : "लीटर",
+          "symbol" : "ली"
+        },
+        {
+          "name" : "मेगालीटर",
+          "symbol" : "मेली"
+        },
+        {
+          "name" : "मिलीलीटर",
+          "symbol" : "मिली"
+        },
+        {
+          "name" : "osaji [JP]",
+          "symbol" : "osaji [JP]"
+        },
+        {
+          "name" : "चुटकी",
+          "symbol" : "चुटकी"
+        },
+        {
+          "name" : "पाइंट",
+          "symbol" : "पा"
+        },
+        {
+          "name" : "pint Imp.",
+          "symbol" : "pt Imp."
+        },
+        {
+          "name" : "मीट्रिक पिंट",
+          "symbol" : "मीट्रिक पिंट"
+        },
+        {
+          "name" : "क्वार्ट",
+          "symbol" : "क्वार्ट"
+        },
+        {
+          "name" : "क्वार्ट इम्पीरियल",
+          "symbol" : "qt-Imp."
+        },
+        {
+          "name" : "sai [JP]",
+          "symbol" : "sai [JP]"
+        },
+        {
+          "name" : "shaku [vol, JP]",
+          "symbol" : "shaku [vol, JP]"
+        },
+        {
+          "name" : "टेबलस्पून",
+          "symbol" : "tbsp"
+        },
+        {
+          "name" : "टी स्पून",
+          "symbol" : "tsp"
+        },
+        {
+          "name" : "to [JP]",
+          "symbol" : "to [JP]"
+        }
+      ]
+    },
     "hr" : {
       "science.unit" : [
         {

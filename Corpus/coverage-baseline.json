@@ -42,7 +42,7 @@
     },
     "el" : {
       "paths" : 41,
-      "values" : 8879
+      "values" : 8875
     },
     "en" : {
       "paths" : 270,
@@ -140,6 +140,10 @@
       "paths" : 39,
       "values" : 6214
     },
+    "hi_IN" : {
+      "paths" : 31,
+      "values" : 16241
+    },
     "hr" : {
       "paths" : 38,
       "values" : 11399
@@ -166,11 +170,11 @@
     },
     "ka_GE" : {
       "paths" : 32,
-      "values" : 1987
+      "values" : 1982
     },
     "ko" : {
       "paths" : 34,
-      "values" : 5642
+      "values" : 5641
     },
     "lv" : {
       "paths" : 36,

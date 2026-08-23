@@ -28,7 +28,7 @@ struct DecoyLocalesTests {
 
     @Test("every locale in the corpus is loadable")
     func everyLocaleLoads() throws {
-        #expect(DecoyLocales.available.count == 64, "expected 64 blobs in the bundle")
+        #expect(DecoyLocales.available.count == 65, "expected 65 blobs in the bundle")
         for code in DecoyLocales.available {
             #expect(throws: Never.self, "\(code) failed to load") {
                 _ = try DecoyLocales.locale(code)

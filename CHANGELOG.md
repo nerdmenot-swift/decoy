@@ -48,6 +48,29 @@ the notes can be reviewed first.
   Wikidata surnames collided with INE's 27,661 weighted ones, the build refused the
   conflict rather than picking a winner, and Wikidata now yields that path to the census.
 
+- **Hindi ships, as `hi_IN`.** 211 given names and nine surnames in Devanagari, from
+  Wikidata. The data was already being fetched; Hindi had been cut in the twelve-locale
+  removal for supplying no names of its own, which was true when the floor was forty and
+  stopped being true at five.
+
+  Nine South Asian languages joined the query table at the same time — Punjabi, Gujarati,
+  Marathi, Telugu, Kannada, Malayalam, Sinhala, Odia and Assamese — because none had ever
+  been asked about. Wikidata's answer is thin: Telugu, Marathi and Odia have surnames and
+  no given names, so a locale for them would answer entirely in English, which is what the
+  original cut removed. Gujarati has three surnames and nothing else. Being in the table
+  means the next refresh picks up whatever has been catalogued since.
+
+  `pa_IN` was built and then dropped. Five Punjabi given names produced `ਹਮਜ਼ਾ` three times
+  in eight draws, and the smoke test that watches for a generator collapsing to a handful
+  of values caught it independently: *5 distinct values over 200 seeds from a pool of
+  18,392*.
+
+- **Wikidata labels are not always in the language they claim.** A `hi` label held Bengali
+  and a `pa` label Urdu — one or two per list, contributed by hand and never checked
+  against the characters. They compose, so `hi_IN` produced `स्वप्निल চৌধুরী`: a Devanagari
+  given name beside a Bengali surname, a chimera inside a single name rather than across a
+  fallback. Fifteen languages with one settled script now filter to it.
+
 - **`fullName(gender:)` honours its argument.** It never had, in any locale.
   `fullName(.female)` and `fullName(.male)` returned character-for-character the same
   name, because a name's shape is data — `{{person.firstName}} {{person.lastName}}` — and
