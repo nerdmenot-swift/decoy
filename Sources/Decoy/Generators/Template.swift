@@ -162,10 +162,13 @@ extension Faker {
     private mutating func resolveGenerator(_ token: String) -> String? {
         guard expansionDepth < Self.maxTemplateDepth else { return nil }
         switch token {
-        case "person.firstName": return person.firstName()
-        case "person.lastName": return person.lastName()
-        case "person.middleName": return person.middleName()
-        case "person.prefix": return person.prefix()
+        // The four that take a gender read the one `fullName(_:)` is composing for. It is
+        // nil for every other caller, and `firstName(nil)` is what `firstName()` already
+        // did, so no unasked-for name changes.
+        case "person.firstName": return person.firstName(composingGender)
+        case "person.lastName": return person.lastName(composingGender)
+        case "person.middleName": return person.middleName(composingGender)
+        case "person.prefix": return person.prefix(composingGender)
         case "person.suffix": return person.suffix()
         case "person.name": return person.fullName()
         case "person.jobTitle": return person.jobTitle()

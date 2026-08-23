@@ -22,6 +22,16 @@ public struct Faker: Sendable {
     /// leaving and re-entering `expand`.
     var expansionDepth = 0
 
+    /// The gender `fullName(_:)` was asked for, while it expands the locale's name pattern.
+    ///
+    /// A name's shape is data — `{{person.firstName}} {{person.lastName}}` — and the tokens
+    /// in it carry no gender, so the argument had nowhere to go and was simply dropped.
+    /// `fullName(.female)` and `fullName(.male)` returned the same name in every locale,
+    /// which is a public parameter that does nothing rather than one that does the wrong
+    /// thing. Held here so the token can read it, saved and restored around the expansion
+    /// so a nested `{{person.name}}` cannot leak a gender into its parent's.
+    var composingGender: Gender?
+
     /// Tokens still allowed in the current top-level expansion.
     ///
     /// Depth alone does not bound the *work*: a cyclic pattern re-expands its own result

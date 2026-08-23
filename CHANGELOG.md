@@ -48,6 +48,22 @@ the notes can be reviewed first.
   Wikidata surnames collided with INE's 27,661 weighted ones, the build refused the
   conflict rather than picking a winner, and Wikidata now yields that path to the census.
 
+- **`fullName(gender:)` honours its argument.** It never had, in any locale.
+  `fullName(.female)` and `fullName(.male)` returned character-for-character the same
+  name, because a name's shape is data — `{{person.firstName}} {{person.lastName}}` — and
+  the tokens in it take no arguments, so the gender only reached a fallback branch that
+  runs when a locale has no pattern, which is almost never. It was a public parameter that
+  did nothing.
+
+  Nothing caught it because every test exercising `fullName` called it without a gender,
+  and every test exercising gender called `firstName`. Honorifics come along for the ride:
+  German now gives `Frau Luise Barmettler` beside `Herr Marc Barmettler` rather than the
+  same name twice.
+
+  **Changes generated output only for calls that pass a gender** — which were returning the
+  wrong answer. `fullName()` with no argument is byte-identical, and the corpus does not
+  move.
+
 - **No locale answers in English any more.** `mk` was the last, on a margin of three
   names: thirty-one Macedonian surnames, forty-seven male given names, seven female. Two
   changes reached it. The floor came down from ten to five, which admitted the seven. And

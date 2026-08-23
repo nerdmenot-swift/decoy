@@ -209,6 +209,12 @@ public struct PersonFaker {
             return name
         }
         if let pattern = faker.draw("person.name") {
+            // Carried through the expansion rather than passed, because the pattern is data
+            // and its tokens take no arguments. Restored afterwards so a pattern containing
+            // `{{person.name}}` cannot leave its gender behind in the caller's.
+            let outer = faker.composingGender
+            faker.composingGender = gender
+            defer { faker.composingGender = outer }
             return faker.expand(pattern)
         }
         return "\(firstName(gender)) \(lastName(gender))"
