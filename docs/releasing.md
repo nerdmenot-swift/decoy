@@ -22,7 +22,7 @@ differently.
 | | What it promises | What breaks it |
 |---|---|---|
 | **Package** `1.1.0` | The API | A renamed method, a changed signature |
-| **Corpus** `60.2.0` | What a seed draws | Adding names to a locale; changing an existing value |
+| **Corpus** `61.0.0` | What a seed draws | Adding names to a locale; changing an existing value |
 
 `generate(seed:)` is only reproducible *with respect to a corpus*. Somebody who committed
 generated fixtures is exposed to the corpus version, not the package version — so a

@@ -94,24 +94,24 @@ gitignored cache, and the pipeline itself is Swift with zero dependencies. The m
 for removing a dependency on someone else's package should not itself require a package
 manager.
 
-**Built so far** — thirty-five adapters, fifty-two sources, and no faker-js:
+**Built so far** — thirty-seven adapters, fifty-four sources, and no faker-js:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
-| `iso-3166` | CLDR 48.2.0 | Unicode-3.0 | `location.country_code` (composite), `location.country` in 62 locales |
-| `iso-639` | CLDR 48.2.0 | Unicode-3.0 | `location.language` (composite) in 62 locales |
-| `iso-4217` | CLDR + SIX Group | Unicode-3.0 / facts | `finance.currency` (composite) in 62 locales |
+| `iso-3166` | CLDR 48.2.0 | Unicode-3.0 | `location.country_code` (composite), `location.country` in 66 locales |
+| `iso-639` | CLDR 48.2.0 | Unicode-3.0 | `location.language` (composite) in 66 locales |
+| `iso-4217` | CLDR + SIX Group | Unicode-3.0 / facts | `finance.currency` (composite) in 66 locales |
 | `iana-tzdb` | tzdata 2026b | public domain | `location.time_zone`, `date.time_zone` |
 | `mime-types` | mime-db 1.54.0 | MIT | `system.mime_type` — 1,015 types with extensions |
 | `programming-languages` | Linguist 9.4.0 | MIT | `system.programming_language` — 533 languages |
-| `postal` | libaddressinput | Apache-2.0 | `location.postcode` in 53 locales, `location.postal_address` in 73 |
+| `postal` | libaddressinput | Apache-2.0 | `location.postcode` in 57 locales, `location.postal_address` in 73 |
 | `iana-web` | IANA HTTP status + JOSE registries | facts | `internet.http_status_code.*` — 62 codes; `internet.jwt_algorithm` — 38 |
 | `iana-tld` | IANA root zone 2026080700 | facts | `internet.domain_suffix` — 1,438 TLDs |
 | `periodic-table` | PubChem (NIH) | public domain | `science.chemical_element` (composite) |
-| `si-units` | CLDR 48.2.0 | Unicode-3.0 | `science.unit` (composite) in 62 locales |
+| `si-units` | CLDR 48.2.0 | Unicode-3.0 | `science.unit` (composite) in 66 locales |
 | `iso-3166-2` | CLDR 48.2.0 | Unicode-3.0 | `location.state` (composite) — 3,341 subdivisions across 73 locales, each getting its own country's (upstream carries 5,395 across 200) |
-| `cldr-dates` | CLDR 48.2.0 | Unicode-3.0 | `date.month.*`, `date.weekday.*` in 62 locales |
-| `cities` | cities.json 1.1.61 (GeoNames) | CC BY 4.0 | `location.city_name`, `location.place` (composite) in 63 locales |
+| `cldr-dates` | CLDR 48.2.0 | Unicode-3.0 | `date.month.*`, `date.weekday.*` in 66 locales |
+| `cities` | cities.json 1.1.61 (GeoNames) | CC BY 4.0 | `location.city_name`, `location.place` (composite) in 67 locales |
 | `civil-names` | INSEE, Fichier des prénoms | Licence Ouverte 2.0 | `person.first_name.{female,male}` in `fr` — 9,243 names, **weighted** |
 | `occupations` | O*NET 30.3 (US Dept of Labor) | CC BY 4.0 | `person.job_title` — 941 real occupations |
 | `authored` | Decoy's own | Apache-2.0 | 38 lists no registry publishes; see below |
@@ -119,13 +119,13 @@ manager.
 | `wordnet` | Open Multilingual Wordnet 2.0 | per language (see below) | `word.noun/verb/adjective/adverb` in 14 locales |
 | `latin-words` | Whitaker's Words | permissive, see LICENSES | `lorem.word` in `base` — 1,987 Latin words |
 | `persian-words` | Lilak 3.3 | Apache-2.0 | `lorem.word` in `fa` |
-| `phone-formats` | libphonenumber 9.0.36 | Apache-2.0 | `phone_number.format.{national,human,international}` in 63 locales |
+| `phone-formats` | libphonenumber 9.0.36 | Apache-2.0 | `phone_number.format.{national,human,international}` in 67 locales |
 | `emoji` | Unicode Emoji 16.0 | Unicode-3.0 | `internet.emoji.*` — 3,780 sequences across 10 categories |
 | `airports` | airport-data 1.0.1 (OpenFlights) | Unlicense | `airline.airport` (composite) — 5,614 IATA-coded airports |
-| `wikidata-names` | Wikidata | CC0 | `person.first_name.*`, `person.last_name.generic` in 31 locales |
+| `wikidata-names` | Wikidata | CC0 | `person.first_name.*`, `person.last_name.generic` in 36 locales |
 | `wikidata-colours` | Wikidata | CC0 | `color.human` in 24 locales |
 | `wikidata-terms` | Wikidata | CC0 | compass points, zodiac signs and `person.sex` in 52–60 locales |
-| `legal-entities` | GLEIF ISO 20275 register | public facts | `company.legal_entity_type` in 48 locales, per jurisdiction |
+| `legal-entities` | GLEIF ISO 20275 register | public facts | `company.legal_entity_type` in 49 locales, per jurisdiction |
 | `civil-names` (PL) | PESEL register, Ministry of Digital Affairs | CC0 | Polish given names, weighted — Anna by 1,063,756 |
 | `civil-names` (ES) | INE census | CC BY 4.0 | Spanish given names, weighted — Maria Carmen by 618,622 |
 | `civil-names` (FI) | DVV | CC BY 4.0 | Finnish given names, weighted, first-name sheets only |
@@ -553,7 +553,7 @@ All six are representable in format v2. Four are in use.
 |---|---|---|
 | Weights | A weight column alongside string tables | **In use** — faker-derived patterns, and real Census frequencies for English surnames |
 | Composite records | Heterogeneous field tuples, not parallel lists | **In use** — countries, languages, currencies |
-| Provenance | A source/license table, referenced by ID | **In use** — 52 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
+| Provenance | A source/license table, referenced by ID | **In use** — 54 sources, attributed by nearest claimed ancestor, and the origin of `NOTICE` |
 | Generative models | A model chunk type, not only string tables | Chunk kind reserved; nothing emits one |
 | Corpus version + compatibility | Header fields, checked on load | **In use** |
 | Cross-locale dedup | A shared string arena (21.2% redundancy measured) | **In use** |
@@ -909,9 +909,10 @@ table and attributed to CLDR, which is the known limitation recorded above.
 
 **Yes, and it is checked on every build rather than concluded once.**
 
-All thirty-nine sources are attribution-style: keep the notice, do not claim the licensor
-endorses you. None is share-alike, none restricts commercial use, and none requires
-derived work to be relicensed — any one of which would make an Apache-2.0 distribution
+Thirty-nine of the fifty-four are attribution-style: keep the notice, do not claim the
+licensor endorses you. The other fifteen are public domain or CC0 and ask nothing at all.
+None is share-alike, none restricts commercial use, and none requires derived work to be
+relicensed — any one of which would make an Apache-2.0 distribution
 impossible rather than merely inconvenient.
 
 `decoy-validate` enforces it two ways:

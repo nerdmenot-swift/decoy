@@ -30,7 +30,7 @@ they came from. Decoy is built on three commitments:
 - **Sourced, not invented.** Every string is derived from a citable primary source by a
   reproducible pipeline and carries its origin with it. Where no source exists, the
   corpus records that rather than guessing.
-- **Deep outside English.** Sixty-four locales, each measured for how much of its own
+- **Deep outside English.** Sixty-seven locales, each measured for how much of its own
   language it actually supplies, with the gaps published rather than hidden.
 
 ## Design
