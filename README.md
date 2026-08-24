@@ -8,7 +8,7 @@ Reproducible by construction, portable across macOS, Linux, and Windows.
 > **Status: preparing 1.0.** The API is settled and the source declares `1.0.0`, but
 > nothing is tagged yet, so `from: "1.0.0"` will not resolve. The tag is the release.
 >
-> The corpus versions *separately*, and it will keep moving — it is at 60.8.0, and adding
+> The corpus versions *separately*, and it will keep moving — it is at 61.0.0, and adding
 > data to a locale bumps it. A corpus bump changes what a given seed draws, so pin the
 > corpus version, not just the package version, if you are keeping generated fixtures.
 > [CHANGELOG.md](CHANGELOG.md) explains which of the two numbers answers which worry.

@@ -2,10 +2,12 @@
   "attributeTo" : "decoy-authored",
   "contributions" : {
     "ar" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "az" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "base" : {
       "color.space" : [
@@ -204,13 +206,16 @@
       ]
     },
     "bn_BD" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "cs_CZ" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "cy" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "da" : {
       "location.building_number" : [
@@ -244,7 +249,8 @@
         "stræde",
         "have"
       ],
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "de" : {
       "location.building_number" : [
@@ -281,7 +287,8 @@
         "ufer",
         "steig",
         "hof"
-      ]
+      ],
+      "person.suffix" : null
     },
     "de_AT" : {
       "location.building_number" : [
@@ -318,7 +325,8 @@
         "ufer",
         "steig",
         "hof"
-      ]
+      ],
+      "person.suffix" : null
     },
     "de_CH" : {
       "location.building_number" : [
@@ -355,10 +363,12 @@
         "ufer",
         "steig",
         "hof"
-      ]
+      ],
+      "person.suffix" : null
     },
     "el" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "en" : {
       "airline.airline" : [
@@ -3057,6 +3067,15 @@
         "without"
       ]
     },
+    "en_AU" : {
+      "person.suffix" : null
+    },
+    "en_AU_ocker" : {
+      "person.suffix" : null
+    },
+    "en_BORK" : {
+      "person.suffix" : null
+    },
     "en_CA" : {
       "location.postcode_by_state" : {
         "AB" : [
@@ -3465,7 +3484,8 @@
           "Y#Y #H#",
           "Y#Z #J#"
         ]
-      }
+      },
+      "person.suffix" : null
     },
     "en_GB" : {
       "location.building_number" : [
@@ -3514,7 +3534,29 @@
         "Mews",
         "Square",
         "Green"
-      ]
+      ],
+      "person.suffix" : null
+    },
+    "en_GH" : {
+      "person.suffix" : null
+    },
+    "en_HK" : {
+      "person.suffix" : null
+    },
+    "en_IE" : {
+      "person.suffix" : null
+    },
+    "en_IN" : {
+      "person.suffix" : null
+    },
+    "en_NG" : {
+      "person.suffix" : null
+    },
+    "en_US" : {
+      "person.suffix" : null
+    },
+    "en_ZA" : {
+      "person.suffix" : null
     },
     "es" : {
       "location.building_number" : [
@@ -3548,7 +3590,8 @@
         "Camino",
         "Ronda",
         "Travesía"
-      ]
+      ],
+      "person.suffix" : null
     },
     "es_MX" : {
       "location.building_number" : [
@@ -3582,13 +3625,16 @@
         "Camino",
         "Ronda",
         "Travesía"
-      ]
+      ],
+      "person.suffix" : null
     },
     "fa" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "fi" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "fr" : {
       "location.building_number" : [
@@ -3623,7 +3669,8 @@
         "Allée",
         "Chemin",
         "Quai"
-      ]
+      ],
+      "person.suffix" : null
     },
     "fr_BE" : {
       "location.building_number" : [
@@ -3658,7 +3705,8 @@
         "Allée",
         "Chemin",
         "Quai"
-      ]
+      ],
+      "person.suffix" : null
     },
     "fr_CA" : {
       "location.postcode_by_state" : {
@@ -4068,7 +4116,8 @@
           "Y#Y #H#",
           "Y#Z #J#"
         ]
-      }
+      },
+      "person.suffix" : null
     },
     "fr_CH" : {
       "location.building_number" : [
@@ -4103,7 +4152,8 @@
         "Allée",
         "Chemin",
         "Quai"
-      ]
+      ],
+      "person.suffix" : null
     },
     "fr_LU" : {
       "location.building_number" : [
@@ -4138,7 +4188,8 @@
         "Allée",
         "Chemin",
         "Quai"
-      ]
+      ],
+      "person.suffix" : null
     },
     "fr_SN" : {
       "location.building_number" : [
@@ -4173,22 +4224,32 @@
         "Allée",
         "Chemin",
         "Quai"
-      ]
+      ],
+      "person.suffix" : null
     },
     "he" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
+    },
+    "hi_IN" : {
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "hr" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "hu" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "hy" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "id_ID" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "it" : {
       "location.building_number" : [
@@ -4222,7 +4283,8 @@
         "Vicolo",
         "Largo",
         "Lungomare"
-      ]
+      ],
+      "person.suffix" : null
     },
     "ja" : {
       "company.category" : [
@@ -4273,19 +4335,28 @@
       "location.street_pattern" : [
         "{{location.buildingNumber}}"
       ],
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "ka_GE" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
+    },
+    "kn_IN" : {
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "ko" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "lv" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "mk" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "nb_NO" : {
       "location.building_number" : [
@@ -4318,7 +4389,12 @@
         "stien",
         "bakken"
       ],
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
+    },
+    "ne_NP" : {
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "nl" : {
       "location.building_number" : [
@@ -4354,7 +4430,8 @@
         "dijk",
         "singel",
         "hof"
-      ]
+      ],
+      "person.suffix" : null
     },
     "nl_BE" : {
       "location.building_number" : [
@@ -4390,10 +4467,16 @@
         "dijk",
         "singel",
         "hof"
-      ]
+      ],
+      "person.suffix" : null
+    },
+    "pa_IN" : {
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "pl" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "pt_BR" : {
       "location.building_number" : [
@@ -4428,7 +4511,8 @@
         "Alameda",
         "Estrada"
       ],
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "pt_PT" : {
       "location.building_number" : [
@@ -4462,25 +4546,32 @@
         "Largo",
         "Alameda",
         "Estrada"
-      ]
+      ],
+      "person.suffix" : null
     },
     "ro" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "ro_MD" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "ru" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "sk" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "sl_SI" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "sr_RS_latin" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "sv" : {
       "location.building_number" : [
@@ -4514,7 +4605,8 @@
         "backen",
         "stigen"
       ],
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "tr" : {
       "location.building_number" : [
@@ -4547,22 +4639,28 @@
         "Meydanı",
         "Yolu"
       ],
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "uk" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "vi" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "yo_NG" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "zh_CN" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     },
     "zh_TW" : {
-      "person.prefix" : null
+      "person.prefix" : null,
+      "person.suffix" : null
     }
   },
   "fallback" : false,

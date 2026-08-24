@@ -25,6 +25,25 @@ Undated until tagged — the tag is the release, and this heading is written bef
 the notes can be reviewed first.
 
 ### Fixed
+- **No locale wears an English honorific it never chose.** `pa_IN` was producing
+  `Dr. ਆਰਿਫ ਜਫਰ` and `ਸਾਹਿਲ ਸ਼੍ਰੀਕਾਂਤ Sr.` — a Latin title bolted to a Gurmukhi name.
+
+  `person.prefix` was the smaller half: four locales inherited English titles because
+  they were in neither the list that carries honorifics nor the list that declares none.
+  `person.suffix` was the larger by far — **fifty-four locales** inherited `Jr.`, `Sr.` and
+  `III`, because only English ever declared its own. Around three per cent of every
+  non-English name carried one, which is rare enough to survive every sample anybody took.
+
+  Both are now declared absent wherever a locale has none, which is the mechanism that
+  already existed and simply had not been applied. `de` keeps `Dr.` and `Prof.`, which are
+  German; `en` keeps its own.
+
+  **Removes values, so the corpus takes a major bump.** Sixty-six locales also lose a name
+  *shape*: CLDR gives several locales a pattern ending in `{{person.suffix}}`, and the
+  compiler prunes a shape whose token can no longer produce anything. Fewer patterns is the
+  point rather than a regression — and the coverage gate reported all sixty-two as
+  regressions, correctly, before the baseline was refreshed.
+
 
 - **Nine locales stopped answering in English.** `cy`, `bn_BD`, `hr`, `fa`, `id_ID`,
   `ka_GE`, `yo_NG`, `zh_TW` and `ko` now draw their own full names — Peredur Sinnott,

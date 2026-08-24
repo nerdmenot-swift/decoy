@@ -127,11 +127,23 @@ struct RealCorpusTests {
         #expect(row["alpha2"]?.count == 2 && row["alpha3"]?.count == 3)
     }
 
+    /// CLDR weights a locale's name shapes, and the compiler has to carry that through.
+    ///
+    /// Read from `en`, which is where the honorific and the suffix both live. It used to
+    /// read `ar`, and that stopped working for a reason worth recording rather than
+    /// papering over: `ar` had two shapes, one of which ended in `{{person.suffix}}`, and
+    /// Arabic never had a suffix of its own — it was borrowing `Jr.` from English. Once
+    /// that was declared absent the compiler pruned the shape that referenced it, correctly,
+    /// and `ar` was left with a single pattern and nothing to compare.
+    ///
+    /// Sixty-six locales lost a shape the same way. Fewer patterns is the point, not a
+    /// regression.
     @Test("weighted name patterns kept their weights")
     func weightedPatterns() throws {
-        let locale = try RealCorpus.locale("ar", chain: ["ar", "en", "base"])
+        let locale = try RealCorpus.locale("en", chain: ["en", "base"])
         let patterns = try #require(locale.strings("person.name"))
-        #expect(patterns.hasWeights, "faker ships weighted name patterns for ar")
+        #expect(patterns.hasWeights, "CLDR ships weighted name patterns for en")
+        #expect(patterns.count > 1, "en should carry a prefixed and a suffixed shape")
         let weights = try (0..<patterns.count).map { try patterns.weight(at: $0) }
         #expect(weights.contains { $0 != weights[0] }, "weights should not all be equal")
     }

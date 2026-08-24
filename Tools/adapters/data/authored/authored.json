@@ -184,13 +184,16 @@
  },
  "literal": {
   "sv": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "da": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "nb_NO": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "fr_CA": {
    "location.postcode_by_state": {
@@ -600,13 +603,16 @@
      "Y#Y #H#",
      "Y#Z #J#"
     ]
-   }
+   },
+   "person.suffix": null
   },
   "pt_BR": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "tr": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "base": {
    "color.space": [
@@ -853,7 +859,8 @@
     "出版",
     "観光",
     "倉庫"
-   ]
+   ],
+   "person.suffix": null
   },
   "en_CA": {
    "location.postcode_by_state": {
@@ -1263,7 +1270,8 @@
      "Y#Y #H#",
      "Y#Z #J#"
     ]
-   }
+   },
+   "person.suffix": null
   },
   "en": {
    "color.human": [
@@ -3963,91 +3971,211 @@
    ]
   },
   "ar": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "az": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "bn_BD": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "cs_CZ": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "cy": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "el": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "fa": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "fi": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "he": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "hr": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "hu": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "hy": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "id_ID": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "ka_GE": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "ko": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "lv": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "mk": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "pl": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "ro": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "ro_MD": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "ru": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "sk": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "sl_SI": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "sr_RS_latin": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "uk": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "vi": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "yo_NG": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "zh_CN": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
   },
   "zh_TW": {
-   "person.prefix": null
+   "person.prefix": null,
+   "person.suffix": null
+  },
+  "hi_IN": {
+   "person.prefix": null,
+   "person.suffix": null
+  },
+  "kn_IN": {
+   "person.prefix": null,
+   "person.suffix": null
+  },
+  "ne_NP": {
+   "person.prefix": null,
+   "person.suffix": null
+  },
+  "pa_IN": {
+   "person.prefix": null,
+   "person.suffix": null
+  },
+  "de": {
+   "person.suffix": null
+  },
+  "de_AT": {
+   "person.suffix": null
+  },
+  "de_CH": {
+   "person.suffix": null
+  },
+  "en_AU": {
+   "person.suffix": null
+  },
+  "en_AU_ocker": {
+   "person.suffix": null
+  },
+  "en_BORK": {
+   "person.suffix": null
+  },
+  "en_GB": {
+   "person.suffix": null
+  },
+  "en_GH": {
+   "person.suffix": null
+  },
+  "en_HK": {
+   "person.suffix": null
+  },
+  "en_IE": {
+   "person.suffix": null
+  },
+  "en_IN": {
+   "person.suffix": null
+  },
+  "en_NG": {
+   "person.suffix": null
+  },
+  "en_US": {
+   "person.suffix": null
+  },
+  "en_ZA": {
+   "person.suffix": null
+  },
+  "es": {
+   "person.suffix": null
+  },
+  "es_MX": {
+   "person.suffix": null
+  },
+  "fr": {
+   "person.suffix": null
+  },
+  "fr_BE": {
+   "person.suffix": null
+  },
+  "fr_CH": {
+   "person.suffix": null
+  },
+  "fr_LU": {
+   "person.suffix": null
+  },
+  "fr_SN": {
+   "person.suffix": null
+  },
+  "it": {
+   "person.suffix": null
+  },
+  "nl": {
+   "person.suffix": null
+  },
+  "nl_BE": {
+   "person.suffix": null
+  },
+  "pt_PT": {
+   "person.suffix": null
   }
  },
  "replaces": [
