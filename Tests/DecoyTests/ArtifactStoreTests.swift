@@ -45,7 +45,7 @@ struct ArtifactStoreTests {
                 checked += 1
             }
         }
-        #expect(checked == 60, "expected 60 artifacts, checked \(checked)")
+        #expect(checked == 62, "expected 62 artifacts, checked \(checked)")
     }
 
     /// A cached file is re-verified, never trusted.

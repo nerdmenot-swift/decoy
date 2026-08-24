@@ -48,6 +48,10 @@ public struct WikidataNamesAdapter: Adapter {
         "sl_SI": ["female", "male"],
         "az": ["female", "male", "surname"],
         "he": ["female", "male"],
+        // The three Indian locales yield their surnames to `naamapadam`, which carries
+        // between nine hundred and twelve hundred each against Wikidata's nought to twelve.
+        // Same script on both sides, so this one really is only about volume.
+        "kn_IN": ["surname"], "pa_IN": ["surname"],
         // Nepali surnames yield to `popular-names`, and the reason is script rather than
         // size. Wikidata's twelve are Devanagari; the only Nepali *given* names anybody
         // publishes are romanised, so Devanagari surnames beside them would be a chimera

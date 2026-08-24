@@ -305,6 +305,14 @@
         "####"
       ]
     },
+    "kn_IN" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.zipCode}}\n{{location.state}}"
+      ],
+      "location.postcode" : [
+        "######"
+      ]
+    },
     "ko" : {
       "location.postal_address" : [
         "{{location.state}} {{location.city}}\n{{location.streetAddress}}\n{{person.name}}\n{{location.zipCode}}"
@@ -359,6 +367,14 @@
       ],
       "location.postcode" : [
         "####"
+      ]
+    },
+    "pa_IN" : {
+      "location.postal_address" : [
+        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.zipCode}}\n{{location.state}}"
+      ],
+      "location.postcode" : [
+        "######"
       ]
     },
     "pl" : {

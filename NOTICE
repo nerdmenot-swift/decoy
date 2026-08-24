@@ -115,6 +115,10 @@ CC0-1.0
   az-adlar — version 2026-08-10, retrieved 2026-08-10
     https://opendata.az/dataset/azerbaycan-adlari
     Full licence: LICENSES/az-adlar.txt
+  naamapadam — version 1.0, retrieved 2026-08-24
+    AI4Bharat, IIT Madras — Mhaske et al., 'Naamapadam: A Large-Scale Named Entity Annotated Data for Indic Languages'
+    https://huggingface.co/datasets/ai4bharat/naamapadam
+    Full licence: LICENSES/naamapadam.txt
   pesel-imiona — version 2026-01, retrieved 2026-08-10
     https://dane.gov.pl/pl/dataset/1667
     Full licence: LICENSES/pesel-imiona.txt

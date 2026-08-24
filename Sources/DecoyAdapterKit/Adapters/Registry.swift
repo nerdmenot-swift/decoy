@@ -29,6 +29,7 @@ public enum Adapters {
             CLDRDatesAdapter(),
             AuthoredListsAdapter.commonKnowledge(),
             EmojiAdapter(),
+            IndicNamesAdapter(),
             IANATLDAdapter(),
             IANATZDBAdapter(),
             IANAWebAdapter(),

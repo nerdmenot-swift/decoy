@@ -112,7 +112,7 @@ struct IntegrityTests {
         // descriptors; anything less means the enumeration lost some, which is how this
         // suite first passed having silently skipped eleven of them.
         let declared = descriptors.reduce(0) { $0 + ($1.artifacts?.count ?? 0) }
-        #expect(declared == 60, "expected 60 declared artifacts, enumerated \(declared)")
+        #expect(declared == 62, "expected 62 declared artifacts, enumerated \(declared)")
         #expect(
             checked + missing.count == declared,
             "verified \(checked) + missing \(missing.count) should account for all \(declared)")

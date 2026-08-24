@@ -37803,6 +37803,928 @@
         }
       ]
     },
+    "kn_IN" : {
+      "finance.currency" : [
+        {
+          "code" : "AED",
+          "name" : "ಸಂಯುಕ್ತ ಅರಬ್‌ ಎಮಿರೇಟ್‌‌ಗಳ ದಿರಾಮ್‌‌",
+          "numericCode" : "784",
+          "symbol" : "AED"
+        },
+        {
+          "code" : "AFN",
+          "name" : "ಅಫ್‌ಘನ್ ಅಫಘಾನಿ",
+          "numericCode" : "971",
+          "symbol" : "AFN"
+        },
+        {
+          "code" : "ALL",
+          "name" : "ಅಲ್‌ಬೇನಿಯನ್ ಲೆಕ್",
+          "numericCode" : "008",
+          "symbol" : "ALL"
+        },
+        {
+          "code" : "AMD",
+          "name" : "ಅರ್ಮೆನಿಯನ್ ಡ್ರಾಮ್",
+          "numericCode" : "051",
+          "symbol" : "AMD"
+        },
+        {
+          "code" : "AOA",
+          "name" : "ಅಂಗೋಲಾದ ಕ್ವಾನ್ಝಾ",
+          "numericCode" : "973",
+          "symbol" : "AOA"
+        },
+        {
+          "code" : "ARS",
+          "name" : "ಅರ್ಜೆಂಟಿನಾ ಪೆಸೊ",
+          "numericCode" : "032",
+          "symbol" : "ARS"
+        },
+        {
+          "code" : "AUD",
+          "name" : "ಆಸ್ಟ್ರೇಲಿಯನ್ ಡಾಲರ್‌",
+          "numericCode" : "036",
+          "symbol" : "A$"
+        },
+        {
+          "code" : "AWG",
+          "name" : "ಅರುಬನ್ ಫ್ಲೊರೀನ್‌‌",
+          "numericCode" : "533",
+          "symbol" : "AWG"
+        },
+        {
+          "code" : "AZN",
+          "name" : "ಅಝರ್‌ಬೈಜಾನಿ ಮನಾತ್",
+          "numericCode" : "944",
+          "symbol" : "AZN"
+        },
+        {
+          "code" : "BAM",
+          "name" : "ಬೋಸ್ನಿಯಾ-ಹರ್ಜ್‌ಗೋವಿನ ಪರಿವರ್ತನೀಯ ಗುರುತು",
+          "numericCode" : "977",
+          "symbol" : "BAM"
+        },
+        {
+          "code" : "BBD",
+          "name" : "ಬರ್ಬಾಡಿಯನ್ ಡಾಲರ್",
+          "numericCode" : "052",
+          "symbol" : "BBD"
+        },
+        {
+          "code" : "BDT",
+          "name" : "ಬಾಂಗ್ಲಾದೇಶದ ಟಾಕಾ",
+          "numericCode" : "050",
+          "symbol" : "BDT"
+        },
+        {
+          "code" : "BHD",
+          "name" : "ಬಹ್‌‌ರೈನಿ ದಿನಾರ್",
+          "numericCode" : "048",
+          "symbol" : "BHD"
+        },
+        {
+          "code" : "BIF",
+          "name" : "ಬುರುಂದಿಯನ್ ಫ್ರಾಂಕ್",
+          "numericCode" : "108",
+          "symbol" : "BIF"
+        },
+        {
+          "code" : "BMD",
+          "name" : "ಬರ್ಮುಡನ್ ಡಾಲರ್",
+          "numericCode" : "060",
+          "symbol" : "BMD"
+        },
+        {
+          "code" : "BND",
+          "name" : "ಬ್ರೂನಿ ಡಾಲರ್",
+          "numericCode" : "096",
+          "symbol" : "BND"
+        },
+        {
+          "code" : "BOB",
+          "name" : "ಬೊಲಿವಿಯಾದ ಬೊಲಿವಿಯಾನೊ",
+          "numericCode" : "068",
+          "symbol" : "BOB"
+        },
+        {
+          "code" : "BRL",
+          "name" : "ಬ್ರೆಜಿಲಿಯನ್‌ ರಿಯಲ್",
+          "numericCode" : "986",
+          "symbol" : "R$"
+        },
+        {
+          "code" : "BSD",
+          "name" : "ಬಹಾಮಿಯನ್ ಡಾಲರ್",
+          "numericCode" : "044",
+          "symbol" : "BSD"
+        },
+        {
+          "code" : "BTN",
+          "name" : "ಭೂತಾನೀಸ್ ನುಲ್ತರಮ್",
+          "numericCode" : "064",
+          "symbol" : "BTN"
+        },
+        {
+          "code" : "BWP",
+          "name" : "ಬೋಟ್ಸ್‌ವಾನನ್ ಪುಲಾ",
+          "numericCode" : "072",
+          "symbol" : "BWP"
+        },
+        {
+          "code" : "BYN",
+          "name" : "ಬೆಲಾರುಸಿಯನ್ ರೂಬಲ್",
+          "numericCode" : "933",
+          "symbol" : "BYN"
+        },
+        {
+          "code" : "BZD",
+          "name" : "ಬೆಲೀಜ್ ಡಾಲರ್",
+          "numericCode" : "084",
+          "symbol" : "BZD"
+        },
+        {
+          "code" : "CAD",
+          "name" : "ಕೆನಡಾದ ಡಾಲರ್",
+          "numericCode" : "124",
+          "symbol" : "CA$"
+        },
+        {
+          "code" : "CDF",
+          "name" : "ಕಾಂಗೋಲೀಸ್ ಫ್ರಾಂಕ್",
+          "numericCode" : "976",
+          "symbol" : "CDF"
+        },
+        {
+          "code" : "CHF",
+          "name" : "ಸ್ವಿಸ್ ಫ್ರಾಂಕ್",
+          "numericCode" : "756",
+          "symbol" : "CHF"
+        },
+        {
+          "code" : "CLP",
+          "name" : "ಚಿಲಿಯ ಪೆಸೊ",
+          "numericCode" : "152",
+          "symbol" : "CLP"
+        },
+        {
+          "code" : "CNY",
+          "name" : "ಚೈನೀಸ್ ಯುವಾನ್",
+          "numericCode" : "156",
+          "symbol" : "CN¥"
+        },
+        {
+          "code" : "COP",
+          "name" : "ಕೊಲೊಂಬಿಯೋದ ಪೆಸೊ",
+          "numericCode" : "170",
+          "symbol" : "COP"
+        },
+        {
+          "code" : "CRC",
+          "name" : "ಕೋಸ್ಟ ರಿಕನ್ ಕೊಲನ್",
+          "numericCode" : "188",
+          "symbol" : "CRC"
+        },
+        {
+          "code" : "CUP",
+          "name" : "ಕ್ಯೂಬಾದ ಪೆಸೊ",
+          "numericCode" : "192",
+          "symbol" : "CUP"
+        },
+        {
+          "code" : "CVE",
+          "name" : "ಕೇಪ್ ವರ್ಡಿನ್ ಎಸ್‌ಕೂಡೊ",
+          "numericCode" : "132",
+          "symbol" : "CVE"
+        },
+        {
+          "code" : "CZK",
+          "name" : "ಝೆಕ್ ಗಣರಾಜ್ಯ ಕೊರೂನ",
+          "numericCode" : "203",
+          "symbol" : "CZK"
+        },
+        {
+          "code" : "DJF",
+          "name" : "ಜಿಬೊಟಿಯನ್ ಫ್ರಾಂಕ್",
+          "numericCode" : "262",
+          "symbol" : "DJF"
+        },
+        {
+          "code" : "DKK",
+          "name" : "ಡ್ಯಾನಿಶ್ ಕ್ರೋನ್",
+          "numericCode" : "208",
+          "symbol" : "DKK"
+        },
+        {
+          "code" : "DOP",
+          "name" : "ಡೊಮಿನಿಕನ್ ಪೆಸೊ",
+          "numericCode" : "214",
+          "symbol" : "DOP"
+        },
+        {
+          "code" : "DZD",
+          "name" : "ಅಲ್ಜೀರಿಯನ್ ದಿನಾರ್",
+          "numericCode" : "012",
+          "symbol" : "DZD"
+        },
+        {
+          "code" : "EGP",
+          "name" : "ಈಜಿಪ್ಷಿಯನ್ ಪೌಂಡ್‍",
+          "numericCode" : "818",
+          "symbol" : "EGP"
+        },
+        {
+          "code" : "ERN",
+          "name" : "ಎರಿತ್ರಿಯನ್ ನಕ್ಫಾ",
+          "numericCode" : "232",
+          "symbol" : "ERN"
+        },
+        {
+          "code" : "ETB",
+          "name" : "ಇಥಿಯೋಪಿಯನ್ ಬಿರ್",
+          "numericCode" : "230",
+          "symbol" : "ETB"
+        },
+        {
+          "code" : "EUR",
+          "name" : "ಯೂರೊ",
+          "numericCode" : "978",
+          "symbol" : "€"
+        },
+        {
+          "code" : "FJD",
+          "name" : "ಫಿಜಿಯನ್ ಡಾಲರ್",
+          "numericCode" : "242",
+          "symbol" : "FJD"
+        },
+        {
+          "code" : "FKP",
+          "name" : "ಫಾಕ್‌ಲ್ಯಾಂಡ್ ದ್ವೀಪಗಳ ಪೌಂಡ್",
+          "numericCode" : "238",
+          "symbol" : "FKP"
+        },
+        {
+          "code" : "GBP",
+          "name" : "ಬ್ರಿಟಿಷ್ ಪೌಂಡ್",
+          "numericCode" : "826",
+          "symbol" : "£"
+        },
+        {
+          "code" : "GEL",
+          "name" : "ಜಾರ್ಜಿಯಾದ ಲಾರಿ",
+          "numericCode" : "981",
+          "symbol" : "GEL"
+        },
+        {
+          "code" : "GHS",
+          "name" : "ಘಾನಾದ ಸೆದಿ",
+          "numericCode" : "936",
+          "symbol" : "GHS"
+        },
+        {
+          "code" : "GIP",
+          "name" : "ಗಿಬ್ರಾಲ್ಟರ್ ಪೌಂಡ್",
+          "numericCode" : "292",
+          "symbol" : "GIP"
+        },
+        {
+          "code" : "GMD",
+          "name" : "ಗ್ಯಾಂಬಿಯಾದ ದಲಾಸಿ",
+          "numericCode" : "270",
+          "symbol" : "GMD"
+        },
+        {
+          "code" : "GNF",
+          "name" : "ಗಿನಿಯನ್ ಫ್ರಾಂಕ್",
+          "numericCode" : "324",
+          "symbol" : "GNF"
+        },
+        {
+          "code" : "GTQ",
+          "name" : "ಗ್ವಾಟೆಮಾಲಾದ ಕುಯಿಟ್ಸಲ್‌‌",
+          "numericCode" : "320",
+          "symbol" : "GTQ"
+        },
+        {
+          "code" : "GYD",
+          "name" : "ಗುಯಾನೀಸ್‌ ಡಾಲರ್‌",
+          "numericCode" : "328",
+          "symbol" : "GYD"
+        },
+        {
+          "code" : "HKD",
+          "name" : "ಹಾಂಗ್ ಕಾಂಗ್ ಡಾಲರ್",
+          "numericCode" : "344",
+          "symbol" : "HK$"
+        },
+        {
+          "code" : "HNL",
+          "name" : "ಹೊಂಡುರಾನ್‌ ಲೆಂಪಿರಾ",
+          "numericCode" : "340",
+          "symbol" : "HNL"
+        },
+        {
+          "code" : "HTG",
+          "name" : "ಹೈಟಿಯ ಗೋರ್ದೆ",
+          "numericCode" : "332",
+          "symbol" : "HTG"
+        },
+        {
+          "code" : "HUF",
+          "name" : "ಹಂಗೇರಿಯನ್ ಫೋರಿಂಟ್",
+          "numericCode" : "348",
+          "symbol" : "HUF"
+        },
+        {
+          "code" : "IDR",
+          "name" : "ಇಂಡೊನೇಷ್ಯಾ ರುಪೈ",
+          "numericCode" : "360",
+          "symbol" : "IDR"
+        },
+        {
+          "code" : "ILS",
+          "name" : "ಇಸ್ರೇಲಿ ನ್ಯೂ ಶೇಖಲ್",
+          "numericCode" : "376",
+          "symbol" : "₪"
+        },
+        {
+          "code" : "INR",
+          "name" : "ಭಾರತೀಯ ರೂಪಾಯಿ",
+          "numericCode" : "356",
+          "symbol" : "₹"
+        },
+        {
+          "code" : "IQD",
+          "name" : "ಇರಾಕಿ ದಿನಾರ್",
+          "numericCode" : "368",
+          "symbol" : "IQD"
+        },
+        {
+          "code" : "IRR",
+          "name" : "ಇರಾನಿಯನ್ ರಿಯಲ್",
+          "numericCode" : "364",
+          "symbol" : "IRR"
+        },
+        {
+          "code" : "ISK",
+          "name" : "ಐಸ್‌ಲ್ಯಾಂಡಿಕ್ ಕ್ರೋನಾ",
+          "numericCode" : "352",
+          "symbol" : "ISK"
+        },
+        {
+          "code" : "JMD",
+          "name" : "ಜಮೈಕನ್ ಡಾಲರ್",
+          "numericCode" : "388",
+          "symbol" : "JMD"
+        },
+        {
+          "code" : "JOD",
+          "name" : "ಜೋರ್ಡಾನಿಯನ್ ದಿನಾರ್",
+          "numericCode" : "400",
+          "symbol" : "JOD"
+        },
+        {
+          "code" : "JPY",
+          "name" : "ಜಪಾನೀಸ್ ಯೆನ್",
+          "numericCode" : "392",
+          "symbol" : "JP¥"
+        },
+        {
+          "code" : "KES",
+          "name" : "ಕೀನ್ಯಾದ ಶಿಲ್ಲಿಂಗ್‌",
+          "numericCode" : "404",
+          "symbol" : "KES"
+        },
+        {
+          "code" : "KGS",
+          "name" : "ಕಿರ್ಗಿಸ್ತಾನಿ ಸೋಮ್",
+          "numericCode" : "417",
+          "symbol" : "KGS"
+        },
+        {
+          "code" : "KHR",
+          "name" : "ಕಾಂಬೋಡಿಯನ್ ರಿಯಲ್",
+          "numericCode" : "116",
+          "symbol" : "KHR"
+        },
+        {
+          "code" : "KMF",
+          "name" : "ಕೊಮೊರಿಯನ್ ಫ್ರಾಂಕ್",
+          "numericCode" : "174",
+          "symbol" : "KMF"
+        },
+        {
+          "code" : "KPW",
+          "name" : "ಉತ್ತರ ಕೊರಿಯನ್ ವೋನ್",
+          "numericCode" : "408",
+          "symbol" : "KPW"
+        },
+        {
+          "code" : "KRW",
+          "name" : "ದಕ್ಷಿಣ ಕೊರಿಯನ್ ವೊನ್",
+          "numericCode" : "410",
+          "symbol" : "₩"
+        },
+        {
+          "code" : "KWD",
+          "name" : "ಕುವೈತೀ ದಿನಾರ್",
+          "numericCode" : "414",
+          "symbol" : "KWD"
+        },
+        {
+          "code" : "KYD",
+          "name" : "ಕೆಮ್ಯಾನ್‌ ಐಲ್ಯಾಂಡ್‌ನ ಡಾಲರ್‌",
+          "numericCode" : "136",
+          "symbol" : "KYD"
+        },
+        {
+          "code" : "KZT",
+          "name" : "ಕಜಾಕಿಸ್ತಾನಿ ತೆಂಗೆ",
+          "numericCode" : "398",
+          "symbol" : "KZT"
+        },
+        {
+          "code" : "LAK",
+          "name" : "ಲೋಟಿಯನ್ ಕಿಪ್",
+          "numericCode" : "418",
+          "symbol" : "LAK"
+        },
+        {
+          "code" : "LBP",
+          "name" : "ಲೆಬೆನೀಸ್ ಪೌಂಡ್",
+          "numericCode" : "422",
+          "symbol" : "LBP"
+        },
+        {
+          "code" : "LKR",
+          "name" : "ಶ್ರೀಲಂಕಾದ ರುಪೀ",
+          "numericCode" : "144",
+          "symbol" : "LKR"
+        },
+        {
+          "code" : "LRD",
+          "name" : "ಲಿಬೇರಿಯನ್ ಡಾಲರ್",
+          "numericCode" : "430",
+          "symbol" : "LRD"
+        },
+        {
+          "code" : "LSL",
+          "name" : "ಲೆಸೊತೊ ಲೊತಿ",
+          "numericCode" : "426",
+          "symbol" : "LSL"
+        },
+        {
+          "code" : "LYD",
+          "name" : "ಲಿಬಿಯಾದ ದಿನಾರ್‌",
+          "numericCode" : "434",
+          "symbol" : "LYD"
+        },
+        {
+          "code" : "MAD",
+          "name" : "ಮೊರೊಕನ್ ದಿರ್‌ಹಮ್",
+          "numericCode" : "504",
+          "symbol" : "MAD"
+        },
+        {
+          "code" : "MDL",
+          "name" : "ಮಲ್ದೋವಾದ ಲೆವೂ",
+          "numericCode" : "498",
+          "symbol" : "MDL"
+        },
+        {
+          "code" : "MGA",
+          "name" : "ಮಲಗಾಸಿ ಅರಿಯಾರಿ",
+          "numericCode" : "969",
+          "symbol" : "MGA"
+        },
+        {
+          "code" : "MKD",
+          "name" : "ಮೆಸಡೋನಿಯನ್ ದಿನಾರ್",
+          "numericCode" : "807",
+          "symbol" : "MKD"
+        },
+        {
+          "code" : "MMK",
+          "name" : "ಮ್ಯಾನ್ಮಾರ್ ಕ್ಯಾಟ್",
+          "numericCode" : "104",
+          "symbol" : "MMK"
+        },
+        {
+          "code" : "MNT",
+          "name" : "ಮಂಗೋಲಿಯಾದ ತುಗ್ರಿಕ್‌‌",
+          "numericCode" : "496",
+          "symbol" : "MNT"
+        },
+        {
+          "code" : "MOP",
+          "name" : "ಮಕಾನಿಸ್ ಪಟಾಕಾ",
+          "numericCode" : "446",
+          "symbol" : "MOP"
+        },
+        {
+          "code" : "MRU",
+          "name" : "ಮೌರೀಶಿಯನಿಯನ್ ಒಗಿಯ",
+          "numericCode" : "929",
+          "symbol" : "MRU"
+        },
+        {
+          "code" : "MUR",
+          "name" : "ಮಾರಿಷಿಯನ್ ರುಪಿ",
+          "numericCode" : "480",
+          "symbol" : "MUR"
+        },
+        {
+          "code" : "MVR",
+          "name" : "ಮಾಲ್ಡೀವಿಯನ್ ರುಫಿಯಾ",
+          "numericCode" : "462",
+          "symbol" : "MVR"
+        },
+        {
+          "code" : "MWK",
+          "name" : "ಮಲಾವಿಯ ಕ್ವಾಚ",
+          "numericCode" : "454",
+          "symbol" : "MWK"
+        },
+        {
+          "code" : "MXN",
+          "name" : "ಮೆಕ್ಸಿಕೊದ ಪೆಸೊ",
+          "numericCode" : "484",
+          "symbol" : "MX$"
+        },
+        {
+          "code" : "MYR",
+          "name" : "ಮಲೇಶಿಯನ್ ರಿಂಗಿಟ್",
+          "numericCode" : "458",
+          "symbol" : "MYR"
+        },
+        {
+          "code" : "MZN",
+          "name" : "ಮೊಝಾಂಬಿಕನ್ ಮೆಟಿಕಲ್",
+          "numericCode" : "943",
+          "symbol" : "MZN"
+        },
+        {
+          "code" : "NAD",
+          "name" : "ನಮೀಬಿಯನ್ ಡಾಲರ್",
+          "numericCode" : "516",
+          "symbol" : "NAD"
+        },
+        {
+          "code" : "NGN",
+          "name" : "ನೈಜೀರಿಯಾದ ನೇರಾ",
+          "numericCode" : "566",
+          "symbol" : "NGN"
+        },
+        {
+          "code" : "NIO",
+          "name" : "ನಿಕಾರಗ್ವಾದ ಕರ್ದೊಬಾ",
+          "numericCode" : "558",
+          "symbol" : "NIO"
+        },
+        {
+          "code" : "NOK",
+          "name" : "ನಾರ್ವೇಯ ಕ್ರೋನ್",
+          "numericCode" : "578",
+          "symbol" : "NOK"
+        },
+        {
+          "code" : "NPR",
+          "name" : "ನೇಪಾಳದ ರುಪೀ",
+          "numericCode" : "524",
+          "symbol" : "NPR"
+        },
+        {
+          "code" : "NZD",
+          "name" : "ನ್ಯೂಜಿಲ್ಯಾಂಡ್ ಡಾಲರ್",
+          "numericCode" : "554",
+          "symbol" : "NZ$"
+        },
+        {
+          "code" : "OMR",
+          "name" : "ಒಮಾನಿ ರಿಯಲ್",
+          "numericCode" : "512",
+          "symbol" : "OMR"
+        },
+        {
+          "code" : "PAB",
+          "name" : "ಪನಾಮಾನಿಯನ್ ಬಲ್ಬೋವಾ",
+          "numericCode" : "590",
+          "symbol" : "PAB"
+        },
+        {
+          "code" : "PEN",
+          "name" : "ಪೆರುವಿಯನ್ ಸೊಲ್",
+          "numericCode" : "604",
+          "symbol" : "PEN"
+        },
+        {
+          "code" : "PGK",
+          "name" : "ಪಪುವಾ ನ್ಯೂ ಗಿನಿಯನ್ ಕಿನಾ",
+          "numericCode" : "598",
+          "symbol" : "PGK"
+        },
+        {
+          "code" : "PHP",
+          "name" : "ಫಿಲಿಪ್ಪೈನ್ ಪಿಸೊ",
+          "numericCode" : "608",
+          "symbol" : "PHP"
+        },
+        {
+          "code" : "PKR",
+          "name" : "ಪಾಕಿಸ್ತಾನದ ರುಪೀ",
+          "numericCode" : "586",
+          "symbol" : "PKR"
+        },
+        {
+          "code" : "PLN",
+          "name" : "ಪೊಲಿಶ್ ಝ್ಲೋಟಿ",
+          "numericCode" : "985",
+          "symbol" : "PLN"
+        },
+        {
+          "code" : "PYG",
+          "name" : "ಪೆರುಗ್ವೇಯ ಗ್ವಾರನೀ",
+          "numericCode" : "600",
+          "symbol" : "PYG"
+        },
+        {
+          "code" : "QAR",
+          "name" : "ಖತಾರಿ ರಿಯಲ್",
+          "numericCode" : "634",
+          "symbol" : "QAR"
+        },
+        {
+          "code" : "RON",
+          "name" : "ರೊಮೇನಿಯನ್ ಲೆವು",
+          "numericCode" : "946",
+          "symbol" : "RON"
+        },
+        {
+          "code" : "RSD",
+          "name" : "ಸೆರ್ಬಿಯನ್ ದಿನಾರ್",
+          "numericCode" : "941",
+          "symbol" : "RSD"
+        },
+        {
+          "code" : "RUB",
+          "name" : "ರಶಿಯನ್ ರೂಬಲ್",
+          "numericCode" : "643",
+          "symbol" : "RUB"
+        },
+        {
+          "code" : "RWF",
+          "name" : "ರುವಾಂಡನ್ ಫ್ರಾಂಕ್",
+          "numericCode" : "646",
+          "symbol" : "RWF"
+        },
+        {
+          "code" : "SAR",
+          "name" : "ಸೌದಿ ರಿಯಾಲ್",
+          "numericCode" : "682",
+          "symbol" : "SAR"
+        },
+        {
+          "code" : "SBD",
+          "name" : "ಸೊಲೊಮನ್ ದ್ವೀಪಗಳ ಡಾಲರ್",
+          "numericCode" : "090",
+          "symbol" : "SBD"
+        },
+        {
+          "code" : "SCR",
+          "name" : "ಸೆಚೊಲಿಯೊಸ್ ರುಪಿ",
+          "numericCode" : "690",
+          "symbol" : "SCR"
+        },
+        {
+          "code" : "SDG",
+          "name" : "ಸುಡಾನೀಸ್ ಪೌಂಡ್",
+          "numericCode" : "938",
+          "symbol" : "SDG"
+        },
+        {
+          "code" : "SEK",
+          "name" : "ಸ್ವೀಡಿಷ್ ಕ್ರೋನಾ",
+          "numericCode" : "752",
+          "symbol" : "SEK"
+        },
+        {
+          "code" : "SGD",
+          "name" : "ಸಿಂಗಾಪುರ್ ಡಾಲರ್‌",
+          "numericCode" : "702",
+          "symbol" : "SGD"
+        },
+        {
+          "code" : "SHP",
+          "name" : "ಸೇಂಟ್ ಹೆಲೇನಾ ಪೌಂಡ್",
+          "numericCode" : "654",
+          "symbol" : "SHP"
+        },
+        {
+          "code" : "SLE",
+          "name" : "ಸಿಯೆರಾ ಲಿಯೋನಿಯನ್ ಲಿಯೋನ್",
+          "numericCode" : "925",
+          "symbol" : "SLE"
+        },
+        {
+          "code" : "SOS",
+          "name" : "ಸೊಮಾಲಿ ಶಿಲ್ಲಿಂಗ್",
+          "numericCode" : "706",
+          "symbol" : "SOS"
+        },
+        {
+          "code" : "SRD",
+          "name" : "ಸುರಿನಾಮೀಸ್ ಡಾಲರ್",
+          "numericCode" : "968",
+          "symbol" : "SRD"
+        },
+        {
+          "code" : "SSP",
+          "name" : "ದಕ್ಷಿಣ ಸೂಡಾನೀಸ್ ಪೌಂಡ್‍",
+          "numericCode" : "728",
+          "symbol" : "SSP"
+        },
+        {
+          "code" : "STN",
+          "name" : "ಸಾವೊ ಟೋಮ್ ಮತ್ತು ಪ್ರಿನ್ಸಿಪ್ ದೊಬ್ರಾ",
+          "numericCode" : "930",
+          "symbol" : "STN"
+        },
+        {
+          "code" : "SYP",
+          "name" : "ಸಿರಿಯನ್ ಪೌಂಡ್",
+          "numericCode" : "760",
+          "symbol" : "SYP"
+        },
+        {
+          "code" : "SZL",
+          "name" : "ಸ್ವಾಜಿ ಲಿಲಂಗೆನಿ",
+          "numericCode" : "748",
+          "symbol" : "SZL"
+        },
+        {
+          "code" : "THB",
+          "name" : "ಥಾಯ್ ಬಹ್ತ್",
+          "numericCode" : "764",
+          "symbol" : "฿"
+        },
+        {
+          "code" : "TJS",
+          "name" : "ತಜಕಿಸ್ತಾನಿ ಸೊಮೋನಿ",
+          "numericCode" : "972",
+          "symbol" : "TJS"
+        },
+        {
+          "code" : "TMT",
+          "name" : "ಟರ್ಕ್‍ಮೆನಿಸ್ತಾನ್ ಮನಾತ್",
+          "numericCode" : "934",
+          "symbol" : "TMT"
+        },
+        {
+          "code" : "TND",
+          "name" : "ಟ್ಯುನೀಷಿಯನ್‌ ದಿನಾರ್",
+          "numericCode" : "788",
+          "symbol" : "TND"
+        },
+        {
+          "code" : "TOP",
+          "name" : "ಟೊಂಗಾ ಪಾಂಗ",
+          "numericCode" : "776",
+          "symbol" : "TOP"
+        },
+        {
+          "code" : "TRY",
+          "name" : "ಟರ್ಕಿಶ್ ಲಿರಾ",
+          "numericCode" : "949",
+          "symbol" : "TRY"
+        },
+        {
+          "code" : "TTD",
+          "name" : "ಟ್ರಿನಿಡಾಡ್ ಮತ್ತು ಟೊಬಾಗೊ ಡಾಲರ್",
+          "numericCode" : "780",
+          "symbol" : "TTD"
+        },
+        {
+          "code" : "TWD",
+          "name" : "ನ್ಯೂ ತೈವಾನ್ ಡಾಲರ್",
+          "numericCode" : "901",
+          "symbol" : "NT$"
+        },
+        {
+          "code" : "TZS",
+          "name" : "ತಾನ್‌ಜೇನಿಯನ್ ಶಿಲ್ಲಿಂಗ್",
+          "numericCode" : "834",
+          "symbol" : "TZS"
+        },
+        {
+          "code" : "UAH",
+          "name" : "ಉಕ್ರೇನಿಯನ್ ಹ್ರಿವ್ನೀಯ",
+          "numericCode" : "980",
+          "symbol" : "UAH"
+        },
+        {
+          "code" : "UGX",
+          "name" : "ಉಗಾಂಡನ್ ಶಿಲ್ಲಿಂಗ್",
+          "numericCode" : "800",
+          "symbol" : "UGX"
+        },
+        {
+          "code" : "USD",
+          "name" : "ಅಮೆರಿಕದ ಡಾಲರ್‌",
+          "numericCode" : "840",
+          "symbol" : "$"
+        },
+        {
+          "code" : "UYU",
+          "name" : "ಉರುಗ್ವೆಯ ಪೆಸೊ",
+          "numericCode" : "858",
+          "symbol" : "UYU"
+        },
+        {
+          "code" : "UZS",
+          "name" : "ಉಜ್ಬೇಕಿಸ್ತಾನ್ ಸೊಮ್",
+          "numericCode" : "860",
+          "symbol" : "UZS"
+        },
+        {
+          "code" : "VES",
+          "name" : "ವೆನಿಜುಲಿಯನ್ ಬೊಲಿವರ್",
+          "numericCode" : "928",
+          "symbol" : "VES"
+        },
+        {
+          "code" : "VND",
+          "name" : "ವಿಯೆಟ್ನಾಮೀಸ್ ಡಾಂಗ್",
+          "numericCode" : "704",
+          "symbol" : "₫"
+        },
+        {
+          "code" : "VUV",
+          "name" : "ವನೂತು ವತು",
+          "numericCode" : "548",
+          "symbol" : "VUV"
+        },
+        {
+          "code" : "WST",
+          "name" : "ಸಮೋನ್ ತಲಾ",
+          "numericCode" : "882",
+          "symbol" : "WST"
+        },
+        {
+          "code" : "XAF",
+          "name" : "ಮಧ್ಯ ಆಫ್ರಿಕನ್ CFA ಫ್ರಾಂಕ್",
+          "numericCode" : "950",
+          "symbol" : "FCFA"
+        },
+        {
+          "code" : "XCD",
+          "name" : "ಪೂರ್ವ ಕೆರೀಬಿಯನ್ ಡಾಲರ್",
+          "numericCode" : "951",
+          "symbol" : "EC$"
+        },
+        {
+          "code" : "XCG",
+          "name" : "ಕೆರೆಬಿಯನ್ ಗಿಲ್ಡರ್",
+          "numericCode" : "532",
+          "symbol" : "Cg."
+        },
+        {
+          "code" : "XOF",
+          "name" : "ಪಶ್ಚಿಮ ಆಫ್ರಿಕಾದ CFA ಫ್ರಾಂಕ್",
+          "numericCode" : "952",
+          "symbol" : "F CFA"
+        },
+        {
+          "code" : "XPF",
+          "name" : "[CFP] ಫ್ರಾಂಕ್",
+          "numericCode" : "953",
+          "symbol" : "CFPF"
+        },
+        {
+          "code" : "YER",
+          "name" : "ಯೆಮೆನಿ ರಿಯಲ್",
+          "numericCode" : "886",
+          "symbol" : "YER"
+        },
+        {
+          "code" : "ZAR",
+          "name" : "ದಕ್ಷಿಣ ಆಫ್ರಿಕನ್ ರಾಂಡ್",
+          "numericCode" : "710",
+          "symbol" : "ZAR"
+        },
+        {
+          "code" : "ZMW",
+          "name" : "ಜಾಂಬಿಯಾ ಕ್ವಾಚ",
+          "numericCode" : "967",
+          "symbol" : "ZMW"
+        },
+        {
+          "code" : "ZWG",
+          "name" : "ಜಿಂಬಾಬ್ವಿಯನ್ ಗೋಲ್ಡ್",
+          "numericCode" : "924",
+          "symbol" : "ZWG"
+        }
+      ]
+    },
     "ko" : {
       "finance.currency" : [
         {
@@ -44254,6 +45176,928 @@
           "name" : "Zimbabwe Gold",
           "numericCode" : "924",
           "symbol" : "ZiG"
+        }
+      ]
+    },
+    "pa_IN" : {
+      "finance.currency" : [
+        {
+          "code" : "AED",
+          "name" : "ਸੰਯੁਕਤ ਅਰਬ ਅਮੀਰਾਤ ਦਿਰਹਾਮ",
+          "numericCode" : "784",
+          "symbol" : "AED"
+        },
+        {
+          "code" : "AFN",
+          "name" : "ਅਫ਼ਗਾਨ ਅਫ਼ਗਾਨੀ",
+          "numericCode" : "971",
+          "symbol" : "AFN"
+        },
+        {
+          "code" : "ALL",
+          "name" : "ਅਲਬਾਨੀਆਈ ਲੇਕ",
+          "numericCode" : "008",
+          "symbol" : "ALL"
+        },
+        {
+          "code" : "AMD",
+          "name" : "ਅਰਮੀਨੀਆਈ ਦਰਾਮ",
+          "numericCode" : "051",
+          "symbol" : "AMD"
+        },
+        {
+          "code" : "AOA",
+          "name" : "ਅੰਗੋਲਾ ਕਵਾਂਜਾ",
+          "numericCode" : "973",
+          "symbol" : "AOA"
+        },
+        {
+          "code" : "ARS",
+          "name" : "ਅਰਜਨਟੀਨੀ ਪੇਸੋ",
+          "numericCode" : "032",
+          "symbol" : "ARS"
+        },
+        {
+          "code" : "AUD",
+          "name" : "ਆਸਟ੍ਰੇਲੀਆਈ ਡਾਲਰ",
+          "numericCode" : "036",
+          "symbol" : "A$"
+        },
+        {
+          "code" : "AWG",
+          "name" : "ਅਰੂਬਨ ਫਲੋਰਿਨ",
+          "numericCode" : "533",
+          "symbol" : "AWG"
+        },
+        {
+          "code" : "AZN",
+          "name" : "ਅਜ਼ਰਬਾਈਜਾਨ ਮਾਨਤ",
+          "numericCode" : "944",
+          "symbol" : "AZN"
+        },
+        {
+          "code" : "BAM",
+          "name" : "ਬੋਸਨੀਆ-ਹਰਜ਼ੇਗੋਵੀਨਾ ਬਦਲਣਯੋਗ ਮਾਰਕ",
+          "numericCode" : "977",
+          "symbol" : "BAM"
+        },
+        {
+          "code" : "BBD",
+          "name" : "ਬਾਰਬਾਡੀਅਨ ਡਾਲਰ",
+          "numericCode" : "052",
+          "symbol" : "BBD"
+        },
+        {
+          "code" : "BDT",
+          "name" : "ਬੰਗਲਾਦੇਸ਼ੀ ਟਕਾ",
+          "numericCode" : "050",
+          "symbol" : "BDT"
+        },
+        {
+          "code" : "BHD",
+          "name" : "ਬਹਿਰੀਨੀ ਦਿਨਾਰ",
+          "numericCode" : "048",
+          "symbol" : "BHD"
+        },
+        {
+          "code" : "BIF",
+          "name" : "ਬੁਰੁੰਡੀਆਈ ਫ੍ਰੈਂਕ",
+          "numericCode" : "108",
+          "symbol" : "BIF"
+        },
+        {
+          "code" : "BMD",
+          "name" : "ਬਰਮੂਡਾ ਡਾਲਰ",
+          "numericCode" : "060",
+          "symbol" : "BMD"
+        },
+        {
+          "code" : "BND",
+          "name" : "ਬਰੂਨੇਈ ਡਾਲਰ",
+          "numericCode" : "096",
+          "symbol" : "BND"
+        },
+        {
+          "code" : "BOB",
+          "name" : "ਬੋਲੀਵੀਅਨ ਬੋਲੀਵੀਅਨੋ",
+          "numericCode" : "068",
+          "symbol" : "BOB"
+        },
+        {
+          "code" : "BRL",
+          "name" : "ਬ੍ਰਾਜ਼ੀਲੀਆਈ ਰੀਅਲ",
+          "numericCode" : "986",
+          "symbol" : "R$"
+        },
+        {
+          "code" : "BSD",
+          "name" : "ਬਾਹਾਮੀਅਨ ਡਾਲਰ",
+          "numericCode" : "044",
+          "symbol" : "BSD"
+        },
+        {
+          "code" : "BTN",
+          "name" : "ਭੂਟਾਨੀ ਐਂਗਲਟ੍ਰਮ",
+          "numericCode" : "064",
+          "symbol" : "BTN"
+        },
+        {
+          "code" : "BWP",
+          "name" : "ਬੋਟਸਵਾਨਾ ਪੁਲਾ",
+          "numericCode" : "072",
+          "symbol" : "BWP"
+        },
+        {
+          "code" : "BYN",
+          "name" : "ਬੇਲਾਰੂਸੀ ਰੂਬਲ",
+          "numericCode" : "933",
+          "symbol" : "BYN"
+        },
+        {
+          "code" : "BZD",
+          "name" : "ਬੇਲੀਜ਼ ਡਾਲਰ",
+          "numericCode" : "084",
+          "symbol" : "BZD"
+        },
+        {
+          "code" : "CAD",
+          "name" : "ਕੇਨੇਡਿਆਈ ਡਾਲਰ",
+          "numericCode" : "124",
+          "symbol" : "CA$"
+        },
+        {
+          "code" : "CDF",
+          "name" : "ਕਾਂਗੋਲੀਜ਼ ਫ੍ਰੈਂਕ",
+          "numericCode" : "976",
+          "symbol" : "CDF"
+        },
+        {
+          "code" : "CHF",
+          "name" : "ਸਵਿਸ ਫ੍ਰੈਂਕ",
+          "numericCode" : "756",
+          "symbol" : "CHF"
+        },
+        {
+          "code" : "CLP",
+          "name" : "ਚਿਲੀ ਪੇਸੋ",
+          "numericCode" : "152",
+          "symbol" : "CLP"
+        },
+        {
+          "code" : "CNY",
+          "name" : "ਚੀਨੀ ਯੁਆਨ",
+          "numericCode" : "156",
+          "symbol" : "CN¥"
+        },
+        {
+          "code" : "COP",
+          "name" : "ਕੋਲੰਬਿਆਈ ਪੇਸੋ",
+          "numericCode" : "170",
+          "symbol" : "COP"
+        },
+        {
+          "code" : "CRC",
+          "name" : "ਕੋਸਟਾ ਰੀਕਨ ਕੋਲਨ",
+          "numericCode" : "188",
+          "symbol" : "CRC"
+        },
+        {
+          "code" : "CUP",
+          "name" : "ਕਿਊਬਨ ਪੇਸੋ",
+          "numericCode" : "192",
+          "symbol" : "CUP"
+        },
+        {
+          "code" : "CVE",
+          "name" : "ਕੇਪ ਵਰਡੀਅਨ ਸਕੂਡੋ",
+          "numericCode" : "132",
+          "symbol" : "CVE"
+        },
+        {
+          "code" : "CZK",
+          "name" : "ਚੈਕ ਗਣਰਾਜ ਕੋਰੁਨਾ",
+          "numericCode" : "203",
+          "symbol" : "CZK"
+        },
+        {
+          "code" : "DJF",
+          "name" : "ਜ਼ੀਬੂਤੀਅਨ ਫ੍ਰੈਂਕ",
+          "numericCode" : "262",
+          "symbol" : "DJF"
+        },
+        {
+          "code" : "DKK",
+          "name" : "ਡੈਨਿਸ਼ ਕਰੌਨ",
+          "numericCode" : "208",
+          "symbol" : "DKK"
+        },
+        {
+          "code" : "DOP",
+          "name" : "ਡੌਮਿਨਿਕਨ ਪੇਸੋ",
+          "numericCode" : "214",
+          "symbol" : "DOP"
+        },
+        {
+          "code" : "DZD",
+          "name" : "ਅਲਜੀਰਿਆਈ ਦਿਨਾਰ",
+          "numericCode" : "012",
+          "symbol" : "DZD"
+        },
+        {
+          "code" : "EGP",
+          "name" : "ਮਿਸਰੀ ਪੌਂਡ",
+          "numericCode" : "818",
+          "symbol" : "EGP"
+        },
+        {
+          "code" : "ERN",
+          "name" : "ਇਰੀਟ੍ਰਿਆਈ ਨਾਫ਼ਾ",
+          "numericCode" : "232",
+          "symbol" : "ERN"
+        },
+        {
+          "code" : "ETB",
+          "name" : "ਇਥੋਪੀਆਈ ਬਿਰ",
+          "numericCode" : "230",
+          "symbol" : "ETB"
+        },
+        {
+          "code" : "EUR",
+          "name" : "ਯੂਰੋ",
+          "numericCode" : "978",
+          "symbol" : "€"
+        },
+        {
+          "code" : "FJD",
+          "name" : "ਫ਼ਿਜ਼ੀ ਡਾਲਰ",
+          "numericCode" : "242",
+          "symbol" : "FJD"
+        },
+        {
+          "code" : "FKP",
+          "name" : "ਫ਼ਾਕਲੈਂਡ ਆਈਲੈਂਡਸ ਪੌਂਡ",
+          "numericCode" : "238",
+          "symbol" : "FKP"
+        },
+        {
+          "code" : "GBP",
+          "name" : "ਬ੍ਰਿਟਿਸ਼ ਪੌਂਡ",
+          "numericCode" : "826",
+          "symbol" : "£"
+        },
+        {
+          "code" : "GEL",
+          "name" : "ਜਾਰਜੀਆਈ ਲਾਰੀ",
+          "numericCode" : "981",
+          "symbol" : "GEL"
+        },
+        {
+          "code" : "GHS",
+          "name" : "ਘਾਨਾਈ ਸੇਡੀ",
+          "numericCode" : "936",
+          "symbol" : "GHS"
+        },
+        {
+          "code" : "GIP",
+          "name" : "ਜਿਬਰਾਲਟਰ ਪੌਂਡ",
+          "numericCode" : "292",
+          "symbol" : "GIP"
+        },
+        {
+          "code" : "GMD",
+          "name" : "ਗੈਂਬੀਆਈ ਦਲਾਸੀ",
+          "numericCode" : "270",
+          "symbol" : "GMD"
+        },
+        {
+          "code" : "GNF",
+          "name" : "ਗਿਨੀ ਫ੍ਰੈਂਕ",
+          "numericCode" : "324",
+          "symbol" : "GNF"
+        },
+        {
+          "code" : "GTQ",
+          "name" : "ਗੁਆਟੇਮਾਲਾ ਕੁਏਟਜ਼ਲ",
+          "numericCode" : "320",
+          "symbol" : "GTQ"
+        },
+        {
+          "code" : "GYD",
+          "name" : "ਗੁਆਨਾਆਈ ਡਾਲਰ",
+          "numericCode" : "328",
+          "symbol" : "GYD"
+        },
+        {
+          "code" : "HKD",
+          "name" : "ਹਾਂਗ ਕਾਂਗ ਡਾਲਰ",
+          "numericCode" : "344",
+          "symbol" : "HK$"
+        },
+        {
+          "code" : "HNL",
+          "name" : "ਹਾਨਡੂਰਨ ਲੇਮਪਿਰਾ",
+          "numericCode" : "340",
+          "symbol" : "HNL"
+        },
+        {
+          "code" : "HTG",
+          "name" : "ਹੈਤੀ ਗੌਰਡੇ",
+          "numericCode" : "332",
+          "symbol" : "HTG"
+        },
+        {
+          "code" : "HUF",
+          "name" : "ਹੰਗਰੀ ਫੋਰਿੰਟ",
+          "numericCode" : "348",
+          "symbol" : "HUF"
+        },
+        {
+          "code" : "IDR",
+          "name" : "ਇੰਡੋਨੇਸ਼ੀਆਈ ਰੁਪਿਆਹ",
+          "numericCode" : "360",
+          "symbol" : "IDR"
+        },
+        {
+          "code" : "ILS",
+          "name" : "ਇਜ਼ਰਾਈਲੀ ਨਵੀਂ ਸ਼ੇਕੇਲ",
+          "numericCode" : "376",
+          "symbol" : "₪"
+        },
+        {
+          "code" : "INR",
+          "name" : "ਭਾਰਤੀ ਰੁਪਇਆ",
+          "numericCode" : "356",
+          "symbol" : "₹"
+        },
+        {
+          "code" : "IQD",
+          "name" : "ਇਰਾਕੀ ਦਿਨਾਰ",
+          "numericCode" : "368",
+          "symbol" : "IQD"
+        },
+        {
+          "code" : "IRR",
+          "name" : "ਈਰਾਨੀ ਰਿਆਲ",
+          "numericCode" : "364",
+          "symbol" : "IRR"
+        },
+        {
+          "code" : "ISK",
+          "name" : "ਆਈਸਲੈਂਡੀ ਕਰੋਨਾ",
+          "numericCode" : "352",
+          "symbol" : "ISK"
+        },
+        {
+          "code" : "JMD",
+          "name" : "ਜਮਾਇਕਨ ਡਾਲਰ",
+          "numericCode" : "388",
+          "symbol" : "JMD"
+        },
+        {
+          "code" : "JOD",
+          "name" : "ਜਾਰਡਨ ਦਿਨਾਰ",
+          "numericCode" : "400",
+          "symbol" : "JOD"
+        },
+        {
+          "code" : "JPY",
+          "name" : "ਜਪਾਨੀ ਯੇਨ",
+          "numericCode" : "392",
+          "symbol" : "JP¥"
+        },
+        {
+          "code" : "KES",
+          "name" : "ਕੀਨੀਆਈ ਸ਼ਿਲਿੰਗ",
+          "numericCode" : "404",
+          "symbol" : "KES"
+        },
+        {
+          "code" : "KGS",
+          "name" : "ਕਿਰਗਿਸਤਾਨੀ ਸੋਮ",
+          "numericCode" : "417",
+          "symbol" : "KGS"
+        },
+        {
+          "code" : "KHR",
+          "name" : "ਕੰਬੋਡੀਆਈ ਰੀਅਲ",
+          "numericCode" : "116",
+          "symbol" : "KHR"
+        },
+        {
+          "code" : "KMF",
+          "name" : "ਕੋਮੋਰੀਅਨ ਫ੍ਰੈਂਕ",
+          "numericCode" : "174",
+          "symbol" : "KMF"
+        },
+        {
+          "code" : "KPW",
+          "name" : "ਉੱਤਰੀ ਕੋਰੀਆਈ ਵੋਨ",
+          "numericCode" : "408",
+          "symbol" : "KPW"
+        },
+        {
+          "code" : "KRW",
+          "name" : "ਦੱਖਣੀ ਕੋਰੀਆਈ ਵੋਨ",
+          "numericCode" : "410",
+          "symbol" : "₩"
+        },
+        {
+          "code" : "KWD",
+          "name" : "ਕੁਵੈਤੀ ਦਿਨਾਰ",
+          "numericCode" : "414",
+          "symbol" : "KWD"
+        },
+        {
+          "code" : "KYD",
+          "name" : "ਕੇਮੈਨ ਆਈਲੈਂਡਸ ਡਾਲਰ",
+          "numericCode" : "136",
+          "symbol" : "KYD"
+        },
+        {
+          "code" : "KZT",
+          "name" : "ਕਜ਼ਾਖਸਤਾਨੀ ਤੇਂਗੇ",
+          "numericCode" : "398",
+          "symbol" : "KZT"
+        },
+        {
+          "code" : "LAK",
+          "name" : "ਲਾਓਟਿਆਈ ਕਿਪ",
+          "numericCode" : "418",
+          "symbol" : "LAK"
+        },
+        {
+          "code" : "LBP",
+          "name" : "ਲੈਬਨਾਨੀ ਪੌਂਡ",
+          "numericCode" : "422",
+          "symbol" : "LBP"
+        },
+        {
+          "code" : "LKR",
+          "name" : "ਸ੍ਰੀਲੰਕਾਈ ਰੁਪਇਆ",
+          "numericCode" : "144",
+          "symbol" : "LKR"
+        },
+        {
+          "code" : "LRD",
+          "name" : "ਲਾਈਬੀਰੀਆਈ ਡਾਲਰ",
+          "numericCode" : "430",
+          "symbol" : "LRD"
+        },
+        {
+          "code" : "LSL",
+          "name" : "ਲੇਸੋਥੋ ਲੋਟੀ",
+          "numericCode" : "426",
+          "symbol" : "LSL"
+        },
+        {
+          "code" : "LYD",
+          "name" : "ਲੀਬੀਆਈ ਦਿਨਾਰ",
+          "numericCode" : "434",
+          "symbol" : "LYD"
+        },
+        {
+          "code" : "MAD",
+          "name" : "ਮੋਰੱਕਨ ਦਿਰਹਾਮ",
+          "numericCode" : "504",
+          "symbol" : "MAD"
+        },
+        {
+          "code" : "MDL",
+          "name" : "ਮੋਲਡੋਵਨ ਲੇਉ",
+          "numericCode" : "498",
+          "symbol" : "MDL"
+        },
+        {
+          "code" : "MGA",
+          "name" : "ਮਾਲਾਗਾਸੀ ਅਰਾਇਰੀ",
+          "numericCode" : "969",
+          "symbol" : "MGA"
+        },
+        {
+          "code" : "MKD",
+          "name" : "ਮੈਕਡੋਨੀਆਈ ਡੇਨਾਰ",
+          "numericCode" : "807",
+          "symbol" : "MKD"
+        },
+        {
+          "code" : "MMK",
+          "name" : "ਮਿਆਂਮਾਰ ਕਿਆਤ",
+          "numericCode" : "104",
+          "symbol" : "MMK"
+        },
+        {
+          "code" : "MNT",
+          "name" : "ਮੰਗੋਲੀਆਈ ਤੁਗਰਿਕ",
+          "numericCode" : "496",
+          "symbol" : "MNT"
+        },
+        {
+          "code" : "MOP",
+          "name" : "ਮੇਕਾਨੀ ਪਟਾਕਾ",
+          "numericCode" : "446",
+          "symbol" : "MOP"
+        },
+        {
+          "code" : "MRU",
+          "name" : "ਮੋਰਿਟਾਨੀਆਈ ਊਗੀਆ",
+          "numericCode" : "929",
+          "symbol" : "MRU"
+        },
+        {
+          "code" : "MUR",
+          "name" : "ਮੌਰਿਸ਼ੀਆਈ ਰੁਪਇਆ",
+          "numericCode" : "480",
+          "symbol" : "MUR"
+        },
+        {
+          "code" : "MVR",
+          "name" : "ਮਾਲਦੀਵੀ ਰੁਫੀਆ",
+          "numericCode" : "462",
+          "symbol" : "MVR"
+        },
+        {
+          "code" : "MWK",
+          "name" : "ਮਾਲਾਵੀਆਈ ਕਵਾਚਾ",
+          "numericCode" : "454",
+          "symbol" : "MWK"
+        },
+        {
+          "code" : "MXN",
+          "name" : "ਮੈਕਸੀਕਨ ਪੇਸੋ",
+          "numericCode" : "484",
+          "symbol" : "MX$"
+        },
+        {
+          "code" : "MYR",
+          "name" : "ਮਲੇਸ਼ੀਆਈ ਰਿੰਗਿਟ",
+          "numericCode" : "458",
+          "symbol" : "MYR"
+        },
+        {
+          "code" : "MZN",
+          "name" : "ਮੋਜ਼ਾਮਬੀਕਨ ਮੈਟੀਕਲ",
+          "numericCode" : "943",
+          "symbol" : "MZN"
+        },
+        {
+          "code" : "NAD",
+          "name" : "ਨਾਮੀਬੀਆਈ ਡਾਲਰ",
+          "numericCode" : "516",
+          "symbol" : "NAD"
+        },
+        {
+          "code" : "NGN",
+          "name" : "ਨਾਇਜੀਰੀਆਈ ਨਾਇਰਾ",
+          "numericCode" : "566",
+          "symbol" : "NGN"
+        },
+        {
+          "code" : "NIO",
+          "name" : "ਨਿਕਾਰਾਗੁਆਈ ਕੋਰਡੋਬਾ",
+          "numericCode" : "558",
+          "symbol" : "NIO"
+        },
+        {
+          "code" : "NOK",
+          "name" : "ਨਾਰਵੇਜੀਆਈ ਕਰੌਨ",
+          "numericCode" : "578",
+          "symbol" : "NOK"
+        },
+        {
+          "code" : "NPR",
+          "name" : "ਨੇਪਾਲੀ ਰੁਪਇਆ",
+          "numericCode" : "524",
+          "symbol" : "NPR"
+        },
+        {
+          "code" : "NZD",
+          "name" : "ਨਿਊਜ਼ੀਲੈਂਡ ਡਾਲਰ",
+          "numericCode" : "554",
+          "symbol" : "NZ$"
+        },
+        {
+          "code" : "OMR",
+          "name" : "ਓਮਾਨੀ ਰਿਆਲ",
+          "numericCode" : "512",
+          "symbol" : "OMR"
+        },
+        {
+          "code" : "PAB",
+          "name" : "ਪਨਾਮੇਨੀਅਨ ਬਾਲਬੋਆ",
+          "numericCode" : "590",
+          "symbol" : "PAB"
+        },
+        {
+          "code" : "PEN",
+          "name" : "ਪੇਰੂਵੀਅਨ ਸੋਲ",
+          "numericCode" : "604",
+          "symbol" : "PEN"
+        },
+        {
+          "code" : "PGK",
+          "name" : "ਪਾਪੂਆ ਨਿਊ ਗਿਨੀਆਈ ਕੀਨਾ",
+          "numericCode" : "598",
+          "symbol" : "PGK"
+        },
+        {
+          "code" : "PHP",
+          "name" : "ਫਿਲਿਪੀਨੀ ਪੇਸੋ",
+          "numericCode" : "608",
+          "symbol" : "PHP"
+        },
+        {
+          "code" : "PKR",
+          "name" : "ਪਾਕਿਸਤਾਨੀ ਰੁਪਇਆ",
+          "numericCode" : "586",
+          "symbol" : "PKR"
+        },
+        {
+          "code" : "PLN",
+          "name" : "ਪੋਲੈਂਡੀ ਜ਼ਲੌਟੀ",
+          "numericCode" : "985",
+          "symbol" : "PLN"
+        },
+        {
+          "code" : "PYG",
+          "name" : "ਪੈਰਾਗੁਵਾਇਨ ਗੁਆਰਾਨੀ",
+          "numericCode" : "600",
+          "symbol" : "PYG"
+        },
+        {
+          "code" : "QAR",
+          "name" : "ਕਤਰੀ ਰਿਆਲ",
+          "numericCode" : "634",
+          "symbol" : "QAR"
+        },
+        {
+          "code" : "RON",
+          "name" : "ਰੋਮਾਨੀਆਈ ਲੇਉ",
+          "numericCode" : "946",
+          "symbol" : "RON"
+        },
+        {
+          "code" : "RSD",
+          "name" : "ਸਰਬੀਆਈ ਦਿਨਾਰ",
+          "numericCode" : "941",
+          "symbol" : "RSD"
+        },
+        {
+          "code" : "RUB",
+          "name" : "ਰੂਸੀ ਰੂਬਲ",
+          "numericCode" : "643",
+          "symbol" : "RUB"
+        },
+        {
+          "code" : "RWF",
+          "name" : "ਰਵਾਂਡਨ ਫ੍ਰੈਂਕ",
+          "numericCode" : "646",
+          "symbol" : "RWF"
+        },
+        {
+          "code" : "SAR",
+          "name" : "ਸਾਊਦੀ ਰਿਆਲ",
+          "numericCode" : "682",
+          "symbol" : "SAR"
+        },
+        {
+          "code" : "SBD",
+          "name" : "ਸੋਲੋਮਨ ਆਈਲੈਂਡਸ ਡਾਲਰ",
+          "numericCode" : "090",
+          "symbol" : "SBD"
+        },
+        {
+          "code" : "SCR",
+          "name" : "ਸੇਸ਼ਲਸ ਰੁਪਇਆ",
+          "numericCode" : "690",
+          "symbol" : "SCR"
+        },
+        {
+          "code" : "SDG",
+          "name" : "ਸੂਡਾਨੀ ਪੌਂਡ",
+          "numericCode" : "938",
+          "symbol" : "SDG"
+        },
+        {
+          "code" : "SEK",
+          "name" : "ਸਵੀਡਿਸ਼ ਕਰੋਨਾ",
+          "numericCode" : "752",
+          "symbol" : "SEK"
+        },
+        {
+          "code" : "SGD",
+          "name" : "ਸਿੰਗਾਪੁਰ ਡਾਲਰ",
+          "numericCode" : "702",
+          "symbol" : "SGD"
+        },
+        {
+          "code" : "SHP",
+          "name" : "ਸੇਂਟ ਹੇਲੇਨਾ ਪੌਂਡ",
+          "numericCode" : "654",
+          "symbol" : "SHP"
+        },
+        {
+          "code" : "SLE",
+          "name" : "ਸਿਏਰਾ ਲਿਓਨੀਅਨ ਲਿਓਨ",
+          "numericCode" : "925",
+          "symbol" : "SLE"
+        },
+        {
+          "code" : "SOS",
+          "name" : "ਸੋਮਾਲੀ ਸ਼ਿਲਿੰਗ",
+          "numericCode" : "706",
+          "symbol" : "SOS"
+        },
+        {
+          "code" : "SRD",
+          "name" : "ਸੂਰੀਨਾਮੀ ਡਾਲਰ",
+          "numericCode" : "968",
+          "symbol" : "SRD"
+        },
+        {
+          "code" : "SSP",
+          "name" : "ਦੱਖਣੀ ਸੂਡਾਨੀ ਪੌਂਡ",
+          "numericCode" : "728",
+          "symbol" : "SSP"
+        },
+        {
+          "code" : "STN",
+          "name" : "ਸਾਉ ਟੋਮੀ ਐਂਡ ਪ੍ਰਿੰਸਪੀ ਡੋਬਰਾ",
+          "numericCode" : "930",
+          "symbol" : "STN"
+        },
+        {
+          "code" : "SYP",
+          "name" : "ਸੀਰੀਆਈ ਪੌਂਡ",
+          "numericCode" : "760",
+          "symbol" : "SYP"
+        },
+        {
+          "code" : "SZL",
+          "name" : "ਸਵਾਜ਼ੀ ਲਾਇਲੈਂਗਨੀ",
+          "numericCode" : "748",
+          "symbol" : "SZL"
+        },
+        {
+          "code" : "THB",
+          "name" : "ਥਾਈ ਬਾਹਤ",
+          "numericCode" : "764",
+          "symbol" : "฿"
+        },
+        {
+          "code" : "TJS",
+          "name" : "ਤਾਜਿਕਿਸਤਾਨੀ ਸੋਮੋਨੀ",
+          "numericCode" : "972",
+          "symbol" : "TJS"
+        },
+        {
+          "code" : "TMT",
+          "name" : "ਤੁਰਕਮੇਨਿਸਤਾਨੀ ਮਾਨਤ",
+          "numericCode" : "934",
+          "symbol" : "TMT"
+        },
+        {
+          "code" : "TND",
+          "name" : "ਟਿਉਨੀਸ਼ੀਆਈ ਦਿਨਾਰ",
+          "numericCode" : "788",
+          "symbol" : "TND"
+        },
+        {
+          "code" : "TOP",
+          "name" : "ਟੌਂਗਨ ਪੈਂਗਾ",
+          "numericCode" : "776",
+          "symbol" : "TOP"
+        },
+        {
+          "code" : "TRY",
+          "name" : "ਤੁਰਕੀ ਲੀਰਾ",
+          "numericCode" : "949",
+          "symbol" : "TRY"
+        },
+        {
+          "code" : "TTD",
+          "name" : "ਟ੍ਰਿਨੀਡਾਡ ਅਤੇ ਟੋਬਾਗੋ ਡਾਲਰ",
+          "numericCode" : "780",
+          "symbol" : "TTD"
+        },
+        {
+          "code" : "TWD",
+          "name" : "ਨਵਾਂ ਤਾਇਵਾਨ ਡਾਲਰ",
+          "numericCode" : "901",
+          "symbol" : "NT$"
+        },
+        {
+          "code" : "TZS",
+          "name" : "ਤਨਜ਼ਾਨੀਆਈ ਸ਼ਿਲਿੰਗ",
+          "numericCode" : "834",
+          "symbol" : "TZS"
+        },
+        {
+          "code" : "UAH",
+          "name" : "ਯੂਕਰੇਨੀਆਈ ਰਿਵਨਿਆ",
+          "numericCode" : "980",
+          "symbol" : "UAH"
+        },
+        {
+          "code" : "UGX",
+          "name" : "ਯੂਗਾਂਡੀਆਈ ਸ਼ਿਲਿੰਗ",
+          "numericCode" : "800",
+          "symbol" : "UGX"
+        },
+        {
+          "code" : "USD",
+          "name" : "ਯੂ.ਐਸ. ਡਾਲਰ",
+          "numericCode" : "840",
+          "symbol" : "US$"
+        },
+        {
+          "code" : "UYU",
+          "name" : "ਉਰੂਗੁਵਾਇਨ ਪੇਸੋ",
+          "numericCode" : "858",
+          "symbol" : "UYU"
+        },
+        {
+          "code" : "UZS",
+          "name" : "ਉਜ਼ਬੇਕਿਸਤਾਨ ਸੋਮ",
+          "numericCode" : "860",
+          "symbol" : "UZS"
+        },
+        {
+          "code" : "VES",
+          "name" : "ਵੇਨੇਜ਼ੂਏਲਨ ਬੋਲੀਵਰ",
+          "numericCode" : "928",
+          "symbol" : "VES"
+        },
+        {
+          "code" : "VND",
+          "name" : "ਵੀਅਤਨਾਮੀ ਡੋਂਗ",
+          "numericCode" : "704",
+          "symbol" : "₫"
+        },
+        {
+          "code" : "VUV",
+          "name" : "ਵਾਨੂਆਟੂ ਵਾਟੂ",
+          "numericCode" : "548",
+          "symbol" : "VUV"
+        },
+        {
+          "code" : "WST",
+          "name" : "ਸਾਮੋਆਈ ਤਾਲਾ",
+          "numericCode" : "882",
+          "symbol" : "WST"
+        },
+        {
+          "code" : "XAF",
+          "name" : "ਕੇਂਦਰੀ ਅਫ਼ਰੀਕੀ [CFA] ਫ੍ਰੈਂਕ",
+          "numericCode" : "950",
+          "symbol" : "FCFA"
+        },
+        {
+          "code" : "XCD",
+          "name" : "ਪੂਰਬੀ ਕੈਰੇਬੀਅਨ ਡਾਲਰ",
+          "numericCode" : "951",
+          "symbol" : "EC$"
+        },
+        {
+          "code" : "XCG",
+          "name" : "ਕੈਰੇਬੀਅਨ ਗਿਲਡਰ",
+          "numericCode" : "532",
+          "symbol" : "Cg."
+        },
+        {
+          "code" : "XOF",
+          "name" : "ਪੱਛਮੀ ਅਫ਼ਰੀਕੀ (CFA) ਫ੍ਰੈਂਕ",
+          "numericCode" : "952",
+          "symbol" : "F CFA"
+        },
+        {
+          "code" : "XPF",
+          "name" : "ਫ੍ਰੈਂਕ (CFP)",
+          "numericCode" : "953",
+          "symbol" : "CFPF"
+        },
+        {
+          "code" : "YER",
+          "name" : "ਯਮਨੀ ਰਿਆਲ",
+          "numericCode" : "886",
+          "symbol" : "YER"
+        },
+        {
+          "code" : "ZAR",
+          "name" : "ਦੱਖਣੀ ਅਫਰੀਕੀ ਰੈਂਡ",
+          "numericCode" : "710",
+          "symbol" : "ZAR"
+        },
+        {
+          "code" : "ZMW",
+          "name" : "ਜ਼ਾਮਬੀਆਈ ਕਵਾਚਾ",
+          "numericCode" : "967",
+          "symbol" : "ZMW"
+        },
+        {
+          "code" : "ZWG",
+          "name" : "ਜ਼ਿੰਬਾਬਵੀ ਗੋਲਡ",
+          "numericCode" : "924",
+          "symbol" : "ZWG"
         }
       ]
     },

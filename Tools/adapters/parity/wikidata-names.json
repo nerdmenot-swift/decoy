@@ -50591,6 +50591,15 @@
         "d'Huij"
       ]
     },
+    "pa_IN" : {
+      "person.first_name.male" : [
+        "ਅਵਤਾਰ",
+        "ਜਗਮੀਤ",
+        "ਨਵਰਾਜ",
+        "ਹਮਜ਼ਾ",
+        "ਹਰਜੀਤ"
+      ]
+    },
     "pl" : {
       "person.last_name.generic" : [
         "Abakanowicz",

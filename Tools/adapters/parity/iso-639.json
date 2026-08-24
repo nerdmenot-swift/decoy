@@ -37230,6 +37230,915 @@
         }
       ]
     },
+    "kn_IN" : {
+      "location.language" : [
+        {
+          "alpha2" : "aa",
+          "alpha3" : "aar",
+          "name" : "ಅಫಾರ್"
+        },
+        {
+          "alpha2" : "ab",
+          "alpha3" : "abk",
+          "name" : "ಅಬ್ಖಾಜಿಯನ್"
+        },
+        {
+          "alpha2" : "ae",
+          "alpha3" : "ave",
+          "name" : "ಅವೆಸ್ಟನ್"
+        },
+        {
+          "alpha2" : "af",
+          "alpha3" : "afr",
+          "name" : "ಆಫ್ರಿಕಾನ್ಸ್"
+        },
+        {
+          "alpha2" : "ak",
+          "alpha3" : "aka",
+          "name" : "ಅಕಾನ್"
+        },
+        {
+          "alpha2" : "am",
+          "alpha3" : "amh",
+          "name" : "ಅಂಹರಿಕ್"
+        },
+        {
+          "alpha2" : "an",
+          "alpha3" : "arg",
+          "name" : "ಅರಗೊನೀಸ್"
+        },
+        {
+          "alpha2" : "ar",
+          "alpha3" : "ara",
+          "name" : "ಅರೇಬಿಕ್"
+        },
+        {
+          "alpha2" : "as",
+          "alpha3" : "asm",
+          "name" : "ಅಸ್ಸಾಮೀಸ್"
+        },
+        {
+          "alpha2" : "av",
+          "alpha3" : "ava",
+          "name" : "ಅವರಿಕ್"
+        },
+        {
+          "alpha2" : "ay",
+          "alpha3" : "aym",
+          "name" : "ಅಯ್ಮಾರಾ"
+        },
+        {
+          "alpha2" : "az",
+          "alpha3" : "aze",
+          "name" : "ಅಜೆರ್ಬೈಜಾನಿ"
+        },
+        {
+          "alpha2" : "ba",
+          "alpha3" : "bak",
+          "name" : "ಬಶ್ಕಿರ್"
+        },
+        {
+          "alpha2" : "be",
+          "alpha3" : "bel",
+          "name" : "ಬೆಲರೂಸಿಯನ್"
+        },
+        {
+          "alpha2" : "bg",
+          "alpha3" : "bul",
+          "name" : "ಬಲ್ಗೇರಿಯನ್"
+        },
+        {
+          "alpha2" : "bi",
+          "alpha3" : "bis",
+          "name" : "ಬಿಸ್ಲಾಮಾ"
+        },
+        {
+          "alpha2" : "bm",
+          "alpha3" : "bam",
+          "name" : "ಬಂಬಾರಾ"
+        },
+        {
+          "alpha2" : "bn",
+          "alpha3" : "ben",
+          "name" : "ಬಾಂಗ್ಲಾ"
+        },
+        {
+          "alpha2" : "bo",
+          "alpha3" : "bod",
+          "name" : "ಟಿಬೇಟಿಯನ್"
+        },
+        {
+          "alpha2" : "br",
+          "alpha3" : "bre",
+          "name" : "ಬ್ರೆಟನ್"
+        },
+        {
+          "alpha2" : "bs",
+          "alpha3" : "bos",
+          "name" : "ಬೋಸ್ನಿಯನ್"
+        },
+        {
+          "alpha2" : "ca",
+          "alpha3" : "cat",
+          "name" : "ಕೆಟಲಾನ್"
+        },
+        {
+          "alpha2" : "ce",
+          "alpha3" : "che",
+          "name" : "ಚಚೆನ್"
+        },
+        {
+          "alpha2" : "ch",
+          "alpha3" : "cha",
+          "name" : "ಕಮೊರೊ"
+        },
+        {
+          "alpha2" : "co",
+          "alpha3" : "cos",
+          "name" : "ಕೋರ್ಸಿಕನ್"
+        },
+        {
+          "alpha2" : "cr",
+          "alpha3" : "cre",
+          "name" : "ಕ್ರೀ"
+        },
+        {
+          "alpha2" : "cs",
+          "alpha3" : "ces",
+          "name" : "ಜೆಕ್"
+        },
+        {
+          "alpha2" : "cu",
+          "alpha3" : "chu",
+          "name" : "ಚರ್ಚ್ ಸ್ಲಾವಿಕ್"
+        },
+        {
+          "alpha2" : "cv",
+          "alpha3" : "chv",
+          "name" : "ಚುವಾಶ್"
+        },
+        {
+          "alpha2" : "cy",
+          "alpha3" : "cym",
+          "name" : "ವೆಲ್ಶ್"
+        },
+        {
+          "alpha2" : "da",
+          "alpha3" : "dan",
+          "name" : "ಡ್ಯಾನಿಶ್"
+        },
+        {
+          "alpha2" : "de",
+          "alpha3" : "deu",
+          "name" : "ಜರ್ಮನ್"
+        },
+        {
+          "alpha2" : "dv",
+          "alpha3" : "div",
+          "name" : "ದಿವೆಹಿ"
+        },
+        {
+          "alpha2" : "dz",
+          "alpha3" : "dzo",
+          "name" : "ಜೋಂಗ್‌ಖಾ"
+        },
+        {
+          "alpha2" : "ee",
+          "alpha3" : "ewe",
+          "name" : "ಈವ್"
+        },
+        {
+          "alpha2" : "el",
+          "alpha3" : "ell",
+          "name" : "ಗ್ರೀಕ್"
+        },
+        {
+          "alpha2" : "en",
+          "alpha3" : "eng",
+          "name" : "ಇಂಗ್ಲಿಷ್"
+        },
+        {
+          "alpha2" : "eo",
+          "alpha3" : "epo",
+          "name" : "ಎಸ್ಪೆರಾಂಟೊ"
+        },
+        {
+          "alpha2" : "es",
+          "alpha3" : "spa",
+          "name" : "ಸ್ಪ್ಯಾನಿಷ್"
+        },
+        {
+          "alpha2" : "et",
+          "alpha3" : "est",
+          "name" : "ಎಸ್ಟೊನಿಯನ್"
+        },
+        {
+          "alpha2" : "eu",
+          "alpha3" : "eus",
+          "name" : "ಬಾಸ್ಕ್"
+        },
+        {
+          "alpha2" : "fa",
+          "alpha3" : "fas",
+          "name" : "ಪರ್ಶಿಯನ್"
+        },
+        {
+          "alpha2" : "ff",
+          "alpha3" : "ful",
+          "name" : "ಫುಲಾ"
+        },
+        {
+          "alpha2" : "fi",
+          "alpha3" : "fin",
+          "name" : "ಫಿನ್ನಿಶ್"
+        },
+        {
+          "alpha2" : "fj",
+          "alpha3" : "fij",
+          "name" : "ಫಿಜಿಯನ್"
+        },
+        {
+          "alpha2" : "fo",
+          "alpha3" : "fao",
+          "name" : "ಫರೋಸಿ"
+        },
+        {
+          "alpha2" : "fr",
+          "alpha3" : "fra",
+          "name" : "ಫ್ರೆಂಚ್"
+        },
+        {
+          "alpha2" : "fy",
+          "alpha3" : "fry",
+          "name" : "ಪಶ್ಚಿಮ ಫ್ರಿಸಿಯನ್"
+        },
+        {
+          "alpha2" : "ga",
+          "alpha3" : "gle",
+          "name" : "ಐರಿಷ್"
+        },
+        {
+          "alpha2" : "gd",
+          "alpha3" : "gla",
+          "name" : "ಸ್ಕಾಟಿಶ್ ಗೆಲಿಕ್"
+        },
+        {
+          "alpha2" : "gl",
+          "alpha3" : "glg",
+          "name" : "ಗ್ಯಾಲಿಶಿಯನ್"
+        },
+        {
+          "alpha2" : "gn",
+          "alpha3" : "grn",
+          "name" : "ಗೌರಾನಿ"
+        },
+        {
+          "alpha2" : "gu",
+          "alpha3" : "guj",
+          "name" : "ಗುಜರಾತಿ"
+        },
+        {
+          "alpha2" : "gv",
+          "alpha3" : "glv",
+          "name" : "ಮ್ಯಾಂಕ್ಸ್"
+        },
+        {
+          "alpha2" : "ha",
+          "alpha3" : "hau",
+          "name" : "ಹೌಸಾ"
+        },
+        {
+          "alpha2" : "he",
+          "alpha3" : "heb",
+          "name" : "ಹೀಬ್ರೂ"
+        },
+        {
+          "alpha2" : "hi",
+          "alpha3" : "hin",
+          "name" : "ಹಿಂದಿ"
+        },
+        {
+          "alpha2" : "ho",
+          "alpha3" : "hmo",
+          "name" : "ಹಿರಿ ಮೊಟು"
+        },
+        {
+          "alpha2" : "hr",
+          "alpha3" : "hrv",
+          "name" : "ಕ್ರೊಯೇಶಿಯನ್"
+        },
+        {
+          "alpha2" : "ht",
+          "alpha3" : "hat",
+          "name" : "ಹೈಟಿಯನ್ ಕ್ರಿಯೋಲಿ"
+        },
+        {
+          "alpha2" : "hu",
+          "alpha3" : "hun",
+          "name" : "ಹಂಗೇರಿಯನ್"
+        },
+        {
+          "alpha2" : "hy",
+          "alpha3" : "hye",
+          "name" : "ಅರ್ಮೇನಿಯನ್"
+        },
+        {
+          "alpha2" : "hz",
+          "alpha3" : "her",
+          "name" : "ಹೆರೆರೊ"
+        },
+        {
+          "alpha2" : "ia",
+          "alpha3" : "ina",
+          "name" : "ಇಂಟರ್‌ಲಿಂಗ್ವಾ"
+        },
+        {
+          "alpha2" : "id",
+          "alpha3" : "ind",
+          "name" : "ಇಂಡೋನೇಶಿಯನ್"
+        },
+        {
+          "alpha2" : "ie",
+          "alpha3" : "ile",
+          "name" : "ಇಂಟರ್‌ಲಿಂಗ್"
+        },
+        {
+          "alpha2" : "ig",
+          "alpha3" : "ibo",
+          "name" : "ಇಗ್ಬೊ"
+        },
+        {
+          "alpha2" : "ii",
+          "alpha3" : "iii",
+          "name" : "ಸಿಚುಅನ್ ಯಿ"
+        },
+        {
+          "alpha2" : "ik",
+          "alpha3" : "ipk",
+          "name" : "ಇನುಪಿಯಾಕ್"
+        },
+        {
+          "alpha2" : "io",
+          "alpha3" : "ido",
+          "name" : "ಇಡೊ"
+        },
+        {
+          "alpha2" : "is",
+          "alpha3" : "isl",
+          "name" : "ಐಸ್‌ಲ್ಯಾಂಡಿಕ್"
+        },
+        {
+          "alpha2" : "it",
+          "alpha3" : "ita",
+          "name" : "ಇಟಾಲಿಯನ್"
+        },
+        {
+          "alpha2" : "iu",
+          "alpha3" : "iku",
+          "name" : "ಇನುಕ್ಟಿಟುಟ್"
+        },
+        {
+          "alpha2" : "ja",
+          "alpha3" : "jpn",
+          "name" : "ಜಾಪನೀಸ್"
+        },
+        {
+          "alpha2" : "jv",
+          "alpha3" : "jav",
+          "name" : "ಜಾವಾನೀಸ್"
+        },
+        {
+          "alpha2" : "ka",
+          "alpha3" : "kat",
+          "name" : "ಜಾರ್ಜಿಯನ್"
+        },
+        {
+          "alpha2" : "kg",
+          "alpha3" : "kon",
+          "name" : "ಕಾಂಗೋ"
+        },
+        {
+          "alpha2" : "ki",
+          "alpha3" : "kik",
+          "name" : "ಕಿಕುಯು"
+        },
+        {
+          "alpha2" : "kj",
+          "alpha3" : "kua",
+          "name" : "ಕ್ವಾನ್‌ಯಾಮಾ"
+        },
+        {
+          "alpha2" : "kk",
+          "alpha3" : "kaz",
+          "name" : "ಕಝಕ್"
+        },
+        {
+          "alpha2" : "kl",
+          "alpha3" : "kal",
+          "name" : "ಕಲಾಲ್ಲಿಸುಟ್"
+        },
+        {
+          "alpha2" : "km",
+          "alpha3" : "khm",
+          "name" : "ಖಮೇರ್"
+        },
+        {
+          "alpha2" : "kn",
+          "alpha3" : "kan",
+          "name" : "ಕನ್ನಡ"
+        },
+        {
+          "alpha2" : "ko",
+          "alpha3" : "kor",
+          "name" : "ಕೊರಿಯನ್"
+        },
+        {
+          "alpha2" : "kr",
+          "alpha3" : "kau",
+          "name" : "ಕನುರಿ"
+        },
+        {
+          "alpha2" : "ks",
+          "alpha3" : "kas",
+          "name" : "ಕಾಶ್ಮೀರಿ"
+        },
+        {
+          "alpha2" : "ku",
+          "alpha3" : "kur",
+          "name" : "ಕುರ್ದಿಷ್"
+        },
+        {
+          "alpha2" : "kv",
+          "alpha3" : "kom",
+          "name" : "ಕೋಮಿ"
+        },
+        {
+          "alpha2" : "kw",
+          "alpha3" : "cor",
+          "name" : "ಕಾರ್ನಿಷ್"
+        },
+        {
+          "alpha2" : "ky",
+          "alpha3" : "kir",
+          "name" : "ಕಿರ್ಗಿಜ್"
+        },
+        {
+          "alpha2" : "la",
+          "alpha3" : "lat",
+          "name" : "ಲ್ಯಾಟಿನ್"
+        },
+        {
+          "alpha2" : "lb",
+          "alpha3" : "ltz",
+          "name" : "ಲಕ್ಸಂಬರ್ಗಿಷ್"
+        },
+        {
+          "alpha2" : "lg",
+          "alpha3" : "lug",
+          "name" : "ಗಾಂಡಾ"
+        },
+        {
+          "alpha2" : "li",
+          "alpha3" : "lim",
+          "name" : "ಲಿಂಬರ್ಗಿಶ್"
+        },
+        {
+          "alpha2" : "ln",
+          "alpha3" : "lin",
+          "name" : "ಲಿಂಗಾಲ"
+        },
+        {
+          "alpha2" : "lo",
+          "alpha3" : "lao",
+          "name" : "ಲಾವೋ"
+        },
+        {
+          "alpha2" : "lt",
+          "alpha3" : "lit",
+          "name" : "ಲಿಥುವೇನಿಯನ್"
+        },
+        {
+          "alpha2" : "lu",
+          "alpha3" : "lub",
+          "name" : "ಲೂಬಾ-ಕಟಾಂಗಾ"
+        },
+        {
+          "alpha2" : "lv",
+          "alpha3" : "lav",
+          "name" : "ಲಾಟ್ವಿಯನ್"
+        },
+        {
+          "alpha2" : "mg",
+          "alpha3" : "mlg",
+          "name" : "ಮಲಗಾಸಿ"
+        },
+        {
+          "alpha2" : "mh",
+          "alpha3" : "mah",
+          "name" : "ಮಾರ್ಶಲ್ಲೀಸ್"
+        },
+        {
+          "alpha2" : "mi",
+          "alpha3" : "mri",
+          "name" : "ಮಾವೋರಿ"
+        },
+        {
+          "alpha2" : "mk",
+          "alpha3" : "mkd",
+          "name" : "ಮೆಸಿಡೋನಿಯನ್"
+        },
+        {
+          "alpha2" : "ml",
+          "alpha3" : "mal",
+          "name" : "ಮಲಯಾಳಂ"
+        },
+        {
+          "alpha2" : "mn",
+          "alpha3" : "mon",
+          "name" : "ಮಂಗೋಲಿಯನ್"
+        },
+        {
+          "alpha2" : "mr",
+          "alpha3" : "mar",
+          "name" : "ಮರಾಠಿ"
+        },
+        {
+          "alpha2" : "ms",
+          "alpha3" : "msa",
+          "name" : "ಮಲಯ್"
+        },
+        {
+          "alpha2" : "mt",
+          "alpha3" : "mlt",
+          "name" : "ಮಾಲ್ಟೀಸ್"
+        },
+        {
+          "alpha2" : "my",
+          "alpha3" : "mya",
+          "name" : "ಬರ್ಮೀಸ್"
+        },
+        {
+          "alpha2" : "na",
+          "alpha3" : "nau",
+          "name" : "ನೌರು"
+        },
+        {
+          "alpha2" : "nb",
+          "alpha3" : "nob",
+          "name" : "ನಾರ್ವೆಜಿಯನ್ ಬೊಕ್ಮಲ್"
+        },
+        {
+          "alpha2" : "nd",
+          "alpha3" : "nde",
+          "name" : "ಉತ್ತರ ದೆಬೆಲೆ"
+        },
+        {
+          "alpha2" : "ne",
+          "alpha3" : "nep",
+          "name" : "ನೇಪಾಳಿ"
+        },
+        {
+          "alpha2" : "ng",
+          "alpha3" : "ndo",
+          "name" : "ಡೋಂಗಾ"
+        },
+        {
+          "alpha2" : "nl",
+          "alpha3" : "nld",
+          "name" : "ಡಚ್"
+        },
+        {
+          "alpha2" : "nn",
+          "alpha3" : "nno",
+          "name" : "ನಾರ್ವೇಜಿಯನ್ ನೈನಾರ್ಸ್ಕ್"
+        },
+        {
+          "alpha2" : "no",
+          "alpha3" : "nor",
+          "name" : "ನಾರ್ವೇಜಿಯನ್"
+        },
+        {
+          "alpha2" : "nr",
+          "alpha3" : "nbl",
+          "name" : "ದಕ್ಷಿಣ ದೆಬೆಲೆ"
+        },
+        {
+          "alpha2" : "nv",
+          "alpha3" : "nav",
+          "name" : "ನವಾಜೊ"
+        },
+        {
+          "alpha2" : "ny",
+          "alpha3" : "nya",
+          "name" : "ನ್ಯಾಂಜಾ"
+        },
+        {
+          "alpha2" : "oc",
+          "alpha3" : "oci",
+          "name" : "ಒಸಿಟನ್"
+        },
+        {
+          "alpha2" : "oj",
+          "alpha3" : "oji",
+          "name" : "ಒಜಿಬ್ವಾ"
+        },
+        {
+          "alpha2" : "om",
+          "alpha3" : "orm",
+          "name" : "ಒರೊಮೊ"
+        },
+        {
+          "alpha2" : "or",
+          "alpha3" : "ori",
+          "name" : "ಒಡಿಯ"
+        },
+        {
+          "alpha2" : "os",
+          "alpha3" : "oss",
+          "name" : "ಒಸ್ಸೆಟಿಕ್"
+        },
+        {
+          "alpha2" : "pa",
+          "alpha3" : "pan",
+          "name" : "ಪಂಜಾಬಿ"
+        },
+        {
+          "alpha2" : "pi",
+          "alpha3" : "pli",
+          "name" : "ಪಾಲಿ"
+        },
+        {
+          "alpha2" : "pl",
+          "alpha3" : "pol",
+          "name" : "ಪೊಲಿಶ್"
+        },
+        {
+          "alpha2" : "ps",
+          "alpha3" : "pus",
+          "name" : "ಪಾಷ್ಟೋ"
+        },
+        {
+          "alpha2" : "pt",
+          "alpha3" : "por",
+          "name" : "ಪೋರ್ಚುಗೀಸ್"
+        },
+        {
+          "alpha2" : "qu",
+          "alpha3" : "que",
+          "name" : "ಕ್ವೆಚುವಾ"
+        },
+        {
+          "alpha2" : "rm",
+          "alpha3" : "roh",
+          "name" : "ರೊಮಾನ್ಶ್"
+        },
+        {
+          "alpha2" : "rn",
+          "alpha3" : "run",
+          "name" : "ರುಂಡಿ"
+        },
+        {
+          "alpha2" : "ro",
+          "alpha3" : "mol",
+          "name" : "ರೊಮೇನಿಯನ್"
+        },
+        {
+          "alpha2" : "ru",
+          "alpha3" : "rus",
+          "name" : "ರಷ್ಯನ್"
+        },
+        {
+          "alpha2" : "rw",
+          "alpha3" : "kin",
+          "name" : "ಕಿನ್ಯಾರ್‌ವಾಂಡಾ"
+        },
+        {
+          "alpha2" : "sa",
+          "alpha3" : "san",
+          "name" : "ಸಂಸ್ಕೃತ"
+        },
+        {
+          "alpha2" : "sc",
+          "alpha3" : "srd",
+          "name" : "ಸರ್ಡೀನಿಯನ್"
+        },
+        {
+          "alpha2" : "sd",
+          "alpha3" : "snd",
+          "name" : "ಸಿಂಧಿ"
+        },
+        {
+          "alpha2" : "se",
+          "alpha3" : "sme",
+          "name" : "ಉತ್ತರ ಸಾಮಿ"
+        },
+        {
+          "alpha2" : "sg",
+          "alpha3" : "sag",
+          "name" : "ಸಾಂಗೋ"
+        },
+        {
+          "alpha2" : "si",
+          "alpha3" : "sin",
+          "name" : "ಸಿಂಹಳ"
+        },
+        {
+          "alpha2" : "sk",
+          "alpha3" : "slk",
+          "name" : "ಸ್ಲೋವಾಕ್"
+        },
+        {
+          "alpha2" : "sl",
+          "alpha3" : "slv",
+          "name" : "ಸ್ಲೋವೇನಿಯನ್"
+        },
+        {
+          "alpha2" : "sm",
+          "alpha3" : "smo",
+          "name" : "ಸಮೋವನ್"
+        },
+        {
+          "alpha2" : "sn",
+          "alpha3" : "sna",
+          "name" : "ಶೋನಾ"
+        },
+        {
+          "alpha2" : "so",
+          "alpha3" : "som",
+          "name" : "ಸೊಮಾಲಿ"
+        },
+        {
+          "alpha2" : "sq",
+          "alpha3" : "sqi",
+          "name" : "ಅಲ್ಬೇನಿಯನ್"
+        },
+        {
+          "alpha2" : "sr",
+          "alpha3" : "srp",
+          "name" : "ಸೆರ್ಬಿಯನ್"
+        },
+        {
+          "alpha2" : "ss",
+          "alpha3" : "ssw",
+          "name" : "ಸ್ವಾತಿ"
+        },
+        {
+          "alpha2" : "st",
+          "alpha3" : "sot",
+          "name" : "ದಕ್ಷಿಣ ಸೋಥೋ"
+        },
+        {
+          "alpha2" : "su",
+          "alpha3" : "sun",
+          "name" : "ಸುಂಡಾನೀಸ್"
+        },
+        {
+          "alpha2" : "sv",
+          "alpha3" : "swe",
+          "name" : "ಸ್ವೀಡಿಷ್"
+        },
+        {
+          "alpha2" : "sw",
+          "alpha3" : "swa",
+          "name" : "ಸ್ವಹಿಲಿ"
+        },
+        {
+          "alpha2" : "ta",
+          "alpha3" : "tam",
+          "name" : "ತಮಿಳು"
+        },
+        {
+          "alpha2" : "te",
+          "alpha3" : "tel",
+          "name" : "ತೆಲುಗು"
+        },
+        {
+          "alpha2" : "tg",
+          "alpha3" : "tgk",
+          "name" : "ತಾಜಿಕ್"
+        },
+        {
+          "alpha2" : "th",
+          "alpha3" : "tha",
+          "name" : "ಥಾಯ್"
+        },
+        {
+          "alpha2" : "ti",
+          "alpha3" : "tir",
+          "name" : "ಟಿಗ್ರಿನ್ಯಾ"
+        },
+        {
+          "alpha2" : "tk",
+          "alpha3" : "tuk",
+          "name" : "ಟರ್ಕ್‌ಮೆನ್"
+        },
+        {
+          "alpha2" : "tn",
+          "alpha3" : "tsn",
+          "name" : "ಸ್ವಾನಾ"
+        },
+        {
+          "alpha2" : "to",
+          "alpha3" : "ton",
+          "name" : "ಟೋಂಗನ್"
+        },
+        {
+          "alpha2" : "tr",
+          "alpha3" : "tur",
+          "name" : "ಟರ್ಕಿಶ್"
+        },
+        {
+          "alpha2" : "ts",
+          "alpha3" : "tso",
+          "name" : "ಸೋಂಗಾ"
+        },
+        {
+          "alpha2" : "tt",
+          "alpha3" : "tat",
+          "name" : "ಟಾಟರ್"
+        },
+        {
+          "alpha2" : "ty",
+          "alpha3" : "tah",
+          "name" : "ಟಹೀಟಿಯನ್"
+        },
+        {
+          "alpha2" : "ug",
+          "alpha3" : "uig",
+          "name" : "ಉಯಿಘರ್"
+        },
+        {
+          "alpha2" : "uk",
+          "alpha3" : "ukr",
+          "name" : "ಉಕ್ರೇನಿಯನ್"
+        },
+        {
+          "alpha2" : "ur",
+          "alpha3" : "urd",
+          "name" : "ಉರ್ದು"
+        },
+        {
+          "alpha2" : "uz",
+          "alpha3" : "uzb",
+          "name" : "ಉಜ್ಬೇಕ್"
+        },
+        {
+          "alpha2" : "ve",
+          "alpha3" : "ven",
+          "name" : "ವೆಂಡಾ"
+        },
+        {
+          "alpha2" : "vi",
+          "alpha3" : "vie",
+          "name" : "ವಿಯೆಟ್ನಾಮೀಸ್"
+        },
+        {
+          "alpha2" : "vo",
+          "alpha3" : "vol",
+          "name" : "ವೋಲಾಪುಕ್"
+        },
+        {
+          "alpha2" : "wa",
+          "alpha3" : "wln",
+          "name" : "ವಾಲೂನ್"
+        },
+        {
+          "alpha2" : "wo",
+          "alpha3" : "wol",
+          "name" : "ವೋಲೋಫ್"
+        },
+        {
+          "alpha2" : "xh",
+          "alpha3" : "xho",
+          "name" : "ಕ್ಸೋಸ"
+        },
+        {
+          "alpha2" : "yi",
+          "alpha3" : "yid",
+          "name" : "ಯಿಡ್ಡಿಶ್"
+        },
+        {
+          "alpha2" : "yo",
+          "alpha3" : "yor",
+          "name" : "ಯೊರುಬಾ"
+        },
+        {
+          "alpha2" : "za",
+          "alpha3" : "zha",
+          "name" : "ಝೂವಾಂಗ್"
+        },
+        {
+          "alpha2" : "zh",
+          "alpha3" : "zho",
+          "name" : "ಚೈನೀಸ್"
+        },
+        {
+          "alpha2" : "zu",
+          "alpha3" : "zul",
+          "name" : "ಜುಲು"
+        }
+      ]
+    },
     "ko" : {
       "location.language" : [
         {
@@ -43590,6 +44499,885 @@
           "alpha2" : "zu",
           "alpha3" : "zul",
           "name" : "Zoeloe"
+        }
+      ]
+    },
+    "pa_IN" : {
+      "location.language" : [
+        {
+          "alpha2" : "aa",
+          "alpha3" : "aar",
+          "name" : "ਅਫ਼ਾਰ"
+        },
+        {
+          "alpha2" : "ab",
+          "alpha3" : "abk",
+          "name" : "ਅਬਖਾਜ਼ੀਅਨ"
+        },
+        {
+          "alpha2" : "af",
+          "alpha3" : "afr",
+          "name" : "ਅਫ਼ਰੀਕੀ"
+        },
+        {
+          "alpha2" : "ak",
+          "alpha3" : "aka",
+          "name" : "ਅਕਾਨ"
+        },
+        {
+          "alpha2" : "am",
+          "alpha3" : "amh",
+          "name" : "ਅਮਹਾਰਿਕ"
+        },
+        {
+          "alpha2" : "an",
+          "alpha3" : "arg",
+          "name" : "ਅਰਾਗੋਨੀ"
+        },
+        {
+          "alpha2" : "ar",
+          "alpha3" : "ara",
+          "name" : "ਅਰਬੀ"
+        },
+        {
+          "alpha2" : "as",
+          "alpha3" : "asm",
+          "name" : "ਅਸਾਮੀ"
+        },
+        {
+          "alpha2" : "av",
+          "alpha3" : "ava",
+          "name" : "ਅਵਾਰਿਕ"
+        },
+        {
+          "alpha2" : "ay",
+          "alpha3" : "aym",
+          "name" : "ਅਈਮਾਰਾ"
+        },
+        {
+          "alpha2" : "az",
+          "alpha3" : "aze",
+          "name" : "ਅਜ਼ਰਬਾਈਜਾਨੀ"
+        },
+        {
+          "alpha2" : "ba",
+          "alpha3" : "bak",
+          "name" : "ਬਸ਼ਕੀਰ"
+        },
+        {
+          "alpha2" : "be",
+          "alpha3" : "bel",
+          "name" : "ਬੇਲਾਰੂਸੀ"
+        },
+        {
+          "alpha2" : "bg",
+          "alpha3" : "bul",
+          "name" : "ਬੁਲਗਾਰੀਆਈ"
+        },
+        {
+          "alpha2" : "bi",
+          "alpha3" : "bis",
+          "name" : "ਬਿਸਲਾਮਾ"
+        },
+        {
+          "alpha2" : "bm",
+          "alpha3" : "bam",
+          "name" : "ਬੰਬਾਰਾ"
+        },
+        {
+          "alpha2" : "bn",
+          "alpha3" : "ben",
+          "name" : "ਬੰਗਾਲੀ"
+        },
+        {
+          "alpha2" : "bo",
+          "alpha3" : "bod",
+          "name" : "ਤਿੱਬਤੀ"
+        },
+        {
+          "alpha2" : "br",
+          "alpha3" : "bre",
+          "name" : "ਬਰੇਟਨ"
+        },
+        {
+          "alpha2" : "bs",
+          "alpha3" : "bos",
+          "name" : "ਬੋਸਨੀਆਈ"
+        },
+        {
+          "alpha2" : "ca",
+          "alpha3" : "cat",
+          "name" : "ਕੈਟਾਲਾਨ"
+        },
+        {
+          "alpha2" : "ce",
+          "alpha3" : "che",
+          "name" : "ਚੇਚਨ"
+        },
+        {
+          "alpha2" : "ch",
+          "alpha3" : "cha",
+          "name" : "ਚਮੋਰੋ"
+        },
+        {
+          "alpha2" : "co",
+          "alpha3" : "cos",
+          "name" : "ਕੋਰਸੀਕਨ"
+        },
+        {
+          "alpha2" : "cs",
+          "alpha3" : "ces",
+          "name" : "ਚੈੱਕ"
+        },
+        {
+          "alpha2" : "cu",
+          "alpha3" : "chu",
+          "name" : "ਚਰਚ ਸਲਾਵੀ"
+        },
+        {
+          "alpha2" : "cv",
+          "alpha3" : "chv",
+          "name" : "ਚੁਵਾਸ਼"
+        },
+        {
+          "alpha2" : "cy",
+          "alpha3" : "cym",
+          "name" : "ਵੈਲਸ਼"
+        },
+        {
+          "alpha2" : "da",
+          "alpha3" : "dan",
+          "name" : "ਡੈਨਿਸ਼"
+        },
+        {
+          "alpha2" : "de",
+          "alpha3" : "deu",
+          "name" : "ਜਰਮਨ"
+        },
+        {
+          "alpha2" : "dv",
+          "alpha3" : "div",
+          "name" : "ਦਿਵੇਹੀ"
+        },
+        {
+          "alpha2" : "dz",
+          "alpha3" : "dzo",
+          "name" : "ਜ਼ੋਂਗਖਾ"
+        },
+        {
+          "alpha2" : "ee",
+          "alpha3" : "ewe",
+          "name" : "ਈਵਈ"
+        },
+        {
+          "alpha2" : "el",
+          "alpha3" : "ell",
+          "name" : "ਯੂਨਾਨੀ"
+        },
+        {
+          "alpha2" : "en",
+          "alpha3" : "eng",
+          "name" : "ਅੰਗਰੇਜ਼ੀ"
+        },
+        {
+          "alpha2" : "eo",
+          "alpha3" : "epo",
+          "name" : "ਇਸਪੇਰਾਂਟੋ"
+        },
+        {
+          "alpha2" : "es",
+          "alpha3" : "spa",
+          "name" : "ਸਪੇਨੀ"
+        },
+        {
+          "alpha2" : "et",
+          "alpha3" : "est",
+          "name" : "ਇਸਟੋਨੀਆਈ"
+        },
+        {
+          "alpha2" : "eu",
+          "alpha3" : "eus",
+          "name" : "ਬਾਸਕ"
+        },
+        {
+          "alpha2" : "fa",
+          "alpha3" : "fas",
+          "name" : "ਫ਼ਾਰਸੀ"
+        },
+        {
+          "alpha2" : "ff",
+          "alpha3" : "ful",
+          "name" : "ਫੁਲਾਹ"
+        },
+        {
+          "alpha2" : "fi",
+          "alpha3" : "fin",
+          "name" : "ਫਿਨਿਸ਼"
+        },
+        {
+          "alpha2" : "fj",
+          "alpha3" : "fij",
+          "name" : "ਫ਼ਿਜ਼ੀ"
+        },
+        {
+          "alpha2" : "fo",
+          "alpha3" : "fao",
+          "name" : "ਫ਼ੇਰੋਸੇ"
+        },
+        {
+          "alpha2" : "fr",
+          "alpha3" : "fra",
+          "name" : "ਫਰਾਂਸੀਸੀ"
+        },
+        {
+          "alpha2" : "fy",
+          "alpha3" : "fry",
+          "name" : "ਪੱਛਮੀ ਫ੍ਰਿਸੀਅਨ"
+        },
+        {
+          "alpha2" : "ga",
+          "alpha3" : "gle",
+          "name" : "ਆਇਰਸ਼"
+        },
+        {
+          "alpha2" : "gd",
+          "alpha3" : "gla",
+          "name" : "ਸਕਾਟਿਸ਼ ਗੇਲਿਕ"
+        },
+        {
+          "alpha2" : "gl",
+          "alpha3" : "glg",
+          "name" : "ਗੈਲਿਸ਼ਿਅਨ"
+        },
+        {
+          "alpha2" : "gn",
+          "alpha3" : "grn",
+          "name" : "ਗੁਆਰਾਨੀ"
+        },
+        {
+          "alpha2" : "gu",
+          "alpha3" : "guj",
+          "name" : "ਗੁਜਰਾਤੀ"
+        },
+        {
+          "alpha2" : "gv",
+          "alpha3" : "glv",
+          "name" : "ਮੈਂਕਸ"
+        },
+        {
+          "alpha2" : "ha",
+          "alpha3" : "hau",
+          "name" : "ਹੌਸਾ"
+        },
+        {
+          "alpha2" : "he",
+          "alpha3" : "heb",
+          "name" : "ਹਿਬਰੂ"
+        },
+        {
+          "alpha2" : "hi",
+          "alpha3" : "hin",
+          "name" : "ਹਿੰਦੀ"
+        },
+        {
+          "alpha2" : "hr",
+          "alpha3" : "hrv",
+          "name" : "ਕ੍ਰੋਏਸ਼ਿਆਈ"
+        },
+        {
+          "alpha2" : "ht",
+          "alpha3" : "hat",
+          "name" : "ਹੈਤੀਆਈ"
+        },
+        {
+          "alpha2" : "hu",
+          "alpha3" : "hun",
+          "name" : "ਹੰਗਰੀਆਈ"
+        },
+        {
+          "alpha2" : "hy",
+          "alpha3" : "hye",
+          "name" : "ਅਰਮੀਨੀਆਈ"
+        },
+        {
+          "alpha2" : "hz",
+          "alpha3" : "her",
+          "name" : "ਹਰੇਰੋ"
+        },
+        {
+          "alpha2" : "ia",
+          "alpha3" : "ina",
+          "name" : "ਇੰਟਰਲਿੰਗੁਆ"
+        },
+        {
+          "alpha2" : "id",
+          "alpha3" : "ind",
+          "name" : "ਇੰਡੋਨੇਸ਼ੀਆਈ"
+        },
+        {
+          "alpha2" : "ie",
+          "alpha3" : "ile",
+          "name" : "ਇੰਟਰਲਿੰਗੁਈ"
+        },
+        {
+          "alpha2" : "ig",
+          "alpha3" : "ibo",
+          "name" : "ਇਗਬੋ"
+        },
+        {
+          "alpha2" : "ii",
+          "alpha3" : "iii",
+          "name" : "ਸਿਚੁਆਨ ਯੀ"
+        },
+        {
+          "alpha2" : "io",
+          "alpha3" : "ido",
+          "name" : "ਇਡੂ"
+        },
+        {
+          "alpha2" : "is",
+          "alpha3" : "isl",
+          "name" : "ਆਈਸਲੈਂਡਿਕ"
+        },
+        {
+          "alpha2" : "it",
+          "alpha3" : "ita",
+          "name" : "ਇਤਾਲਵੀ"
+        },
+        {
+          "alpha2" : "iu",
+          "alpha3" : "iku",
+          "name" : "ਇੰਕਟੀਟੂਤ"
+        },
+        {
+          "alpha2" : "ja",
+          "alpha3" : "jpn",
+          "name" : "ਜਪਾਨੀ"
+        },
+        {
+          "alpha2" : "jv",
+          "alpha3" : "jav",
+          "name" : "ਜਾਵਾਨੀਜ਼"
+        },
+        {
+          "alpha2" : "ka",
+          "alpha3" : "kat",
+          "name" : "ਜਾਰਜੀਆਈ"
+        },
+        {
+          "alpha2" : "ki",
+          "alpha3" : "kik",
+          "name" : "ਕਿਕੂਯੂ"
+        },
+        {
+          "alpha2" : "kj",
+          "alpha3" : "kua",
+          "name" : "ਕੁਆਨਯਾਮਾ"
+        },
+        {
+          "alpha2" : "kk",
+          "alpha3" : "kaz",
+          "name" : "ਕਜ਼ਾਖ਼"
+        },
+        {
+          "alpha2" : "kl",
+          "alpha3" : "kal",
+          "name" : "ਕਲਾਅੱਲੀਸੁਟ"
+        },
+        {
+          "alpha2" : "km",
+          "alpha3" : "khm",
+          "name" : "ਖਮੇਰ"
+        },
+        {
+          "alpha2" : "kn",
+          "alpha3" : "kan",
+          "name" : "ਕੰਨੜ"
+        },
+        {
+          "alpha2" : "ko",
+          "alpha3" : "kor",
+          "name" : "ਕੋਰੀਆਈ"
+        },
+        {
+          "alpha2" : "kr",
+          "alpha3" : "kau",
+          "name" : "ਕਨੂਰੀ"
+        },
+        {
+          "alpha2" : "ks",
+          "alpha3" : "kas",
+          "name" : "ਕਸ਼ਮੀਰੀ"
+        },
+        {
+          "alpha2" : "ku",
+          "alpha3" : "kur",
+          "name" : "ਕੁਰਦਿਸ਼"
+        },
+        {
+          "alpha2" : "kv",
+          "alpha3" : "kom",
+          "name" : "ਕੋਮੀ"
+        },
+        {
+          "alpha2" : "kw",
+          "alpha3" : "cor",
+          "name" : "ਕੋਰਨਿਸ਼"
+        },
+        {
+          "alpha2" : "ky",
+          "alpha3" : "kir",
+          "name" : "ਕਿਰਗੀਜ਼"
+        },
+        {
+          "alpha2" : "la",
+          "alpha3" : "lat",
+          "name" : "ਲਾਤੀਨੀ"
+        },
+        {
+          "alpha2" : "lb",
+          "alpha3" : "ltz",
+          "name" : "ਲਕਜ਼ਮਬਰਗਿਸ਼"
+        },
+        {
+          "alpha2" : "lg",
+          "alpha3" : "lug",
+          "name" : "ਗਾਂਡਾ"
+        },
+        {
+          "alpha2" : "li",
+          "alpha3" : "lim",
+          "name" : "ਲਿਮਬੁਰਗੀ"
+        },
+        {
+          "alpha2" : "ln",
+          "alpha3" : "lin",
+          "name" : "ਲਿੰਗਾਲਾ"
+        },
+        {
+          "alpha2" : "lo",
+          "alpha3" : "lao",
+          "name" : "ਲਾਓ"
+        },
+        {
+          "alpha2" : "lt",
+          "alpha3" : "lit",
+          "name" : "ਲਿਥੁਆਨੀਅਨ"
+        },
+        {
+          "alpha2" : "lu",
+          "alpha3" : "lub",
+          "name" : "ਲੂਬਾ-ਕਾਟਾਂਗਾ"
+        },
+        {
+          "alpha2" : "lv",
+          "alpha3" : "lav",
+          "name" : "ਲਾਤੀਵੀ"
+        },
+        {
+          "alpha2" : "mg",
+          "alpha3" : "mlg",
+          "name" : "ਮਾਲਾਗੈਸੀ"
+        },
+        {
+          "alpha2" : "mh",
+          "alpha3" : "mah",
+          "name" : "ਮਾਰਸ਼ਲੀਜ਼"
+        },
+        {
+          "alpha2" : "mi",
+          "alpha3" : "mri",
+          "name" : "ਮਾਉਰੀ"
+        },
+        {
+          "alpha2" : "mk",
+          "alpha3" : "mkd",
+          "name" : "ਮੈਕਡੋਨੀਆਈ"
+        },
+        {
+          "alpha2" : "ml",
+          "alpha3" : "mal",
+          "name" : "ਮਲਿਆਲਮ"
+        },
+        {
+          "alpha2" : "mn",
+          "alpha3" : "mon",
+          "name" : "ਮੰਗੋਲੀ"
+        },
+        {
+          "alpha2" : "mr",
+          "alpha3" : "mar",
+          "name" : "ਮਰਾਠੀ"
+        },
+        {
+          "alpha2" : "ms",
+          "alpha3" : "msa",
+          "name" : "ਮਲਯ"
+        },
+        {
+          "alpha2" : "mt",
+          "alpha3" : "mlt",
+          "name" : "ਮਾਲਟੀਜ਼"
+        },
+        {
+          "alpha2" : "my",
+          "alpha3" : "mya",
+          "name" : "ਬਰਮੀ"
+        },
+        {
+          "alpha2" : "na",
+          "alpha3" : "nau",
+          "name" : "ਨਾਉਰੂ"
+        },
+        {
+          "alpha2" : "nb",
+          "alpha3" : "nob",
+          "name" : "ਨਾਰਵੇਜਿਆਈ ਬੋਕਮਲ"
+        },
+        {
+          "alpha2" : "nd",
+          "alpha3" : "nde",
+          "name" : "ਉੱਤਰੀ ਨਡੇਬੇਲੇ"
+        },
+        {
+          "alpha2" : "ne",
+          "alpha3" : "nep",
+          "name" : "ਨੇਪਾਲੀ"
+        },
+        {
+          "alpha2" : "ng",
+          "alpha3" : "ndo",
+          "name" : "ਐਂਡੋਂਗਾ"
+        },
+        {
+          "alpha2" : "nl",
+          "alpha3" : "nld",
+          "name" : "ਡੱਚ"
+        },
+        {
+          "alpha2" : "nn",
+          "alpha3" : "nno",
+          "name" : "ਨਾਰਵੇਜਿਆਈ ਨਿਓਨੌਰਸਕ"
+        },
+        {
+          "alpha2" : "no",
+          "alpha3" : "nor",
+          "name" : "ਨਾਰਵੇਜਿਆਈ"
+        },
+        {
+          "alpha2" : "nr",
+          "alpha3" : "nbl",
+          "name" : "ਸਾਊਥ ਨਡੇਬੇਲੇ"
+        },
+        {
+          "alpha2" : "nv",
+          "alpha3" : "nav",
+          "name" : "ਨਵਾਜੋ"
+        },
+        {
+          "alpha2" : "ny",
+          "alpha3" : "nya",
+          "name" : "ਨਯਾਂਜਾ"
+        },
+        {
+          "alpha2" : "oc",
+          "alpha3" : "oci",
+          "name" : "ਓਕਸੀਟਾਨ"
+        },
+        {
+          "alpha2" : "om",
+          "alpha3" : "orm",
+          "name" : "ਓਰੋਮੋ"
+        },
+        {
+          "alpha2" : "or",
+          "alpha3" : "ori",
+          "name" : "ਉੜੀਆ"
+        },
+        {
+          "alpha2" : "os",
+          "alpha3" : "oss",
+          "name" : "ਓਸੈਟਿਕ"
+        },
+        {
+          "alpha2" : "pa",
+          "alpha3" : "pan",
+          "name" : "ਪੰਜਾਬੀ"
+        },
+        {
+          "alpha2" : "pi",
+          "alpha3" : "pli",
+          "name" : "ਪਾਲੀ"
+        },
+        {
+          "alpha2" : "pl",
+          "alpha3" : "pol",
+          "name" : "ਪੋਲੈਂਡੀ"
+        },
+        {
+          "alpha2" : "ps",
+          "alpha3" : "pus",
+          "name" : "ਪਸ਼ਤੋ"
+        },
+        {
+          "alpha2" : "pt",
+          "alpha3" : "por",
+          "name" : "ਪੁਰਤਗਾਲੀ"
+        },
+        {
+          "alpha2" : "qu",
+          "alpha3" : "que",
+          "name" : "ਕਕੇਸ਼ੁਆ"
+        },
+        {
+          "alpha2" : "rm",
+          "alpha3" : "roh",
+          "name" : "ਰੋਮਾਂਸ਼"
+        },
+        {
+          "alpha2" : "rn",
+          "alpha3" : "run",
+          "name" : "ਰੁੰਡੀ"
+        },
+        {
+          "alpha2" : "ro",
+          "alpha3" : "mol",
+          "name" : "ਰੋਮਾਨੀਆਈ"
+        },
+        {
+          "alpha2" : "ru",
+          "alpha3" : "rus",
+          "name" : "ਰੂਸੀ"
+        },
+        {
+          "alpha2" : "rw",
+          "alpha3" : "kin",
+          "name" : "ਕਿਨਿਆਰਵਾਂਡਾ"
+        },
+        {
+          "alpha2" : "sa",
+          "alpha3" : "san",
+          "name" : "ਸੰਸਕ੍ਰਿਤ"
+        },
+        {
+          "alpha2" : "sc",
+          "alpha3" : "srd",
+          "name" : "ਸਾਰਡੀਨੀਆਈ"
+        },
+        {
+          "alpha2" : "sd",
+          "alpha3" : "snd",
+          "name" : "ਸਿੰਧੀ"
+        },
+        {
+          "alpha2" : "se",
+          "alpha3" : "sme",
+          "name" : "ਉੱਤਰੀ ਸਾਮੀ"
+        },
+        {
+          "alpha2" : "sg",
+          "alpha3" : "sag",
+          "name" : "ਸਾਂਗੋ"
+        },
+        {
+          "alpha2" : "si",
+          "alpha3" : "sin",
+          "name" : "ਸਿੰਹਾਲਾ"
+        },
+        {
+          "alpha2" : "sk",
+          "alpha3" : "slk",
+          "name" : "ਸਲੋਵਾਕ"
+        },
+        {
+          "alpha2" : "sl",
+          "alpha3" : "slv",
+          "name" : "ਸਲੋਵੇਨੀਆਈ"
+        },
+        {
+          "alpha2" : "sm",
+          "alpha3" : "smo",
+          "name" : "ਸਾਮੋਨ"
+        },
+        {
+          "alpha2" : "sn",
+          "alpha3" : "sna",
+          "name" : "ਸ਼ੋਨਾ"
+        },
+        {
+          "alpha2" : "so",
+          "alpha3" : "som",
+          "name" : "ਸੋਮਾਲੀ"
+        },
+        {
+          "alpha2" : "sq",
+          "alpha3" : "sqi",
+          "name" : "ਅਲਬਾਨੀਆਈ"
+        },
+        {
+          "alpha2" : "sr",
+          "alpha3" : "srp",
+          "name" : "ਸਰਬੀਆਈ"
+        },
+        {
+          "alpha2" : "ss",
+          "alpha3" : "ssw",
+          "name" : "ਸਵਾਤੀ"
+        },
+        {
+          "alpha2" : "st",
+          "alpha3" : "sot",
+          "name" : "ਦੱਖਣੀ ਸੋਥੋ"
+        },
+        {
+          "alpha2" : "su",
+          "alpha3" : "sun",
+          "name" : "ਸੂੰਡਾਨੀ"
+        },
+        {
+          "alpha2" : "sv",
+          "alpha3" : "swe",
+          "name" : "ਸਵੀਡਿਸ਼"
+        },
+        {
+          "alpha2" : "sw",
+          "alpha3" : "swa",
+          "name" : "ਸਵਾਹਿਲੀ"
+        },
+        {
+          "alpha2" : "ta",
+          "alpha3" : "tam",
+          "name" : "ਤਮਿਲ"
+        },
+        {
+          "alpha2" : "te",
+          "alpha3" : "tel",
+          "name" : "ਤੇਲਗੂ"
+        },
+        {
+          "alpha2" : "tg",
+          "alpha3" : "tgk",
+          "name" : "ਤਾਜਿਕ"
+        },
+        {
+          "alpha2" : "th",
+          "alpha3" : "tha",
+          "name" : "ਥਾਈ"
+        },
+        {
+          "alpha2" : "ti",
+          "alpha3" : "tir",
+          "name" : "ਤਿਗ੍ਰੀਨਿਆ"
+        },
+        {
+          "alpha2" : "tk",
+          "alpha3" : "tuk",
+          "name" : "ਤੁਰਕਮੇਨ"
+        },
+        {
+          "alpha2" : "tn",
+          "alpha3" : "tsn",
+          "name" : "ਤਸਵਾਨਾ"
+        },
+        {
+          "alpha2" : "to",
+          "alpha3" : "ton",
+          "name" : "ਟੌਂਗਨ"
+        },
+        {
+          "alpha2" : "tr",
+          "alpha3" : "tur",
+          "name" : "ਤੁਰਕੀ"
+        },
+        {
+          "alpha2" : "ts",
+          "alpha3" : "tso",
+          "name" : "ਸੋਂਗਾ"
+        },
+        {
+          "alpha2" : "tt",
+          "alpha3" : "tat",
+          "name" : "ਤਤਾਰ"
+        },
+        {
+          "alpha2" : "ty",
+          "alpha3" : "tah",
+          "name" : "ਤਾਹੀਟੀ"
+        },
+        {
+          "alpha2" : "ug",
+          "alpha3" : "uig",
+          "name" : "ਉਇਗੁਰ"
+        },
+        {
+          "alpha2" : "uk",
+          "alpha3" : "ukr",
+          "name" : "ਯੂਕਰੇਨੀਆਈ"
+        },
+        {
+          "alpha2" : "ur",
+          "alpha3" : "urd",
+          "name" : "ਉਰਦੂ"
+        },
+        {
+          "alpha2" : "uz",
+          "alpha3" : "uzb",
+          "name" : "ਉਜ਼ਬੇਕ"
+        },
+        {
+          "alpha2" : "ve",
+          "alpha3" : "ven",
+          "name" : "ਵੇਂਡਾ"
+        },
+        {
+          "alpha2" : "vi",
+          "alpha3" : "vie",
+          "name" : "ਵੀਅਤਨਾਮੀ"
+        },
+        {
+          "alpha2" : "vo",
+          "alpha3" : "vol",
+          "name" : "ਵੋਲਾਪੂਕ"
+        },
+        {
+          "alpha2" : "wa",
+          "alpha3" : "wln",
+          "name" : "ਵਲੂਨ"
+        },
+        {
+          "alpha2" : "wo",
+          "alpha3" : "wol",
+          "name" : "ਵੋਲੋਫ"
+        },
+        {
+          "alpha2" : "xh",
+          "alpha3" : "xho",
+          "name" : "ਖੋਸਾ"
+        },
+        {
+          "alpha2" : "yi",
+          "alpha3" : "yid",
+          "name" : "ਯਿਦਿਸ਼"
+        },
+        {
+          "alpha2" : "yo",
+          "alpha3" : "yor",
+          "name" : "ਯੋਰੂਬਾ"
+        },
+        {
+          "alpha2" : "za",
+          "alpha3" : "zha",
+          "name" : "ਜ਼ੁਆਂਗ"
+        },
+        {
+          "alpha2" : "zh",
+          "alpha3" : "zho",
+          "name" : "ਚੀਨੀ"
+        },
+        {
+          "alpha2" : "zu",
+          "alpha3" : "zul",
+          "name" : "ਜ਼ੁਲੂ"
         }
       ]
     },

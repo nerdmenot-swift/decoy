@@ -8,7 +8,7 @@ Reproducible by construction, portable across macOS, Linux, and Windows.
 > **Status: preparing 1.0.** The API is settled and the source declares `1.0.0`, but
 > nothing is tagged yet, so `from: "1.0.0"` will not resolve. The tag is the release.
 >
-> The corpus versions *separately*, and it will keep moving — it is at 60.7.0, and adding
+> The corpus versions *separately*, and it will keep moving — it is at 60.8.0, and adding
 > data to a locale bumps it. A corpus bump changes what a given seed draws, so pin the
 > corpus version, not just the package version, if you are keeping generated fixtures.
 > [CHANGELOG.md](CHANGELOG.md) explains which of the two numbers answers which worry.
@@ -145,7 +145,7 @@ construction. Every portability bug this project has had was in the build toolin
 ## The corpus is derived, not written
 
 No data is hand-edited. `Tools/adapters/` holds *programs* that derive the corpus from
-fifty-three sources — forty-eight pinned upstreams fetched by URL and verified against an
+fifty-four sources — forty-nine pinned upstreams fetched by URL and verified against an
 integrity hash, three queried and their answers committed, and two written here — each
 recorded in the corpus with its licence:
 
@@ -208,13 +208,13 @@ package version and the corpus version mean different things:
 - [x] Multi-platform package skeleton, Foundation-free core, `swiftLanguageMode(.v6)`
 - [x] Seeded RNG (`Xoshiro256**` behind `RandomNumberGenerator`)
 - [x] `Forge<T>` with rules, traits, streaming, child fan-out and unique constraints
-- [x] Adapter pipeline: 53 sources — 48 integrity-verified, 3 queried, 2 authored — provenance per path
-- [x] [Locale support matrix](docs/locale-support.md) — which fields each of the 65 locales
+- [x] Adapter pipeline: 54 sources — 49 integrity-verified, 3 queried, 2 authored — provenance per path
+- [x] [Locale support matrix](docs/locale-support.md) — which fields each of the 67 locales
       supplies itself, and which fall through to English. Generated from the corpus and
       checked in CI, so it cannot describe a corpus that is no longer shipping.
 - [x] JSON → binary corpus format + Swift reader
 - [x] 319 generators across 29 namespaces, including dates, seeded UUIDs and checksummed crypto addresses
-- [x] All 66 locales compile; `en`, `de`, `ja` ship as importable Swift modules
+- [x] All 68 locales compile; `en`, `de`, `ja` ship as importable Swift modules
 - [x] `decoy-inspect`: enumeration, coverage, generated attribution
 - [x] CI run on every push — macOS, Linux and Windows each build, compile a corpus and
       run the full suite; `PortabilityLintTests` fails the build on the calls known to

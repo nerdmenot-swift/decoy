@@ -1,0 +1,51 @@
+{
+  "_comment": [
+    "Given names and surnames for eight Indian languages that had none at all.",
+    "",
+    "There is no register to read. India's Census runs to some two hundred tables under GODL",
+    "and not one counts names; Pakistan, Sri Lanka, Nepal and Bangladesh publish nothing",
+    "comparable. Wikidata carries thousands of names for European languages and fewer than",
+    "five each for Tamil, Telugu, Kannada, Malayalam and Gujarati. Five hundred million",
+    "people, and this corpus answered for all of them in English.",
+    "",
+    "naamapadam is a named-entity dataset -- 5.78M sentences of Indian-language text with",
+    "person spans marked -- released CC0 by AI4Bharat. CC0 is the only reason it is usable:",
+    "every other Indian name dataset found alongside it was built from a leaked Facebook",
+    "dump, from 'public records', from unnamed sources, or scraped from Wiktionary.",
+    "",
+    "SINGLE TOKENS, NEVER A PAIR. The spans are read for their parts and the parts counted",
+    "separately; a given name and the surname beside it are never stored together. What ships",
+    "is a vocabulary of name-words with frequencies -- a register in shape, if not in origin.",
+    "It is not the list of people the sentences were about, and this project has already",
+    "refused three such lists.",
+    "",
+    "It ships knowingly imperfect. The tags were projected automatically from English word",
+    "alignments rather than read by anyone, so roughly a third of what survives filtering",
+    "carries a case ending: Tamil's `panchaaliyin` is `Bhansali's`, not `Bhansali`. Stripping",
+    "those needs a morphological analyser per language, which is eleven sets of rules nobody",
+    "here can verify -- the same reason decoy-authored is English only. The trade is a locale",
+    "mostly right in its own language against no locale at all, and for fixture data that is",
+    "the better half. See IndicNamesAdapter for the four filters and what each removes."
+  ],
+  "id": "naamapadam",
+  "name": "Naamapadam (AI4Bharat) v1.0",
+  "license": "CC0-1.0",
+  "copyright": "AI4Bharat, IIT Madras — Mhaske et al., 'Naamapadam: A Large-Scale Named Entity Annotated Data for Indic Languages'",
+  "url": "https://huggingface.co/datasets/ai4bharat/naamapadam",
+  "version": "1.0",
+  "retrieved": "2026-08-24",
+  "artifacts": [
+    {
+      "name": "kannada",
+      "format": "zip",
+      "url": "https://huggingface.co/datasets/ai4bharat/naamapadam/resolve/main/data/kn_IndicNER_v1.0.zip",
+      "integrity": "sha512-rSLwohdQCSqNZmJnbVdm40ArzxjJlGTJ8N5zJax38lZstpYxaz5zTmOT62mpNwkStfj3Mzn2zJz9OGqhUuW7Yw=="
+    },
+    {
+      "name": "punjabi",
+      "format": "zip",
+      "url": "https://huggingface.co/datasets/ai4bharat/naamapadam/resolve/main/data/pa_IndicNER_v1.0.zip",
+      "integrity": "sha512-fpvH1aEUl77/jVKkEbzcdzLHI0jOAzfiI5g5yVZFRvugANOnAHMcT51l3ZQgQNJrah6GkhWsjFc/v1yB6MjXIg=="
+    }
+  ]
+}

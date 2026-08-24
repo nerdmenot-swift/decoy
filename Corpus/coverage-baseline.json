@@ -172,6 +172,10 @@
       "paths" : 32,
       "values" : 1982
     },
+    "kn_IN" : {
+      "paths" : 30,
+      "values" : 20326
+    },
     "ko" : {
       "paths" : 34,
       "values" : 5641
@@ -199,6 +203,10 @@
     "nl_BE" : {
       "paths" : 51,
       "values" : 4630
+    },
+    "pa_IN" : {
+      "paths" : 32,
+      "values" : 20205
     },
     "pl" : {
       "paths" : 41,

@@ -883,6 +883,18 @@
         "თევზები"
       ]
     },
+    "kn_IN" : {
+      "location.direction.cardinal" : [
+        "ಉತ್ತರ",
+        "ಪೂರ್ವ",
+        "ದಕ್ಷಿಣ",
+        "ಪಶ್ಚಿಮ"
+      ],
+      "person.sex" : [
+        "ಪುರುಷ",
+        "ಮಹಿಳೆ"
+      ]
+    },
     "ko" : {
       "location.direction.cardinal" : [
         "북쪽",
@@ -1099,6 +1111,32 @@
         "Steenbok",
         "Waterman",
         "Vissen"
+      ]
+    },
+    "pa_IN" : {
+      "location.direction.cardinal" : [
+        "ਉੱਤਰ",
+        "ਪੂਰਬ",
+        "ਦੱਖਣ",
+        "ਪੱਛਮ"
+      ],
+      "person.sex" : [
+        "ਮਰਦ",
+        "ਨਾਰੀ"
+      ],
+      "person.western_zodiac_sign" : [
+        "ਮੇਖ",
+        "ਵ੍ਰਸ਼",
+        "ਮਿਥੁਨ",
+        "ਕਰਕ",
+        "ਸਿੰਘ",
+        "ਕੰਨਿਆ",
+        "ਤੱਕੜੀ",
+        "ਵ੍ਰਸਚਿਕ",
+        "ਧਨੁ",
+        "ਮਕਰ",
+        "ਕੁੰਭ",
+        "ਮੀਨ"
       ]
     },
     "pl" : {

@@ -4512,9 +4512,9 @@
   "stats": {
     "generators": 319,
     "namespaces": 29,
-    "sources": 53,
-    "locales": 65,
+    "sources": 54,
+    "locales": 67,
     "version": "1.0.0",
-    "corpus": "60.7.0"
+    "corpus": "60.8.0"
   }
 }
