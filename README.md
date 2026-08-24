@@ -5,15 +5,14 @@ fixtures.
 
 Reproducible by construction, portable across macOS, Linux, and Windows.
 
-> **Status: preparing 1.0.** The API is settled and the source declares `1.0.0`, but
-> nothing is tagged yet, so `from: "1.0.0"` will not resolve. The tag is the release.
+> **Status: 1.0.** The API is stable and follows semantic versioning from here.
 >
 > The corpus versions *separately*, and it will keep moving — it is at 61.0.0, and adding
 > data to a locale bumps it. A corpus bump changes what a given seed draws, so pin the
 > corpus version, not just the package version, if you are keeping generated fixtures.
 > [CHANGELOG.md](CHANGELOG.md) explains which of the two numbers answers which worry.
 >
-> Every locale composes a full name in its own language — fifty of them, with none falling
+> Every locale composes a full name in its own language — fifty-four of them, with none falling
 > through to English. That is asserted rather than claimed: `NameCoherenceTests` derives the
 > two categories from the corpus and fails if any locale answers in a language that is not
 > its own. Individual fields still vary, and the
