@@ -24,6 +24,11 @@ on:
 
 permissions:
   contents: write
+  # Dispatching Release needs this, and only this step needs it. Without it the tag is
+  # pushed and `gh workflow run` comes back 403 "Resource not accessible by integration" --
+  # so the version is tagged, nothing is published, and the run reports failure *after* the
+  # irreversible half has already happened. Which is exactly what 1.0.0 did.
+  actions: write
 
 jobs:
   prepare:
@@ -119,8 +124,17 @@ jobs:
           # while publishing nothing at all.
           #
           # workflow_dispatch is one of the two documented exceptions to that rule.
-          gh workflow run Release -f tag="v$version"
-          echo "Pushed v$version and dispatched Release."
+          # The tag is already pushed by this point and cannot be taken back, so a failure
+          # here is recoverable rather than fatal — and says so, instead of exiting 1 with a
+          # 403 and leaving somebody to work out that the version is tagged but unpublished.
+          if gh workflow run Release -f tag="v$version"; then
+            echo "Pushed v$version and dispatched Release."
+          else
+            echo "::error::v$version is tagged and pushed, but dispatching Release failed. \
+          Nothing is published yet and the tag is fine. Run it by hand: \
+          gh workflow run Release -f tag=v$version"
+            exit 1
+          fi
         env:
           GH_TOKEN: ${{ github.token }}
 
