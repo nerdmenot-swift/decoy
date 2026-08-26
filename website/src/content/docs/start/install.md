@@ -5,6 +5,12 @@ description: Adding Decoy to a Swift package, and the one thing everybody gets w
 
 Decoy is a Swift 6 package with no dependencies. Two edits to `Package.swift`:
 
+:::caution[Not published yet]
+Decoy 1.0.0 is not tagged, so `from: "1.0.0"` will not resolve. The tag was withdrawn
+while nobody depended on it, to settle the release before anyone has to live with it.
+Until it is cut, depend on the branch: `.package(url: "...", branch: "main")`.
+:::
+
 ```swift
 // Package.swift
 let package = Package(

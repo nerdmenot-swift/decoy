@@ -5,7 +5,15 @@ fixtures.
 
 Reproducible by construction, portable across macOS, Linux, and Windows.
 
-> **Status: 1.0.** The API is stable and follows semantic versioning from here.
+> **Status: 1.0 in progress.** Nothing is tagged. The `v1.0.0` tag that briefly existed
+> has been withdrawn, deliberately and while nobody depended on it, so that the shape of
+> the release can be settled before anyone has to live with it. `from: "1.0.0"` will not
+> resolve until it is cut again.
+>
+> If you resolved that tag in the window it existed, SwiftPM has pinned it to a commit that
+> no longer exists and will refuse the new one with *"does not match previously recorded
+> value"*. Clearing the package caches does not help; delete
+> `~/Library/org.swift.swiftpm/security/fingerprints/decoy-*.json`.
 >
 > The corpus versions *separately*, and it will keep moving — it is at 62.0.0, and adding
 > data to a locale bumps it. A corpus bump changes what a given seed draws, so pin the

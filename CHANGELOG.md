@@ -15,12 +15,16 @@ below, and anything that alters drawn values says so in bold.
 
 Entries are grouped by the corpus version in force when they landed.
 
-## 1.0.0
+## 1.0.0 — unreleased
 
-The first release. The package version starts here and follows semantic versioning; the
-corpus is already at 61.0.0 and keeps its own numbering, so the two are not going to line up
-and are not meant to — the corpus counts changes to the *data*, and there have been sixty
-of those before the library ever had a version at all.
+Not tagged. A `v1.0.0` tag existed briefly and was withdrawn while nothing depended on it,
+so that the shape of the release could be settled first. These notes describe what 1.0.0
+will be when it is cut.
+
+The package version starts here and follows semantic versioning; the corpus is already at
+62.0.0 and keeps its own numbering, so the two are not going to line up and are not meant to —
+the corpus counts changes to the *data*, and there have been sixty of those before the
+library ever had a version at all.
 
 Which of the two you need depends on what you are protecting. Pin the package for the API;
 pin the corpus if you are keeping generated fixtures, because that is the number a seed's
