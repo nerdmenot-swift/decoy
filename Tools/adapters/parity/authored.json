@@ -3070,12 +3070,6 @@
     "en_AU" : {
       "person.suffix" : null
     },
-    "en_AU_ocker" : {
-      "person.suffix" : null
-    },
-    "en_BORK" : {
-      "person.suffix" : null
-    },
     "en_CA" : {
       "location.postcode_by_state" : {
         "AB" : [

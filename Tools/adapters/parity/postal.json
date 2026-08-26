@@ -94,22 +94,6 @@
         "####"
       ]
     },
-    "en_AU_ocker" : {
-      "location.postal_address" : [
-        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.state}} {{location.zipCode}}"
-      ],
-      "location.postcode" : [
-        "####"
-      ]
-    },
-    "en_BORK" : {
-      "location.postal_address" : [
-        "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.state}} {{location.zipCode}}"
-      ],
-      "location.postcode" : [
-        "#####"
-      ]
-    },
     "en_CA" : {
       "location.postal_address" : [
         "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.state}} {{location.zipCode}}"

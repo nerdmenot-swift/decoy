@@ -70,7 +70,8 @@ public enum DecoyLocales {
     /// nothing — giving it an English fallback would quietly pull English into every locale
     /// on earth. Filtered against what is actually present at the end rather than while
     /// building, which matters for a code whose middle segment is not itself a locale:
-    /// `en_AU_ocker` keeps `en_AU` and `en` and drops nothing in between.
+    /// `sr_RS_latin` drops both `sr_RS` and `sr` because neither is present, while a code
+    /// whose middle segment *is* present keeps it.
     public static func chain(for code: String, available: [String] = available) -> [String] {
         if code == "base" { return ["base"] }
 

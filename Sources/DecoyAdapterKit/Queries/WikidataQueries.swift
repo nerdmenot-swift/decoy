@@ -108,9 +108,15 @@ public enum WikidataQueries {
     /// Below this a locale keeps what it had.
     ///
     /// Colour vocabularies are small by nature — English ships forty-five — so the floor is
-    /// lower than the one for names. Twelve is about where a fixture set stops repeating the
-    /// same three words on every row.
-    public static let minimumColours = 12
+    /// lower than the one for names. That sentence was written when the names floor was
+    /// forty; it is five now, and twelve stopped being "lower" some time ago without anyone
+    /// noticing, because a constant does not announce that the thing it was set relative to
+    /// has moved.
+    ///
+    /// Five, then, and for the same reason: below that a list is one or two words repeated,
+    /// which is worse than an honest fallback because it looks deliberate. Above it, a
+    /// Slovak or Vietnamese fixture says its colours in Slovak or Vietnamese.
+    public static let minimumColours = 5
 
     /// Locale to the Wikidata item for its language.
     ///
@@ -128,6 +134,26 @@ public enum WikidataQueries {
         ("ru", "Q7737"), ("sv", "Q9027"), ("th", "Q9217"), ("tr", "Q256"), ("ur", "Q1617"),
         ("zh_CN", "Q7850"), ("zh_TW", "Q7850"), ("dv", "Q32656"), ("ku_kmr_latin", "Q36368"),
         ("mn_MN_cyrl", "Q9246"), ("uz_UZ_latin", "Q9264"),
+        // The seventeen roots this table had simply never been extended to. Colours were
+        // the widest gap after names -- twenty-four of forty-five roots -- and closing it
+        // costs one query each against a source already in use, under a licence already
+        // cleared. Every one of these locales gains a field it was answering for in
+        // English.
+        ("bn_BD", "Q9610"), ("cs_CZ", "Q9056"), ("da", "Q9035"), ("fi", "Q1412"),
+        ("hi_IN", "Q1568"), ("hr", "Q6654"), ("it", "Q652"), ("ka_GE", "Q8108"),
+        ("kn_IN", "Q33673"), ("mk", "Q9296"), ("pa_IN", "Q58635"), ("ro", "Q7913"),
+        ("sk", "Q9058"), ("sl_SI", "Q9063"), ("uk", "Q8798"), ("vi", "Q9199"),
+        ("yo_NG", "Q34311"),
+        // Two roots are deliberately absent, both for script rather than availability.
+        //
+        // `sr_RS_latin` is written in Latin here and Wikidata labels Serbian in Cyrillic;
+        // the names adapter transliterates for exactly this reason and the colour adapter
+        // does not, so adding it would put Cyrillic colours beside Latin names.
+        //
+        // `ne_NP` is romanised, because the only Nepali given names anybody publishes are.
+        // Devanagari colours would sit beside Latin names in the same fixture. English
+        // colours are at least the same script, which makes the fallback the coherent
+        // answer rather than the lazy one.
     ]
 
     /// The English label comes back alongside the target one, and it is what makes this

@@ -11,5 +11,5 @@
   "removing an existing value is a MAJOR bump, because it silently changes every fixture an",
   "existing user has already generated. See docs/corpus-strategy.md."
  ],
- "version": "61.0.0"
+ "version": "62.0.0"
 }

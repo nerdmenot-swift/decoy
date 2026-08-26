@@ -4513,8 +4513,8 @@
     "generators": 319,
     "namespaces": 29,
     "sources": 54,
-    "locales": 67,
+    "locales": 65,
     "version": "1.0.0",
-    "corpus": "61.0.0"
+    "corpus": "62.0.0"
   }
 }

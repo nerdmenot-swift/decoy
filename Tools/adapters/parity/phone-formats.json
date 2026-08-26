@@ -198,34 +198,6 @@
         "(0# #### ####)"
       ]
     },
-    "en_AU_ocker" : {
-      "phone_number.format.human" : [
-        "0## ### ####",
-        "0### ### ###",
-        "(0# #### ####)"
-      ],
-      "phone_number.format.international" : [
-        "+61 ## ### ####",
-        "+61 ### ### ###",
-        "+61 # #### ####"
-      ],
-      "phone_number.format.national" : [
-        "0## ### ####",
-        "0### ### ###",
-        "(0# #### ####)"
-      ]
-    },
-    "en_BORK" : {
-      "phone_number.format.human" : [
-        "(!##) !##-####"
-      ],
-      "phone_number.format.international" : [
-        "+1 (!##) !##-####"
-      ],
-      "phone_number.format.national" : [
-        "(!##) !##-####"
-      ]
-    },
     "en_CA" : {
       "phone_number.format.human" : [
         "(!##) !##-####"

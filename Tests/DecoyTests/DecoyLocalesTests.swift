@@ -28,7 +28,7 @@ struct DecoyLocalesTests {
 
     @Test("every locale in the corpus is loadable")
     func everyLocaleLoads() throws {
-        #expect(DecoyLocales.available.count == 68, "expected 68 blobs in the bundle")
+        #expect(DecoyLocales.available.count == 66, "expected 66 blobs in the bundle")
         for code in DecoyLocales.available {
             #expect(throws: Never.self, "\(code) failed to load") {
                 _ = try DecoyLocales.locale(code)
@@ -38,10 +38,14 @@ struct DecoyLocalesTests {
 
     /// The derivation against the pipeline's own record, for all sixty-four.
     ///
-    /// Not a spot check. `en_AU_ocker` keeps `en_AU` because that is a locale and drops
-    /// nothing in between; `sr_RS_latin` keeps neither `sr_RS` nor `sr` because neither is;
-    /// `base` inherits from nothing at all. One rule, and the cases that distinguish a
-    /// right implementation from a plausible one are exactly the ones nobody thinks to try.
+    /// Not a spot check. `sr_RS_latin` keeps neither `sr_RS` nor `sr` because neither is a
+    /// locale; `de_AT` keeps `de`; `base` inherits from nothing at all. One rule, and the
+    /// cases that distinguish a right implementation from a plausible one are exactly the
+    /// ones nobody thinks to try.
+    ///
+    /// The other branch — a three-segment code whose middle segment *is* a locale — used to
+    /// be covered here by `en_AU_ocker` and is now in `OrchestratorTests` against a
+    /// synthetic roster, so it survives the locale being cut.
     @Test("derived chains match the ones the corpus was built with")
     func chainsMatchTheManifest() throws {
         try #require(!Self.recorded.isEmpty, "no manifest — run `swift run decoy-build-corpus`")

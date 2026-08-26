@@ -67,14 +67,33 @@ struct OrchestratorTests {
         #expect(Orchestrator.fallbackChain("base", roster: roster) == ["base"])
         #expect(Orchestrator.fallbackChain("en", roster: roster) == ["en", "base"])
         #expect(Orchestrator.fallbackChain("de_AT", roster: roster) == ["de_AT", "de", "en", "base"])
-        #expect(
-            Orchestrator.fallbackChain("en_AU_ocker", roster: roster)
-                == ["en_AU_ocker", "en_AU", "en", "base"])
         // `sr_RS_latin` keeps only the codes the roster actually has.
         let serbian = Orchestrator.fallbackChain("sr_RS_latin", roster: roster)
         #expect(serbian.first == "sr_RS_latin")
         #expect(serbian.last == "base")
         #expect(serbian.allSatisfy(roster.contains))
+    }
+
+    /// The two branches a three-segment code can take, against a roster made for the
+    /// purpose rather than whatever happens to ship.
+    ///
+    /// These used to be asserted through `en_AU_ocker`, which was the only locale in the
+    /// roster whose middle segment was itself a locale. Removing that locale would have
+    /// taken the test case with it — a rule losing its coverage because an unrelated
+    /// product decision went the other way, which is the wrong dependency. A synthetic
+    /// roster tests the rule, and the rule is what this is about.
+    @Test("a three-segment code keeps the ancestors that exist and drops the ones that do not")
+    func chainRuleInIsolation() {
+        let roster: Set<String> = ["base", "en", "xx", "xx_YY", "xx_YY_zzz", "qq_WW_vvv"]
+
+        // Every ancestor present: all of them are kept, in order.
+        #expect(
+            Orchestrator.fallbackChain("xx_YY_zzz", roster: roster)
+                == ["xx_YY_zzz", "xx_YY", "xx", "en", "base"])
+
+        // No ancestor present: the middles are dropped and nothing is invented in between.
+        #expect(
+            Orchestrator.fallbackChain("qq_WW_vvv", roster: roster) == ["qq_WW_vvv", "en", "base"])
     }
 
     /// The assumption that let the bool case go.

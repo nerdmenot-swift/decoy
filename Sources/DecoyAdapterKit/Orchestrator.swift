@@ -108,8 +108,10 @@ public struct Orchestrator {
     /// The fallback chain for a locale: itself, its ancestors, then English, then base.
     ///
     /// Filtered against the roster at the end rather than while building, which matters for
-    /// a code whose middle segment is not itself a locale — `en_AU_ocker` keeps `en_AU` and
-    /// `en` and drops nothing in between.
+    /// a code whose middle segment is not itself a locale: `sr_RS_latin` drops both `sr_RS`
+    /// and `sr` because the roster has neither, while a code whose middle segment *is* a
+    /// locale keeps it. Building the chain first and filtering last is what makes those two
+    /// the same rule instead of two.
     public static func fallbackChain(_ code: String, roster: Set<String>) -> [String] {
         if code == "base" { return ["base"] }
 
