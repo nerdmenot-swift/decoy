@@ -2,7 +2,7 @@ import Foundation
 
 @testable import Decoy
 
-/// The corpus version the pipeline declares, read from the file that declares it.
+/// The versions the pipeline declares, read from the file that declares them.
 ///
 /// Exists so no test hardcodes the number. It previously lived in the compiler's default,
 /// whichever `--corpus-version` flag was typed, and two separate assertions — so every
@@ -40,4 +40,22 @@ enum DeclaredCorpusVersion {
         }
         return CorpusVersion(major: parts[0], minor: parts[1], patch: parts[2])
     }()
+
+    /// What a single locale declares, which is what its blob is stamped with.
+    ///
+    /// `value` above is the corpus *release* number and no blob carries it any more. A test
+    /// that compares a locale against the release number is asserting the thing the
+    /// per-locale split exists to stop being true, so the two are separate here rather than
+    /// one figure used for both.
+    static func forLocale(_ code: String) -> CorpusVersion? {
+        let url = repositoryRoot.appendingPathComponent("Tools/adapters/corpus-version.json")
+        guard let data = try? Data(contentsOf: url),
+            let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+            let table = object["locales"] as? [String: [String: String]],
+            let declared = table[code]?["version"]
+        else { return nil }
+        let parts = declared.split(separator: ".").compactMap { UInt16($0) }
+        guard parts.count == 3 else { return nil }
+        return CorpusVersion(major: parts[0], minor: parts[1], patch: parts[2])
+    }
 }

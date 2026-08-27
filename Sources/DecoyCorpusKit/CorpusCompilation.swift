@@ -11,6 +11,13 @@ import Foundation
 public struct Manifest: Decodable {
     public struct Locale: Decodable {
         public let chain: [String]
+
+        /// This locale's own data version, which is what gets stamped into its blob.
+        ///
+        /// Optional so a manifest written before per-locale versions still decodes; the
+        /// compiler falls back to the release number for those, which is exactly what
+        /// every locale carried then.
+        public let version: String?
     }
 
     /// A pinned upstream the data was derived from.

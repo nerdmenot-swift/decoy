@@ -123,7 +123,19 @@ for code in codes {
 
     let root = try JSONDecoder().decode(JSONValue.self, from: data)
 
-    var builder = CorpusBuilder(version: corpusVersion)
+    // This locale's own version, not the release number. Adding Hindi should not move the
+    // number an English-only user is pinning, and this is the line where that is decided.
+    // A manifest without per-locale versions falls back to the release number, which is
+    // what every locale carried before the split.
+    let localeVersion: CorpusVersion = {
+        guard let declared = manifest.locales[code]?.version,
+            let parts = Optional(declared.split(separator: ".").compactMap { UInt16($0) }),
+            parts.count == 3
+        else { return corpusVersion }
+        return CorpusVersion(major: parts[0], minor: parts[1], patch: parts[2])
+    }()
+
+    var builder = CorpusBuilder(version: localeVersion)
 
     // Every declared source is registered in every locale, whether or not that locale
     // draws on it. A few dozen bytes buys a stable source ID across the whole corpus,
@@ -156,8 +168,10 @@ for code in codes {
     // Every blob is read back before being written. A corpus that cannot be loaded
     // is worse than a build failure, because it surfaces at a user's first call.
     let verified = try Corpus(bytes: bytes)
-    guard verified.version == corpusVersion else {
-        fail("\(code): verification read-back produced the wrong corpus version")
+    guard verified.version == localeVersion else {
+        fail(
+            "\(code): verification read-back produced \(verified.version), expected "
+                + "\(localeVersion)")
     }
 
     let outURL = options.output.appendingPathComponent("\(code).decoy")

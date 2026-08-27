@@ -18,7 +18,7 @@ struct EmbeddedLocaleTests {
     func loadsFromBinary() {
         let corpus = DecoyLocaleEN.corpus
         #expect(corpus.stringCount > 12_000)
-        #expect(corpus.version == DeclaredCorpusVersion.value)
+        #expect(corpus.version == DeclaredCorpusVersion.forLocale("en"))
     }
 
     @Test("generation works straight out of the box")

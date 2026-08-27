@@ -1,15 +1,288 @@
 {
- "_comment": [
-  "The corpus version, declared once and read by everything that needs it: decoy-build-corpus",
-  "it into out/manifest.json, decoy-compile-corpus reads it from there, and the Swift tests",
-  "read this file directly. Before this existed the number lived in the compiler's default,",
-  "whichever --corpus-version flag you happened to type, and two test files -- so every bump",
-  "broke two tests by hand and CI built 1.0.0 while the tests asserted 11.0.0.",
-  "",
-  "This is part of the reproducibility contract, not a build detail. generate(seed:) is only",
-  "reproducible with respect to a particular corpus. Adding data is a minor bump; changing or",
-  "removing an existing value is a MAJOR bump, because it silently changes every fixture an",
-  "existing user has already generated. See docs/corpus-strategy.md."
- ],
- "version": "62.0.0"
+  "_comment" : [
+    "Two kinds of version, because they answer different questions.",
+    "",
+    "`version` is the corpus release -- one number for the whole build, which is what a",
+    "release note quotes and what the release workflow gates on. Adding data is a minor bump;",
+    "changing or removing an existing value is a MAJOR one, because it silently changes every",
+    "fixture an existing user has already generated. See docs/corpus-strategy.md.",
+    "",
+    "`locales` is the same contract per locale, and it exists because the single number was",
+    "too blunt to act on. Adding Hindi bumped the corpus for somebody who only uses English,",
+    "so their fixtures were flagged as at-risk when nothing they use had moved. A locale's",
+    "own version only changes when its own data does.",
+    "",
+    "`fingerprint` is how that is enforced rather than remembered: the builder hashes each",
+    "locale's compiled definitions and refuses to continue if the content moved while the",
+    "version did not. `--write-baselines` records the new hashes once the bump is deliberate.",
+    "It is the same shape as the NOTICE and locale-module gates -- regenerate, compare, fail",
+    "loudly -- applied to the number that people pin."
+  ],
+  "locales" : {
+    "ar" : {
+      "fingerprint" : "d0c2276509cc468ff2f874ee9fde1c7b",
+      "version" : "1.0.0"
+    },
+    "az" : {
+      "fingerprint" : "981b62059259e86686e3b5c290e18be6",
+      "version" : "1.0.0"
+    },
+    "base" : {
+      "fingerprint" : "9fc6d80b7572892ac644972fbf8fb4d1",
+      "version" : "1.0.0"
+    },
+    "bn_BD" : {
+      "fingerprint" : "2cfae3031b1a7f1ebe0bbe2dd57bcbd0",
+      "version" : "1.0.0"
+    },
+    "cs_CZ" : {
+      "fingerprint" : "8d9c7e555781c96cad9be62f88d250eb",
+      "version" : "1.0.0"
+    },
+    "cy" : {
+      "fingerprint" : "fe05cfa2101b5ad4c7a00b9b07e3f987",
+      "version" : "1.0.0"
+    },
+    "da" : {
+      "fingerprint" : "ee1f14c55261281c24a2b1b767346f8c",
+      "version" : "1.0.0"
+    },
+    "de" : {
+      "fingerprint" : "09f82a4f986bdcf985eb7d1fa6a88b6b",
+      "version" : "1.0.0"
+    },
+    "de_AT" : {
+      "fingerprint" : "beb283c1af85e87b17d0928223f2df5c",
+      "version" : "1.0.0"
+    },
+    "de_CH" : {
+      "fingerprint" : "9f921f0a4ae849428d718a18beb0910d",
+      "version" : "1.0.0"
+    },
+    "el" : {
+      "fingerprint" : "05e9e648b670c71523f0e1d5c8e5e554",
+      "version" : "1.0.0"
+    },
+    "en" : {
+      "fingerprint" : "4da76a98ff2cf2ee8455611a3a5b87c0",
+      "version" : "1.0.0"
+    },
+    "en_AU" : {
+      "fingerprint" : "7624799aa41658634bf86ca4dd8284b7",
+      "version" : "1.0.0"
+    },
+    "en_CA" : {
+      "fingerprint" : "23e71e6bbfd0a0a2f7403c2d207101bb",
+      "version" : "1.0.0"
+    },
+    "en_GB" : {
+      "fingerprint" : "6a8b266d01be2b2de0bd4a1f80cfb7e6",
+      "version" : "1.0.0"
+    },
+    "en_GH" : {
+      "fingerprint" : "555704afe203df6dc8cf6fbac32769fe",
+      "version" : "1.0.0"
+    },
+    "en_HK" : {
+      "fingerprint" : "89ccaf0c30a550db5b4642d82d266576",
+      "version" : "1.0.0"
+    },
+    "en_IE" : {
+      "fingerprint" : "19d92b7345ed2a628a1a05fac2fc7397",
+      "version" : "1.0.0"
+    },
+    "en_IN" : {
+      "fingerprint" : "def14665198ed15efcb2d83334757ecc",
+      "version" : "1.0.0"
+    },
+    "en_NG" : {
+      "fingerprint" : "b1bf4cf2c3ca2f859f0e7eb18e2e6611",
+      "version" : "1.0.0"
+    },
+    "en_US" : {
+      "fingerprint" : "1488d50c61bfbb7a69bcbe29fcad666f",
+      "version" : "1.0.0"
+    },
+    "en_ZA" : {
+      "fingerprint" : "2687ad908160816891f3000801aaf134",
+      "version" : "1.0.0"
+    },
+    "es" : {
+      "fingerprint" : "ddc4c0043115f095a27e010d81fef80a",
+      "version" : "1.0.0"
+    },
+    "es_MX" : {
+      "fingerprint" : "d89d77bc77f661db360236b82fe1220b",
+      "version" : "1.0.0"
+    },
+    "fa" : {
+      "fingerprint" : "f958199b321a5f0bddfc1a9320293a7a",
+      "version" : "1.0.0"
+    },
+    "fi" : {
+      "fingerprint" : "bd2a37b49e5228adfb9fa49d2e59e82e",
+      "version" : "1.0.0"
+    },
+    "fr" : {
+      "fingerprint" : "dbb17e1c4c0c0b373c1a5f5eb78f62ba",
+      "version" : "1.0.0"
+    },
+    "fr_BE" : {
+      "fingerprint" : "450144e5ec0a37d72203d01b5be72a04",
+      "version" : "1.0.0"
+    },
+    "fr_CA" : {
+      "fingerprint" : "4ee62098662ccebfcaa290fed40f40ff",
+      "version" : "1.0.0"
+    },
+    "fr_CH" : {
+      "fingerprint" : "82dcb4ef63c8ddba694fb434a666059d",
+      "version" : "1.0.0"
+    },
+    "fr_LU" : {
+      "fingerprint" : "a6574db3d1225f51c246b69374927626",
+      "version" : "1.0.0"
+    },
+    "fr_SN" : {
+      "fingerprint" : "e88fe03917c4252393f015b7c8958b58",
+      "version" : "1.0.0"
+    },
+    "he" : {
+      "fingerprint" : "2b0f2cfb4e064720bab680981c1f924e",
+      "version" : "1.0.0"
+    },
+    "hi_IN" : {
+      "fingerprint" : "7a136c275e53e15792b049ed50fdef55",
+      "version" : "1.0.0"
+    },
+    "hr" : {
+      "fingerprint" : "ebf89e7dac1f62dcdcec7f2b63a217d3",
+      "version" : "1.0.0"
+    },
+    "hu" : {
+      "fingerprint" : "1711110d4dc86550d78b325755961a42",
+      "version" : "1.0.0"
+    },
+    "hy" : {
+      "fingerprint" : "471c71eab4c8c83054ba4344da942ac3",
+      "version" : "1.0.0"
+    },
+    "id_ID" : {
+      "fingerprint" : "c6f0a98190db2f6a7942ddc9f1375d4c",
+      "version" : "1.0.0"
+    },
+    "it" : {
+      "fingerprint" : "472cb087d61e3400b2ab873021584b14",
+      "version" : "1.0.0"
+    },
+    "ja" : {
+      "fingerprint" : "c18a6cbbe3c64b88612c229f9123cfe2",
+      "version" : "1.0.0"
+    },
+    "ka_GE" : {
+      "fingerprint" : "df17cae168ec2cd189442d11d0d79d31",
+      "version" : "1.0.0"
+    },
+    "kn_IN" : {
+      "fingerprint" : "8baa2dd7e548596dae0f29835202d32c",
+      "version" : "1.0.0"
+    },
+    "ko" : {
+      "fingerprint" : "3932ba0f9d1cb683870b8ba7828fd7c0",
+      "version" : "1.0.0"
+    },
+    "lv" : {
+      "fingerprint" : "15d1cb8b3e9321a8a72dea069640d2c7",
+      "version" : "1.0.0"
+    },
+    "mk" : {
+      "fingerprint" : "08d1621422cba7b18ff21c18446c5759",
+      "version" : "1.0.0"
+    },
+    "nb_NO" : {
+      "fingerprint" : "babe080ff35e6156720a740652c1b328",
+      "version" : "1.0.0"
+    },
+    "ne_NP" : {
+      "fingerprint" : "1dcef47592f95d43f4857c91e442405b",
+      "version" : "1.0.0"
+    },
+    "nl" : {
+      "fingerprint" : "df7b2ab5737184ff826776858ddfe6e2",
+      "version" : "1.0.0"
+    },
+    "nl_BE" : {
+      "fingerprint" : "4d51e149e2dba707ea875d51b5b30716",
+      "version" : "1.0.0"
+    },
+    "pa_IN" : {
+      "fingerprint" : "12997233380f4c76e68cec3a6cee4275",
+      "version" : "1.0.0"
+    },
+    "pl" : {
+      "fingerprint" : "4fdbcb2eceaf83153d43dfc8d3c7867e",
+      "version" : "1.0.0"
+    },
+    "pt_BR" : {
+      "fingerprint" : "4e80e8ec5614a08577b8eb882135a533",
+      "version" : "1.0.0"
+    },
+    "pt_PT" : {
+      "fingerprint" : "b76ceebf8058917d1829be5bec6638c6",
+      "version" : "1.0.0"
+    },
+    "ro" : {
+      "fingerprint" : "d1a6ea0d2ace6581a26617e208898bb0",
+      "version" : "1.0.0"
+    },
+    "ro_MD" : {
+      "fingerprint" : "7ec8cee2a038c6e79f4e62f29a6494ee",
+      "version" : "1.0.0"
+    },
+    "ru" : {
+      "fingerprint" : "1ea4f7b72548b34e5be8ebd3937b0aed",
+      "version" : "1.0.0"
+    },
+    "sk" : {
+      "fingerprint" : "077986c2215c855a4f583b1d1fb31e6b",
+      "version" : "1.0.0"
+    },
+    "sl_SI" : {
+      "fingerprint" : "672813539977d2582b41165c80a90b13",
+      "version" : "1.0.0"
+    },
+    "sr_RS_latin" : {
+      "fingerprint" : "256e5c68a515fc80f61f373c3279b1cf",
+      "version" : "1.0.0"
+    },
+    "sv" : {
+      "fingerprint" : "a263f7af6492820670852af8fcc7585d",
+      "version" : "1.0.0"
+    },
+    "tr" : {
+      "fingerprint" : "e66308d3d2d0757279b3bcf90b780e33",
+      "version" : "1.0.0"
+    },
+    "uk" : {
+      "fingerprint" : "f83965120e5a29040423db4d1dc8db5b",
+      "version" : "1.0.0"
+    },
+    "vi" : {
+      "fingerprint" : "b45ce461e0484312288d1ca36926ec5a",
+      "version" : "1.0.0"
+    },
+    "yo_NG" : {
+      "fingerprint" : "6e6990b004dcd0960935370bc2d76ab0",
+      "version" : "1.0.0"
+    },
+    "zh_CN" : {
+      "fingerprint" : "e551872c6e91ea441ee22191d77a440e",
+      "version" : "1.0.0"
+    },
+    "zh_TW" : {
+      "fingerprint" : "b7a5aef45cdec8b1eda5e7b8853313cd",
+      "version" : "1.0.0"
+    }
+  },
+  "version" : "62.0.0"
 }

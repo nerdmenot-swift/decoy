@@ -94,6 +94,36 @@ let corpusVersion: String = {
     return version
 }()
 
+/// Per locale: the version it declares, and the fingerprint of the data that version was
+/// recorded against.
+///
+/// The release number above is one figure for the whole build, which is too blunt to act
+/// on — adding Hindi bumped it for somebody using only English, so their fixtures read as
+/// at-risk when nothing they used had moved. A locale's own version changes only when its
+/// own data does, and the fingerprint is what makes that a check rather than a promise.
+let declaredLocaleVersions: [String: (version: String, fingerprint: String)] = {
+    guard
+        let data = try? Data(
+            contentsOf: root.appendingPathComponent("corpus-version.json")),
+        let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+    else { fail("corpus-version.json is unreadable") }
+
+    guard let table = object["locales"] as? [String: [String: String]] else {
+        fail("corpus-version.json declares no `locales` table")
+    }
+    var out: [String: (version: String, fingerprint: String)] = [:]
+    for (code, entry) in table {
+        guard let version = entry["version"] else {
+            fail("corpus-version.json: \(code) declares no version")
+        }
+        out[code] = (version, entry["fingerprint"] ?? "")
+    }
+    return out
+}()
+
+/// What each locale's data hashed to this run, filled as locales are compiled.
+var localeFingerprints: [String: String] = [:]
+
 let (locales, cldrOverrides): ([String], [String: String?]) = {
     guard let data = try? Data(contentsOf: root.appendingPathComponent("locales.json")),
         let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
@@ -319,13 +349,15 @@ var unscreened: [String] = []
 var tooSmall = 0
 var notViable: [String] = []
 
-try? FileManager.default.removeItem(at: outDirectory)
-do {
-    try FileManager.default.createDirectory(
-        at: outDirectory.appendingPathComponent("locales"), withIntermediateDirectories: true)
-} catch {
-    fail("could not create \(outDirectory.path): \(error)")
-}
+/// Each locale's intermediate JSON, held until every check has passed.
+///
+/// Written at the end rather than as they are produced, because the output directory is
+/// wiped first and a check that fails midway would leave `out/` holding locale files and no
+/// manifest — which the compiler will happily read past, and which is exactly how a stale
+/// intermediate once got compiled and reported as a fresh corpus. A failed build now leaves
+/// the previous one intact.
+var pendingLocaleFiles: [String: Data] = [:]
+
 
 for code in locales {
     var definitions = merged.definitions[code] ?? [:]
@@ -361,18 +393,105 @@ for code in locales {
     }
 
     let json = Definition.object(definitions).json
-    do {
-        let data = try JSONSerialization.data(
+    guard
+        let encoded = try? JSONSerialization.data(
             withJSONObject: json, options: [.withoutEscapingSlashes])
-        try data.write(
-            to: outDirectory.appendingPathComponent("locales/\(code).json"))
-    } catch {
-        fail("could not write \(code).json: \(error)")
-    }
+    else { fail("could not encode \(code).json") }
+    pendingLocaleFiles[code] = encoded
 
     let ownStrings = countStrings(.object(definitions))
     totalStrings += ownStrings
-    localeSummaries[code] = ["chain": chains[code] ?? [], "ownStrings": ownStrings]
+
+    // Hashed from the bytes actually written, so the fingerprint cannot disagree with what
+    // the compiler will read. Sorted keys, because a dictionary's order is not data and a
+    // fingerprint that moves without the content moving is worse than none.
+    let fingerprint: String = {
+        guard
+            let stable = try? JSONSerialization.data(
+                withJSONObject: json, options: [.sortedKeys, .withoutEscapingSlashes])
+        else { fail("could not fingerprint \(code)") }
+        return SHA512.hash([UInt8](stable)).prefix(16).map { String(format: "%02x", $0) }
+            .joined()
+    }()
+    localeFingerprints[code] = fingerprint
+
+    guard let declared = declaredLocaleVersions[code] else {
+        fail(
+            "\(code) has no entry in corpus-version.json. Add one at 1.0.0, then re-run "
+                + "with --write-baselines to record its fingerprint.")
+    }
+    localeSummaries[code] = [
+        "chain": chains[code] ?? [], "ownStrings": ownStrings, "version": declared.version,
+    ]
+}
+
+// MARK: - Per-locale versions
+
+// A locale whose data moved while its version stayed put, which is the case the per-locale
+// contract exists to catch. Reported all at once rather than one per run, because a data
+// refresh usually moves several and finding out about the second one after fixing the
+// first is how a two-minute edit becomes six builds.
+//
+// `--write-baselines` records instead of refusing: by then the bump is deliberate and the
+// fingerprints are the record of what it was deliberate about.
+let moved = localeFingerprints
+    .filter { code, hash in
+        guard let declared = declaredLocaleVersions[code] else { return false }
+        return !declared.fingerprint.isEmpty && declared.fingerprint != hash
+    }
+    .keys.sorted()
+
+if writeBaselines {
+    let versionFile = root.appendingPathComponent("corpus-version.json")
+    guard
+        let data = try? Data(contentsOf: versionFile),
+        var object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+        var table = object["locales"] as? [String: [String: String]]
+    else { fail("corpus-version.json is unreadable") }
+
+    for (code, hash) in localeFingerprints {
+        table[code] = [
+            "version": declaredLocaleVersions[code]?.version ?? "1.0.0", "fingerprint": hash,
+        ]
+    }
+    object["locales"] = table
+    do {
+        let out = try JSONSerialization.data(
+            withJSONObject: object,
+            options: [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes])
+        try out.write(to: versionFile)
+    } catch {
+        fail("could not record locale fingerprints: \(error)")
+    }
+    if !moved.isEmpty {
+        print("  recorded new fingerprints for: \(moved.joined(separator: ", "))")
+    }
+} else if !moved.isEmpty {
+    fail(
+        "\(moved.count) locale(s) changed without a version bump: \(moved.joined(separator: ", "))"
+            + "\n\nEach one's data moved while its entry in corpus-version.json stayed put. Bump"
+            + " the version for the locales whose values actually changed -- adding data is a"
+            + " minor bump, changing or removing an existing value is a major one -- then re-run"
+            + " with --write-baselines to record the new fingerprints.")
+}
+
+// MARK: - Writing
+
+// Only now, with every locale compiled and every version check passed, is the previous
+// build replaced. Up to this point a failure leaves `out/` exactly as it was.
+try? FileManager.default.removeItem(at: outDirectory)
+do {
+    try FileManager.default.createDirectory(
+        at: outDirectory.appendingPathComponent("locales"), withIntermediateDirectories: true)
+} catch {
+    fail("could not create \(outDirectory.path): \(error)")
+}
+for (code, data) in pendingLocaleFiles {
+    do {
+        try data.write(to: outDirectory.appendingPathComponent("locales/\(code).json"))
+    } catch {
+        fail("could not write \(code).json: \(error)")
+    }
 }
 
 // MARK: - Manifest

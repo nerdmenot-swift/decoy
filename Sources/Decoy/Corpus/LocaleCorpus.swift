@@ -15,6 +15,19 @@ public struct LocaleCorpus: Sendable {
     /// Most specific first. Lookups walk this in order.
     public let chain: [Corpus]
 
+    /// The version of *this locale's* data — the number to pin if you are keeping fixtures.
+    ///
+    /// Not the corpus release number. Those diverged on purpose: the release counts every
+    /// change to every locale, so adding Hindi moved it for somebody using only English and
+    /// told them their fixtures were at risk when nothing they drew from had changed. This
+    /// moves when this locale's own data moves, and not otherwise.
+    ///
+    /// Read from the head of the chain, which is the locale itself. The corpora behind it
+    /// carry their own versions and are reachable through `chain` for anyone who needs the
+    /// whole picture — a locale that inherits half its data does depend on them, and saying
+    /// so is more honest than folding four versions into one number.
+    public var version: CorpusVersion? { chain.first?.version }
+
     public init(code: String, chain: [Corpus]) {
         self.code = code
         self.chain = chain
