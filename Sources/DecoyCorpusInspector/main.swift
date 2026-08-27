@@ -537,78 +537,25 @@ func writeBaseline(_ baselineURL: URL, over files: [URL]) throws {
 /// resolves through the chain to somewhere else — which is the distinction that matters,
 /// since an inherited value is somebody else's language.
 func matrix(_ directory: URL) throws {
-    /// The groups a user actually chooses a locale for, and the paths each depends on.
-    ///
-    /// Grouped rather than listed per path because there are 1,231 paths and nobody reads
-    /// that. Each group names the paths whose absence would be felt: `person.first_name`
-    /// and `last_name` are what make a name look local, and a group is only as native as
-    /// its weakest member.
-    ///
-    /// Each group is a list of *alternatives*, and an alternative is a set of paths that
-    /// must all be present. `[[a], [b, c]]` therefore means "a, or both b and c".
-    ///
-    /// The distinction is not pedantry. This used to be a flat list tested with
-    /// `contains(where:)` — any one path sufficed — which contradicted the sentence above
-    /// and over-reported: Danish, Croatian, Persian, Georgian and Macedonian were all
-    /// marked ✓ for given names while holding male names only. `fullName()` needs a chain
-    /// that can supply both sexes, so those five produced *entirely English* full names
-    /// from a table that said their given names were native. That is the exact failure the
-    /// matrix is published to prevent.
-    ///
-    /// `allSatisfy` over the flat list would have been just as wrong the other way: for
-    /// surnames the two paths are alternatives, and most locales carry only `generic`.
-    let groups: [(String, [[String]])] = [
-        // Either a generic list, or both sexes. One sex alone cannot compose a full name.
-        (
-            "Given names",
-            [
-                ["person.first_name.generic"],
-                ["person.first_name.female", "person.first_name.male"],
-            ]
-        ),
-        ("Surnames", [["person.last_name.generic"], ["person.last_name.male"]]),
-        ("Cities", [["location.city_name"]]),
-        ("Streets", [["location.street_pattern"], ["location.street_name"]]),
-        ("Postcodes", [["location.postcode"]]),
-        ("Addresses", [["location.postal_address"]]),
-        ("Phone numbers", [["phone_number.format.national"]]),
-        ("Subdivisions", [["location.state"]]),
-        ("Countries", [["location.country"]]),
-        ("Colours", [["color.human"]]),
-        ("Compass", [["location.direction.cardinal"]]),
-        ("Zodiac", [["person.western_zodiac_sign"]]),
-        ("Company forms", [["company.legal_entity_type"]]),
-        ("Products", [["commerce.product_name.product"]]),
-        ("Departments", [["commerce.department"]]),
-        ("Job titles", [["person.job_title"]]),
-        ("Vocabulary", [["word.noun"]]),
-        // The invented namespaces, which no locale but English fills and which the matrix
-        // would otherwise omit entirely — an omission that reads as "not offered" when the
-        // truth is "offered in English to everybody". A whole column of `·` is the point.
-        (
-            "Invented names",
-            [["whimsy.creature"], ["sport.discipline"], ["beverage.beer_style"]]
-        ),
-        // The other English-only group. Excluded from the coverage ratio for the reason
-        // argued at `isEnglishOnlyByPolicy`, and shown here for the same reason the
-        // invented column is: a caller reaching for an animal name really does get
-        // English, and a table that omitted the row would read as "not offered".
-        (
-            "Real-world lists",
-            [["animal.animal"], ["food.fruit"], ["notable.scientist"]]
-        ),
-    ]
+    // The field definitions live in `LocaleField`, in the library, so this tool and
+    // `LocaleCorpus.supplies(_:)` cannot disagree about what "native" means. They used to:
+    // sixty lines of path groups lived here, and the published table was the only place
+    // coverage was legible at all.
 
     let blobs = try FileManager.default
         .contentsOfDirectory(at: directory, includingPropertiesForKeys: nil)
         .filter { $0.pathExtension == "decoy" }
         .sorted { $0.lastPathComponent < $1.lastPathComponent }
 
-    var own: [String: Set<String>] = [:]
+    // Each locale as a chain of one, which is exactly "what it supplies itself" — so the
+    // library's own `supplies(_:)` and `tier` answer the table, rather than this file
+    // reimplementing them. The duplicate very nearly went in: a second copy of the tier
+    // thresholds, in the tool whose whole job is to publish what the library reports.
+    var own: [String: LocaleCorpus] = [:]
     for blob in blobs {
         let code = blob.deletingPathExtension().lastPathComponent
         let corpus = try Corpus(bytes: [UInt8](try Data(contentsOf: blob)))
-        own[code] = Set(try corpus.paths.map(\.path))
+        own[code] = LocaleCorpus(code: code, chain: [corpus])
     }
 
     print("<!-- Generated by `decoy-inspect --matrix Corpus/binary`. Do not edit by hand. -->")
@@ -623,17 +570,22 @@ func matrix(_ directory: URL) throws {
     print("publishing the table: the fallback should be something you chose rather than")
     print("something you discovered in your test data.")
     print("")
+    print("**Tier** counts what a locale supplies *itself*, so a regional variant scores low")
+    print("by construction and is not the worse for it — `en_GB` is `core` because nearly")
+    print("everything it needs is already in `en`, and it adds British postcodes and phone")
+    print("formats rather than a second copy of English. Compare a locale against its own")
+    print("language, not against `en`. Three fields are English-only by policy and are")
+    print("excluded from the tier: job titles, invented names and real-world lists.")
+    print("")
 
-    print("| Locale | " + groups.map(\.0).joined(separator: " | ") + " |")
-    print("|---|" + String(repeating: "---|", count: groups.count))
+    let fields = LocaleField.allCases
+    print("| Locale | Tier | " + fields.map(\.title).joined(separator: " | ") + " |")
+    print("|---|---|" + String(repeating: "---|", count: fields.count))
 
     for code in own.keys.sorted() where code != "base" {
-        let paths = own[code] ?? []
-        // Native when any one alternative is satisfied *in full*.
-        let cells = groups.map { _, alternatives in
-            alternatives.contains { $0.allSatisfy(paths.contains) } ? "✓" : "✗"
-        }
-        print("| `\(code)` | " + cells.joined(separator: " | ") + " |")
+        guard let locale = own[code] else { continue }
+        let cells = fields.map { locale.supplies($0) ? "✓" : "✗" }
+        print("| `\(code)` | \(locale.tier.rawValue) | " + cells.joined(separator: " | ") + " |")
     }
 }
 

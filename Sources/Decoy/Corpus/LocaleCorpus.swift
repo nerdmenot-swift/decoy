@@ -157,6 +157,50 @@ public struct LocaleCorpus: Sendable {
         return true
     }
 
+    // MARK: - Coverage
+
+    /// Whether this locale answers for `field` in its own language.
+    ///
+    /// `false` does not mean the field is unavailable — every field generates for every
+    /// locale, because the chain ends at English. It means the values will be another
+    /// language's. That distinction is the whole point of asking:
+    ///
+    /// ```swift
+    /// let locale = try DecoyLocales.locale("hi_IN")
+    /// locale.supplies(.givenNames)   // true  — Devanagari names
+    /// locale.supplies(.streets)      // false — street names would come out English
+    /// ```
+    ///
+    /// Asked of the locale itself, not the chain. `de_AT` inherits German names and reports
+    /// `false` here, which is honest about where they come from — the chain is public for
+    /// anyone who wants to ask what the ancestors carry.
+    public func supplies(_ field: LocaleField) -> Bool {
+        guard let corpus = chain.first else { return false }
+        return field.requirements.contains { alternative in
+            !alternative.isEmpty && alternative.allSatisfy { supplies(corpus, $0) }
+        }
+    }
+
+    /// Every field this locale answers for itself, in declaration order.
+    public var nativeFields: [LocaleField] {
+        LocaleField.allCases.filter(supplies)
+    }
+
+    /// How much of its own data this locale carries.
+    ///
+    /// Measured against what a locale *can* have rather than against every field, because
+    /// three of them are English-only by policy and counting those would put the top of the
+    /// scale out of reach for everybody. See ``LocaleField/englishOnly``.
+    public var tier: LocaleTier {
+        let achievable = LocaleField.achievable
+        let own = achievable.filter(supplies).count
+        if own >= achievable.count - 1 { return .complete }
+        // Above the universal set — names, cities, addresses, phones, subdivisions,
+        // countries and compass — but not near the top.
+        if own >= 9 { return .extended }
+        return .core
+    }
+
     /// The composite table at `path`, if the chain has one.
     public func composite(_ path: String) -> CompositeTable? {
         guard case .composite(let table)? = resolve(path) else { return nil }

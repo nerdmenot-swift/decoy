@@ -20,6 +20,11 @@ Reproducible by construction, portable across macOS, Linux, and Windows.
 > corpus version, not just the package version, if you are keeping generated fixtures.
 > [CHANGELOG.md](CHANGELOG.md) explains which of the two numbers answers which worry.
 >
+> Coverage is queryable rather than only documented: `locale.supplies(.streets)`,
+> `locale.nativeFields`, `locale.tier`. The published
+> [matrix](docs/locale-support.md) is generated from those same calls, so it cannot
+> describe a corpus that is not shipping.
+>
 > Every locale composes a full name in its own language — fifty-four of them, with none falling
 > through to English. That is asserted rather than claimed: `NameCoherenceTests` derives the
 > two categories from the corpus and fails if any locale answers in a language that is not
