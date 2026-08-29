@@ -100,4 +100,63 @@ struct LocaleCoverageTests {
         }
         #expect(checked == DecoyLocales.available.count - 1, "base has no row; every other locale should")
     }
+
+    /// The bar a locale has to clear to be in the roster at all.
+    ///
+    /// The roster used to be a list somebody maintained, inherited from faker-js, which is
+    /// how `en_BORK` and `en_AU_ocker` sat in it carrying thirteen and twenty-six paths of
+    /// their own and no names in any language. Declaring the bar and letting a test enforce
+    /// it means a locale is present because data supports it, not because it was there
+    /// yesterday.
+    ///
+    /// Two different bars, because the two kinds of locale earn their place differently:
+    ///
+    /// - a **language root** has to carry its own given names *and* surnames. A root that
+    ///   inherits both generates another language under its own name, which is the one
+    ///   outcome a locale must never produce.
+    /// - a **regional variant** may inherit its names — `de_AT` should generate German
+    ///   names, that is what the chain is for — but has to add *something* material of its
+    ///   own. A variant that adds nothing is an alias, and an alias is better spelled as
+    ///   one.
+    ///
+    /// This passes today for all sixty-six. It is here so that it keeps passing.
+    @Test("every locale in the roster earns its place")
+    func rosterMeetsTheBar() throws {
+        // What counts as material for a regional variant: the fields where a country
+        // genuinely differs from its language's parent.
+        let material: [LocaleField] = [
+            .givenNames, .surnames, .cities, .streets, .postcodes, .addresses, .phoneNumbers,
+            .subdivisions,
+        ]
+
+        var failures: [String] = []
+        for code in DecoyLocales.available where code != "base" {
+            let locale = try DecoyLocales.locale(code)
+
+            if code.contains("_") {
+                if !material.contains(where: locale.supplies) {
+                    failures.append(
+                        "\(code) is a regional variant that adds nothing of its own — it is an "
+                            + "alias for its parent and should be spelled as one")
+                }
+            } else {
+                if !locale.supplies(.givenNames) || !locale.supplies(.surnames) {
+                    failures.append(
+                        "\(code) is a language root without its own "
+                            + (locale.supplies(.givenNames) ? "surnames" : "given names")
+                            + " — it would generate another language under its own name")
+                }
+            }
+        }
+
+        #expect(
+            failures.isEmpty,
+            """
+            \(failures.count) locale(s) do not clear the roster bar:
+                \(failures.joined(separator: "\n    "))
+
+            Either find the data, or drop the locale from Tools/adapters/locales.json.
+            """
+        )
+    }
 }
