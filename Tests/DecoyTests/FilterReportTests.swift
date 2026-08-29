@@ -82,8 +82,8 @@ struct FilterReportTests {
             #expect(
                 kept * 2 > seen,
                 """
-                \\(scope): the script filter kept \\(kept) of \\(seen). Removing more than half \\
-                means the script expected for this language no longer matches what the \\
+                \(scope): the script filter kept \(kept) of \(seen). Removing more than half \
+                means the script expected for this language no longer matches what the \
                 snapshot holds — check the language before adjusting the expectation.
                 """)
         }

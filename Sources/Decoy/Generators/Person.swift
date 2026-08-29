@@ -87,22 +87,34 @@ public struct PersonFaker {
         faker.drawModel("person.last_name_model.generic") ?? lastName()
     }
 
-    /// Returns a surname, optionally constrained to a gender.
+    /// Returns a surname.
     ///
     /// Locales that define a surname *pattern* get it: `en` weights a double-barrelled
     /// form at 5%, which is the kind of variety a fixture set needs and which nothing
     /// produced, because the pattern was compiled into three locales and read by none.
     /// Locales without one draw the table directly, which is every locale but three.
-    public mutating func lastName(_ gender: Gender? = nil) -> String {
-        // A model first, when asked for: the surname pattern below composes *real* names
-        // from the list, so honouring it under `novelNames` would hand back real people
-        // joined by a hyphen.
-        if let generated = modelled("person.last_name", gender) { return generated }
+    ///
+    /// ## Why there is no gender argument
+    ///
+    /// There was one, and it did nothing. `person.last_name` is `.generic` in all
+    /// sixty-six locales — no source this corpus draws from models surnames per gender —
+    /// so every caller passing `.female` got the same pool as one passing `.male`, in
+    /// every language, for the library's whole life. `ParameterEffectTests` found it.
+    ///
+    /// Plenty of languages *do* inflect surnames: Nováková, Иванова, Kowalska. Supporting
+    /// that means a rule per language for deriving the feminine form, which is the same
+    /// grammar problem as the inflecting street names rather than a list to source — so
+    /// the honest surface is the one the data supports. Adding the argument back when
+    /// there is something behind it is a defaulted parameter, which no caller has to
+    /// change for.
+    ///
+    /// ``fullName(_:)`` is unaffected: it takes a gender and applies it to the given name,
+    /// which is where the corpus can honour it.
+    public mutating func lastName() -> String {
+        // A model first: the surname pattern below composes *real* names from the list, so
+        // honouring it under `novelNames` would hand back real people joined by a hyphen.
+        if let generated = modelled("person.last_name", nil) { return generated }
 
-        // Ten locales inflect surnames and carry a pattern per gender; three carry only
-        // a generic one. Reading `.generic` alone left twenty gendered patterns compiled
-        // and unreachable, which `decoy-validate` reports as exactly that.
-        //
         // `person.last_name_pattern` used to be consulted here, per gender, so that a
         // locale could compose a double-barrelled surname. Only faker supplied those
         // patterns — in `en`, `de` and `ja` — and the paths went with it, so all three
@@ -112,7 +124,7 @@ public struct PersonFaker {
         // no longer come out as `Dittmer-Kick`. Composing them again wants a rule per
         // language about which surnames hyphenate and in what order, which is the same
         // grammar problem as the inflecting street names, not a list.
-        return gendered("person.last_name", gender)
+        return gendered("person.last_name", nil)
     }
 
     public mutating func prefix(_ gender: Gender? = nil) -> String {
@@ -217,7 +229,7 @@ public struct PersonFaker {
             defer { faker.composingGender = outer }
             return faker.expand(pattern)
         }
-        return "\(firstName(gender)) \(lastName(gender))"
+        return "\(firstName(gender)) \(lastName())"
     }
 
     public mutating func sex() -> String {

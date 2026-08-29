@@ -183,11 +183,11 @@ struct MultiLocaleSmokeTests {
                     // Azerbaijani surnames inflect, and -ova is not interchangeable with -ov.
                     ("\(field)(.female)", female > 0 ? female : generic, {
                         field == "first_name"
-                            ? $0.person.firstName(.female) : $0.person.lastName(.female)
+                            ? $0.person.firstName(.female) : $0.person.lastName()
                     }),
                     ("\(field)(.male)", male > 0 ? male : generic, {
                         field == "first_name"
-                            ? $0.person.firstName(.male) : $0.person.lastName(.male)
+                            ? $0.person.firstName(.male) : $0.person.lastName()
                     }),
                 ]
 

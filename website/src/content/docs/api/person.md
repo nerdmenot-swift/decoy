@@ -17,7 +17,7 @@ faker.person.firstName()
 | `firstName(_ gender: Gender? = nil)` | `Zygmunt`<br />`Jomar`<br />`Jeremy` |
 | `middleName(_ gender: Gender? = nil)` | `Mary`<br />`Kelly`<br />`Lonnie` |
 | `novelLastName()` | `Slabada`<br />`Kirkholder`<br />`Leflette` |
-| `lastName(_ gender: Gender? = nil)` | `Aguilar`<br />`Baldwin`<br />`Heard` |
+| `lastName()` | `Aguilar`<br />`Baldwin`<br />`Heard` |
 | `prefix(_ gender: Gender? = nil)` | `Mrs.`<br />`Prof.`<br />`Dr.` |
 | `suffix()` | `Jr.`<br />`IV`<br />`V` |
 | `bloodType()` | `B+`<br />`A-`<br />`B-` |
