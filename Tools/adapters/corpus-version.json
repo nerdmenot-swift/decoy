@@ -115,9 +115,9 @@
       "version" : "1.0.0"
     },
     "en_NG" : {
-      "fingerprint" : "b1bf4cf2c3ca2f859f0e7eb18e2e6611",
-      "fingerprintAt" : "1.0.0",
-      "version" : "1.0.0"
+      "fingerprint" : "b768cec51ac26a16aa0ee9d3830e4782",
+      "fingerprintAt" : "1.1.0",
+      "version" : "1.1.0"
     },
     "en_US" : {
       "fingerprint" : "1488d50c61bfbb7a69bcbe29fcad666f",
@@ -200,9 +200,9 @@
       "version" : "1.1.0"
     },
     "hy" : {
-      "fingerprint" : "471c71eab4c8c83054ba4344da942ac3",
-      "fingerprintAt" : "1.0.0",
-      "version" : "1.0.0"
+      "fingerprint" : "b84ba3e889e75be559dbc4b15a69707f",
+      "fingerprintAt" : "1.1.0",
+      "version" : "1.1.0"
     },
     "id_ID" : {
       "fingerprint" : "c6f0a98190db2f6a7942ddc9f1375d4c",
@@ -335,9 +335,9 @@
       "version" : "1.0.0"
     },
     "yo_NG" : {
-      "fingerprint" : "6e6990b004dcd0960935370bc2d76ab0",
-      "fingerprintAt" : "1.0.0",
-      "version" : "1.0.0"
+      "fingerprint" : "94ee425ab66a1f473cd60b928db1e1fc",
+      "fingerprintAt" : "1.1.0",
+      "version" : "1.1.0"
     },
     "zh_CN" : {
       "fingerprint" : "e551872c6e91ea441ee22191d77a440e",
@@ -350,5 +350,5 @@
       "version" : "1.0.0"
     }
   },
-  "version" : "62.1.0"
+  "version" : "62.2.0"
 }

@@ -302,6 +302,16 @@ public enum WikidataQueries {
     /// signs it has been translated; if it has nine, somebody is part-way through and the
     /// gaps would ship as a set that silently lacks Capricorn. So it is all or nothing,
     /// which is exact and needs no guessing about what a word looks like.
+    ///
+    /// Four language roots fail it and are worth naming, because the matrix shows them as
+    /// gaps and the obvious next move is to go looking for a source that does not exist.
+    /// Measured against the live endpoint on 2026-08-30: Bengali has eleven of the twelve,
+    /// Armenian nine, and Kannada and Yoruba none at all. There is nothing to fetch — the
+    /// translations have not been made — so those four inherit the zodiac from their
+    /// fallback chain, and the honest fix is upstream in Wikidata rather than here.
+    ///
+    /// Do not lower this to a threshold to close them. Bengali at eleven of twelve is the
+    /// exact case the rule is for: it would ship as a complete-looking set missing one sign.
     public static func completeSetsOnly(_ bindings: [[String: Any]], order: [String])
         -> [(key: String, value: OrderedJSON)]
     {

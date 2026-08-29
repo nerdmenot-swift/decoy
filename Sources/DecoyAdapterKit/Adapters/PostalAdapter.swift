@@ -19,11 +19,27 @@ public struct PostalAdapter: Adapter {
     /// constraint in several countries — has no mask, and inventing one would generate
     /// invalid postcodes that look right.
     public static func mask(for pattern: String) -> String? {
+        var source = pattern
+
+        // A pattern that is *entirely* one optional group says the postcode is optional in
+        // that country, not that it has none: Nigeria writes `(\d{6})?` and Honduras
+        // `(?:\d{5})?`. Read as a trailing group — which it also is — the rule below strips
+        // the whole thing, leaves an empty mask, and the country loses a postcode it has.
+        // Four countries were dropped that way. The shape wanted is what is inside.
+        if let inner = Self.wholePatternOptionalGroup(in: source) { source = inner }
+
         // An optional trailing group is a real alternative rather than an error — the US
         // +4 is written about as often as it is not — but a mask is one shape, so the
         // shorter form is taken and the extension dropped.
-        var source = pattern
         if let range = Self.trailingOptionalGroup(in: source) { source.removeSubrange(range) }
+
+        // A *leading* optional group is the same decision at the other end. Armenia's
+        // `(37)?\d{4}` carries the Soviet-era six-digit prefix ahead of the modern
+        // four-digit code, and Oman's `(PC )?\d{3}` a label rather than part of the code.
+        // Both are what the country writes when it writes the long form, so the base form
+        // is the one to generate.
+        if let range = Self.leadingOptionalGroup(in: source) { source.removeSubrange(range) }
+
         if source.contains(where: { $0 == "|" || $0 == "(" || $0 == ")" }) { return nil }
 
         var mask = ""
@@ -101,6 +117,33 @@ public struct PostalAdapter: Adapter {
             if pattern[index] == "(" { return index..<pattern.endIndex }
         }
         return nil
+    }
+
+    /// The contents of a `(...)?` or `(?:...)?` that spans the whole pattern.
+    ///
+    /// Nil unless the group really is the entire pattern, so `(37)?\d{4}` is not caught
+    /// here — that one has a base form outside the group and belongs to
+    /// ``leadingOptionalGroup(in:)``.
+    static func wholePatternOptionalGroup(in pattern: String) -> String? {
+        guard pattern.hasPrefix("("), pattern.hasSuffix(")?") else { return nil }
+        var inner = String(pattern.dropFirst().dropLast(2))
+        if inner.hasPrefix("?:") { inner = String(inner.dropFirst(2)) }
+        guard !inner.isEmpty,
+            !inner.contains(where: { $0 == "(" || $0 == ")" || $0 == "|" })
+        else { return nil }
+        return inner
+    }
+
+    /// The range of a leading `(...)?` or `(?:...)?`, if the pattern opens with one.
+    static func leadingOptionalGroup(in pattern: String) -> Range<String.Index>? {
+        guard pattern.hasPrefix("("), let close = pattern.firstIndex(of: ")") else { return nil }
+        let mark = pattern.index(after: close)
+        guard mark < pattern.endIndex, pattern[mark] == "?" else { return nil }
+        // No nesting inside, matching the `[^()]*` the trailing form requires.
+        guard !pattern[pattern.index(after: pattern.startIndex)..<close].contains("(") else {
+            return nil
+        }
+        return pattern.startIndex..<pattern.index(after: mark)
     }
 
     /// libaddressinput's placeholders, mapped to the corpus's template tokens.
@@ -219,12 +262,21 @@ public struct PostalAdapter: Adapter {
             if !contribution.isEmpty { contributions[code] = contribution }
         }
 
+        // Reported as a discard, not just a stats line. A country whose regex cannot become
+        // a mask is a locale silently losing a field, which is the shape of every serious
+        // bug this pipeline has had — and the four that `wholePatternOptionalGroup` now
+        // rescues sat in this list, counted, for as long as the list was only prose.
+        let discarded = unmasked.map {
+            DiscardRecord(scope: $0, filter: "unmaskable", kept: 0, seen: 1)
+        }
+
         return AdapterOutput(
             contributions: contributions,
             stats: [
                 ("countries", String(byRegion.count)), ("postcodes", String(masks)),
                 ("addresses", String(templates)),
                 ("unmasked", unmasked.joined(separator: ",")),
-            ])
+            ],
+            discarded: discarded)
     }
 }

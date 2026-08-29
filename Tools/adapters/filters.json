@@ -45,6 +45,32 @@
       }
     }
   },
+  "postal" : {
+    "cy(GB)" : {
+      "unmaskable" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "en_CA(CA)" : {
+      "unmaskable" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "en_GB(GB)" : {
+      "unmaskable" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "fr_CA(CA)" : {
+      "unmaskable" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    }
+  },
   "wikidata-lexemes" : {
     "az" : {
       "floor" : {

@@ -125,6 +125,9 @@
     "en_NG" : {
       "location.postal_address" : [
         "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.zipCode}}\n{{location.state}}"
+      ],
+      "location.postcode" : [
+        "######"
       ]
     },
     "en_US" : {
@@ -255,6 +258,9 @@
     "hy" : {
       "location.postal_address" : [
         "{{person.name}}\n{{location.streetAddress}}\n{{location.zipCode}}\n{{location.city}}\n{{location.state}}"
+      ],
+      "location.postcode" : [
+        "####"
       ]
     },
     "id_ID" : {
@@ -468,6 +474,9 @@
     "yo_NG" : {
       "location.postal_address" : [
         "{{person.name}}\n{{location.streetAddress}}\n{{location.city}} {{location.zipCode}}\n{{location.state}}"
+      ],
+      "location.postcode" : [
+        "######"
       ]
     },
     "zh_CN" : {
