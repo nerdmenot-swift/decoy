@@ -15,9 +15,10 @@ Reproducible by construction, portable across macOS, Linux, and Windows.
 > value"*. Clearing the package caches does not help; delete
 > `~/Library/org.swift.swiftpm/security/fingerprints/decoy-*.json`.
 >
-> The corpus versions *separately*, and it will keep moving — it is at 62.0.0, and adding
-> data to a locale bumps it. A corpus bump changes what a given seed draws, so pin the
-> corpus version, not just the package version, if you are keeping generated fixtures.
+> The corpus versions *separately*, and each locale now carries its own number, so adding
+> Hindi does not renumber English. A corpus bump changes what a given seed draws, so pin
+> the corpus version of the locales you use — `faker.locale.version` reads it — rather than
+> only the package version, if you are keeping generated fixtures.
 > [CHANGELOG.md](CHANGELOG.md) explains which of the two numbers answers which worry.
 >
 > Coverage is queryable rather than only documented: `locale.supplies(.streets)`,
@@ -165,7 +166,8 @@ recorded in the corpus with its licence:
 Tools/adapters/
   sources/<id>.json     pinned descriptor: URL, integrity hash, licence, version
   locales.json          the locale roster
-  corpus-version.json   the corpus version, declared once
+  corpus-version.json   a version and content fingerprint per locale, plus the release number
+  filters.json          what every filter kept and dropped, so a silent discard cannot hide
   data/*.json           snapshots of the sources that answer a query, not a URL
   parity/<id>.json      what each adapter last emitted, diffed on every run
 
