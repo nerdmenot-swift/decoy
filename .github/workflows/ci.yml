@@ -87,6 +87,18 @@ jobs:
           git diff --exit-code -- docs/locale-support.md \
             || { echo "::error::docs/locale-support.md is stale. Regenerate with decoy-inspect --matrix and commit."; exit 1; }
 
+      # What the filters threw away, which is the half of the pipeline that leaves no other
+      # trace. Every serious data bug here was a silent discard -- a length floor deleting
+      # 138 of 143 Korean surnames, a count floor dropping 13 Welsh ones -- and none of them
+      # changed a single committed byte, because a filter records only what survived.
+      #
+      # The corpus build regenerates this file, so a diff here means a filter's behaviour
+      # moved. That is sometimes correct and always worth reading.
+      - name: Filter losses are recorded
+        run: |
+          git diff --exit-code -- Tools/adapters/filters.json \
+            || { echo "::error::Tools/adapters/filters.json changed: a filter is keeping or dropping a different amount than the committed record. Read the diff — if the change is intended, commit it."; exit 1; }
+
       # --strict, because the report is clean. A check that always prints ten warnings
       # has no signal in it — the eleventh, the one somebody just introduced, is
       # invisible in the noise, which is the exact failure this whole tool exists to

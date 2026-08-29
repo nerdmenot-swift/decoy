@@ -176,6 +176,7 @@ public struct WikidataNamesAdapter: Adapter {
         var contributions: [String: [String: Definition]] = [:]
         var taken: [String] = []
         var tooThin: [String] = []
+        var discarded: [DiscardRecord] = []
 
         // Driven by the locale roster rather than by the data file. The other way round
         // matches on exact code and silently skips every locale whose language has no bare
@@ -216,13 +217,31 @@ public struct WikidataNamesAdapter: Adapter {
                     }
                     list = converted
                 }
+                let beforeScript = list.count
                 if hasScript { list = list.filter { Self.matchesScript($0, latin: latin) } }
                 if let range = Self.expectedScript[Self.language(of: code)] {
                     list = list.filter { Self.inScript($0, range) }
                 }
+                // The script filters, which are the ones with no other trace. They exist
+                // because a `hi` label held Bengali and a `pa` label Urdu — one or two per
+                // list, contributed by hand and never validated against the characters —
+                // and they compose into `स्वप्निल চৌধুরী`. A filter guarding against
+                // mislabelled upstream data is exactly the one you want to watch, because
+                // the day it starts rejecting everything looks identical to the day the
+                // language went quiet.
+                if list.count != beforeScript {
+                    discarded.append(
+                        DiscardRecord(
+                            scope: "\(code).\(kind)", filter: "script",
+                            kept: list.count, seen: beforeScript))
+                }
 
                 if list.count < Self.minimumNames {
                     tooThin.append("\(code).\(kind)(\(list.count))")
+                    discarded.append(
+                        DiscardRecord(
+                            scope: "\(code).\(kind)", filter: "floor",
+                            kept: 0, seen: list.count))
                     continue
                 }
                 contribution[path] = .list(CodeUnitOrder.sorted(list).map(Definition.string))
@@ -250,6 +269,7 @@ public struct WikidataNamesAdapter: Adapter {
                 ("retrieved", retrieved), ("locales", String(taken.count)),
                 ("taken", taken.joined(separator: ",")),
                 ("tooThin", tooThin.joined(separator: ",")),
-            ])
+            ],
+            discarded: discarded)
     }
 }

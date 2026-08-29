@@ -1,0 +1,92 @@
+{
+  "indic-names" : {
+    "kn_IN" : {
+      "given.frequency+script+length" : {
+        "kept" : 2011,
+        "seen" : 47606
+      },
+      "given.inflection" : {
+        "kept" : 1726,
+        "seen" : 2011
+      },
+      "inflection.endingsLearned" : {
+        "kept" : 417,
+        "seen" : 72107
+      },
+      "surname.frequency+script+length" : {
+        "kept" : 1280,
+        "seen" : 36094
+      },
+      "surname.inflection" : {
+        "kept" : 1083,
+        "seen" : 1280
+      }
+    },
+    "pa_IN" : {
+      "given.frequency+script+length" : {
+        "kept" : 1962,
+        "seen" : 43409
+      },
+      "given.inflection" : {
+        "kept" : 1747,
+        "seen" : 1962
+      },
+      "inflection.endingsLearned" : {
+        "kept" : 204,
+        "seen" : 65957
+      },
+      "surname.frequency+script+length" : {
+        "kept" : 1056,
+        "seen" : 37065
+      },
+      "surname.inflection" : {
+        "kept" : 943,
+        "seen" : 1056
+      }
+    }
+  },
+  "wikidata-names" : {
+    "el.male" : {
+      "script" : {
+        "kept" : 439,
+        "seen" : 440
+      }
+    },
+    "hi_IN.male" : {
+      "script" : {
+        "kept" : 5,
+        "seen" : 6
+      }
+    },
+    "hi_IN.surname" : {
+      "script" : {
+        "kept" : 9,
+        "seen" : 11
+      }
+    },
+    "ka_GE.surname" : {
+      "script" : {
+        "kept" : 204,
+        "seen" : 205
+      }
+    },
+    "ko.surname" : {
+      "script" : {
+        "kept" : 140,
+        "seen" : 141
+      }
+    },
+    "pa_IN.male" : {
+      "script" : {
+        "kept" : 5,
+        "seen" : 6
+      }
+    },
+    "sr_RS_latin.male" : {
+      "script" : {
+        "kept" : 82,
+        "seen" : 83
+      }
+    }
+  }
+}

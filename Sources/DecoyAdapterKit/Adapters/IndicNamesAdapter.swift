@@ -123,6 +123,7 @@ public struct IndicNamesAdapter: Adapter {
     public func run(_ input: AdapterInput) throws -> AdapterOutput {
         var contributions: [String: [String: Definition]] = [:]
         var stats: [(String, String)] = []
+        var discarded: [DiscardRecord] = []
 
         for (locale, artifact, script) in Self.languages {
             guard input.locales.contains(locale) else { continue }
@@ -130,6 +131,20 @@ public struct IndicNamesAdapter: Adapter {
             let counts = try tally(input, artifact)
             var given = keep(counts.given, counts.other, script)
             var surnames = keep(counts.surname, counts.other, script)
+
+            // Recorded before the inflection pass, so the two stages are separable. Five
+            // filters run here and their combined effect is a single number — which is how
+            // "roughly a third is wrong" stayed invisible until somebody printed the values
+            // by hand.
+            discarded.append(
+                DiscardRecord(
+                    scope: locale, filter: "given.frequency+script+length",
+                    kept: given.count, seen: counts.given.count))
+            discarded.append(
+                DiscardRecord(
+                    scope: locale, filter: "surname.frequency+script+length",
+                    kept: surnames.count, seen: counts.surname.count))
+            let beforeInflection = (given: given.count, surnames: surnames.count)
 
             // Learned from every person token seen, not from the survivors. An ending is
             // only discoverable where both the bare name and the inflected form are in the
@@ -141,6 +156,23 @@ public struct IndicNamesAdapter: Adapter {
             let endings = inflections(in: Set(vocabulary))
             given = given.filter { !isInflected($0, endings) }
             surnames = surnames.filter { !isInflected($0, endings) }
+
+            // The inflection pass on its own. This is the number that decides whether a
+            // language is shippable — Tamil lost six surnames in twenty to case endings the
+            // learned set could not reach, and Marathi half — so it is the one worth being
+            // able to watch across a refresh rather than inferring from a total.
+            discarded.append(
+                DiscardRecord(
+                    scope: locale, filter: "given.inflection",
+                    kept: given.count, seen: beforeInflection.given))
+            discarded.append(
+                DiscardRecord(
+                    scope: locale, filter: "surname.inflection",
+                    kept: surnames.count, seen: beforeInflection.surnames))
+            discarded.append(
+                DiscardRecord(
+                    scope: locale, filter: "inflection.endingsLearned",
+                    kept: endings.count, seen: vocabulary.count))
 
             guard given.count >= Self.minimumNames, surnames.count >= Self.minimumNames else {
                 throw AdapterFailure.shapeChanged(
@@ -161,7 +193,7 @@ public struct IndicNamesAdapter: Adapter {
             throw AdapterFailure.shapeChanged(
                 adapter: Self.id, detail: "the roster carries none of this adapter's locales")
         }
-        return AdapterOutput(contributions: contributions, stats: stats)
+        return AdapterOutput(contributions: contributions, stats: stats, discarded: discarded)
     }
 
     /// How often each token is the head of a person span, inside one, or neither.

@@ -124,6 +124,9 @@ let declaredLocaleVersions: [String: (version: String, fingerprint: String)] = {
 /// What each locale's data hashed to this run, filled as locales are compiled.
 var localeFingerprints: [String: String] = [:]
 
+/// What every adapter's filters discarded, collected for `Tools/adapters/filters.json`.
+var discardsByAdapter: [String: [DiscardRecord]] = [:]
+
 let (locales, cldrOverrides): ([String], [String: String?]) = {
     guard let data = try? Data(contentsOf: root.appendingPathComponent("locales.json")),
         let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
@@ -244,6 +247,17 @@ for adapter in adapters {
     let summary = output.stats.filter { !$0.1.isEmpty }
         .map { "\($0.0)=\($0.1)" }.joined(separator: " ")
     if !summary.isEmpty { note("  \(summary)") }
+
+    // What this adapter's filters threw away, kept for `filters.json`. The heaviest losses
+    // go to the log as well: a filter keeping a tenth of what it saw is either doing its
+    // job on a dirty source or has stopped understanding the data, and those two look
+    // identical in a total.
+    for record in output.discarded {
+        discardsByAdapter[id, default: []].append(record)
+        if record.seen >= 20, record.kept * 4 < record.seen {
+            note("  \(record.scope) \(record.filter): kept \(record.kept) of \(record.seen)")
+        }
+    }
 
     // An adapter that produced nothing is not a source the corpus was built from. Every
     // source it names is credited when it produced anything at all, because the format
@@ -492,6 +506,35 @@ for (code, data) in pendingLocaleFiles {
     } catch {
         fail("could not write \(code).json: \(error)")
     }
+}
+
+// MARK: - What the filters threw away
+
+// Committed, and therefore diffable. A filter that begins rejecting far more than it used
+// to shows up here as a changed number in review, which is the only mechanism that would
+// have caught any of the three that shipped: a length floor deleting 138 of 143 Korean
+// surnames, a count floor discarding 13 Welsh ones, and a retry recording Spanish surnames
+// as absent because the query never once succeeded.
+//
+// Sorted, and holding only counts, so the file is a record of behaviour rather than a
+// second copy of the corpus. It is regenerated on every build like the parity dumps, and
+// CI diffs it for the same reason.
+do {
+    var report: [String: Any] = [:]
+    for (adapter, records) in discardsByAdapter {
+        var byScope: [String: [String: Any]] = [:]
+        for record in records.sorted(by: { ($0.scope, $0.filter) < ($1.scope, $1.filter) }) {
+            byScope[record.scope, default: [:]][record.filter] = [
+                "kept": record.kept, "seen": record.seen,
+            ]
+        }
+        report[adapter] = byScope
+    }
+    let data = try JSONSerialization.data(
+        withJSONObject: report, options: [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes])
+    try data.write(to: root.appendingPathComponent("filters.json"))
+} catch {
+    fail("could not write filters.json: \(error)")
 }
 
 // MARK: - Manifest

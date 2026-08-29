@@ -44,6 +44,35 @@ public struct AdapterInput: Sendable {
     }
 }
 
+/// What one filter removed, and from what.
+///
+/// Every serious data bug this corpus has had was a filter discarding quietly. A minimum
+/// length written for Latin script deleted 138 of 143 Korean surnames; a minimum count of
+/// forty threw away thirteen Welsh ones; a retry that read throttling as a dead endpoint
+/// meant Spanish surnames were never once fetched. None left a trace, because a filter
+/// records only what survived — and five survivors look exactly like a small language.
+///
+/// Recorded per adapter, per scope, per filter, and written to `Tools/adapters/filters.json`
+/// where a diff makes a change in behaviour visible. `kept 5 of 143` on a line nobody reads
+/// is better than nothing; the same in a file CI diffs is what would actually have caught it.
+public struct DiscardRecord: Sendable {
+    /// The locale or language the filter was applied to.
+    public let scope: String
+    /// Which filter, named for what it rejects rather than how it works.
+    public let filter: String
+    public let kept: Int
+    public let seen: Int
+
+    public init(scope: String, filter: String, kept: Int, seen: Int) {
+        self.scope = scope
+        self.filter = filter
+        self.kept = kept
+        self.seen = seen
+    }
+
+    public var dropped: Int { seen - kept }
+}
+
 public struct AdapterOutput: Sendable {
     /// locale -> path -> value
     public let contributions: [String: [String: Definition]]
@@ -51,15 +80,19 @@ public struct AdapterOutput: Sendable {
     public let stats: [(String, String)]
     /// Where an adapter credits per locale rather than crediting one source for all.
     public let sourceByLocale: [String: String]?
+    /// What this adapter's filters removed on the way.
+    public let discarded: [DiscardRecord]
 
     public init(
         contributions: [String: [String: Definition]],
         stats: [(String, String)] = [],
-        sourceByLocale: [String: String]? = nil
+        sourceByLocale: [String: String]? = nil,
+        discarded: [DiscardRecord] = []
     ) {
         self.contributions = contributions
         self.stats = stats
         self.sourceByLocale = sourceByLocale
+        self.discarded = discarded
     }
 }
 
