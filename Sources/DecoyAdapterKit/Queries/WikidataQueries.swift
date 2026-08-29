@@ -100,6 +100,65 @@ public enum WikidataQueries {
         """
     }
 
+    // MARK: - Lexemes
+
+    /// Everyday vocabulary, from Wikidata's lexeme entities.
+    ///
+    /// Vocabulary was the widest remaining gap after streets — fourteen roots of forty-five
+    /// — and the Open Multilingual Wordnet cannot close it. The fourteen already wired up
+    /// are precisely the permissively-licensed ones; every remaining OMW language is CC
+    /// BY-SA or CeCILL-C, checked by reading the licence each archive declares rather than
+    /// a table about them. Share-alike would put the whole corpus's Apache-2.0
+    /// redistribution in question for the sake of one field.
+    ///
+    /// Lexemes are a different part of Wikidata from the items the name and colour queries
+    /// read: `L`-entities carrying a lemma, a language and a lexical category, contributed
+    /// for dictionary purposes. Same project, same CC0, same query endpoint — no new
+    /// licence to clear and no new fetch machinery.
+    ///
+    /// Coverage is very uneven and the floor is what handles that: German, French and
+    /// Russian return thousands, Ukrainian hundreds, and Macedonian five. A language below
+    /// the floor keeps the English it already had.
+    public static let noun = "Q1084"
+
+    /// Below this a locale keeps what it had.
+    ///
+    /// Higher than the name floor, because these words are not composed with anything. A
+    /// name draws from two lists and multiplies; a noun is drawn alone, so fifty of them is
+    /// the point where a sentence stops obviously reusing the same handful.
+    public static let minimumLexemes = 50
+
+    /// Locale to the Wikidata item for its language.
+    ///
+    /// Only locales that do not already have vocabulary from a wordnet. Where both exist the
+    /// wordnet wins: it is curated for sense rather than contributed for the dictionary, and
+    /// two adapters claiming `word.noun` is refused by the orchestrator anyway.
+    public static let lexemeLanguages: [(code: String, id: String)] = [
+        ("ar", "Q13955"), ("az", "Q9292"), ("bn_BD", "Q9610"), ("cs_CZ", "Q9056"),
+        ("cy", "Q9309"), ("de", "Q188"), ("fa", "Q9168"), ("fr", "Q150"),
+        ("hi_IN", "Q1568"), ("hu", "Q9067"), ("hy", "Q8785"), ("ka_GE", "Q8108"),
+        ("kn_IN", "Q33673"), ("ko", "Q9176"), ("lv", "Q9078"), ("mk", "Q9296"),
+        ("nl", "Q7411"), ("pa_IN", "Q58635"), ("pt_BR", "Q5146"), ("pt_PT", "Q5146"),
+        ("ro", "Q7913"), ("ru", "Q7737"), ("sk", "Q9058"), ("sl_SI", "Q9063"),
+        ("tr", "Q256"), ("uk", "Q8798"), ("vi", "Q9199"), ("zh_TW", "Q7850"),
+    ]
+
+    /// Every noun lemma recorded for one language.
+    ///
+    /// `LIMIT 5000` because the largest languages exceed it and a truncated list of common
+    /// nouns is still a list of common nouns — unlike a name list, where truncation would
+    /// bias toward whatever the endpoint happened to order first. Nothing here is weighted,
+    /// so the cut costs variety rather than correctness.
+    public static func lexemeQuery(language id: String) -> String {
+        """
+        SELECT DISTINCT ?lemma WHERE {
+          ?l dct:language wd:\(id) ;
+             wikibase:lexicalCategory wd:\(noun) ;
+             wikibase:lemma ?lemma .
+        } LIMIT 5000
+        """
+    }
+
     // MARK: - Colours
 
     /// Wikidata's item for the concept "colour". Everything wanted is an instance of it.

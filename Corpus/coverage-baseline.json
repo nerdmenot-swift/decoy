@@ -1,8 +1,8 @@
 {
   "locales" : {
     "ar" : {
-      "paths" : 37,
-      "values" : 6621
+      "paths" : 38,
+      "values" : 11576
     },
     "az" : {
       "paths" : 38,
@@ -13,12 +13,12 @@
       "values" : 16623
     },
     "bn_BD" : {
-      "paths" : 35,
-      "values" : 2806
+      "paths" : 36,
+      "values" : 6667
     },
     "cs_CZ" : {
-      "paths" : 38,
-      "values" : 8790
+      "paths" : 39,
+      "values" : 13784
     },
     "cy" : {
       "paths" : 34,
@@ -29,8 +29,8 @@
       "values" : 4469
     },
     "de" : {
-      "paths" : 59,
-      "values" : 23585
+      "paths" : 60,
+      "values" : 28475
     },
     "de_AT" : {
       "paths" : 53,
@@ -97,16 +97,16 @@
       "values" : 19899
     },
     "fa" : {
-      "paths" : 35,
-      "values" : 15422
+      "paths" : 36,
+      "values" : 20419
     },
     "fi" : {
       "paths" : 42,
       "values" : 25526
     },
     "fr" : {
-      "paths" : 60,
-      "values" : 36881
+      "paths" : 61,
+      "values" : 41875
     },
     "fr_BE" : {
       "paths" : 52,
@@ -141,8 +141,8 @@
       "values" : 11404
     },
     "hu" : {
-      "paths" : 38,
-      "values" : 8471
+      "paths" : 39,
+      "values" : 8547
     },
     "hy" : {
       "paths" : 36,
@@ -161,20 +161,20 @@
       "values" : 46578
     },
     "ka_GE" : {
-      "paths" : 34,
-      "values" : 1986
+      "paths" : 35,
+      "values" : 2039
     },
     "kn_IN" : {
       "paths" : 33,
       "values" : 20329
     },
     "ko" : {
-      "paths" : 35,
-      "values" : 5641
+      "paths" : 36,
+      "values" : 6151
     },
     "lv" : {
-      "paths" : 37,
-      "values" : 5690
+      "paths" : 38,
+      "values" : 6009
     },
     "mk" : {
       "paths" : 34,
@@ -189,48 +189,48 @@
       "values" : 1235
     },
     "nl" : {
-      "paths" : 60,
-      "values" : 9900
+      "paths" : 61,
+      "values" : 12069
     },
     "nl_BE" : {
       "paths" : 52,
       "values" : 4629
     },
     "pa_IN" : {
-      "paths" : 35,
-      "values" : 20209
+      "paths" : 36,
+      "values" : 22069
     },
     "pl" : {
       "paths" : 42,
       "values" : 20519
     },
     "pt_BR" : {
-      "paths" : 43,
-      "values" : 20808
+      "paths" : 44,
+      "values" : 23888
     },
     "pt_PT" : {
-      "paths" : 60,
-      "values" : 6530
+      "paths" : 61,
+      "values" : 9610
     },
     "ro" : {
-      "paths" : 38,
-      "values" : 15471
+      "paths" : 39,
+      "values" : 15587
     },
     "ro_MD" : {
       "paths" : 29,
       "values" : 1181
     },
     "ru" : {
-      "paths" : 37,
-      "values" : 19336
+      "paths" : 38,
+      "values" : 24332
     },
     "sk" : {
-      "paths" : 36,
-      "values" : 4284
+      "paths" : 37,
+      "values" : 9284
     },
     "sl_SI" : {
-      "paths" : 37,
-      "values" : 8706
+      "paths" : 38,
+      "values" : 8760
     },
     "sr_RS_latin" : {
       "paths" : 35,
@@ -241,12 +241,12 @@
       "values" : 14273
     },
     "tr" : {
-      "paths" : 43,
-      "values" : 14676
+      "paths" : 44,
+      "values" : 15974
     },
     "uk" : {
-      "paths" : 37,
-      "values" : 12879
+      "paths" : 38,
+      "values" : 13258
     },
     "vi" : {
       "paths" : 34,

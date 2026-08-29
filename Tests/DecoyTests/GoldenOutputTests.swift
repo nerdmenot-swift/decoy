@@ -98,7 +98,10 @@ struct GoldenOutputTests {
                 "Handgefertigte Körbe aus Holz",
                 "GB66MGQT74075995809174",
                 "3518222941686023",
-                "march",
+                // German, since `de` gained its own vocabulary. This was `march` — the
+                // English noun it had been falling through to — and it is the only value in
+                // the nineteen that moved, which is what a golden test is for.
+                "Compilation",
                 "Acervatim nimirum lanx caupo ideo.",
                 "Königsblau",
                 "2G2HTSCH0ZFMSECJ1",

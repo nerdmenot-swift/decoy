@@ -101,7 +101,7 @@ let corpusVersion: String = {
 /// on — adding Hindi bumped it for somebody using only English, so their fixtures read as
 /// at-risk when nothing they used had moved. A locale's own version changes only when its
 /// own data does, and the fingerprint is what makes that a check rather than a promise.
-let declaredLocaleVersions: [String: (version: String, fingerprint: String)] = {
+let declaredLocaleVersions: [String: (version: String, fingerprint: String, at: String)] = {
     guard
         let data = try? Data(
             contentsOf: root.appendingPathComponent("corpus-version.json")),
@@ -111,12 +111,16 @@ let declaredLocaleVersions: [String: (version: String, fingerprint: String)] = {
     guard let table = object["locales"] as? [String: [String: String]] else {
         fail("corpus-version.json declares no `locales` table")
     }
-    var out: [String: (version: String, fingerprint: String)] = [:]
+    var out: [String: (version: String, fingerprint: String, at: String)] = [:]
     for (code, entry) in table {
         guard let version = entry["version"] else {
             fail("corpus-version.json: \(code) declares no version")
         }
-        out[code] = (version, entry["fingerprint"] ?? "")
+        // `at` is the version the fingerprint was recorded against, which is what makes
+        // "the data moved and nobody bumped" distinguishable from "the data moved and
+        // somebody did". Defaults to the declared version so a file written before this
+        // existed reads as already-in-agreement.
+        out[code] = (version, entry["fingerprint"] ?? "", entry["fingerprintAt"] ?? version)
     }
     return out
 }()
@@ -456,6 +460,28 @@ let moved = localeFingerprints
     .keys.sorted()
 
 if writeBaselines {
+    // Recording is not a way around the check. `--write-baselines` exists to accept a
+    // change once it is deliberate, and the evidence that it is deliberate is a version
+    // bump — so a locale whose data moved while its version stayed put is refused here
+    // exactly as it is on a plain build.
+    //
+    // Without this the gate is a formality: run with `--write-baselines`, the new
+    // fingerprints are recorded, the versions stay at whatever they were, and every
+    // subsequent build agrees that nothing is wrong. Which is what happened the first time
+    // this feature was used, an hour after it was written, by its author.
+    let unbumped = moved.filter { code in
+        guard let declared = declaredLocaleVersions[code] else { return false }
+        return declared.version == declared.at
+    }
+    if !unbumped.isEmpty {
+        fail(
+            "\(unbumped.count) locale(s) changed but still declare their old version: "
+                + unbumped.joined(separator: ", ")
+                + "\n\nBump each one in corpus-version.json first -- adding data is a minor bump,"
+                + " changing or removing an existing value is a major one -- then re-run with"
+                + " --write-baselines to record the fingerprints against the new versions.")
+    }
+
     let versionFile = root.appendingPathComponent("corpus-version.json")
     guard
         let data = try? Data(contentsOf: versionFile),
@@ -464,9 +490,8 @@ if writeBaselines {
     else { fail("corpus-version.json is unreadable") }
 
     for (code, hash) in localeFingerprints {
-        table[code] = [
-            "version": declaredLocaleVersions[code]?.version ?? "1.0.0", "fingerprint": hash,
-        ]
+        let version = declaredLocaleVersions[code]?.version ?? "1.0.0"
+        table[code] = ["version": version, "fingerprint": hash, "fingerprintAt": version]
     }
     object["locales"] = table
     do {

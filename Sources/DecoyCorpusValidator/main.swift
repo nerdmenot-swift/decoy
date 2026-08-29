@@ -145,16 +145,43 @@ for blob in blobs {
     }
 }
 
-// MARK: - Check: one corpus version
+// MARK: - Check: each blob carries the version its locale declares
 
-let versions = Set(corpora.values.map(\.version.description))
-if versions.count > 1 {
-    // A mixed set means a partial rebuild, and a chain that spans two versions resolves
-    // some fields from each — reproducible against neither.
-    report(
-        .error, "version",
-        "blobs declare \(versions.count) different corpus versions "
-            + "(\(versions.sorted().joined(separator: ", "))). Recompile the whole directory.")
+// This check used to require every blob to agree on a single version, on the reasoning that
+// a mixed set means a partial rebuild. Locales now carry their own versions deliberately —
+// adding Hindi should not renumber English — so disagreement is no longer evidence of
+// anything.
+//
+// The hazard it guarded is real and remains: a blob left over from an earlier compile is
+// reproducible against nothing. So compare each blob to what the manifest declares for that
+// locale, which catches the stale blob exactly and permits the intended divergence.
+if let data = try? Data(contentsOf: URL(fileURLWithPath: "Tools/adapters/corpus-version.json")),
+    let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+    let declared = root["locales"] as? [String: Any]
+{
+    var stale: [String] = []
+    for (code, corpus) in corpora {
+        guard let entry = declared[code] as? [String: Any],
+            let want = entry["version"] as? String
+        else {
+            report(.error, "version", "\(code).decoy is not declared in corpus-version.json")
+            continue
+        }
+        if corpus.version.description != want {
+            stale.append("\(code) is \(corpus.version.description), declared \(want)")
+        }
+    }
+    if !stale.isEmpty {
+        report(
+            .error, "version",
+            "\(stale.count) blob(s) do not match their declared version — recompile:\n    "
+                + stale.sorted().joined(separator: "\n    "))
+    }
+    for code in declared.keys where corpora[code] == nil {
+        report(.error, "version", "\(code) is declared in corpus-version.json but has no blob")
+    }
+} else {
+    report(.error, "version", "Tools/adapters/corpus-version.json is missing or unreadable")
 }
 
 // MARK: - Check: source descriptors

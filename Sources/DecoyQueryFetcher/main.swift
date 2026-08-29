@@ -131,6 +131,76 @@ func wikidataNames() async {
 
 // MARK: - Wikidata colours
 
+/// Noun lemmas per language, from Wikidata's lexemes.
+///
+/// Same endpoint and the same resume-from-disk behaviour as the colour fetch. The floor is
+/// applied here so a language below it is simply absent from the snapshot, which reads the
+/// same as "Wikidata has nothing" — the distinction is kept in the log line, which reports
+/// what came back before the floor was applied.
+func wikidataLexemes() async {
+    let name = "wikidata-lexemes"
+
+    var order: [String] = []
+    var out: [String: OrderedJSON] = [:]
+    if let data = try? Data(
+        contentsOf: dataDirectory.appendingPathComponent("\(name).json")),
+        let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+        let words = root["nouns"] as? [String: [String]]
+    {
+        for (code, _) in WikidataQueries.lexemeLanguages where words[code] != nil {
+            order.append(code)
+            out[code] = .array(words[code]!.map(OrderedJSON.string))
+        }
+        if !order.isEmpty { note("resuming; \(order.count) locales already fetched") }
+    }
+
+    // One request per language, not per locale: `pt_BR` and `pt_PT` ask the same question.
+    var languages: [String] = []
+    var codesFor: [String: [String]] = [:]
+    for (code, id) in WikidataQueries.lexemeLanguages {
+        if codesFor[id] == nil { languages.append(id) }
+        codesFor[id, default: []].append(code)
+    }
+
+    for id in languages {
+        let codes = codesFor[id] ?? []
+        if codes.allSatisfy({ out[$0] != nil }) { continue }
+
+        guard
+            let bindings = await Endpoint.sparql(
+                WikidataQueries.lexemeQuery(language: id), attempts: 6, backoff: 20, log: note)
+        else {
+            // Not written as absent. A language that could not be fetched and one that has
+            // nothing look identical in the snapshot, and that conflation is how Spanish
+            // surnames were recorded as non-existent for months.
+            fail(
+                "\(codes.joined(separator: ", ")): endpoint gave up after retries. Re-run to "
+                    + "resume — do not commit a snapshot with a language missing, it reads as "
+                    + "an absence of data.")
+        }
+
+        let lemmas = bindings.compactMap { Endpoint.value($0, "lemma") }
+        let kept = Endpoint.distinctSorted(lemmas.filter(Endpoint.usable))
+        note("\(id): \(kept.count) of \(lemmas.count) -> \(codes.joined(separator: ", "))")
+
+        if kept.count >= WikidataQueries.minimumLexemes {
+            for code in codes {
+                if out[code] == nil { order.append(code) }
+                out[code] = .array(kept.map(OrderedJSON.string))
+            }
+        }
+
+        write(
+            name,
+            .object([
+                ("retrieved", .string(retrieved)),
+                ("nouns", .object(order.map { ($0, out[$0]!) })),
+            ]))
+        await Endpoint.pause(3)
+    }
+    note("\nwrote \(order.count) locales")
+}
+
 func wikidataColours() async {
     let name = "wikidata-colours"
 
@@ -282,7 +352,8 @@ func statisticsNames() async {
 /// credential could not fail the whole run. Nothing needs that now. Bring the split back
 /// rather than folding such a snapshot in here.
 let known = [
-    "wikidata-names", "wikidata-colours", "wikidata-terms", "statistics-names",
+    "wikidata-names", "wikidata-colours", "wikidata-terms", "wikidata-lexemes",
+    "statistics-names",
 ]
 guard arguments.count > 1 else {
     fail("name a snapshot to fetch: \(known.joined(separator: ", ")), or all")
@@ -298,6 +369,7 @@ for choice in requested {
     switch choice {
     case "wikidata-names": await wikidataNames()
     case "wikidata-colours": await wikidataColours()
+    case "wikidata-lexemes": await wikidataLexemes()
     case "wikidata-terms": await wikidataTerms()
     default: await statisticsNames()
     }

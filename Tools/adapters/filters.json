@@ -45,6 +45,36 @@
       }
     }
   },
+  "wikidata-lexemes" : {
+    "az" : {
+      "floor" : {
+        "kept" : 0,
+        "seen" : 36
+      },
+      "script" : {
+        "kept" : 36,
+        "seen" : 138
+      }
+    },
+    "ko" : {
+      "script" : {
+        "kept" : 510,
+        "seen" : 896
+      }
+    },
+    "pa_IN" : {
+      "script" : {
+        "kept" : 1860,
+        "seen" : 3715
+      }
+    },
+    "tr" : {
+      "script" : {
+        "kept" : 1298,
+        "seen" : 2618
+      }
+    }
+  },
   "wikidata-names" : {
     "el.male" : {
       "script" : {
