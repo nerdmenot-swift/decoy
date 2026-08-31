@@ -100,6 +100,53 @@ public enum WikidataQueries {
         """
     }
 
+    // MARK: - Romanised names
+
+    /// Locales whose names are another language's, written in Latin script.
+    ///
+    /// `en_IN` is the case this exists for. It carried no names of its own, so it inherited
+    /// `en`'s — which meant an Indian city, an Indian postcode and "Jennifer Williams" on
+    /// the same row. India's English-language records are full of Indian names in Latin
+    /// script, and that is the one thing the corpus could not produce.
+    ///
+    /// The names are already here: the same Wikidata items that supply `hi_IN` its
+    /// Devanagari names carry an English label too, which is the romanised form. So this is
+    /// the existing name query with the label filter moved to `en` — no new source, no new
+    /// licence, and the pool spans the nine languages rather than one, which is right for a
+    /// pan-Indian locale.
+    ///
+    /// Not a transliteration. Deriving `Anjali` from `अंजली` mechanically means a rule per
+    /// script and a choice between competing romanisations, and Wikidata already holds the
+    /// spelling people actually use.
+    public static let romanisedNameLocales: [(code: String, languages: [String])] = [
+        (
+            "en_IN",
+            [
+                "Q1568",  // Hindi
+                "Q9610",  // Bengali
+                "Q5885",  // Tamil
+                "Q8097",  // Telugu
+                "Q1571",  // Marathi
+                "Q5137",  // Gujarati
+                "Q58635",  // Punjabi
+                "Q33298",  // Kannada
+                "Q36236",  // Malayalam
+            ]
+        )
+    ]
+
+    public static func romanisedNameQuery(class classID: String, languages: [String]) -> String {
+        """
+        SELECT DISTINCT ?l WHERE {
+          VALUES ?lang { \(languages.map { "wd:\($0)" }.joined(separator: " ")) }
+          ?i wdt:P407 ?lang ;
+             wdt:P31 wd:\(classID) ;
+             rdfs:label ?l .
+          FILTER(LANG(?l) = "en")
+        } LIMIT 4000
+        """
+    }
+
     // MARK: - Lexemes
 
     /// Everyday vocabulary, from Wikidata's lexeme entities.

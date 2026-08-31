@@ -63,7 +63,10 @@ func wikidataNames() async {
         let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
         let held = root["names"] as? [String: [String: [String]]]
     {
-        for (code, _) in WikidataQueries.nameLanguages where held[code] != nil {
+        let resumable =
+            WikidataQueries.nameLanguages.map(\.code)
+            + WikidataQueries.romanisedNameLocales.map(\.code)
+        for code in resumable where held[code] != nil {
             order.append(code)
             out[code] = .object(
                 WikidataQueries.nameClasses.compactMap { entry in
@@ -126,6 +129,52 @@ func wikidataNames() async {
                 ("names", .object(order.map { ($0, out[$0]!) })),
             ]))
     }
+    // Romanised names, fetched after the per-language pass so a resume finds the languages
+    // already on disk and only this is left to do.
+    for (code, languages) in WikidataQueries.romanisedNameLocales where out[code] == nil {
+        var kinds: [(key: String, value: OrderedJSON)] = []
+
+        for (kind, classID) in WikidataQueries.nameClasses {
+            let query = WikidataQueries.romanisedNameQuery(class: classID, languages: languages)
+            guard let bindings = await Endpoint.sparql(query, attempts: 6, backoff: 20, log: note)
+            else {
+                fail(
+                    "\(code) \(kind): endpoint gave up after retries. Re-run to resume — do "
+                        + "not commit a snapshot with a category missing, it reads as an "
+                        + "absence of data.")
+            }
+
+            let labels = bindings.compactMap { Endpoint.value($0, "l") }
+            // Latin only. The label is *tagged* English, which is not the same as being
+            // written in Latin script — a handful carry the native spelling under an `en`
+            // tag, and one Devanagari surname in a romanised pool is the mixed-script bug
+            // this corpus has already shipped once.
+            let latin = labels.filter { value in
+                value.unicodeScalars.contains { $0.properties.isAlphabetic }
+                    && value.unicodeScalars.allSatisfy { scalar in
+                        !scalar.properties.isAlphabetic || (0x0041...0x024F).contains(scalar.value)
+                    }
+            }
+            let kept = Endpoint.distinctSorted(latin.filter(Endpoint.usable))
+            if kept.count >= WikidataQueries.minimumNames {
+                kinds.append((kind, .array(kept.map(OrderedJSON.string))))
+            }
+            note("\(code) \(kind): \(kept.count) of \(labels.count) (romanised)")
+            await Endpoint.pause(3)
+        }
+
+        if !kinds.isEmpty {
+            order.append(code)
+            out[code] = .object(kinds)
+            write(
+                name,
+                .object([
+                    ("retrieved", .string(retrieved)),
+                    ("names", .object(order.map { ($0, out[$0]!) })),
+                ]))
+        }
+    }
+
     note("\nwrote \(order.count) locales")
 }
 

@@ -33,6 +33,13 @@ public struct WikidataNamesAdapter: Adapter {
     /// and French given names are not.
     private static let deferred: [String: [String]] = [
         "en": ["female", "male", "surname"],
+        // ...but not `en_IN`, which is looked up by exact code before its language and so
+        // needs to say so. It yields nothing: `en`'s three sets are deferred to the US
+        // Census, and applying that rule to India — which is what the language fallback
+        // does — is how an Indian locale came to produce "Jennifer Williams" beside a
+        // Mumbai postcode. Its names are the romanised Indian ones and Wikidata is their
+        // only source here.
+        "en_IN": [],
         "fr": ["female", "male"],
         "pl": ["female", "male"],
         // Surnames yielded to INE as of the refetch that gave Wikidata Spanish surnames
