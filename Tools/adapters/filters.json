@@ -45,6 +45,110 @@
       }
     }
   },
+  "legal-entities" : {
+    "ar(EG)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "bn_BD(BD)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "en_GH(GH)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "fa(IR)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "fr_SN(SN)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "he(IL)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "hi_IN(IN)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "ka_GE(GE)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "kn_IN(IN)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "pa_IN(IN)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "ro_MD(MD)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "ru(RU)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "uk(UA)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "vi(VN)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "yo_NG(NG)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "zh_CN(CN)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    },
+    "zh_TW(TW)" : {
+      "no-forms-for-jurisdiction" : {
+        "kept" : 0,
+        "seen" : 1
+      }
+    }
+  },
   "postal" : {
     "cy(GB)" : {
       "unmaskable" : {

@@ -14,6 +14,19 @@ public struct LegalEntitiesAdapter: Adapter {
     private static let minimumForms = 2
     private static let maximumLength = 12
 
+    /// Language codes the register writes differently from the locale roster.
+    ///
+    /// GLEIF files Norway's forms under `no`, the macrolanguage; the roster carries `nb`,
+    /// Bokmål, which is the standard those forms are actually written in. Seventeen
+    /// abbreviations — `AS`, `ASA`, `ANS`, `KF`, `SF` — sat unused behind that two-letter
+    /// difference, and Norwegian companies got English ones instead.
+    ///
+    /// Deliberately not a general "try the country's other languages" fallback. That would
+    /// hand `hi_IN` India's English forms, which is a different question with a different
+    /// answer: India legislates its company forms in English, so `Pvt Ltd` reaching Hindi
+    /// through the fallback chain is correct rather than a gap to close here.
+    private static let registerLanguage: [String: String] = ["nb": "no"]
+
     /// An initial run of capitals, two to six of them, followed by a space or the end.
     ///
     /// Replaces `^([\p{Lu}][\p{Lu}.]{1,5})(?=\s|$)`. Deliberately narrow: it recovers `SA`,
@@ -130,7 +143,8 @@ public struct LegalEntitiesAdapter: Adapter {
             guard let region = CLDR.region(for: code, likelySubtags: likelySubtags) else {
                 continue
             }
-            let language = String(code.split(separator: "_")[0])
+            let root = String(code.split(separator: "_")[0])
+            let language = Self.registerLanguage[root] ?? root
             guard let forms = byJurisdiction["\(region) \(language)"],
                 forms.count >= Self.minimumForms
             else {
@@ -144,6 +158,14 @@ public struct LegalEntitiesAdapter: Adapter {
             taken.append("\(code)(\(forms.count))")
         }
 
+        // Reported as discards rather than only as a stats line. Norway sat in this list
+        // for as long as the list was prose: seventeen abbreviations the register holds,
+        // missed because it files them under `no` and the roster says `nb`. A locale
+        // dropping a whole field belongs somewhere a build can check.
+        let discarded = unmatched.map {
+            DiscardRecord(scope: $0, filter: "no-forms-for-jurisdiction", kept: 0, seen: 1)
+        }
+
         return AdapterOutput(
             contributions: contributions,
             stats: [
@@ -151,6 +173,7 @@ public struct LegalEntitiesAdapter: Adapter {
                 ("locales", String(taken.count)),
                 ("taken", taken.joined(separator: ",")),
                 ("unmatched", unmatched.joined(separator: ",")),
-            ])
+            ],
+            discarded: discarded)
     }
 }

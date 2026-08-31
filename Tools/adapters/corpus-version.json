@@ -245,9 +245,9 @@
       "version" : "1.0.0"
     },
     "nb_NO" : {
-      "fingerprint" : "babe080ff35e6156720a740652c1b328",
-      "fingerprintAt" : "1.0.0",
-      "version" : "1.0.0"
+      "fingerprint" : "c1efef2a2b91b2759a710b68fc5a6149",
+      "fingerprintAt" : "1.1.0",
+      "version" : "1.1.0"
     },
     "ne_NP" : {
       "fingerprint" : "1dcef47592f95d43f4857c91e442405b",
@@ -350,5 +350,5 @@
       "version" : "1.0.0"
     }
   },
-  "version" : "62.3.0"
+  "version" : "62.4.0"
 }
