@@ -53,7 +53,6 @@ public enum WikidataQueries {
         ("as", "Q29401"),
     ]
 
-    /// Below this a locale keeps whatever it had.
     /// Below this a category is not written, and the locale keeps whatever it had.
     ///
     /// The floor exists so a query that half-worked cannot ship three names as though they
@@ -129,10 +128,19 @@ public enum WikidataQueries {
                 "Q1571",  // Marathi
                 "Q5137",  // Gujarati
                 "Q58635",  // Punjabi
-                "Q33298",  // Kannada
+                "Q33673",  // Kannada
                 "Q36236",  // Malayalam
             ]
         )
+    ]
+
+    /// The language codes `romanisedNameLocales` spans, in the order its QIDs are listed.
+    ///
+    /// Kept beside the QIDs so `verifyLanguageQIDs` can check one against the other. This
+    /// list existed only as a trailing comment on each QID, and a comment cannot be wrong
+    /// in a way anything notices: `Q33298` sat behind `// Kannada` and is Filipino.
+    public static let romanisedLanguageCodes = [
+        "hi", "bn", "ta", "te", "mr", "gu", "pa", "kn", "ml",
     ]
 
     public static func romanisedNameQuery(class classID: String, languages: [String]) -> String {
@@ -196,6 +204,28 @@ public enum WikidataQueries {
     /// nouns is still a list of common nouns — unlike a name list, where truncation would
     /// bias toward whatever the endpoint happened to order first. Nothing here is weighted,
     /// so the cut costs variety rather than correctness.
+    /// The ten roots this cannot reach, and why looking again is not worth it.
+    ///
+    /// `az, cy, hi, hy, kn, mk, ne, sr, vi, yo` have no vocabulary of their own. Measured
+    /// against the endpoint on 2026-08-31: Welsh, Armenian, Kannada, Macedonian,
+    /// Vietnamese, Nepali and Serbian have **zero** noun lexemes, and Hindi has three
+    /// lexemes in total across every category. Azerbaijani is different — it has 138, but
+    /// only 36 are Latin, which is under the floor, and `filters.json` says so.
+    ///
+    /// Two other routes were tried and rejected rather than left as open questions:
+    ///
+    /// - **Wikidata items instead of lexemes**, the trick the colour adapter uses. It does
+    ///   not transfer. Six everyday classes returned 60 single-word Hindi labels of which a
+    ///   good half were transliterated foreign dishes — tzatziki, cassata, rødgrød — plus
+    ///   the biscuit brand पार्ले-जी and an untranslated `blueberry`. Items are encyclopedic
+    ///   entities; a lexeme is curated as a word. For a closed set like colours that
+    ///   distinction does not bite, and for open vocabulary it decides the whole result.
+    /// - **Hugging Face.** The Hindi sets are `cc-by-nc-sa` or carry no licence tag at all,
+    ///   and a tag describes the uploader's upload rather than their right to license what
+    ///   they collected.
+    ///
+    /// So these ten inherit their vocabulary, which the matrix records honestly. Closing
+    /// them wants somebody to contribute lexemes upstream, not a different query here.
     public static func lexemeQuery(language id: String) -> String {
         """
         SELECT DISTINCT ?lemma WHERE {

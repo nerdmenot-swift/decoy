@@ -50,10 +50,119 @@ func write(_ name: String, _ document: OrderedJSON) {
 
 let retrieved = Endpoint.today
 
+// MARK: - Language QID verification
+
+/// Checks every hand-typed language QID against the ISO code the table files it under.
+///
+/// The tables map a language code to a Wikidata item, and every QID in them was typed by
+/// hand. A wrong one does not fail: `Q33298` is Filipino, sat in the romanised-names table
+/// labelled Kannada, and the query it produced returned several hundred perfectly valid
+/// Filipino names for an Indian locale. Nothing downstream can tell those from Kannada
+/// ones — that is the whole difficulty. A wrong QID that returns *nothing* reads as "the
+/// language is not catalogued"; one that returns another language reads as success.
+///
+/// Wikidata records a language item's ISO 639-1 code as `P218`, so this is exact rather
+/// than a guess: ask the endpoint what code each item claims and compare it to the code the
+/// table filed it under. It runs before the fetch it guards, because the point is to fail
+/// before writing a snapshot rather than after.
+/// Codes where a table deliberately files a language under a different ISO code.
+///
+/// `nb` against `no` is the only one. `Q9043` is Norwegian, the macrolanguage; the roster
+/// carries `nb`, Bokmål. For names that is the pool you want — Bokmål and Nynorsk do not
+/// have different given names — so the broader item is the right one and the mismatch is
+/// deliberate.
+///
+/// The same split bit the GLEIF adapter from the opposite direction, where the register
+/// files Norway's *company forms* under `no` and the roster looked for `nb`, so seventeen
+/// abbreviations went unused. Worth stating twice: this pair is a recurring trap, not a
+/// one-off.
+let acceptedLanguageMismatch: [String: Set<String>] = ["nb": ["no"]]
+
+/// Items with no ISO 639-1 code that are nonetheless the right item, checked by hand.
+///
+/// The value is what Wikidata's own English label says, so the entry records the check
+/// rather than merely suppressing the failure. Anything not listed here that lacks a code
+/// is treated as the wrong item, which is the safer default: `Q33298` has no code either,
+/// and it is Filipino sitting where Kannada should be.
+///
+/// `Q9129` is "Greek", the language as a whole — Wikidata files the ISO code `el` on
+/// "Modern Greek" (`Q36510`) instead. The general item is the one wanted for names, which
+/// are shared across the variants rather than split between them.
+let languagesWithoutISOCode: [String: String] = ["Q9129": "Greek"]
+
+func verifyLanguageQIDs(_ declared: [(code: String, id: String)], label: String) async {
+    var expected: [String: Set<String>] = [:]
+    for (code, id) in declared {
+        expected[id, default: []].insert(String(code.split(separator: "_")[0]))
+    }
+    guard !expected.isEmpty else { return }
+
+    let values = expected.keys.sorted().map { "wd:\($0)" }.joined(separator: " ")
+    let query = """
+        SELECT ?i ?code WHERE {
+          VALUES ?i { \(values) }
+          ?i wdt:P218 ?code .
+        }
+        """
+    guard let bindings = await Endpoint.sparql(query, attempts: 4, backoff: 15, log: note) else {
+        fail("\(label): could not verify language QIDs — refusing to fetch on unchecked ones")
+    }
+
+    var actual: [String: Set<String>] = [:]
+    for binding in bindings {
+        guard let uri = Endpoint.value(binding, "i"), let code = Endpoint.value(binding, "code")
+        else { continue }
+        actual[Endpoint.qid(uri), default: []].insert(code)
+    }
+
+    var wrong: [String] = []
+    for (id, codes) in expected.sorted(by: { $0.key < $1.key }) {
+        if let verified = languagesWithoutISOCode[id] {
+            note("\(label): \(id) has no ISO code; accepted as \(verified)")
+            continue
+        }
+        guard let found = actual[id] else {
+            // No P218 at all, which is a failure rather than a skip. Every code in these
+            // tables *is* an ISO 639-1 code, so the item it points at should carry one; an
+            // item with none is far more likely to be the wrong item than a real language
+            // the standard forgot.
+            //
+            // This was learned the hard way twice over. Skipping here is what let the
+            // original bug through a *second* time: Q33298 is Filipino, which has no
+            // 639-1 code, so the check that was written to catch it passed it silently.
+            wrong.append("\(id) is filed under \(codes.sorted().joined(separator: "/")) but Wikidata records no ISO 639-1 code for it")
+            continue
+        }
+        let agreed = codes.contains { code in
+            found.contains(code) || (acceptedLanguageMismatch[code]?.contains(where: found.contains) ?? false)
+        }
+        if !agreed {
+            wrong.append(
+                "\(id) is filed under \(codes.sorted().joined(separator: "/")) "
+                    + "but Wikidata says \(found.sorted().joined(separator: "/"))")
+        }
+    }
+
+    if !wrong.isEmpty {
+        fail(
+            "\(label): \(wrong.count) language QID(s) do not match the code they are filed "
+                + "under:\n    " + wrong.joined(separator: "\n    "))
+    }
+    note("\(label): \(expected.count) language QIDs verified against P218")
+}
+
 // MARK: - Wikidata names
 
 func wikidataNames() async {
     let name = "wikidata-names"
+    await verifyLanguageQIDs(
+        WikidataQueries.nameLanguages
+            + WikidataQueries.romanisedNameLocales.flatMap { locale in
+                // The romanised table lists QIDs without a code beside them, so the codes
+                // the pool is *meant* to span are named here and checked like the rest.
+                zip(WikidataQueries.romanisedLanguageCodes, locale.languages).map { ($0, $1) }
+            },
+        label: "wikidata-names")
     // Resumed from disk, and the order on disk is kept: the file is a diff people read.
     var order: [String] = []
     var out: [String: OrderedJSON] = [:]
