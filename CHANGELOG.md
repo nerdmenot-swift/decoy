@@ -17,10 +17,7 @@ Entries are grouped by the corpus version in force when they landed.
 
 ## 1.0.0 — 2026-09-06
 
-The first release. A `v1.0.0` tag existed briefly before this and was withdrawn while
-nothing depended on it, so that the shape of the release could be settled first — the
-window in which breaking changes cost nothing closes at the moment somebody adopts it, and
-it was worth spending.
+The first release.
 
 The package version starts here and follows semantic versioning; the corpus is already at
 64.0.0 and keeps its own numbering, so the two are not going to line up and are not meant to —
@@ -31,10 +28,7 @@ Which of the two you need depends on what you are protecting. Pin the package fo
 pin the corpus if you are keeping generated fixtures, because that is the number a seed's
 output moves with.
 
-### Added since the withdrawn tag
-
-The work the tag was withdrawn for. Each of these was free to do only because nothing
-depended on 1.0.0 yet.
+### Added
 
 - **Vocabulary in thirty-three languages, up from fourteen.** Not more wordnets: the
   fourteen already wired up are exactly the permissively licensed ones, and every remaining
@@ -71,7 +65,7 @@ depended on 1.0.0 yet.
 - **Coverage is answerable from the library**, not only from a table:
   `locale.supplies(.streets)`, `locale.nativeFields`, `locale.tier`.
 
-### Removed since the withdrawn tag
+### Removed
 
 - **`lastName(gender:)`.** It had been a no-op for the library's entire life:
   `person.last_name` is `.generic` in all sixty-six locales, so a caller passing `.female`
@@ -84,7 +78,7 @@ depended on 1.0.0 yet.
   supplied for Russian was `Abakan Urban District` — not romanised Russian but an English
   description of the administrative type.
 
-### Changed since the withdrawn tag
+### Changed
 
 - **Every filter that drops data now records what it dropped**, into `filters.json` and,
   for the fetch stage, into the snapshot itself. Every serious bug this pipeline has had was

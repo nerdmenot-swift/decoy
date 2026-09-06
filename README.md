@@ -5,14 +5,7 @@ fixtures.
 
 Reproducible by construction, portable across macOS, Linux, and Windows.
 
-> **Status: 1.0.0.** An earlier `v1.0.0` tag existed briefly and was withdrawn while
-> nobody depended on it, so that the shape of the release could be settled before anyone
-> had to live with it. This is the one that stands, and it will not move again.
->
-> If you resolved that withdrawn tag in the days it existed, SwiftPM has pinned it to a
-> commit this release does not contain and will refuse the new one with *"does not match
-> previously recorded value"*. Clearing the package caches does not help; delete
-> `~/Library/org.swift.swiftpm/security/fingerprints/decoy-*.json`.
+> **Status: 1.0.0.** Tagged and published; the tag will not move.
 >
 > The corpus versions *separately*, and each locale now carries its own number, so adding
 > Hindi does not renumber English. A corpus bump changes what a given seed draws, so pin

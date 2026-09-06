@@ -5,14 +5,6 @@ description: Adding Decoy to a Swift package, and the one thing everybody gets w
 
 Decoy is a Swift 6 package with no dependencies. Two edits to `Package.swift`:
 
-:::note[Resolving 1.0.0 fails with a fingerprint error?]
-An earlier `v1.0.0` existed briefly and was withdrawn before anyone depended on it. If you
-resolved it in those few days, SwiftPM pinned it to a commit this release does not contain
-and will refuse the new one with *"does not match previously recorded value"*. Clearing the
-package caches does not help — delete
-`~/Library/org.swift.swiftpm/security/fingerprints/decoy-*.json` and resolve again.
-:::
-
 ```swift
 // Package.swift
 let package = Package(
