@@ -133,6 +133,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      # Dispatching Docs at the end needs this. Without it `gh workflow run` returns 403
+      # and the site silently stays on the previous version -- which is the same 403, for
+      # the same reason, that `Prepare release` already carries a paragraph about.
+      actions: write
     steps:
       - uses: actions/checkout@v7
         with:
@@ -170,3 +174,20 @@ jobs:
             --title "$TAG" \
             --notes-file notes.md \
             --verify-tag
+
+      # Docs listens for `release: published` and will not hear this one. GitHub does not
+      # start workflows from events created with GITHUB_TOKEN, which is the same rule that
+      # makes `Prepare release` dispatch this workflow by hand rather than relying on the
+      # tag push. The rule was known and the fix was applied in one of the two places, so
+      # 1.0.0 published a release and left the website showing the previous version until
+      # somebody noticed and ran Docs manually.
+      #
+      # Failing here would mean a published release reported as failed, so this warns
+      # instead: the release is real and the site is a redeploy away.
+      - name: Republish the website
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run Docs --ref main \
+            || echo "::warning::Could not dispatch Docs. The release is published; run the Docs workflow to refresh the site."
+
