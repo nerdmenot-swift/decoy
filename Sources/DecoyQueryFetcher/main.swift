@@ -387,6 +387,15 @@ func wikidataColours() async {
         codesFor[tag, default: []].append(code)
     }
 
+    // Languages asked for and not written, with the numbers that decided it.
+    //
+    // A language in `colourLanguages` and absent from the snapshot reads as a bug. It
+    // usually is not: `lv` returns seven labels of which five are two-word noun phrases —
+    // `baltā krāsa` is "the white colour" — and the single-word rule drops them, leaving
+    // two against a floor of five. That is the right call and it was invisible, so ruling
+    // it out cost a full investigation. Now the snapshot says so.
+    var filtered: [(key: String, value: OrderedJSON)] = []
+
     for tag in tags {
         let codes = codesFor[tag] ?? []
         if codes.allSatisfy({ out[$0] != nil }) { continue }
@@ -394,6 +403,7 @@ func wikidataColours() async {
         guard let bindings = await Endpoint.sparql(WikidataQueries.colourQuery(language: tag), log: note)
         else {
             note("\(tag): endpoint gave up")
+            filtered.append((tag, .object([("reason", .string("endpoint gave up"))])))
             continue
         }
 
@@ -412,6 +422,20 @@ func wikidataColours() async {
             "\(tag): \(kept.count) of \(rows.count) (\(untranslated) untranslated) -> "
                 + codes.joined(separator: ", "))
 
+        if kept.count < WikidataQueries.minimumColours {
+            filtered.append(
+                (tag,
+                    .object([
+                        ("reason", .string("below the floor")),
+                        ("returned", .integer(rows.count)),
+                        ("untranslated", .integer(untranslated)),
+                        ("kept", .integer(kept.count)),
+                        ("floor", .integer(WikidataQueries.minimumColours)),
+                        ("locales", .array(codes.map(OrderedJSON.string))),
+                    ]))
+            )
+        }
+
         if kept.count >= WikidataQueries.minimumColours {
             for code in codes {
                 if out[code] == nil { order.append(code) }
@@ -424,10 +448,11 @@ func wikidataColours() async {
             .object([
                 ("retrieved", .string(retrieved)),
                 ("colours", .object(order.map { ($0, out[$0]!) })),
+                ("filtered", .object(filtered)),
             ]))
         await Endpoint.pause(1.5)
     }
-    note("\nwrote \(order.count) locales")
+    note("\nwrote \(order.count) locales, \(filtered.count) language(s) filtered out")
 }
 
 // MARK: - Wikidata terms

@@ -270,6 +270,12 @@ public enum WikidataQueries {
         ("ru", "Q7737"), ("sv", "Q9027"), ("th", "Q9217"), ("tr", "Q256"), ("ur", "Q1617"),
         ("zh_CN", "Q7850"), ("zh_TW", "Q7850"), ("dv", "Q32656"), ("ku_kmr_latin", "Q36368"),
         ("mn_MN_cyrl", "Q9246"), ("uz_UZ_latin", "Q9264"),
+        // Nepali, checked before adding rather than added hopefully: six single-word
+        // Devanagari terms — सेतो, गुलाबी, मरून, बैजनी, कागती, जैतुन — which clears the
+        // floor of five with one to spare. Latvian is the counter-example and is why the
+        // checking happens first: it is in this table, returns seven labels, and five of
+        // them are two-word noun phrases that the single-word rule drops.
+        ("ne_NP", "Q33823"),
         // The seventeen roots this table had simply never been extended to. Colours were
         // the widest gap after names -- twenty-four of forty-five roots -- and closing it
         // costs one query each against a source already in use, under a licence already

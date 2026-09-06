@@ -1,5 +1,5 @@
 {
- "retrieved": "2026-08-26",
+ "retrieved": "2026-09-06",
  "colours": {
   "ar": [
    "آدم",
@@ -74,6 +74,16 @@
    "وردي",
    "ياسميني",
    "پيريونكل"
+  ],
+  "az": [
+   "Ala",
+   "Kardinal",
+   "Qəhvəyi",
+   "al-qırmızı",
+   "ağ",
+   "püstəyi",
+   "rəngli",
+   "çəhrayı"
   ],
   "cy": [
    "Bwrgwyn",
@@ -2144,6 +2154,14 @@
    "सिंदूरी",
    "सीपिया"
   ],
+  "hr": [
+   "Oker",
+   "Umbra",
+   "bijela",
+   "ljubičasta",
+   "ružičasta",
+   "smeđa"
+  ],
   "it": [
    "Antracite",
    "Avio",
@@ -2235,6 +2253,20 @@
    "zucca",
    "écru"
   ],
+  "ka_GE": [
+   "თეთრი",
+   "სეპია",
+   "სოსანი",
+   "ფერადი",
+   "ყავისფერი"
+  ],
+  "kn_IN": [
+   "ಕಂದು",
+   "ಕಾವಿಮಣ್ಣು",
+   "ಕೆನ್ನೇರಳೆ",
+   "ನಸುಗೆಂಪು",
+   "ಬಿಳಿ"
+  ],
   "mk": [
    "Дудинка",
    "Магента",
@@ -2274,6 +2306,14 @@
    "шафранова",
    "’рѓава"
   ],
+  "pa_IN": [
+   "ਗੁਲਾਬੀ",
+   "ਚਿੱਟਾ",
+   "ਜਾਮਨੀ",
+   "ਭੂਰਾ",
+   "ਸਲੇਟੀ",
+   "ਸੰਧੂਰ"
+  ],
   "ro": [
    "Alutaceu",
    "Ardeziu",
@@ -2308,6 +2348,17 @@
    "turcoaz",
    "violaceu",
    "Șamoa"
+  ],
+  "sk": [
+   "Gumiguta",
+   "Umbra",
+   "biela",
+   "farebný",
+   "hnedá",
+   "oker",
+   "purpur",
+   "ružová",
+   "tyrkysová"
   ],
   "sl_SI": [
    "akvamarin",
@@ -2465,57 +2516,6 @@
    "яскраво-пурпуровий",
    "яскраво-рожевий"
   ],
-  "az": [
-   "Ala",
-   "Kardinal",
-   "Qəhvəyi",
-   "al-qırmızı",
-   "ağ",
-   "püstəyi",
-   "rəngli",
-   "çəhrayı"
-  ],
-  "hr": [
-   "Oker",
-   "Umbra",
-   "bijela",
-   "ljubičasta",
-   "ružičasta",
-   "smeđa"
-  ],
-  "ka_GE": [
-   "თეთრი",
-   "სეპია",
-   "სოსანი",
-   "ფერადი",
-   "ყავისფერი"
-  ],
-  "kn_IN": [
-   "ಕಂದು",
-   "ಕಾವಿಮಣ್ಣು",
-   "ಕೆನ್ನೇರಳೆ",
-   "ನಸುಗೆಂಪು",
-   "ಬಿಳಿ"
-  ],
-  "pa_IN": [
-   "ਗੁਲਾਬੀ",
-   "ਚਿੱਟਾ",
-   "ਜਾਮਨੀ",
-   "ਭੂਰਾ",
-   "ਸਲੇਟੀ",
-   "ਸੰਧੂਰ"
-  ],
-  "sk": [
-   "Gumiguta",
-   "Umbra",
-   "biela",
-   "farebný",
-   "hnedá",
-   "oker",
-   "purpur",
-   "ružová",
-   "tyrkysová"
-  ],
   "vi": [
    "Ametit",
    "Kem",
@@ -2527,6 +2527,76 @@
    "xanh",
    "Ôliu",
    "Đồng"
+  ],
+  "ne_NP": [
+   "कागती",
+   "गुलाबी",
+   "जैतुन",
+   "बैजनी",
+   "मरून",
+   "सेतो"
   ]
+ },
+ "filtered": {
+  "lv": {
+   "reason": "below the floor",
+   "returned": 7,
+   "untranslated": 0,
+   "kept": 2,
+   "floor": 5,
+   "locales": [
+    "lv"
+   ]
+  },
+  "dv": {
+   "reason": "below the floor",
+   "returned": 0,
+   "untranslated": 0,
+   "kept": 0,
+   "floor": 5,
+   "locales": [
+    "dv"
+   ]
+  },
+  "ku": {
+   "reason": "below the floor",
+   "returned": 3,
+   "untranslated": 0,
+   "kept": 3,
+   "floor": 5,
+   "locales": [
+    "ku_kmr_latin"
+   ]
+  },
+  "mn": {
+   "reason": "below the floor",
+   "returned": 1,
+   "untranslated": 0,
+   "kept": 1,
+   "floor": 5,
+   "locales": [
+    "mn_MN_cyrl"
+   ]
+  },
+  "uz": {
+   "reason": "below the floor",
+   "returned": 8,
+   "untranslated": 1,
+   "kept": 4,
+   "floor": 5,
+   "locales": [
+    "uz_UZ_latin"
+   ]
+  },
+  "yo": {
+   "reason": "below the floor",
+   "returned": 1,
+   "untranslated": 0,
+   "kept": 1,
+   "floor": 5,
+   "locales": [
+    "yo_NG"
+   ]
+  }
  }
 }
