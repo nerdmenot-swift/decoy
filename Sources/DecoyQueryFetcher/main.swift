@@ -455,6 +455,162 @@ func wikidataColours() async {
     note("\nwrote \(order.count) locales, \(filtered.count) language(s) filtered out")
 }
 
+// MARK: - Wikidata places
+
+/// Scripts each locale's place names are written in.
+///
+/// Wikidata's language tag says which language a label is *in*, not which script it is
+/// written in, and the two come apart: the Hindi list carries `bajakhana` in Latin. One
+/// Latin city in a Devanagari list is the mixed-script bug this corpus has shipped once.
+let placeScripts: [String: ClosedRange<UInt32>] = [
+    "ar": 0x0600...0x06FF, "bn": 0x0980...0x09FF, "el": 0x0370...0x03FF,
+    "fa": 0x0600...0x06FF, "he": 0x0590...0x05FF, "hi": 0x0900...0x097F,
+    "ja": 0x3000...0x9FFF, "ka": 0x10A0...0x10FF, "kn": 0x0C80...0x0CFF,
+    "ko": 0xAC00...0xD7A3, "ne": 0x0900...0x097F, "pa": 0x0A00...0x0A7F,
+    "ru": 0x0400...0x04FF, "uk": 0x0400...0x04FF, "zh": 0x3000...0x9FFF,
+]
+
+/// Whether every letter in a place name belongs to the script the locale writes in.
+///
+/// Marks, spaces and hyphens pass regardless: real place names carry them — `אום אל-פחם`,
+/// `Івано-Франківськ` — and rejecting them would delete correct data for punctuation.
+func inPlaceScript(_ value: String, _ range: ClosedRange<UInt32>) -> Bool {
+    var sawLetter = false
+    for scalar in value.unicodeScalars {
+        let properties = scalar.properties
+        if properties.isAlphabetic {
+            sawLetter = true
+            if !range.contains(scalar.value) { return false }
+        }
+    }
+    return sawLetter
+}
+
+/// Whether a label reads as a place name rather than a disambiguated database row.
+///
+/// Parentheses mark a disambiguator — `Борисфен (колонія)` — and digits mark the closed
+/// Soviet towns Wikidata records as `Чехов-3`. Both are real entries and neither is a name
+/// anybody writes on an envelope.
+func usablePlace(_ value: String) -> Bool {
+    if value.count > 40 || value.isEmpty { return false }
+    for scalar in value.unicodeScalars {
+        if ("0"..."9").contains(scalar) { return false }
+        if "()[]{}\"'".unicodeScalars.contains(scalar) { return false }
+    }
+    return true
+}
+
+func wikidataCities() async {
+    let name = "wikidata-cities"
+
+    var order: [String] = []
+    var out: [String: OrderedJSON] = [:]
+    if let data = try? Data(contentsOf: dataDirectory.appendingPathComponent("\(name).json")),
+        let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+        let held = root["places"] as? [String: Any]
+    {
+        for entry in WikidataQueries.cityLocales where held[entry.code] != nil {
+            order.append(entry.code)
+            if let rows = held[entry.code] as? [[String: String]] {
+                out[entry.code] = .array(
+                    rows.map {
+                        .object([
+                            ("city", .string($0["city"] ?? "")),
+                            ("state", .string($0["state"] ?? "")),
+                        ])
+                    })
+            }
+        }
+        if !order.isEmpty { note("resuming; \(order.count) locales already fetched") }
+    }
+
+    var filtered: [(key: String, value: OrderedJSON)] = []
+    var populated: [String: Set<String>] = [:]
+
+    for entry in WikidataQueries.cityLocales where out[entry.code] == nil {
+        // One population set per country, not per locale: India serves three locales and
+        // asking three times spends somebody else's rate limit on a known answer.
+        if populated[entry.country] == nil {
+            guard
+                let bindings = await Endpoint.sparql(
+                    WikidataQueries.populatedPlacesQuery(country: entry.country),
+                    attempts: 5, backoff: 20, log: note)
+            else {
+                fail("\(entry.code): could not read the populated-place set for \(entry.country)")
+            }
+            populated[entry.country] = Set(
+                bindings.compactMap { Endpoint.value($0, "i").map(Endpoint.qid) })
+            note("\(entry.country): \(populated[entry.country]!.count) populated places")
+            await Endpoint.pause(3)
+        }
+        let inhabited = populated[entry.country] ?? []
+
+        guard
+            let bindings = await Endpoint.sparql(
+                WikidataQueries.cityQuery(country: entry.country, language: entry.language),
+                attempts: 5, backoff: 20, log: note)
+        else {
+            fail("\(entry.code): endpoint gave up. Re-run to resume — do not commit a snapshot with a locale missing, it reads as an absence of data.")
+        }
+
+        let returned = bindings.count
+        var seen = Set<String>()
+        var rows: [(city: String, state: String)] = []
+        for binding in bindings {
+            guard let uri = Endpoint.value(binding, "i"),
+                let city = Endpoint.value(binding, "l"),
+                let state = Endpoint.value(binding, "admin")
+            else { continue }
+            guard inhabited.contains(Endpoint.qid(uri)) else { continue }
+            guard usablePlace(city), usablePlace(state) else { continue }
+            if let range = placeScripts[entry.language] {
+                guard inPlaceScript(city, range), inPlaceScript(state, range) else { continue }
+            }
+            // A city whose recorded container is the country itself — Tokyo's P131 is Japan
+            // — pairs a city with something that is not a subdivision.
+            guard state != city else { continue }
+            if seen.insert(city).inserted { rows.append((city, state)) }
+        }
+        rows.sort { $0.city < $1.city }
+
+        note("\(entry.code): \(rows.count) of \(returned) (populated, in-script)")
+
+        if rows.count < WikidataQueries.minimumCities {
+            filtered.append(
+                (entry.code,
+                    .object([
+                        ("reason", .string("below the floor — the gazetteer is kept")),
+                        ("returned", .integer(returned)),
+                        ("kept", .integer(rows.count)),
+                        ("floor", .integer(WikidataQueries.minimumCities)),
+                    ])))
+            continue
+        }
+
+        order.append(entry.code)
+        out[entry.code] = .array(
+            rows.map { .object([("city", .string($0.city)), ("state", .string($0.state))]) })
+
+        write(
+            name,
+            .object([
+                ("retrieved", .string(retrieved)),
+                ("places", .object(order.map { ($0, out[$0]!) })),
+                ("filtered", .object(filtered)),
+            ]))
+        await Endpoint.pause(3)
+    }
+
+    write(
+        name,
+        .object([
+            ("retrieved", .string(retrieved)),
+            ("places", .object(order.map { ($0, out[$0]!) })),
+            ("filtered", .object(filtered)),
+        ]))
+    note("\nwrote \(order.count) locales, \(filtered.count) filtered out")
+}
+
 // MARK: - Wikidata terms
 
 func wikidataTerms() async {
@@ -536,6 +692,7 @@ func statisticsNames() async {
 /// rather than folding such a snapshot in here.
 let known = [
     "wikidata-names", "wikidata-colours", "wikidata-terms", "wikidata-lexemes",
+    "wikidata-cities",
     "statistics-names",
 ]
 guard arguments.count > 1 else {
@@ -553,6 +710,7 @@ for choice in requested {
     case "wikidata-names": await wikidataNames()
     case "wikidata-colours": await wikidataColours()
     case "wikidata-lexemes": await wikidataLexemes()
+    case "wikidata-cities": await wikidataCities()
     case "wikidata-terms": await wikidataTerms()
     default: await statisticsNames()
     }

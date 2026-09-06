@@ -24,6 +24,7 @@ public enum Adapters {
             AuthoredListsAdapter.whimsy(),
             AuthoredAdapter(),
             CitiesAdapter(),
+            WikidataPlacesAdapter(),
             ChineseNamesAdapter(),
             CivilNamesAdapter(),
             CLDRDatesAdapter(),

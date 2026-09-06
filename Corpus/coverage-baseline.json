@@ -1,8 +1,8 @@
 {
   "locales" : {
     "ar" : {
-      "paths" : 38,
-      "values" : 11576
+      "paths" : 37,
+      "values" : 11185
     },
     "az" : {
       "paths" : 38,
@@ -13,8 +13,8 @@
       "values" : 16623
     },
     "bn_BD" : {
-      "paths" : 36,
-      "values" : 6667
+      "paths" : 35,
+      "values" : 6406
     },
     "cs_CZ" : {
       "paths" : 39,
@@ -41,8 +41,8 @@
       "values" : 4179
     },
     "el" : {
-      "paths" : 42,
-      "values" : 8874
+      "paths" : 41,
+      "values" : 6804
     },
     "en" : {
       "paths" : 270,
@@ -97,8 +97,8 @@
       "values" : 19899
     },
     "fa" : {
-      "paths" : 36,
-      "values" : 20419
+      "paths" : 35,
+      "values" : 16386
     },
     "fi" : {
       "paths" : 42,
@@ -130,11 +130,11 @@
     },
     "he" : {
       "paths" : 40,
-      "values" : 6213
+      "values" : 5495
     },
     "hi_IN" : {
-      "paths" : 34,
-      "values" : 16259
+      "paths" : 33,
+      "values" : 2133
     },
     "hr" : {
       "paths" : 40,
@@ -157,20 +157,20 @@
       "values" : 39480
     },
     "ja" : {
-      "paths" : 46,
-      "values" : 46578
+      "paths" : 45,
+      "values" : 41779
     },
     "ka_GE" : {
-      "paths" : 35,
-      "values" : 2039
+      "paths" : 34,
+      "values" : 1718
     },
     "kn_IN" : {
-      "paths" : 33,
-      "values" : 20329
+      "paths" : 32,
+      "values" : 5875
     },
     "ko" : {
-      "paths" : 36,
-      "values" : 6151
+      "paths" : 35,
+      "values" : 5514
     },
     "lv" : {
       "paths" : 38,
@@ -185,8 +185,8 @@
       "values" : 8171
     },
     "ne_NP" : {
-      "paths" : 34,
-      "values" : 1241
+      "paths" : 33,
+      "values" : 1097
     },
     "nl" : {
       "paths" : 61,
@@ -197,8 +197,8 @@
       "values" : 4629
     },
     "pa_IN" : {
-      "paths" : 36,
-      "values" : 22069
+      "paths" : 35,
+      "values" : 7675
     },
     "pl" : {
       "paths" : 42,
@@ -221,8 +221,8 @@
       "values" : 1181
     },
     "ru" : {
-      "paths" : 38,
-      "values" : 24332
+      "paths" : 37,
+      "values" : 12727
     },
     "sk" : {
       "paths" : 37,
@@ -245,8 +245,8 @@
       "values" : 15974
     },
     "uk" : {
-      "paths" : 38,
-      "values" : 13258
+      "paths" : 37,
+      "values" : 6752
     },
     "vi" : {
       "paths" : 34,
@@ -257,12 +257,12 @@
       "values" : 3711
     },
     "zh_CN" : {
-      "paths" : 39,
-      "values" : 21046
+      "paths" : 38,
+      "values" : 12277
     },
     "zh_TW" : {
-      "paths" : 34,
-      "values" : 1836
+      "paths" : 33,
+      "values" : 2050
     }
   }
 }

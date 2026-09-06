@@ -155,6 +155,91 @@ public enum WikidataQueries {
         """
     }
 
+// MARK: - Native-script places
+
+    /// Locales whose geography the gazetteer can only give in Latin script.
+    ///
+    /// The corpus's cities come from a GeoNames-derived gazetteer that romanises
+    /// everything, so a Japanese fixture read 神戸あんじゅ living in `Abashiri` and a Russian
+    /// one Зоил Алявдин in `Abakan`. Worse, `location.county` was not even romanised
+    /// Russian but English description — `Abakan Urban District` — and `location.state`
+    /// gave `Aichi` beside a Japanese city.
+    ///
+    /// The matrix marked Cities native for all 43 roots, so the one field it showed as
+    /// universally covered was the one that was wrong everywhere outside Latin script.
+    ///
+    /// Each entry is a locale, the Wikidata item for its country, and the language tag its
+    /// labels are wanted in. Every country QID here was checked against `P297`, its ISO
+    /// 3166-1 code, rather than typed from memory — the same check `verifyLanguageQIDs`
+    /// applies to languages, and for the same reason.
+    public static let cityLocales: [(code: String, country: String, language: String)] = [
+        ("ar", "Q79", "ar"),  // Egypt
+        ("bn_BD", "Q902", "bn"),  // Bangladesh
+        ("el", "Q41", "el"),  // Greece
+        ("fa", "Q794", "fa"),  // Iran
+        ("he", "Q801", "he"),  // Israel
+        ("hi_IN", "Q668", "hi"),  // India
+        ("ja", "Q17", "ja"),  // Japan
+        ("ka_GE", "Q230", "ka"),  // Georgia
+        ("kn_IN", "Q668", "kn"),  // India
+        ("ko", "Q884", "ko"),  // South Korea
+        ("ne_NP", "Q837", "ne"),  // Nepal
+        ("pa_IN", "Q668", "pa"),  // India
+        ("ru", "Q159", "ru"),  // Russia
+        ("uk", "Q212", "uk"),  // Ukraine
+        ("zh_CN", "Q148", "zh"),  // China
+        ("zh_TW", "Q865", "zh"),  // Taiwan
+        // Armenian and Macedonian are deliberately absent. Wikidata holds six populated
+        // Armenian cities and eighteen Macedonian ones in their own scripts, and swapping a
+        // few hundred romanised names for six is a worse fixture set, not a better one.
+        // They keep the gazetteer and the matrix keeps saying so.
+    ]
+
+    /// A city, and the subdivision Wikidata says it is in, both in the same language.
+    ///
+    /// The pair is fetched together rather than joined afterwards. That is the whole point
+    /// of `location.place`: `city: "Boston", state: "CA"` passes most validators and is
+    /// nonsense, and two independent draws produce exactly that. Wikidata's own `P131`
+    /// gives the containment directly, which is better grounded than the admin-code join
+    /// the gazetteer needs.
+    public static func cityQuery(country: String, language: String) -> String {
+        """
+        SELECT DISTINCT ?i ?l ?admin WHERE {
+          ?i wdt:P31/wdt:P279* wd:Q515 ;
+             wdt:P17 wd:\(country) ;
+             rdfs:label ?l ;
+             wdt:P131 ?a .
+          ?a rdfs:label ?admin .
+          FILTER(LANG(?l) = "\(language)")
+          FILTER(LANG(?admin) = "\(language)")
+        } LIMIT 4000
+        """
+    }
+
+    /// Everything in a country that records a population.
+    ///
+    /// Fetched as a separate set and intersected client-side, because adding `wdt:P1082` to
+    /// the query above makes the endpoint return an empty result rather than a slow one —
+    /// which is indistinguishable from "this country has no cities" and is exactly the
+    /// failure mode that once recorded Spanish surnames as absent.
+    ///
+    /// It is the filter that matters most. Greek Wikidata classes the Acropolis of Athens
+    /// and the Cyclopean walls of Mycenae as cities; Persian offers Persepolis. A recorded
+    /// population is what separates a place people live in from a ruin, and it took Greece
+    /// from 1,028 labels to 98 correct ones.
+    public static func populatedPlacesQuery(country: String) -> String {
+        """
+        SELECT DISTINCT ?i WHERE {
+          ?i wdt:P17 wd:\(country) ;
+             wdt:P1082 ?p .
+        }
+        """
+    }
+
+    /// Below this the gazetteer is kept. Swapping several hundred romanised names for a
+    /// dozen native ones trades one flaw for a worse one.
+    public static let minimumCities = 30
+
     // MARK: - Lexemes
 
     /// Everyday vocabulary, from Wikidata's lexeme entities.

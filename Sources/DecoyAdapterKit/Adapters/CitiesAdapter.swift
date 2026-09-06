@@ -17,6 +17,25 @@ public struct CitiesAdapter: Adapter {
     /// set, which reads as data rather than as a gap. The list stays absent instead.
     private static let minimumCounties = 20
 
+    /// Locales whose geography comes from `WikidataPlacesAdapter` instead.
+    ///
+    /// This gazetteer romanises everything, which is fine for locales written in Latin and
+    /// wrong for the rest: it put a Japanese person in `Abashiri` and a Russian one in
+    /// `Abakan`. Sixteen locales now take their cities in their own script, so this yields
+    /// those paths rather than fighting over them — two adapters claiming one path is a
+    /// refusal in `Orchestrator.merge`, and rightly so.
+    ///
+    /// Counties go with them and are not replaced. What this supplied for Russian was
+    /// `Abakan Urban District`, which is not romanised Russian but an English description
+    /// of the administrative type, and no source here has the native equivalent. An honest
+    /// gap beats a confident wrong answer.
+    ///
+    /// The list is derived rather than repeated, so the two adapters cannot disagree about
+    /// which locales it covers.
+    private static var deferredToNativeScript: Set<String> {
+        Set(WikidataQueries.cityLocales.map(\.code))
+    }
+
     public func run(_ input: AdapterInput) throws -> AdapterOutput {
         let core = try input.artifact("core", for: Self.id)
         let root = try input.artifact("cities", for: Self.id).appendingPathComponent("package")
@@ -77,6 +96,9 @@ public struct CitiesAdapter: Adapter {
             let sorted = rows.sorted {
                 ($0["name"] as? String ?? "") < ($1["name"] as? String ?? "")
             }
+
+            // Yielded whole: cities, the composite and the counties that go with them.
+            if Self.deferredToNativeScript.contains(locale) { continue }
 
             var paths: [String: Definition] = [:]
 

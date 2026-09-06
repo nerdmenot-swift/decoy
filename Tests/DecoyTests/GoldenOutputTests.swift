@@ -119,7 +119,10 @@ struct GoldenOutputTests {
                 "東",
                 "稲葉",
                 "勝矢ぎんたろう",
-                "Iwai",
+                // Japanese, since `ja` now takes its geography from Wikidata rather than a
+                // gazetteer that romanises everything. This was `Iwai`, and it is the only
+                // value of the nineteen that moved.
+                "多治見市",
                 "9丁目56番2号",
                 "アルバニア",
                 "角野出版合同会社",

@@ -20,9 +20,9 @@
   ],
   "locales" : {
     "ar" : {
-      "fingerprint" : "683766c78710ee3615a4ab23cda669d8",
-      "fingerprintAt" : "1.1.0",
-      "version" : "1.1.0"
+      "fingerprint" : "22f6e35a5b188a2a7fb4ba2cafedc1e1",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "az" : {
       "fingerprint" : "981b62059259e86686e3b5c290e18be6",
@@ -35,9 +35,9 @@
       "version" : "1.0.0"
     },
     "bn_BD" : {
-      "fingerprint" : "0972ee482409d3b726c7b76a782893d0",
-      "fingerprintAt" : "1.1.0",
-      "version" : "1.1.0"
+      "fingerprint" : "bed2c805e3309b39fe5a4f5f93036a62",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "cs_CZ" : {
       "fingerprint" : "97cb5a8742af4b24699982a4b57afa86",
@@ -70,9 +70,9 @@
       "version" : "1.0.0"
     },
     "el" : {
-      "fingerprint" : "05e9e648b670c71523f0e1d5c8e5e554",
-      "fingerprintAt" : "1.0.0",
-      "version" : "1.0.0"
+      "fingerprint" : "7443bb008a2e6f26d77301a67a56a0f3",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "en" : {
       "fingerprint" : "4da76a98ff2cf2ee8455611a3a5b87c0",
@@ -140,9 +140,9 @@
       "version" : "1.0.0"
     },
     "fa" : {
-      "fingerprint" : "b56c447b2befc699df9644a0a9d63ce9",
-      "fingerprintAt" : "1.1.0",
-      "version" : "1.1.0"
+      "fingerprint" : "d99df8402f5cc03722583f497373ed48",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "fi" : {
       "fingerprint" : "bd2a37b49e5228adfb9fa49d2e59e82e",
@@ -180,14 +180,14 @@
       "version" : "1.0.0"
     },
     "he" : {
-      "fingerprint" : "2b0f2cfb4e064720bab680981c1f924e",
-      "fingerprintAt" : "1.0.0",
-      "version" : "1.0.0"
+      "fingerprint" : "38d4178d8b6a942cb5eca544d546a490",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "hi_IN" : {
-      "fingerprint" : "7a136c275e53e15792b049ed50fdef55",
-      "fingerprintAt" : "1.0.0",
-      "version" : "1.0.0"
+      "fingerprint" : "c0322bf387fcc4c05091eeb7879462d8",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "hr" : {
       "fingerprint" : "ebf89e7dac1f62dcdcec7f2b63a217d3",
@@ -215,24 +215,24 @@
       "version" : "1.0.0"
     },
     "ja" : {
-      "fingerprint" : "c18a6cbbe3c64b88612c229f9123cfe2",
-      "fingerprintAt" : "1.0.0",
-      "version" : "1.0.0"
+      "fingerprint" : "b3ccfdf0457977dab88b997e0f8d5ea2",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "ka_GE" : {
-      "fingerprint" : "e77febf77fab0ac2e888417045fc9b1d",
-      "fingerprintAt" : "1.1.0",
-      "version" : "1.1.0"
+      "fingerprint" : "f4b82e731b727a66d4f1800935e5429a",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "kn_IN" : {
-      "fingerprint" : "8baa2dd7e548596dae0f29835202d32c",
-      "fingerprintAt" : "1.0.0",
-      "version" : "1.0.0"
+      "fingerprint" : "3165b42a9fd615bc20bebd8c147e7237",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "ko" : {
-      "fingerprint" : "aa2b7adbd3f93c6e9958637410a4596f",
-      "fingerprintAt" : "1.1.0",
-      "version" : "1.1.0"
+      "fingerprint" : "74f08103ab1cafd9091efd3aa2f41e99",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "lv" : {
       "fingerprint" : "536e8ce3ea5104ca315fa204ad2e71eb",
@@ -250,9 +250,9 @@
       "version" : "1.1.0"
     },
     "ne_NP" : {
-      "fingerprint" : "3e6a36214961a6b5a7789f462bcabada",
-      "fingerprintAt" : "1.1.0",
-      "version" : "1.1.0"
+      "fingerprint" : "344462ad7460a85ddfb5f93e63a9c14f",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "nl" : {
       "fingerprint" : "6b87cee685a3b600c087e8f7ddfe516f",
@@ -265,9 +265,9 @@
       "version" : "1.0.0"
     },
     "pa_IN" : {
-      "fingerprint" : "2b67b18757a18c00c6c64ad116776fac",
-      "fingerprintAt" : "1.1.0",
-      "version" : "1.1.0"
+      "fingerprint" : "241cea72c4d373e61f771a988b53cd54",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "pl" : {
       "fingerprint" : "4fdbcb2eceaf83153d43dfc8d3c7867e",
@@ -295,9 +295,9 @@
       "version" : "1.0.0"
     },
     "ru" : {
-      "fingerprint" : "36fad48f121281879f18c05fc12d48fb",
-      "fingerprintAt" : "1.1.0",
-      "version" : "1.1.0"
+      "fingerprint" : "2ea5d0daa585422be8769d020a3b5571",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "sk" : {
       "fingerprint" : "752f1571eeed8dd928f525037bb6ecb7",
@@ -325,9 +325,9 @@
       "version" : "1.1.0"
     },
     "uk" : {
-      "fingerprint" : "830d849752e0687aacb5b2973650b230",
-      "fingerprintAt" : "1.1.0",
-      "version" : "1.1.0"
+      "fingerprint" : "f0413ff40723a472baa49542fecc303e",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "vi" : {
       "fingerprint" : "b45ce461e0484312288d1ca36926ec5a",
@@ -340,15 +340,15 @@
       "version" : "1.1.0"
     },
     "zh_CN" : {
-      "fingerprint" : "e551872c6e91ea441ee22191d77a440e",
-      "fingerprintAt" : "1.0.0",
-      "version" : "1.0.0"
+      "fingerprint" : "2da4245b1185a7abcf6bfcb6c9283b31",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     },
     "zh_TW" : {
-      "fingerprint" : "b7a5aef45cdec8b1eda5e7b8853313cd",
-      "fingerprintAt" : "1.0.0",
-      "version" : "1.0.0"
+      "fingerprint" : "205c2a080b7f229fbada86e1ffe451aa",
+      "fingerprintAt" : "2.0.0",
+      "version" : "2.0.0"
     }
   },
-  "version" : "63.1.0"
+  "version" : "64.0.0"
 }
