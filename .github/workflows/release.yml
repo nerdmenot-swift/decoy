@@ -67,10 +67,15 @@ jobs:
           fi
           echo "version=$tag" >> "$GITHUB_OUTPUT"
 
+      # Read as JSON rather than grepped. Two reasons, and the first one broke a release:
+      # the file is written by the builder through Swift's serialiser, which puts a space
+      # *before* the colon -- `"version" : "64.0.0"` -- so a pattern with the space after it
+      # matched nothing and the check reported "no corpus version declared" for a file that
+      # plainly declared one. And since versions went per-locale the file holds sixty-seven
+      # `version` keys, so the first grep hit is a locale's rather than the release's.
       - name: Corpus version is declared
         run: |
-          corpus=$(grep -oE '"version": "[^"]+"' Tools/adapters/corpus-version.json \
-                   | grep -oE '"[0-9][^"]*"' | tr -d '"')
+          corpus=$(python3 -c "import json; print(json.load(open('Tools/adapters/corpus-version.json'))['version'])")
           [ -n "$corpus" ] || { echo "::error::No corpus version declared."; exit 1; }
           echo "corpus $corpus"
 
@@ -95,10 +100,9 @@ jobs:
           echo "comparing against $previous"
 
           read_corpus() { git show "$1:Tools/adapters/corpus-version.json" 2>/dev/null \
-            | grep -oE '"version": "[^"]+"' | grep -oE '"[0-9][^"]*"' | tr -d '"'; }
+            | python3 -c "import json,sys; print(json.load(sys.stdin).get('version',''))" 2>/dev/null; }
           before=$(read_corpus "$previous")
-          now=$(grep -oE '"version": "[^"]+"' Tools/adapters/corpus-version.json \
-                | grep -oE '"[0-9][^"]*"' | tr -d '"')
+          now=$(python3 -c "import json; print(json.load(open('Tools/adapters/corpus-version.json'))['version'])")
           [ -n "$before" ] || { echo "$previous declared no corpus version; skipping."; exit 0; }
           echo "corpus $before -> $now"
 
@@ -135,8 +139,7 @@ jobs:
           ref: ${{ inputs.tag || github.ref_name }}
       - name: Release notes
         run: |
-          corpus=$(grep -oE '"version": "[^"]+"' Tools/adapters/corpus-version.json \
-                   | grep -oE '"[0-9][^"]*"' | tr -d '"')
+          corpus=$(python3 -c "import json; print(json.load(open('Tools/adapters/corpus-version.json'))['version'])")
           cat > notes.md <<EOF
           ## Using the library
 
