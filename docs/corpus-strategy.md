@@ -94,24 +94,24 @@ gitignored cache, and the pipeline itself is Swift with zero dependencies. The m
 for removing a dependency on someone else's package should not itself require a package
 manager.
 
-**Built so far** — thirty-seven adapters, fifty-four sources, and no faker-js:
+**Built so far** — thirty-nine adapters, fifty-four sources, and no faker-js:
 
 | Adapter | Source | Licence | Fills |
 |---|---|---|---|
 | `iso-3166` | CLDR 48.2.0 | Unicode-3.0 | `location.country_code` (composite), `location.country` in 66 locales |
-| `iso-639` | CLDR 48.2.0 | Unicode-3.0 | `location.language` (composite) in 66 locales |
-| `iso-4217` | CLDR + SIX Group | Unicode-3.0 / facts | `finance.currency` (composite) in 66 locales |
+| `iso-639` | CLDR 48.2.0 | Unicode-3.0 | `location.language` (composite) in 65 locales |
+| `iso-4217` | CLDR + SIX Group | Unicode-3.0 / facts | `finance.currency` (composite) in 65 locales |
 | `iana-tzdb` | tzdata 2026b | public domain | `location.time_zone`, `date.time_zone` |
 | `mime-types` | mime-db 1.54.0 | MIT | `system.mime_type` — 1,015 types with extensions |
 | `programming-languages` | Linguist 9.4.0 | MIT | `system.programming_language` — 533 languages |
-| `postal` | libaddressinput | Apache-2.0 | `location.postcode` in 57 locales, `location.postal_address` in 73 |
+| `postal` | libaddressinput | Apache-2.0 | `location.postcode` in 58 locales, `location.postal_address` in 64 |
 | `iana-web` | IANA HTTP status + JOSE registries | facts | `internet.http_status_code.*` — 62 codes; `internet.jwt_algorithm` — 38 |
 | `iana-tld` | IANA root zone 2026080700 | facts | `internet.domain_suffix` — 1,438 TLDs |
 | `periodic-table` | PubChem (NIH) | public domain | `science.chemical_element` (composite) |
-| `si-units` | CLDR 48.2.0 | Unicode-3.0 | `science.unit` (composite) in 66 locales |
-| `iso-3166-2` | CLDR 48.2.0 | Unicode-3.0 | `location.state` (composite) — 3,341 subdivisions across 73 locales, each getting its own country's (upstream carries 5,395 across 200) |
-| `cldr-dates` | CLDR 48.2.0 | Unicode-3.0 | `date.month.*`, `date.weekday.*` in 66 locales |
-| `cities` | cities.json 1.1.61 (GeoNames) | CC BY 4.0 | `location.city_name`, `location.place` (composite) in 67 locales |
+| `si-units` | CLDR 48.2.0 | Unicode-3.0 | `science.unit` (composite) in 65 locales |
+| `iso-3166-2` | CLDR 48.2.0 | Unicode-3.0 | `location.state` (composite) — 3,341 subdivisions across 64 locales, each getting its own country's (upstream carries 5,395 across 200) |
+| `cldr-dates` | CLDR 48.2.0 | Unicode-3.0 | `date.month.*`, `date.weekday.*` in 65 locales |
+| `cities` | cities.json 1.1.61 (GeoNames) | CC BY 4.0 | `location.city_name`, `location.place` (composite) in 49 locales — the rest take theirs from `wikidata-places` |
 | `civil-names` | INSEE, Fichier des prénoms | Licence Ouverte 2.0 | `person.first_name.{female,male}` in `fr` — 9,243 names, **weighted** |
 | `occupations` | O*NET 30.3 (US Dept of Labor) | CC BY 4.0 | `person.job_title` — 941 real occupations |
 | `authored` | Decoy's own | Apache-2.0 | 38 lists no registry publishes; see below |
@@ -119,13 +119,21 @@ manager.
 | `wordnet` | Open Multilingual Wordnet 2.0 | per language (see below) | `word.noun/verb/adjective/adverb` in 14 locales |
 | `latin-words` | Whitaker's Words | permissive, see LICENSES | `lorem.word` in `base` — 1,987 Latin words |
 | `persian-words` | Lilak 3.3 | Apache-2.0 | `lorem.word` in `fa` |
-| `phone-formats` | libphonenumber 9.0.36 | Apache-2.0 | `phone_number.format.{national,human,international}` in 67 locales |
+| `phone-formats` | libphonenumber 9.0.36 | Apache-2.0 | `phone_number.format.{national,human,international}` in 65 locales |
 | `emoji` | Unicode Emoji 16.0 | Unicode-3.0 | `internet.emoji.*` — 3,780 sequences across 10 categories |
 | `airports` | airport-data 1.0.1 (OpenFlights) | Unlicense | `airline.airport` (composite) — 5,614 IATA-coded airports |
-| `wikidata-names` | Wikidata | CC0 | `person.first_name.*`, `person.last_name.generic` in 36 locales |
-| `wikidata-colours` | Wikidata | CC0 | `color.human` in 24 locales |
-| `wikidata-terms` | Wikidata | CC0 | compass points, zodiac signs and `person.sex` in 52–60 locales |
-| `legal-entities` | GLEIF ISO 20275 register | public facts | `company.legal_entity_type` in 49 locales, per jurisdiction |
+| `wikidata-names` | Wikidata | CC0 | `person.first_name.*`, `person.last_name.generic` in 40 locales |
+| `wikidata-colours` | Wikidata | CC0 | `color.human` in 42 locales |
+| `wikidata-terms` | Wikidata | CC0 | compass points, zodiac signs and `person.sex` in 47–54 locales |
+| `legal-entities` | GLEIF ISO 20275 register | public facts | `company.legal_entity_type` in 48 locales, per jurisdiction |
+| `wikidata-lexemes` | Wikidata lexemes | CC0 | `word.noun` in 20 locales — the wordnets that are permissively licensed are already above; every other OMW language is share-alike |
+| `wikidata-places` | Wikidata | CC0 | `location.city_name`, `location.place` in 16 locales, in their own script — the gazetteer romanises everything |
+| `indic-names` | naamapadam (AI4Bharat) | CC0 | `person.first_name.generic`, `person.last_name.generic` for Indian languages no register covers |
+| `chinese-names` | published frequency tables | facts | Chinese given names and surnames |
+| `vietnamese-names` | vietnamese-namedb | MIT | Vietnamese given names and surnames |
+| `popular-names` | per-country published lists | see LICENSES | given names where no register exists |
+| `spanish-surnames` | INE census | CC BY 4.0 | `person.last_name.generic` in `es` — 27,661 surnames, **weighted** |
+| `authored-commerce`, `authored-fixtures`, `authored-whimsy`, `common-knowledge` | Decoy's own | Apache-2.0 | the authored lists, split by what they are for |
 | `civil-names` (PL) | PESEL register, Ministry of Digital Affairs | CC0 | Polish given names, weighted — Anna by 1,063,756 |
 | `civil-names` (ES) | INE census | CC BY 4.0 | Spanish given names, weighted — Maria Carmen by 618,622 |
 | `civil-names` (FI) | DVV | CC BY 4.0 | Finnish given names, weighted, first-name sheets only |

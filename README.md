@@ -5,14 +5,13 @@ fixtures.
 
 Reproducible by construction, portable across macOS, Linux, and Windows.
 
-> **Status: 1.0 in progress.** Nothing is tagged. The `v1.0.0` tag that briefly existed
-> has been withdrawn, deliberately and while nobody depended on it, so that the shape of
-> the release can be settled before anyone has to live with it. `from: "1.0.0"` will not
-> resolve until it is cut again.
+> **Status: 1.0.0.** An earlier `v1.0.0` tag existed briefly and was withdrawn while
+> nobody depended on it, so that the shape of the release could be settled before anyone
+> had to live with it. This is the one that stands, and it will not move again.
 >
-> If you resolved that tag in the window it existed, SwiftPM has pinned it to a commit that
-> no longer exists and will refuse the new one with *"does not match previously recorded
-> value"*. Clearing the package caches does not help; delete
+> If you resolved that withdrawn tag in the days it existed, SwiftPM has pinned it to a
+> commit this release does not contain and will refuse the new one with *"does not match
+> previously recorded value"*. Clearing the package caches does not help; delete
 > `~/Library/org.swift.swiftpm/security/fingerprints/decoy-*.json`.
 >
 > The corpus versions *separately*, and each locale now carries its own number, so adding

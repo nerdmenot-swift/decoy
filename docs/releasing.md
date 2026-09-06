@@ -116,8 +116,10 @@ data separately so it can be pinned, and refuses to move it in a patch.
 
 Practices adopted from elsewhere:
 
-- **Keep a Changelog** — `## Unreleased` accumulating during development, promoted to a
-  version heading at release, rather than release notes generated from commit subjects.
+- **Keep a Changelog** — a section accumulating during development and promoted at
+  release, rather than release notes generated from commit subjects. Written here as
+  `## <version> — unreleased` rather than a bare `## Unreleased`, because the version is
+  decided before the work is finished and the heading may as well say which one it is.
 - **Never re-cut a tag** — universal, and load-bearing for SwiftPM specifically.
 - **Release candidates for majors** — `1.0.0-rc.1` is accepted by `Prepare release`, and
   SwiftPM treats a pre-release as opt-in, so `from: "1.0.0"` will not resolve to it.
@@ -128,7 +130,8 @@ values somebody has already generated, which is not visible in a commit subject.
 
 ## Checklist for a major
 
-1. Is anything in `CHANGELOG.md` under `## Unreleased` marked as changing drawn values?
+1. Is anything in `CHANGELOG.md` under the unreleased heading — `## <version> — unreleased`,
+   which is how the top section is written until it is cut — marked as changing drawn values?
 2. Does the corpus major differ from the last release's?
 3. Are the locale gaps in `README.md` still accurate — has anything been filled or lost?
 4. Cut `2.0.0-rc.1` first and leave it out for a week.

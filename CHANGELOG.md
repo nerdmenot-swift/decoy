@@ -15,20 +15,91 @@ below, and anything that alters drawn values says so in bold.
 
 Entries are grouped by the corpus version in force when they landed.
 
-## 1.0.0 — unreleased
+## 1.0.0 — 2026-09-06
 
-Not tagged. A `v1.0.0` tag existed briefly and was withdrawn while nothing depended on it,
-so that the shape of the release could be settled first. These notes describe what 1.0.0
-will be when it is cut.
+The first release. A `v1.0.0` tag existed briefly before this and was withdrawn while
+nothing depended on it, so that the shape of the release could be settled first — the
+window in which breaking changes cost nothing closes at the moment somebody adopts it, and
+it was worth spending.
 
 The package version starts here and follows semantic versioning; the corpus is already at
-62.0.0 and keeps its own numbering, so the two are not going to line up and are not meant to —
-the corpus counts changes to the *data*, and there have been sixty of those before the
+64.0.0 and keeps its own numbering, so the two are not going to line up and are not meant to —
+the corpus counts changes to the *data*, and there have been sixty-four of those before the
 library ever had a version at all.
 
 Which of the two you need depends on what you are protecting. Pin the package for the API;
 pin the corpus if you are keeping generated fixtures, because that is the number a seed's
 output moves with.
+
+### Added since the withdrawn tag
+
+The work the tag was withdrawn for. Each of these was free to do only because nothing
+depended on 1.0.0 yet.
+
+- **Vocabulary in thirty-three languages, up from fourteen.** Not more wordnets: the
+  fourteen already wired up are exactly the permissively licensed ones, and every remaining
+  Open Multilingual Wordnet language is CC BY-SA or CeCILL-C — established by reading the
+  licence each archive declares rather than a table describing them. Wikidata *lexemes* are
+  a different part of Wikidata from the items the name adapters read, CC0, with no new
+  licence to clear.
+
+- **Geography in the script the country writes in.** Sixteen locales were generating their
+  people in one alphabet and their cities in another — a Japanese row read 神戸あんじゅ
+  living in `Abashiri`. Cities and their subdivisions now come from Wikidata as a pair, so
+  焼津市 sits in 静岡県. **Replaces values in sixteen locales, so the corpus takes a major
+  bump.** Armenian and Macedonian keep the romanised gazetteer deliberately: Wikidata has
+  six populated Armenian cities in Armenian script, and six is worse than several hundred
+  in the wrong alphabet.
+
+- **`en_IN` stopped putting English names on Indian addresses.** It carried no names of its
+  own, so an Indian city and postcode arrived with "Jennifer Williams". It now draws 989
+  romanised Indian names from the same Wikidata items that give `hi_IN` its Devanagari ones.
+
+- **Postcodes for Armenia and Nigeria**, which the register always had. The mask reader
+  treated a pattern that is entirely one optional group — Nigeria's `(\d{6})?` — as a
+  trailing extension and stripped it to nothing, dropping four countries.
+
+- **Company forms for Norway.** GLEIF files them under `no`, the macrolanguage; the roster
+  says `nb`. Seventeen abbreviations sat unused behind two letters.
+
+- **Nepali colours**, and `lv` explained rather than silently absent — see below.
+
+- **Per-locale corpus versions.** Adding Hindi no longer renumbers English. Each locale
+  carries its own version and content fingerprint; `faker.locale.version` reads it, and the
+  release number becomes a manifest of them.
+
+- **Coverage is answerable from the library**, not only from a table:
+  `locale.supplies(.streets)`, `locale.nativeFields`, `locale.tier`.
+
+### Removed since the withdrawn tag
+
+- **`lastName(gender:)`.** It had been a no-op for the library's entire life:
+  `person.last_name` is `.generic` in all sixty-six locales, so a caller passing `.female`
+  got the same pool as one passing `.male`, in every language. Removing it changes no
+  output. Languages that inflect surnames — Nováková, Иванова — want a rule per language
+  for deriving the feminine form, which is a grammar problem rather than a list to source;
+  adding the argument back when there is data behind it costs no caller anything.
+
+- **`location.county` in sixteen locales**, rather than replaced. What the gazetteer
+  supplied for Russian was `Abakan Urban District` — not romanised Russian but an English
+  description of the administrative type.
+
+### Changed since the withdrawn tag
+
+- **Every filter that drops data now records what it dropped**, into `filters.json` and,
+  for the fetch stage, into the snapshot itself. Every serious bug this pipeline has had was
+  a silent discard, and three of them shipped. Two were found by this within a day: a
+  Norwegian company-forms gap, and `lv` being in the colour table and absent from the
+  snapshot — which turns out to be correct (five of Latvian's seven colour labels are
+  two-word noun phrases, and one is "colour film") and looked exactly like a bug.
+
+- **Hand-written numbers in `docs/corpus-strategy.md` are asserted by tests.** That table
+  was wrong in twelve places and omitted eleven adapters.
+
+- **Language QIDs are checked against the ISO code they are filed under** before any fetch
+  runs. One was wrong — `Q33298` is Filipino, sitting where Kannada should have been — and
+  it did not fail loudly: it returned several hundred perfectly valid Filipino names for an
+  Indian locale.
 
 ### Fixed
 - **No locale wears an English honorific it never chose.** `pa_IN` was producing
