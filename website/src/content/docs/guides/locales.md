@@ -12,7 +12,7 @@ faker.location.streetAddress()  // "Grubergasse 17"
 faker.commerce.productName()    // "Praktische Sofas aus Leder"
 ```
 
-Three ship as modules today — `DecoyLocaleEN`, `DecoyLocaleDE`, `DecoyLocaleJA`. Sixty-four
+Three ship as modules today — `DecoyLocaleEN`, `DecoyLocaleDE`, `DecoyLocaleJA`. Sixty-five
 compile, and more are added over time.
 
 ## Check coverage before you commit
@@ -26,8 +26,8 @@ swift run decoy-inspect --coverage Corpus/binary
 
 ```
 locale          own%   own
-de               62%     58
-ja               46%     44
+de               64%     60
+ja               47%     45
 ```
 
 `own%` is the share of language-bearing fields the locale defines **itself**. The
@@ -46,28 +46,22 @@ if let warning = locale.fallbackWarning() {
 
 ## What falls back, and how you can tell
 
-Eight locales have half a name of their own. Three carry surnames and no given names —
-`zh_TW`, `id_ID`, `yo_NG` — and five carry given names and no surnames: `ko`, `es`,
-`bn_BD`, `cy`, `mk`. Either way, rather than pair a Han surname with an English given name,
-`fullName()` composes the whole name from one language:
+One locale has half a name of its own: `en_GB` carries given names from the ONS and no
+surnames. Every other locale that supplies names supplies both halves — `ko`, `es`,
+`zh_TW`, `bn_BD`, `cy`, `mk`, `id_ID` and `yo_NG` each had only one half at various points
+and now have both, so a composed name in those languages is entirely that language.
 
-```swift
-var f = Faker(seed: 11, locale: taiwaneseLocale)
-f.person.fullName()   // "Brenda Beil"  — obviously a fallback
-f.person.lastName()   // "黃"            — still native
-```
+Where a locale does have only half, `fullName()` composes the whole name from one language
+rather than pairing a native surname with an English given name. `en_GB` is the deliberate
+exception: borrowing English surnames is not a chimera when the locale is English, so it
+keeps them, and only locales whose language differs from the fallback's are narrowed.
 
 A caller asking only for a surname is not building anything self-contradictory, so it keeps
-the native one — `ko`'s `firstName()` is still Hangul and `zh_TW`'s `lastName()` is still
-Han. It is the *composition* that has to agree with itself.
+the native one. It is the *composition* that has to agree with itself.
 
-English regional locales are the exception. `en_GB` has its own given names from the ONS
-and no surnames of its own, and borrowing English surnames is not a chimera because it is
-English — so it keeps them, and only locales whose language differs from the fallback's are
-narrowed.
-
-Where this bites, the real fix is surname data rather than a cleverer rule: give `es` or
-`ko` surnames of their own and they compose natively without anything here changing.
+That rule is why the list above shrank to one: the fix for a half-named locale was always
+surname data rather than a cleverer rule, and `es` now has 27,661 surnames from the INE
+census, `ko` its own, and so on down the list.
 
 Some fields are English everywhere by design: invented pub names, marketing adjectives,
 job descriptors. No registry publishes them in any language.
@@ -83,7 +77,7 @@ Missing is different and traps with the path named, because that is a build erro
 ## Using a locale that has no module
 
 Three ship as compiled-in Swift modules — `DecoyLocaleEN`, `DecoyLocaleDE`, `DecoyLocaleJA`.
-The corpus holds sixty-four. For the rest, add the `DecoyLocales` product and ask for one by
+The corpus holds sixty-five. For the rest, add the `DecoyLocales` product and ask for one by
 code:
 
 ```swift
@@ -95,15 +89,15 @@ var faker = Faker(seed: 1337, locale: fr)
 faker.person.fullName()   // "Félix Tillet"
 ```
 
-`DecoyLocales.available` lists all sixty-four, and the fallback chain is resolved for you
+`DecoyLocales.available` lists all sixty-five, plus `base`, and the fallback chain is resolved for you
 from the same rule the corpus was built with — `de_AT` through `de` through `en` to `base`.
 An unknown code throws rather than resolving: `"pt"` is not a locale here, and letting it
 quietly become English under a Portuguese name is the failure this library exists to make
 visible.
 
 Prefer a module when your locale has one. It costs nothing at run time, cannot fail, and
-needs no `try`. `DecoyLocales` carries every blob as a resource — about 13 MB — which is why
-it is a separate product rather than part of `Decoy`: nobody should pay for sixty-four
+needs no `try`. `DecoyLocales` carries every blob as a resource — about 14 MB — which is why
+it is a separate product rather than part of `Decoy`: nobody should pay for sixty-five
 locales to get German.
 
 ## Compiling one into your own build

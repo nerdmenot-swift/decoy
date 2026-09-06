@@ -5,10 +5,12 @@ description: Adding Decoy to a Swift package, and the one thing everybody gets w
 
 Decoy is a Swift 6 package with no dependencies. Two edits to `Package.swift`:
 
-:::caution[Not published yet]
-Decoy 1.0.0 is not tagged, so `from: "1.0.0"` will not resolve. The tag was withdrawn
-while nobody depended on it, to settle the release before anyone has to live with it.
-Until it is cut, depend on the branch: `.package(url: "...", branch: "main")`.
+:::note[Resolving 1.0.0 fails with a fingerprint error?]
+An earlier `v1.0.0` existed briefly and was withdrawn before anyone depended on it. If you
+resolved it in those few days, SwiftPM pinned it to a commit this release does not contain
+and will refuse the new one with *"does not match previously recorded value"*. Clearing the
+package caches does not help — delete
+`~/Library/org.swift.swiftpm/security/fingerprints/decoy-*.json` and resolve again.
 :::
 
 ```swift
@@ -42,8 +44,8 @@ The second entry is a separate product on purpose. `Decoy` is the engine and
 
 `Faker` has no default one, and that is the point: the compiler asks you for it rather
 than letting `Faker()` build and then trap on the second line. There *is* a built-in
-corpus — `LocaleCorpus.builtIn` — but it defines eleven paths against the hundred and
-eighty-four the generators draw from, so almost everything would fail at run time. The
+corpus — `LocaleCorpus.builtIn` — but it defines ten paths against the hundred and
+ninety-five the generators draw from, so almost everything would fail at run time. The
 generators that need no corpus at all, like checksums and UUIDs, take it explicitly:
 
 ```swift
@@ -71,7 +73,7 @@ mutates it — that is what makes a run reproducible instead of depending on sha
 state. Hold one per test, or let a [forge](/guides/forges/) hold it for you.
 
 Three locales ship as importable modules — `DecoyLocaleEN`, `DecoyLocaleDE` and
-`DecoyLocaleJA`. The corpus holds sixty-four, and the other sixty-one are reached through
+`DecoyLocaleJA`. The corpus holds sixty-five, and the other sixty-two are reached through
 the `DecoyLocales` product, which carries every blob as a resource and loads one by code:
 
 ```swift
@@ -88,7 +90,7 @@ A locale module compiles into your binary as ordinary Swift source — a base64
 ship beside your executable. That avoids `Bundle.module`, which is the most
 platform-fragile corner of SwiftPM.
 
-`DecoyLocales` does use it, because sixty-four blobs cannot reasonably be sixty-four
+`DecoyLocales` does use it, because sixty-five blobs cannot reasonably be sixty-five
 modules. That is the trade: reach for a module when your locale has one, and the resource
 product when it does not.
 
