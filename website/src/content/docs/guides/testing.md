@@ -9,6 +9,10 @@ habits get you that.
 ## Seed per test, not per suite
 
 ```swift
+import Decoy
+import DecoyLocaleEN
+import Testing
+
 @Test("a user with no posts shows the empty state")
 func emptyState() {
     var faker = Faker(seed: 1, locale: DecoyLocaleEN.locale)

@@ -7,6 +7,9 @@ A `Forge<T>` maps generated values onto your own type. It is a value type: every
 returns a new forge, so they compose and nothing mutates under you.
 
 ```swift
+import Decoy
+import DecoyLocaleEN
+
 struct User {
     var name = ""
     var email = ""

@@ -131,4 +131,44 @@ struct SiteFactsTests {
             website/src/content/docs/guides/locales.md names them in prose — update it.
             """)
     }
+
+    /// A page whose snippets use `Faker` has to show where `Faker` comes from.
+    ///
+    /// Quick start, seeds, testing and seeding-a-database each built a `Faker` and named a
+    /// locale product without a single `import` between them. Every snippet on those pages
+    /// was uncopyable, and the compile-checked example suites did not notice because the
+    /// test files carry their own imports — the examples were verified as *code* and never
+    /// as *pages*.
+    @Test("a page that uses Faker shows the imports for it")
+    func snippetsAreRunnable() throws {
+        var wrong: [String] = []
+        for path in Self.pages {
+            let text = try Self.page(path)
+            let usesFaker = text.contains("Faker(")
+            let usesLocale =
+                text.contains("DecoyLocaleEN.locale") || text.contains("DecoyLocaleDE.locale")
+                || text.contains("DecoyLocaleJA.locale") || text.contains("DecoyLocales.")
+            let lines = text.split(whereSeparator: \.isNewline).map(String.init)
+
+            if usesFaker, !lines.contains(where: { $0.hasPrefix("import Decoy") }) {
+                wrong.append("\(path) builds a Faker and never imports Decoy")
+            }
+            if usesLocale,
+                !lines.contains(where: {
+                    $0.hasPrefix("import DecoyLocale") || $0.hasPrefix("import DecoyLocales")
+                })
+            {
+                wrong.append("\(path) names a locale product and never imports one")
+            }
+        }
+        #expect(
+            wrong.isEmpty,
+            """
+            \(wrong.count) page(s) show code that cannot be run as written:
+                \(wrong.joined(separator: "\n    "))
+
+            A reader landing here from a search has only this page. The imports belong on \
+            it, not on the one it links to.
+            """)
+    }
 }

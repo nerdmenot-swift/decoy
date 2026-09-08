@@ -8,10 +8,16 @@ description: Generating values, and why the same seed gives you the same people 
 Then do not pass one.
 
 ```swift
+import Decoy
+import DecoyLocaleEN
+
 var faker = Faker(locale: DecoyLocaleEN.locale)
 
 faker.person.fullName()   // a different name every run
 ```
+
+Those two imports are assumed by every snippet on this page: `Decoy` is the engine,
+`DecoyLocaleEN` is the data. [Install](/start/install/) covers why they are separate.
 
 You get plausible data and nothing to think about. The same works for forges —
 `users.generate(100)`.

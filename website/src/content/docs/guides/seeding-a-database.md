@@ -9,6 +9,9 @@ be, and coherent where they must agree is the rest of it.
 ## Start with the shape
 
 ```swift
+import Decoy
+import DecoyLocaleEN
+
 struct User {
     var id = 0
     var username = ""

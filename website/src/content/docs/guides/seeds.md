@@ -6,6 +6,9 @@ description: What the same seed guarantees, and the two things that change the a
 ## You can skip all of this
 
 ```swift
+import Decoy
+import DecoyLocaleEN
+
 var faker = Faker(locale: DecoyLocaleEN.locale)   // seed drawn for you
 let rows = users.generate(100)                    // same
 ```
