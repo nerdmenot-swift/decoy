@@ -15,6 +15,36 @@ below, and anything that alters drawn values says so in bold.
 
 Entries are grouped by the corpus version in force when they landed.
 
+## 1.1.1 — 2026-09-09
+
+**Identical to 1.1.0 for anyone using the library.** No API change, no corpus change —
+still 64.0.0 — and no difference in a single generated value.
+
+It exists because 1.1.0 could not be published. The release workflow rebuilt the corpus
+from fifty-four live upstreams before testing, and the Israeli statistics bureau
+republished one spreadsheet at the same URL, so the integrity gate refused it. The gate
+was right; the dependency was not. The corpus is committed precisely so a release does not
+need those upstreams, and the workflow was reaching for them anyway — and testing the
+freshly built result rather than the blobs that ship.
+
+That is fixed on `main`, but a release is verified against the *tag*, and `v1.1.0` predates
+the fix. Rather than move a tag — which this project does not do, and which SwiftPM
+punishes with a fingerprint error — 1.1.1 is cut from the commit where the release process
+works.
+
+`v1.1.0` remains tagged and resolvable. If you already depend on it, nothing is wrong with
+it and `from: "1.1.0"` will pick this up.
+
+### Changed
+
+- CI and Release test the committed corpus rather than rebuilding it. Rebuildability is
+  still checked, on the weekly scheduled run, where an upstream that moved fails loudly
+  without standing between a tagged version and its release.
+- The adapter-parity and chain-derivation suites skip when `Tools/adapters/out` is absent
+  instead of failing. They distinguish "the artifacts are here and nothing was compared",
+  which is a bug, from "this machine has not built the corpus", which is a fresh clone. A
+  run that skips them says so.
+
 ## 1.1.0 — 2026-09-09
 
 Corpus unchanged at 64.0.0, so generated values are identical to 1.0.0.
