@@ -120,10 +120,24 @@ jobs:
       # The corpus is built before testing because roughly thirty suites are gated on
       # Corpus/binary existing and *skip* when it does not. Running `swift test` alone would
       # go green having exercised the ten-path stub, and gate a release on almost nothing.
-      - name: Build corpus
+      # The corpus is committed, and this tests the committed one rather than rebuilding
+      # it. Rebuilding here made every release hostage to fifty-four third parties being
+      # simultaneously reachable and byte-identical -- which is the exact fragility the
+      # committed corpus exists to remove, per README: "reproducing it needs fifty-one
+      # upstreams to answer and two already do not". 1.1.0 was blocked by the Israeli
+      # statistics bureau republishing one spreadsheet at the same URL.
+      #
+      # It also tested the wrong artifact. A freshly built corpus is not the corpus that
+      # ships, so a release verified data no user would ever receive.
+      #
+      # Rebuildability still matters and is still checked -- by the weekly scheduled run in
+      # ci.yml, where an upstream that moved fails loudly without standing between a tagged
+      # version and its release.
+      - name: The committed corpus is present
         run: |
-          swift run -c release decoy-build-corpus
-          swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary
+          count=$(ls Corpus/binary/*.decoy 2>/dev/null | wc -l | tr -d ' ')
+          [ "$count" -gt 50 ] || { echo "::error::only $count corpus blobs found; the integration suites would skip and this release would gate on almost nothing."; exit 1; }
+          echo "$count locale blobs"
 
       - run: swift test
 

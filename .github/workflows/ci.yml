@@ -52,10 +52,22 @@ jobs:
 
       # Without a compiled corpus the integration suites skip rather than fail, so a
       # regression in an adapter or in the compiler would go unnoticed.
-      - name: Build corpus
+      # Rebuilt only on the weekly run. The corpus is committed, so a push tests the
+      # blobs that actually ship; rebuilding on every push made the whole suite depend on
+      # fifty-four upstreams being reachable and unchanged, and tested an artifact no user
+      # receives. The scheduled run still rebuilds, which is where an upstream that moved
+      # should surface -- loudly, and without standing between a tag and its release.
+      - name: Rebuild the corpus from source
+        if: github.event_name == 'schedule'
         run: |
           swift run -c release decoy-build-corpus
           swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary
+
+      - name: The committed corpus is present
+        run: |
+          count=$(ls Corpus/binary/*.decoy 2>/dev/null | wc -l | tr -d ' ')
+          [ "$count" -gt 50 ] || { echo "::error::only $count corpus blobs found; the integration suites would skip."; exit 1; }
+          echo "$count locale blobs"
 
       - run: swift test
 
@@ -154,10 +166,22 @@ jobs:
       - run: swift --version
       - run: swift build
 
-      - name: Build corpus
+      # Rebuilt only on the weekly run. The corpus is committed, so a push tests the
+      # blobs that actually ship; rebuilding on every push made the whole suite depend on
+      # fifty-four upstreams being reachable and unchanged, and tested an artifact no user
+      # receives. The scheduled run still rebuilds, which is where an upstream that moved
+      # should surface -- loudly, and without standing between a tag and its release.
+      - name: Rebuild the corpus from source
+        if: github.event_name == 'schedule'
         run: |
           swift run -c release decoy-build-corpus
           swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary
+
+      - name: The committed corpus is present
+        run: |
+          count=$(ls Corpus/binary/*.decoy 2>/dev/null | wc -l | tr -d ' ')
+          [ "$count" -gt 50 ] || { echo "::error::only $count corpus blobs found; the integration suites would skip."; exit 1; }
+          echo "$count locale blobs"
 
       - run: swift test
 
@@ -274,9 +298,18 @@ jobs:
       # This job used to run `swift test` with no corpus, so every suite gated on
       # Corpus/binary skipped and Windows was only ever testing the built-in stub --
       # which is exactly the platform where a byte-order or path assumption would show up.
-      - name: Build corpus
+      # Schedule-only, as on the other two runners. The committed blobs are what ships.
+      - name: Rebuild the corpus from source
+        if: github.event_name == 'schedule'
         run: |
           swift run -c release decoy-build-corpus
           swift run decoy-compile-corpus Tools/adapters/out Corpus/binary
+
+      - name: The committed corpus is present
+        shell: bash
+        run: |
+          count=$(ls Corpus/binary/*.decoy 2>/dev/null | wc -l | tr -d ' ')
+          [ "$count" -gt 50 ] || { echo "::error::only $count corpus blobs found; the integration suites would skip."; exit 1; }
+          echo "$count locale blobs"
 
       - run: swift test
