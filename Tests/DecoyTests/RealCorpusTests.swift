@@ -38,6 +38,26 @@ enum RealCorpus {
             .sorted()
     }
 
+    /// Whether the pipeline's intermediate output is on disk.
+    ///
+    /// `Tools/adapters/out` is what `decoy-build-corpus` writes before the compiler turns
+    /// it into blobs. It is a build artifact and is *not* committed — unlike the corpus,
+    /// which is — so the suites that compare adapter output against the parity dumps have
+    /// nothing to compare on a fresh clone.
+    ///
+    /// They used to fail there rather than skip, which was right while every CI job
+    /// rebuilt the corpus and wrong the moment they stopped: a release cannot be held up
+    /// because a statistics bureau republished a spreadsheet, and that is what the
+    /// committed corpus is for. So absent intermediates skip, present ones must compare
+    /// something, and `corpusPresenceIsVisible` prints what a run left out.
+    static var pipelineOutputIsAvailable: Bool {
+        FileManager.default.fileExists(
+            atPath: directory
+                .deletingLastPathComponent()  // Corpus
+                .deletingLastPathComponent()  // repository root
+                .appendingPathComponent("Tools/adapters/out/manifest.json").path)
+    }
+
     static func corpus(_ code: String) throws -> Corpus {
         let url = directory.appendingPathComponent("\(code).decoy")
         return try Corpus(bytes: [UInt8](try Data(contentsOf: url)))

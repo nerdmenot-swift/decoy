@@ -46,7 +46,11 @@ struct DecoyLocalesTests {
     /// The other branch — a three-segment code whose middle segment *is* a locale — used to
     /// be covered here by `en_AU_ocker` and is now in `OrchestratorTests` against a
     /// synthetic roster, so it survives the locale being cut.
-    @Test("derived chains match the ones the corpus was built with")
+    @Test(
+        "derived chains match the ones the corpus was built with",
+        .enabled(
+            if: RealCorpus.pipelineOutputIsAvailable,
+            "no manifest — run `swift run decoy-build-corpus`"))
     func chainsMatchTheManifest() throws {
         try #require(!Self.recorded.isEmpty, "no manifest — run `swift run decoy-build-corpus`")
         for (code, expected) in Self.recorded.sorted(by: { $0.key < $1.key }) {

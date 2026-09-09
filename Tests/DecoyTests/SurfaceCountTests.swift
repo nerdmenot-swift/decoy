@@ -114,8 +114,26 @@ struct SurfaceCountTests {
     /// The corpus suites skip rather than fail when the blobs are absent, which is right
     /// — they are build artifacts and a fresh clone has none. But thirty-plus tests
     /// skipping quietly makes a green run look like a full one.
-    @Test("a run without a compiled corpus says so")
+    @Test("a run without a compiled corpus or pipeline output says so")
     func corpusPresenceIsVisible() {
+        // The pipeline's intermediate output is a second, separate reason for suites to
+        // sit out, and it became a common one when CI stopped rebuilding the corpus on
+        // every push. Reported here for the same reason as the corpus: a green run that
+        // skipped the adapter-parity and chain-derivation suites should not look like a
+        // green run that exercised them.
+        if !RealCorpus.pipelineOutputIsAvailable {
+            print(
+                """
+
+                NO PIPELINE OUTPUT — the adapter-parity and chain-derivation suites did
+                not run. `Tools/adapters/out` is a build artifact and is not committed,
+                unlike the corpus.
+
+                    swift run decoy-build-corpus
+
+                """
+            )
+        }
         if !RealCorpus.isAvailable {
             // Not a failure. `swift test` prints this once, and a green run that skipped
             // the integration suites is then distinguishable from one that did not.

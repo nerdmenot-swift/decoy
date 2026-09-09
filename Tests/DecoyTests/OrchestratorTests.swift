@@ -163,7 +163,13 @@ struct OrchestratorTests {
 
     @Test(
         "merging all 32 real adapters reproduces what the JavaScript emitted",
-        .enabled(if: PortFixtures.hasContributionDumps))
+        // Both halves are needed and only one was checked. The dumps are committed and
+        // `Tools/adapters/out` is not, so this ran on a machine that had never built the
+        // corpus, compared nothing, and failed its own `compared > 0` guard — the guard
+        // working correctly against a condition that should have skipped the test.
+        .enabled(
+            if: PortFixtures.hasContributionDumps && RealCorpus.pipelineOutputIsAvailable,
+            "no pipeline output — run `swift run decoy-build-corpus`"))
     func parity() throws {
         let roster = Self.roster()
         let adapters = Self.adapters()
