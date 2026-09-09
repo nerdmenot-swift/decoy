@@ -15,6 +15,40 @@ below, and anything that alters drawn values says so in bold.
 
 Entries are grouped by the corpus version in force when they landed.
 
+## 1.1.0 — 2026-09-09
+
+Corpus unchanged at 64.0.0, so generated values are identical to 1.0.0.
+
+### Added
+
+- **`DecoyFaker`**, an alias for ``Faker``, for files that import a second module which
+  also exports a `Faker`. Swift resolves a bare type reference across every imported module
+  at once, so two of them in scope make `func takes(_ f: Faker)` fail with *'Faker' is
+  ambiguous for type lookup*.
+
+  The usual answer is to qualify with the module, and it does not work here. This module
+  also declares `Decoy`, the enum holding `Decoy.version`, and a type shadows its module in
+  that position — `Decoy.Faker` looks inside the *enum* and fails with *'Faker' is not a
+  member type of enum 'Decoy.Decoy'*. Swift has no import aliasing to fall back on.
+
+  Sharing a name between a module and a type is the underlying mistake and it cannot be
+  corrected without breaking `Decoy.version` for everybody, so the alias is the fix a minor
+  release can carry. `import struct Decoy.Faker` does the same job where you would rather
+  keep the name; the alias is for wanting both `Faker`s in one file.
+
+  Reproduced against a real second module before and after: the ambiguity occurs, the
+  module-qualified form fails, and the alias resolves it.
+
+### Changed
+
+- **The documentation site is versioned.** `v1.0.x` is archived at `/1-0/` with a switcher
+  in the header and an outdated-version notice on its pages. One archive per minor series
+  rather than per tag, because a patch cannot change the API and a published URL is
+  permanent. [docs/releasing.md](docs/releasing.md) carries the procedure.
+
+- Install now documents the collision above, since it is the one thing about importing
+  Decoy that a reader cannot work out from the error message.
+
 ## 1.0.0 — 2026-09-06
 
 The first release.

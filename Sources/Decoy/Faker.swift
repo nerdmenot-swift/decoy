@@ -1,3 +1,34 @@
+/// `Faker` under a name no other module is likely to export.
+///
+/// `Faker` is a common enough noun that a second module in the same file may well export
+/// one too, and Swift resolves a bare type reference by looking in every imported module
+/// at once. Where both candidates fit, the reference is rejected:
+///
+/// ```swift
+/// import Decoy
+/// import SomeOtherLibrary   // also exports a `Faker`
+///
+/// func takes(_ f: Faker) {}   // error: 'Faker' is ambiguous for type lookup
+/// ```
+///
+/// The usual answer is to qualify with the module — `Decoy.Faker` — and that does not
+/// work here. This module also declares ``Decoy``, the enum holding ``Decoy/version``, and
+/// a type shadows its module in that position, so `Decoy.Faker` looks inside the *enum*
+/// and fails with "'Faker' is not a member type of enum 'Decoy.Decoy'". Swift has no
+/// import aliasing to fall back on either.
+///
+/// Sharing a name between a module and a type is the mistake, and it cannot be corrected
+/// without breaking ``Decoy/version`` for everybody. So this alias is the escape hatch:
+///
+/// ```swift
+/// var faker = DecoyFaker(seed: 1337, locale: DecoyLocaleEN.locale)
+/// ```
+///
+/// A scoped import does the same job without it — `import struct Decoy.Faker` — and is
+/// worth preferring when you would rather not rename the type at the call site. This
+/// exists for the case where you want both `Faker`s in one file under readable names.
+public typealias DecoyFaker = Faker
+
 /// The generation context handed to every rule.
 ///
 /// A `struct`, so it is `Sendable` and a `Forge` can be shared across tasks.

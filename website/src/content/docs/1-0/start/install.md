@@ -32,38 +32,6 @@ does not — so fake-data generators and their corpora never end up linked into 
 The second entry is a separate product on purpose. `Decoy` is the engine and
 `DecoyLocaleEN` is the data; you pick the locales you want and pay for those only.
 
-## If `Faker` collides with another module
-
-`Faker` is a common noun, and Swift resolves a bare type reference across every imported
-module at once. If something else in the same file exports one too, the reference is
-rejected:
-
-```swift
-import Decoy
-import SomeOtherLibrary   // also exports a `Faker`
-
-func takes(_ f: Faker) {}   // error: 'Faker' is ambiguous for type lookup
-```
-
-Qualifying with the module — `Decoy.Faker` — does not work, and that is Decoy's fault
-rather than Swift's: this module also declares `Decoy`, the enum holding `Decoy.version`,
-and a type shadows its module in that position. The compiler looks inside the enum and
-reports *'Faker' is not a member type of enum 'Decoy.Decoy'*.
-
-Two ways out. A scoped import, if you would rather keep the name:
-
-```swift
-import struct Decoy.Faker
-```
-
-Or `DecoyFaker`, which is the same type under a name nothing else is likely to export —
-useful when you want both `Faker`s in one file:
-
-```swift
-var mine = DecoyFaker(seed: 1337, locale: DecoyLocaleEN.locale)
-let theirs = SomeOtherLibrary.Faker()
-```
-
 ## Always pass a locale
 
 `Faker` has no default one, and that is the point: the compiler asks you for it rather

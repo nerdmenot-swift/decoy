@@ -2,18 +2,23 @@
 // Starlight's own header is one of its loudest tells: centred title lockup, its own
 // spacing, its own social row. This is the site's header instead, so the docs pages
 // and the landing page read as one thing.
-import Search from '@astrojs/starlight/components/Search.astro'
+// VersionSearch rather than Starlight's Search: it scopes results to the version being
+// read, so someone on the v1.0.x pages does not get v1.1 answers. It renders Starlight's
+// Search underneath, so nothing is lost by using it.
+import VersionSearch from 'starlight-versions/components/VersionSearch.astro'
+import VersionSelect from 'starlight-versions/components/VersionSelect.astro'
 import ThemeToggle from './ThemeToggle.astro'
 import TocToggle from './TocToggle.astro'
 import lockup from './lockup.svg?raw'
 ---
 <div class="decoy-header">
   <a class="decoy-brand" href="/" aria-label="Decoy" set:html={lockup} />
-  <div class="decoy-search"><Search /></div>
+  <div class="decoy-search"><VersionSearch {...Astro.props} /></div>
   <nav class="decoy-nav">
     <a href="/start/install/">Install</a>
     <a href="/api/">Reference</a>
     <a href="https://github.com/nerdmenot-swift/decoy">GitHub</a>
+    <div class="decoy-versions"><VersionSelect /></div>
     <TocToggle />
     <ThemeToggle />
   </nav>
@@ -28,5 +33,10 @@ import lockup from './lockup.svg?raw'
     color: var(--decoy-muted); text-decoration: none; font-size: .88rem; font-weight: 500;
   }
   .decoy-nav a:hover { color: var(--decoy-accent); }
+  /* The switcher stays at every width. A reader on an archived page needs the way back
+     to the current docs more on a phone than on a desktop, not less. */
+  .decoy-versions :global(select) {
+    font-family: var(--decoy-mono); font-size: .78rem; color: var(--decoy-muted);
+  }
   @media (max-width: 50rem) { .decoy-nav a { display: none; } }
 </style>

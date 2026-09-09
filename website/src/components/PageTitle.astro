@@ -1,12 +1,22 @@
 ---
 // Titles in the display face with an eyebrow drawn from the sidebar group, so a docs
 // page opens like a document rather than like a heading with content stuck under it.
+// VersionNotice is the plugin's outdated-version banner. A config override beats a
+// plugin's, so if this file does not render it, a reader on an archived page is never
+// told they are reading old documentation — and nothing warns you about that.
+import VersionNotice from 'starlight-versions/components/VersionNotice.astro'
+
 const { entry } = Astro.locals.starlightRoute
-const group = entry.id.split('/')[0]
+// Archived pages are `1-0/start/install`, so the first segment is the version rather than
+// the group. Drop a leading version slug before reading the group, or every archived page
+// falls back to the generic eyebrow.
+const segments = entry.id.split('/')
+const group = /^\d+-\d+$/.test(segments[0]) ? segments[1] : segments[0]
 const LABELS: Record<string, string> = {
   start: 'Start', guides: 'Guides', api: 'Generators', reference: 'Reference',
 }
 ---
+<VersionNotice />
 <p class="decoy-eyebrow">{LABELS[group] ?? 'Decoy'}</p>
 <h1 id="_top">{entry.data.title}</h1>
 <style>

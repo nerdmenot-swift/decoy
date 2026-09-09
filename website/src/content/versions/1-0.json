@@ -1,0 +1,70 @@
+{
+  "sidebar": [
+    {
+      "label": "Start",
+      "items": [
+        {
+          "slug": "start/install"
+        },
+        {
+          "slug": "start/quick-start"
+        },
+        {
+          "slug": "start/cheatsheet"
+        }
+      ]
+    },
+    {
+      "label": "Guides",
+      "items": [
+        {
+          "slug": "guides/forges"
+        },
+        {
+          "slug": "guides/testing"
+        },
+        {
+          "slug": "guides/seeding-a-database"
+        },
+        {
+          "slug": "guides/locales"
+        },
+        {
+          "slug": "guides/seeds"
+        }
+      ]
+    },
+    {
+      "label": "Generators",
+      "collapsed": true,
+      "items": [
+        {
+          "autogenerate": {
+            "directory": "api"
+          }
+        }
+      ]
+    },
+    {
+      "label": "Reference",
+      "items": [
+        {
+          "slug": "reference/locale-matrix"
+        },
+        {
+          "slug": "reference/sources"
+        },
+        {
+          "slug": "reference/cli"
+        },
+        {
+          "slug": "reference/corpus-format"
+        },
+        {
+          "slug": "reference/design-notes"
+        }
+      ]
+    }
+  ],
+  "excluded": []
+}

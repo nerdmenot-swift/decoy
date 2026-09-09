@@ -135,3 +135,57 @@ values somebody has already generated, which is not visible in a commit subject.
 2. Does the corpus major differ from the last release's?
 3. Are the locale gaps in `README.md` still accurate — has anything been filled or lost?
 4. Cut `2.0.0-rc.1` first and leave it out for a week.
+
+## Archiving the documentation for a minor series
+
+The site serves the current release at the root and each archived series under its own
+prefix, with a switcher in the header. `v1.0.x` is archived at `/1-0/`; its pages carry a
+notice saying so and linking to the current ones.
+
+**One archive per minor series, not per tag.** Under semver a patch cannot change the API,
+so a patch's docs are its minor's, and archiving each tag would publish near-duplicates.
+And a published URL is permanent: once `/1-0/` exists and somebody links it, removing it
+breaks their link — so archive at the coarsest granularity that is still useful, because
+adding is cheap and removing is not.
+
+To archive a series when you cut the next minor:
+
+1. **Snapshot the pages that describe the outgoing release**, before editing them for the
+   new one:
+
+   ```sh
+   dest=website/src/content/docs/1-0
+   mkdir -p "$dest"
+   for d in start guides api reference; do cp -R "website/src/content/docs/$d" "$dest/"; done
+   ```
+
+   Catena's equivalent procedure takes the snapshot from the *tag* rather than the working
+   tree, which is the safer default and was deliberately not followed for `1-0`. The
+   `v1.0.0` tag carries documentation that was wrong — an install banner announcing the
+   release was unpublished, four stale locale counts, and five pages whose snippets had no
+   imports — all corrected afterwards. Those were corrections to a description of 1.0, not
+   descriptions of 1.1, so the corrected tree is the honest snapshot and the tag is not.
+   Take it from the tag whenever the tag is right.
+
+2. **Record that version's sidebar** in `website/src/content/versions/1-0.json` as
+   `{"sidebar": [...], "excluded": []}`, copying the `sidebar` from the config the release
+   shipped with. The plugin refuses to build without it.
+
+3. **List it** in `website/astro.config.mjs`, newest first, and set `current.label` to the
+   new series:
+
+   ```js
+   current: { label: 'v1.1.x' },
+   versions: [{ slug: '1-0', label: 'v1.0.x' }],
+   ```
+
+4. Build once and check three things: the switcher offers both, an archived page shows the
+   outdated-version notice, and the archived reference does not mention anything added
+   since.
+
+Two things about the setup are worth knowing before touching it. The archived directories
+are snapshots of a tree that no longer exists, so nothing regenerates them — `bun run
+extract` writes only the files it owns, which is what keeps them intact. And a component
+override in `astro.config.mjs` beats a plugin's, so `Header` and `PageTitle` render the
+versions plugin's `VersionSearch`, `VersionSelect` and `VersionNotice` themselves; drop
+those imports and the switcher and the notice disappear with no error at all.

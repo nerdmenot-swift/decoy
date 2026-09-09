@@ -7,6 +7,7 @@
 // sidebar, search, keyboard nav, heading anchors and a11y on the reference pages.
 import { defineConfig } from 'astro/config'
 import starlight from '@astrojs/starlight'
+import starlightVersions from 'starlight-versions'
 
 export default defineConfig({
   site: 'https://decoy.nerdmenot.in',
@@ -30,8 +31,29 @@ export default defineConfig({
           codeFontFamily: 'var(--decoy-mono)',
         },
       },
+      plugins: [
+        starlightVersions({
+          // Labelled with the release it documents rather than "Latest", so the control
+          // names a version somebody can actually put in `from:`.
+          current: { label: 'v1.1.x' },
+          // One entry per MINOR series, not per tag. Under semver a patch cannot change
+          // the API, so a patch's docs are its minor's — archiving each tag would publish
+          // near-duplicates. And a published URL is permanent: once `/1-0/` exists and
+          // somebody links it, removing it breaks their link, so archive at the coarsest
+          // granularity that is still useful.
+          //
+          // `1-0` is a snapshot of a tree that no longer exists and nothing regenerates
+          // it. `bun run extract` therefore writes only the directories it owns.
+          versions: [{ slug: '1-0', label: 'v1.0.x' }],
+        }),
+      ],
       components: {
         // The two loudest Starlight tells: its header lockup and its theme dropdown.
+        //
+        // A component override here beats a plugin's, so Header and PageTitle have to
+        // render the versions plugin's own components themselves — the switcher, the
+        // version-scoped search and the outdated-version notice. Drop those and they
+        // disappear with no error, which is the failure mode worth knowing about.
         Header: './src/components/Header.astro',
         PageTitle: './src/components/PageTitle.astro',
       },
