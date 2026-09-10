@@ -98,6 +98,7 @@ Turns the adapter output into binary blobs, and optionally into Swift modules.
 
 ```
 decoy-compile-corpus <in> <out> [--emit-swift <dir> --locales de,ja]
+decoy-compile-corpus --from-corpus Corpus/binary --emit-swift <dir> --locales de,ja
 ```
 
 ```
@@ -109,6 +110,10 @@ binary out      : 13098 KB
 
 `--emit-swift` writes a `DecoyLocale<CODE>` module: the blob as a base64 `StaticString`
 decoded once at first access. Committed source, reviewable in a diff.
+
+`--from-corpus` emits the same modules from blobs that are already compiled, so it needs
+no pipeline output. It is how CI checks the committed modules against the committed
+corpus, and how you embed a locale from a fresh checkout without rebuilding anything.
 
 ## Rebuilding from scratch
 

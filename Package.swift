@@ -121,7 +121,7 @@ let package = Package(
         // A host build tool, so unlike the library it may use Foundation freely.
         .executableTarget(
             name: "DecoyCorpusCompiler",
-            dependencies: ["Decoy", "DecoyCorpusKit"],
+            dependencies: ["Decoy", "DecoyAdapterKit", "DecoyCorpusKit"],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         // Also host-only, and likewise free to use Foundation.

@@ -238,11 +238,11 @@ host-executed and historically awkward under cross-compilation) and rule sets.
 
 ## Embedding another locale
 
-All 64 compile to `.decoy`; four ship as Swift modules. The rest are emitted on request,
-in two steps and in this order:
+All 64 compile to `.decoy`; four ship as Swift modules. The rest are emitted on request
+from the committed blobs, in two steps and in this order:
 
 ```
-swift run decoy-compile-corpus Tools/adapters/out Corpus/binary \
+swift run decoy-compile-corpus --from-corpus Corpus/binary \
   --emit-swift Sources --locales de_AT
 ```
 

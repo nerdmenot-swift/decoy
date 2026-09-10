@@ -49,7 +49,7 @@ swift run decoy-compile-corpus Tools/adapters/out Corpus/binary
 Then the derived files, all of which CI checks are current:
 
 ```
-swift run decoy-compile-corpus Tools/adapters/out Corpus/binary --emit-swift Sources --locales de,ja
+swift run decoy-compile-corpus --from-corpus Corpus/binary --emit-swift Sources --locales de,ja
 swift run decoy-inspect --notice Corpus/binary --licenses LICENSES > NOTICE
 swift run decoy-inspect --matrix Corpus/binary > docs/locale-support.md
 swift run decoy-inspect --coverage Corpus/binary --write-gate Corpus/coverage-baseline.json

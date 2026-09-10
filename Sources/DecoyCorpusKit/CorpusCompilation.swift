@@ -90,16 +90,6 @@ public struct Manifest: Decodable {
         sourceRecords.map { "\($0.id) \($0.version) (\($0.license))" }
             .joined(separator: ", ")
     }
-
-    /// Expands the requested locales to include every locale their chains reach.
-    public func closure(over requested: [String]) -> [String] {
-        var needed = Set<String>()
-        for code in requested {
-            guard let locale = locales[code] else { continue }
-            needed.formUnion(locale.chain)
-        }
-        return needed.sorted()
-    }
 }
 
 // MARK: - Compilation

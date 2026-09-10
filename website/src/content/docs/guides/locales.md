@@ -105,7 +105,7 @@ locales to get German.
 If you want a locale as a module rather than a resource:
 
 ```
-swift run decoy-compile-corpus Corpus/binary Corpus/binary \
+swift run decoy-compile-corpus --from-corpus Corpus/binary \
   --emit-swift Sources --locales pt_BR
 ```
 

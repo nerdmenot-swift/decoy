@@ -72,11 +72,16 @@ jobs:
       - run: swift test
 
       # The four locale modules are committed Swift source generated from the corpus.
-      # Nothing ties them to the adapters that produce them, so an adapter change without
-      # a regeneration is invisible until someone's fixtures quietly differ.
+      # Nothing ties them to the blobs they embed, so a corpus change without a
+      # regeneration is invisible until someone's fixtures quietly differ.
+      #
+      # Re-emitted from the committed blobs rather than from the pipeline's output, which
+      # exists only on the weekly run now that a push tests the corpus that ships. Every
+      # line in a module is recoverable from its blob, so this asks the same question of
+      # the same bytes a consumer receives.
       - name: Locale modules are current
         run: |
-          swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary \
+          swift run -c release decoy-compile-corpus --from-corpus Corpus/binary \
             --emit-swift Sources --locales de,ja
           git diff --exit-code -- Sources/DecoyLocale* \
             || { echo "::error::Locale modules are stale. Re-run with --emit-swift and commit."; exit 1; }

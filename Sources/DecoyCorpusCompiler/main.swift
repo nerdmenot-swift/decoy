@@ -1,4 +1,5 @@
 import Decoy
+import DecoyAdapterKit
 import DecoyCorpusKit
 import Foundation
 
@@ -8,12 +9,20 @@ import Foundation
 ///
 /// The version comes from the manifest, which the pipeline fills from
 /// `Tools/adapters/corpus-version.json`. The flag is an override for one-off builds.
+///
+/// Or, with `--from-corpus <dir>` in place of the two directories, re-emits the Swift
+/// locale modules from blobs that are already compiled. Everything a module carries is
+/// recoverable from its blob — the chain from the code, the attributed sources from each
+/// table's provenance, the coverage from the resolved paths — so the modules can be checked
+/// against what ships without rebuilding it from fifty-four upstreams.
 
 // MARK: - Arguments
 
 struct Options {
     var input: URL
     var output: URL
+    /// Set instead of `input`/`output` to re-emit modules from compiled blobs.
+    var fromCorpus: URL?
     /// Set from the manifest, which carries the version the pipeline declared.
     /// `--corpus-version` overrides it; there is deliberately no default, because a
     /// default is what let CI silently build 1.0.0 while the tests asserted 11.0.0.
@@ -40,12 +49,16 @@ func parseArguments() -> Options {
     var version: CorpusVersion?
     var emitSwift: URL?
     var swiftLocales: [String] = []
+    var fromCorpus: URL?
     var i = 1
     let args = CommandLine.arguments
 
     while i < args.count {
         if args[i] == "--emit-swift", i + 1 < args.count {
             emitSwift = URL(fileURLWithPath: args[i + 1])
+            i += 2
+        } else if args[i] == "--from-corpus", i + 1 < args.count {
+            fromCorpus = URL(fileURLWithPath: args[i + 1])
             i += 2
         } else if args[i] == "--locales", i + 1 < args.count {
             swiftLocales = args[i + 1].split(separator: ",").map(String.init)
@@ -61,9 +74,21 @@ func parseArguments() -> Options {
         }
     }
 
-    guard positional.count == 2 else {
-        fail("usage: decoy-compile-corpus <adapters-out-dir> <output-dir> [--corpus-version X.Y.Z]")
+    let usage = """
+        usage: decoy-compile-corpus <adapters-out-dir> <output-dir> [--corpus-version X.Y.Z]
+                   [--emit-swift <dir> --locales a,b]
+               decoy-compile-corpus --from-corpus <corpus-dir> --emit-swift <dir> --locales a,b
+        """
+    if let fromCorpus {
+        guard positional.isEmpty, version == nil else { fail(usage) }
+        guard emitSwift != nil else { fail("--from-corpus only re-emits modules; it needs --emit-swift") }
+        var options = Options(input: fromCorpus, output: fromCorpus)
+        options.fromCorpus = fromCorpus
+        options.emitSwift = emitSwift
+        options.swiftLocales = swiftLocales
+        return options
     }
+    guard positional.count == 2 else { fail(usage) }
     var options = Options(
         input: URL(fileURLWithPath: positional[0]),
         output: URL(fileURLWithPath: positional[1])
@@ -84,104 +109,157 @@ func fail(_ message: String) -> Never {
 let options = parseArguments()
 let fileManager = FileManager.default
 
-let manifestURL = options.input.appendingPathComponent("manifest.json")
-guard let manifestData = try? Data(contentsOf: manifestURL) else {
-    fail("cannot read \(manifestURL.path) — run `swift run decoy-build-corpus` first")
-}
-let manifest = try JSONDecoder().decode(Manifest.self, from: manifestData)
-
-/// The flag wins if given, otherwise the version the pipeline declared.
-///
-/// Refusing to guess is the point. A default here is exactly what let CI build a 1.0.0
-/// corpus while the tests asserted 11.0.0 — the mismatch surfaced as two failing
-/// assertions rather than as the missing input it actually was.
-guard let corpusVersion = options.corpusVersion ?? manifest.declaredCorpusVersion else {
-    fail(
-        "no corpus version: \(manifestURL.lastPathComponent) declares none and "
-            + "--corpus-version was not given. Set it in Tools/adapters/corpus-version.json."
-    )
-}
-
-try fileManager.createDirectory(at: options.output, withIntermediateDirectories: true)
-
 var totalBytes = 0
 var totalJSON = 0
 var compiled: [String: [UInt8]] = [:]
+/// Per locale, its fallback chain, most specific first. From the manifest when compiling,
+/// derived from the code when re-emitting — the same rule the run-time loader applies.
+var chains: [String: [String]] = [:]
 /// Per locale, the source ids its own tables were attributed to — for the module headers.
 var usedSources: [String: Set<String>] = [:]
 var allSkipped: [String] = []
-let codes = manifest.locales.keys.sorted()
+/// What the summary at the end reports; `nil` when nothing was compiled.
+var compileSummary: (sources: String, version: CorpusVersion)?
 
-for code in codes {
-    let jsonURL = options.input
-        .appendingPathComponent("locales")
-        .appendingPathComponent("\(code).json")
-    guard let data = try? Data(contentsOf: jsonURL) else {
-        fail("missing locale file for \(code)")
+if let corpusDirectory = options.fromCorpus {
+    try loadCompiledCorpus(from: corpusDirectory)
+} else {
+    try compileFromPipeline()
+}
+
+// MARK: - Loading compiled blobs
+
+/// Reads every `.decoy` in the directory and recovers, per locale, what the compile path
+/// records as it goes: the bytes, the chain and the sources its tables are attributed to.
+@MainActor
+func loadCompiledCorpus(from directory: URL) throws {
+    let files = (try? fileManager.contentsOfDirectory(atPath: directory.path)) ?? []
+    let codes = files.filter { $0.hasSuffix(".decoy") }
+        .map { String($0.dropLast(".decoy".count)) }
+        .sorted()
+    guard !codes.isEmpty else { fail("no .decoy blobs in \(directory.path)") }
+    let roster = Set(codes)
+
+    for code in codes {
+        let url = directory.appendingPathComponent("\(code).decoy")
+        let bytes = [UInt8](try Data(contentsOf: url))
+        let corpus = try Corpus(bytes: bytes)
+        compiled[code] = bytes
+        chains[code] = Orchestrator.fallbackChain(code, roster: roster)
+
+        // Attribution lives on each table, which is also where NOTICE reads it from.
+        var ids = Set<UInt32>()
+        for entry in try corpus.paths {
+            switch try corpus.entry(for: entry) {
+            case .strings(let table): ids.insert(table.sourceID)
+            case .composite(let table): ids.insert(table.sourceID)
+            case .model(let model): ids.insert(model.sourceID)
+            case .explicitlyEmpty: break
+            }
+        }
+        usedSources[code] = Set(try ids.compactMap { try corpus.source($0)?.id })
     }
-    totalJSON += data.count
+}
 
-    let root = try JSONDecoder().decode(JSONValue.self, from: data)
+// MARK: - Compiling from the pipeline
 
-    // This locale's own version, not the release number. Adding Hindi should not move the
-    // number an English-only user is pinning, and this is the line where that is decided.
-    // A manifest without per-locale versions falls back to the release number, which is
-    // what every locale carried before the split.
-    let localeVersion: CorpusVersion = {
-        guard let declared = manifest.locales[code]?.version,
-            let parts = Optional(declared.split(separator: ".").compactMap { UInt16($0) }),
-            parts.count == 3
-        else { return corpusVersion }
-        return CorpusVersion(major: parts[0], minor: parts[1], patch: parts[2])
-    }()
+@MainActor
+func compileFromPipeline() throws {
+    let manifestURL = options.input.appendingPathComponent("manifest.json")
+    guard let manifestData = try? Data(contentsOf: manifestURL) else {
+        fail("cannot read \(manifestURL.path) — run `swift run decoy-build-corpus` first")
+    }
+    let manifest = try JSONDecoder().decode(Manifest.self, from: manifestData)
 
-    var builder = CorpusBuilder(version: localeVersion)
-
-    // Every declared source is registered in every locale, whether or not that locale
-    // draws on it. A few dozen bytes buys a stable source ID across the whole corpus,
-    // which is what makes "show me everything still derived from X" answerable.
-    var sourceIDs: [String: UInt32] = [:]
-    for record in manifest.sourceRecords {
-        sourceIDs[record.id] = builder.addSource(
-            id: record.id,
-            license: record.license,
-            url: record.url,
-            version: record.version,
-            retrieved: record.retrieved,
-            copyright: record.copyright ?? ""
+    /// The flag wins if given, otherwise the version the pipeline declared.
+    ///
+    /// Refusing to guess is the point. A default here is exactly what let CI build a 1.0.0
+    /// corpus while the tests asserted 11.0.0 — the mismatch surfaced as two failing
+    /// assertions rather than as the missing input it actually was.
+    guard let corpusVersion = options.corpusVersion ?? manifest.declaredCorpusVersion else {
+        fail(
+            "no corpus version: \(manifestURL.lastPathComponent) declares none and "
+                + "--corpus-version was not given. Set it in Tools/adapters/corpus-version.json."
         )
     }
-    guard let defaultSourceID = sourceIDs[manifest.sourceRecords[0].id] else {
-        fail("\(code): no sources declared in the manifest")
+    compileSummary = (manifest.sourceSummary, corpusVersion)
+
+    try fileManager.createDirectory(at: options.output, withIntermediateDirectories: true)
+
+    let codes = manifest.locales.keys.sorted()
+
+    for code in codes {
+        let jsonURL = options.input
+            .appendingPathComponent("locales")
+            .appendingPathComponent("\(code).json")
+        guard let data = try? Data(contentsOf: jsonURL) else {
+            fail("missing locale file for \(code)")
+        }
+        totalJSON += data.count
+
+        let root = try JSONDecoder().decode(JSONValue.self, from: data)
+
+        // This locale's own version, not the release number. Adding Hindi should not move the
+        // number an English-only user is pinning, and this is the line where that is decided.
+        // A manifest without per-locale versions falls back to the release number, which is
+        // what every locale carried before the split.
+        let localeVersion: CorpusVersion = {
+            guard let declared = manifest.locales[code]?.version,
+                let parts = Optional(declared.split(separator: ".").compactMap { UInt16($0) }),
+                parts.count == 3
+            else { return corpusVersion }
+            return CorpusVersion(major: parts[0], minor: parts[1], patch: parts[2])
+        }()
+
+        var builder = CorpusBuilder(version: localeVersion)
+
+        // Every declared source is registered in every locale, whether or not that locale
+        // draws on it. A few dozen bytes buys a stable source ID across the whole corpus,
+        // which is what makes "show me everything still derived from X" answerable.
+        var sourceIDs: [String: UInt32] = [:]
+        for record in manifest.sourceRecords {
+            sourceIDs[record.id] = builder.addSource(
+                id: record.id,
+                license: record.license,
+                url: record.url,
+                version: record.version,
+                retrieved: record.retrieved,
+                copyright: record.copyright ?? ""
+            )
+        }
+        guard let defaultSourceID = sourceIDs[manifest.sourceRecords[0].id] else {
+            fail("\(code): no sources declared in the manifest")
+        }
+
+        var compiler = LocaleCompiler(
+            attribution: manifest.attribution?[code] ?? [:],
+            defaultSourceID: defaultSourceID,
+            sourceIDs: sourceIDs,
+            keyTables: Set(manifest.keyTables ?? [])
+        )
+        compiler.emit(path: "", value: root, into: &builder)
+
+        let bytes = builder.build()
+
+        // Every blob is read back before being written. A corpus that cannot be loaded
+        // is worse than a build failure, because it surfaces at a user's first call.
+        let verified = try Corpus(bytes: bytes)
+        guard verified.version == localeVersion else {
+            fail(
+                "\(code): verification read-back produced \(verified.version), expected "
+                    + "\(localeVersion)")
+        }
+
+        let outURL = options.output.appendingPathComponent("\(code).decoy")
+        try Data(bytes).write(to: outURL)
+        totalBytes += bytes.count
+        allSkipped.append(contentsOf: compiler.stats.skipped)
+        compiled[code] = bytes
+
+        chains[code] = manifest.locales[code]?.chain ?? []
+        let idByNumber = Dictionary(uniqueKeysWithValues: sourceIDs.map { ($0.value, $0.key) })
+        usedSources[code] = Set(compiler.usedSourceIDs.compactMap { idByNumber[$0] })
     }
-
-    var compiler = LocaleCompiler(
-        attribution: manifest.attribution?[code] ?? [:],
-        defaultSourceID: defaultSourceID,
-        sourceIDs: sourceIDs,
-        keyTables: Set(manifest.keyTables ?? [])
-    )
-    compiler.emit(path: "", value: root, into: &builder)
-
-    let bytes = builder.build()
-
-    // Every blob is read back before being written. A corpus that cannot be loaded
-    // is worse than a build failure, because it surfaces at a user's first call.
-    let verified = try Corpus(bytes: bytes)
-    guard verified.version == localeVersion else {
-        fail(
-            "\(code): verification read-back produced \(verified.version), expected "
-                + "\(localeVersion)")
-    }
-
-    let outURL = options.output.appendingPathComponent("\(code).decoy")
-    try Data(bytes).write(to: outURL)
-    totalBytes += bytes.count
-    allSkipped.append(contentsOf: compiler.stats.skipped)
-    compiled[code] = bytes
-
-    let idByNumber = Dictionary(uniqueKeysWithValues: sourceIDs.map { ($0.value, $0.key) })
-    usedSources[code] = Set(compiler.usedSourceIDs.compactMap { idByNumber[$0] })
 }
 
 // MARK: - Swift locale modules
@@ -269,9 +347,23 @@ func emitSwiftModule(
     )
 }
 
+/// Expands the requested locales to include every locale their chains reach.
+@MainActor
+func closure(over requested: [String]) -> [String] {
+    var needed = Set<String>()
+    for code in requested { needed.formUnion(chains[code] ?? []) }
+    return needed.sorted()
+}
+
 if let swiftDirectory = options.emitSwift {
-    let wanted = manifest.closure(over: options.swiftLocales)
-    guard !wanted.isEmpty else { fail("--emit-swift requires --locales") }
+    guard !options.swiftLocales.isEmpty else { fail("--emit-swift requires --locales") }
+    let unknown = options.swiftLocales.filter { chains[$0] == nil }
+    guard unknown.isEmpty else {
+        fail(
+            "no such locale: \(unknown.joined(separator: ", ")). "
+                + "Known: \(chains.keys.sorted().joined(separator: ", "))")
+    }
+    let wanted = closure(over: options.swiftLocales)
 
     // A module SwiftPM does not know about is not a module: `--emit-swift --locales
     // pt_BR` wrote `Sources/DecoyLocalePT_BR/` with no matching target, so the directory
@@ -310,7 +402,7 @@ if let swiftDirectory = options.emitSwift {
 
     var emittedBytes = 0
     for code in wanted {
-        guard let bytes = compiled[code], let chain = manifest.locales[code]?.chain else {
+        guard let bytes = compiled[code], let chain = chains[code] else {
             fail("cannot emit \(code): it was not compiled")
         }
         // The union over the chain: `de_AT` resolves through `de` and `base`, so its
@@ -340,7 +432,7 @@ if let swiftDirectory = options.emitSwift {
         // order, and it is already known here — making the reader reconstruct it from the
         // manifest is the step where this goes wrong.
         let lines = undeclared.map { code -> String in
-            let chain = (manifest.locales[code]?.chain ?? []).dropFirst()
+            let chain = (chains[code] ?? []).dropFirst()
                 .map { "\"\(moduleSuffix($0))\"" }
                 .joined(separator: ", ")
             return "    (\"\(moduleSuffix(code))\", [\(chain)]),"
@@ -367,11 +459,15 @@ if let swiftDirectory = options.emitSwift {
     }
 }
 
-print("sources         : \(manifest.sourceSummary)")
-print("corpus version  : \(corpusVersion)")
-print("locales compiled: \(codes.count)")
-print("JSON in         : \(totalJSON / 1024) KB")
-print("binary out      : \(totalBytes / 1024) KB")
+if let compileSummary {
+    print("sources         : \(compileSummary.sources)")
+    print("corpus version  : \(compileSummary.version)")
+    print("locales compiled: \(compiled.count)")
+    print("JSON in         : \(totalJSON / 1024) KB")
+    print("binary out      : \(totalBytes / 1024) KB")
+} else {
+    print("locales read    : \(compiled.count) from \(options.input.path)")
+}
 
 if !allSkipped.isEmpty {
     print("\nskipped \(allSkipped.count) entries:")
