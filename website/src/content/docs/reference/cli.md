@@ -74,7 +74,6 @@ decoy-validate [--strict]
   --adapters <dir>     adapter programs        (default Tools/adapters/adapters)
   --licenses <dir>     committed licence texts (default LICENSES)
   --generators <dir>   Swift generator sources (default Sources/Decoy)
-  --manifest <file>    adapter output manifest (default Tools/adapters/out/manifest.json)
 ```
 
 It finds paths nothing can draw, template tokens that expand to nothing, generators

@@ -32,7 +32,6 @@ struct Options {
     var sources = URL(fileURLWithPath: "Tools/adapters/sources")
     var licenses = URL(fileURLWithPath: "LICENSES")
     var generators = URL(fileURLWithPath: "Sources/Decoy")
-    var manifest = URL(fileURLWithPath: "Tools/adapters/out/manifest.json")
     var strict = false
 }
 
@@ -43,7 +42,6 @@ let usage = """
       --sources <dir>      source descriptors      (default Tools/adapters/sources)
       --licenses <dir>     committed licence texts (default LICENSES)
       --generators <dir>   Swift generator sources (default Sources/Decoy)
-      --manifest <file>    adapter output manifest (default Tools/adapters/out/manifest.json)
       --strict             treat warnings as failures
 
     Run from the repository root. Checks a contribution before it lands: paths nothing
@@ -69,7 +67,6 @@ func parseOptions() -> Options {
         case "--sources": options.sources = value("--sources")
         case "--licenses": options.licenses = value("--licenses")
         case "--generators": options.generators = value("--generators")
-        case "--manifest": options.manifest = value("--manifest")
         case "--strict":
             options.strict = true
             i += 1
@@ -462,15 +459,32 @@ for adapter in Adapters.all {
     }
 }
 
-// Which sources actually claimed a path, taken from the pipeline's own output rather
-// than from the adapter text. An adapter that names its source in a computed expression
-// — wordnet reads fifteen members from a table — cannot be read statically, and the
-// manifest records what really happened either way.
-if let data = try? Data(contentsOf: options.manifest),
-    let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-    let attribution = object["attribution"] as? [String: [String: String]]
-{
-    let contributing = Set(attribution.values.flatMap(\.values))
+// Which sources actually claimed a path, read off the blobs rather than the adapter
+// text. An adapter that names its source in a computed expression — wordnet reads
+// fifteen members from a table — cannot be read statically, and every table in the
+// corpus carries the id it was attributed to either way.
+//
+// This used to come from the pipeline manifest, which exists only after a rebuild. On a
+// push CI tests the committed corpus without rebuilding it, so the check warned that it
+// had nothing to read and `--strict` failed the job on the warning: the whole tool went
+// red for a file the job was never going to have. The blobs are what ships and are always
+// present, so they answer the question directly.
+var contributing = Set<String>()
+for corpus in corpora.values {
+    var ids = Set<UInt32>()
+    for entry in (try? corpus.paths) ?? [] {
+        switch try? corpus.entry(for: entry) {
+        case .strings(let table)?: ids.insert(table.sourceID)
+        case .composite(let table)?: ids.insert(table.sourceID)
+        case .model(let model)?: ids.insert(model.sourceID)
+        case .explicitlyEmpty?, nil: break
+        }
+    }
+    for id in ids {
+        if let source = try? corpus.source(id) { contributing.insert(source.id) }
+    }
+}
+if !corpora.isEmpty {
     for id in descriptors.keys.sorted() where !contributing.contains(id) {
         if descriptors[id]?.authored == true { continue }
         // A source can legitimately claim nothing: the format stores one source id per
@@ -501,11 +515,6 @@ if let data = try? Data(contentsOf: options.manifest),
             "the corpus attributes data to '\(id)', which has no descriptor — that data "
                 + "ships with no licence, version or URL recorded")
     }
-} else {
-    report(
-        .warning, "adapter",
-        "no manifest at \(options.manifest.path), so nothing checked which sources actually "
-            + "contributed. Run `swift run decoy-build-corpus` first.")
 }
 
 // MARK: - Check: every template token expands to something
