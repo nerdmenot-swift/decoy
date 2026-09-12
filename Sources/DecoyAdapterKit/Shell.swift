@@ -19,11 +19,15 @@ public enum Shell {
 
     public enum Failure: Error, CustomStringConvertible {
         case toolMissing(String)
+        /// The platform cannot launch a subprocess at all.
+        case noSubprocesses
 
         public var description: String {
             switch self {
             case .toolMissing(let tool):
                 return "`\(tool)` is not on PATH, and the corpus build needs it to unpack archives"
+            case .noSubprocesses:
+                return "this platform cannot run a subprocess, so the corpus cannot be built on it"
             }
         }
     }
@@ -119,9 +123,19 @@ public enum Shell {
     }
 
     /// Runs a tool, returning its exit status and what it wrote where.
+    ///
+    /// Guarded because this library is compiled for platforms it will never run on. The
+    /// pipeline is host-only, but SwiftPM has no way to say so: a package builds every
+    /// target for every platform it is asked about, and the Swift Package Index asks about
+    /// iOS, tvOS, watchOS and visionOS. `Process` does not exist there, so without the guard
+    /// this one call failed the whole package's compatibility check for every Apple platform
+    /// but macOS -- including `Decoy` itself, which imports none of this.
     public static func run(
         _ tool: String, _ arguments: [String], captureOutput: Bool = false
     ) throws -> (status: Int32, output: Data, stderr: String) {
+        #if os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
+        throw Failure.noSubprocesses
+        #else
         guard let executable = locate(tool) else { throw Failure.toolMissing(tool) }
 
         let process = Process()
@@ -141,5 +155,6 @@ public enum Shell {
         process.waitUntilExit()
 
         return (process.terminationStatus, output, String(decoding: stderr, as: UTF8.self))
+        #endif
     }
 }

@@ -123,7 +123,11 @@ public struct ArtifactStore: Sendable {
                 // service that was back within the minute — and a fetch is the cheapest
                 // part of a job that takes ten, so patience costs nothing and impatience
                 // costs a red build somebody has to read and dismiss.
-                try await Task.sleep(nanoseconds: UInt64(5_000_000_000 * (attempt + 1)))
+                //
+                // `Duration` rather than nanoseconds: the multiplication used to happen in
+                // `Int`, which is 32 bits on watchOS, where five seconds of nanoseconds does
+                // not fit and the literal failed to compile.
+                try await Task.sleep(for: .seconds(5 * (attempt + 1)))
             }
         }
         throw Failure.unreachable(url: url, attempts: attempts, last: last)
