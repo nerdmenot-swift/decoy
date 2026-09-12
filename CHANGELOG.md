@@ -15,6 +15,44 @@ below, and anything that alters drawn values says so in bold.
 
 Entries are grouped by the corpus version in force when they landed.
 
+## 1.1.2 — 2026-09-12
+
+**Identical to 1.1.1 for anyone using the library.** No API change, no corpus change —
+still 64.0.0 — and no difference in a single generated value.
+
+It exists so that the Swift Package Index can build the package. The index compiles every
+target for every platform it checks, and the corpus pipeline — host-only by design — did
+not compile for iOS, tvOS, watchOS, visionOS or Wasm, so the whole package showed as
+incompatible with all of them, `Decoy` included. An app that imported `Decoy` on iOS was
+never affected; SwiftPM builds only the targets a consumer depends on. The compatibility
+report was wrong about the library because it was right about the tools.
+
+### Fixed
+
+- `DecoyAdapterKit` compiles on platforms that cannot launch a subprocess or open a
+  connection. `Package.swift` defines `DECOY_PIPELINE_HOST` for the three platforms the
+  corpus is built on; the one place that runs a tool and the one place that makes an HTTP
+  request throw everywhere else, before doing anything. Every request now goes through
+  that one place, which also puts the conditional `FoundationNetworking` import in a
+  single file — the import that, forgotten, broke the Linux build twice before.
+- A retry delay multiplied nanoseconds in `Int`, which is 32 bits on watchOS, where five
+  seconds does not fit. It sleeps for a `Duration` now.
+
+### Changed
+
+- `decoy-compile-corpus --from-corpus <dir>` re-emits the Swift locale modules from
+  compiled blobs, with no pipeline output needed. CI checks the committed modules against
+  the committed corpus with it, and it is also how to embed a locale from a fresh checkout
+  — which the locales guide already described, with a command that could not have worked.
+- `decoy-validate` reads which sources contributed from the blobs rather than from the
+  pipeline manifest, so `--strict` no longer fails on a fresh checkout for want of a file
+  the check never needed. The `--manifest` option is gone.
+- The release workflow regenerates the website content that embeds the version, so a
+  release commit no longer leaves `main` red and the site announcing the previous number.
+  It also tests the committed corpus rather than rebuilding it, which Release already did
+  and Prepare did not.
+- README badges: release, CI, Swift versions, platforms, documentation and licence.
+
 ## 1.1.1 — 2026-09-09
 
 **Identical to 1.1.0 for anyone using the library.** No API change, no corpus change —

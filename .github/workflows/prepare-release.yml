@@ -61,38 +61,47 @@ jobs:
             Sources/Decoy/Decoy.swift
           grep -n 'static let version' Sources/Decoy/Decoy.swift
 
-      # The tag is what people install, so it is cut from a commit that is known to build
-      # and pass rather than one that is merely well-formed.
-      - name: Cache pinned upstreams
-        uses: actions/cache@v6
+      # The version is embedded in generated website content -- the API index and the
+      # samples both say which Decoy produced them -- so bumping it makes those files
+      # stale. 1.1.1 committed only Decoy.swift, main went red on the "Website content is
+      # current" check, and the site would have shipped the new version's docs under the
+      # old number. Regenerated here so the release commit carries everything the bump
+      # touches. Pinned bun, as in ci.yml.
+      - uses: oven-sh/setup-bun@v2
         with:
-          path: Tools/adapters/.cache
-          key: corpus-sources-${{ runner.os }}-${{ hashFiles('Tools/adapters/sources/*.json') }}
+          bun-version: 1.4.0
 
       - run: swift build
 
-      # Built before testing, for the reason Release states and this workflow originally
-      # missed: about thirty suites are gated on the corpus and *skip* without one, so
-      # `swift test` alone would gate the tag on the ten-path stub. Two suites fail rather
-      # than skip -- they check they actually compared something -- which is how the hole
-      # was found, on the first real release.
+      - name: Regenerate website content
+        run: cd website && bun install --frozen-lockfile && bun run extract
+
+      # The tag is what people install, so it is cut from a commit that is known to build
+      # and pass rather than one that is merely well-formed.
       #
-      # Corpus/binary is committed, but the intermediate under Tools/adapters/out is not,
-      # and that is what the parity and manifest suites read.
-      - name: Build corpus
+      # Tested against the committed corpus, not a rebuilt one, for the reason Release
+      # gives: rebuilding made every release hostage to fifty-four upstreams being
+      # reachable and byte-identical, and tested a corpus no user receives. The suites that
+      # need the pipeline's intermediate output skip when it is absent and say so.
+      - name: The committed corpus is present
         run: |
-          swift run -c release decoy-build-corpus
-          swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary
+          count=$(ls Corpus/binary/*.decoy 2>/dev/null | wc -l | tr -d ' ')
+          [ "$count" -gt 50 ] || { echo "::error::only $count corpus blobs found; the integration suites would skip and this release would gate on almost nothing."; exit 1; }
+          echo "$count locale blobs"
 
       - run: swift test
 
-      # The corpus build writes into the working tree. Only the version bump may be
-      # committed, so anything the build regenerated is discarded before staging -- a tag
-      # that quietly carries a rebuilt corpus is a different release than the one reviewed.
+      # Only the version bump and what it regenerates may be committed. A tag that quietly
+      # carries anything else is a different release than the one reviewed.
       - name: Working tree carries only the version change
         run: |
-          git checkout -- Corpus/binary || true
           git status --short
+          unexpected=$(git status --short | grep -vE ' (Sources/Decoy/Decoy.swift|website/src/)' || true)
+          if [ -n "$unexpected" ]; then
+            echo "::error::The release would carry changes beyond the version bump:"
+            echo "$unexpected"
+            exit 1
+          fi
 
       - name: Commit and tag
         if: ${{ !inputs.dry-run }}
@@ -100,7 +109,7 @@ jobs:
           version="${{ inputs.version }}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add Sources/Decoy/Decoy.swift
+          git add Sources/Decoy/Decoy.swift website/src
 
           # The version may already be correct -- someone can have bumped it in a normal
           # commit, which is how 1.0.0 was prepared. `git commit` on an empty index exits
@@ -142,4 +151,4 @@ jobs:
         if: ${{ inputs.dry-run }}
         run: |
           echo "Dry run. Would commit and tag v${{ inputs.version }}:"
-          git --no-pager diff -- Sources/Decoy/Decoy.swift
+          git --no-pager diff -- Sources/Decoy/Decoy.swift website/src

@@ -12,7 +12,8 @@ fixtures.
 
 Reproducible by construction, portable across macOS, Linux, and Windows.
 
-> **Status: 1.0.0.** Tagged and published; the tag will not move.
+> **Status: released.** The badge above is the current version. A tag never moves once
+> it is published.
 >
 > The corpus versions *separately*, and each locale now carries its own number, so adding
 > Hindi does not renumber English. A corpus bump changes what a given seed draws, so pin
