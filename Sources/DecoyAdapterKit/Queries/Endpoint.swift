@@ -1,10 +1,5 @@
 import Foundation
 
-// URLSession lives in a separate module off Apple platforms, the same as in ArtifactStore.
-#if canImport(FoundationNetworking)
-    import FoundationNetworking
-#endif
-
 /// The two endpoints that answer a query rather than publish a file.
 ///
 /// Every other source Decoy uses is a URL with an integrity hash, which is what makes a
@@ -54,21 +49,20 @@ public enum Endpoint {
         guard let url = URL(string: "\(wikidata)?query=\(encode(query))") else { return nil }
 
         for attempt in 0..<attempts {
-            var request = URLRequest(url: url)
-            request.setValue("application/sparql-results+json", forHTTPHeaderField: "Accept")
-            request.setValue(agent, forHTTPHeaderField: "User-Agent")
-            // URLSession's default is sixty seconds, and the heavy queries sit right on it:
-            // Spanish surnames take forty-nine on a good day. Exceeding it does not read as
-            // a timeout — the body arrives truncated and fails to parse, so the retry sees
-            // "malformed JSON" and tries again into the same wall, four times, and the run
-            // dies claiming the endpoint gave up. It had not; we hung up on it.
-            request.timeoutInterval = 300
-
             do {
-                let (data, response) = try await URLSession.shared.data(for: request)
-                let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+                // URLSession's default is sixty seconds, and the heavy queries sit right on
+                // it: Spanish surnames take forty-nine on a good day. Exceeding it does not
+                // read as a timeout — the body arrives truncated and fails to parse, so the
+                // retry sees "malformed JSON" and tries again into the same wall, four
+                // times, and the run dies claiming the endpoint gave up. It had not; we
+                // hung up on it.
+                let response = try await HTTP.send(
+                    url,
+                    headers: ["Accept": "application/sparql-results+json", "User-Agent": agent],
+                    timeout: 300)
+                let status = response.status
                 if (200..<300).contains(status),
-                    let body = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+                    let body = try JSONSerialization.jsonObject(with: response.body) as? [String: Any],
                     let results = body["results"] as? [String: Any],
                     let bindings = results["bindings"] as? [[String: Any]]
                 {
@@ -100,16 +94,13 @@ public enum Endpoint {
         else { return nil }
 
         for attempt in 0..<attempts {
-            var request = URLRequest(url: target)
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue(agent, forHTTPHeaderField: "User-Agent")
-            request.httpBody = payload
-
             do {
-                let (data, response) = try await URLSession.shared.data(for: request)
-                let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-                if (200..<300).contains(status), let decoded = try? OrderedJSON.parse(data) {
+                let response = try await HTTP.send(
+                    target, method: "POST",
+                    headers: ["Content-Type": "application/json", "User-Agent": agent],
+                    body: payload)
+                let status = response.status
+                if (200..<300).contains(status), let decoded = try? OrderedJSON.parse(response.body) {
                     return decoded
                 }
                 log("  HTTP \(status), retrying")
@@ -123,10 +114,8 @@ public enum Endpoint {
 
     /// One GET, decoded as JSON, or a message saying what went wrong.
     ///
-    /// Here rather than in the fetcher because `URLSession` lives in a separate module off
-    /// Apple platforms, and a caller that forgets the conditional import compiles on macOS
-    /// and fails on Linux and Windows — which it did, twice. Nothing outside this file
-    /// needs to know that.
+    /// Here rather than in the fetcher so that every request the pipeline makes goes
+    /// through `HTTP.send`, which is where the platform differences live.
     public enum RequestFailure: Error, CustomStringConvertible {
         case status(Int)
         case transport(String)
@@ -140,14 +129,13 @@ public enum Endpoint {
     }
 
     public static func json(from url: URL) async throws -> Any {
-        var request = URLRequest(url: url)
-        request.setValue(agent, forHTTPHeaderField: "User-Agent")
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-            guard (200..<300).contains(status) else { throw RequestFailure.status(status) }
-            return try JSONSerialization.jsonObject(with: data)
+            let response = try await HTTP.send(
+                url, headers: ["User-Agent": agent, "Accept": "application/json"])
+            guard (200..<300).contains(response.status) else {
+                throw RequestFailure.status(response.status)
+            }
+            return try JSONSerialization.jsonObject(with: response.body)
         } catch let failure as RequestFailure {
             throw failure
         } catch {

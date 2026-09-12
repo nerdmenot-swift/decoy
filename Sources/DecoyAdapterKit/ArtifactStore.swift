@@ -1,9 +1,5 @@
 import Foundation
 
-#if canImport(FoundationNetworking)
-    import FoundationNetworking
-#endif
-
 /// Resolves a pinned artifact to a file on disk: cache, then vendor, then the network.
 ///
 /// The order is deliberate. A cached copy is
@@ -101,19 +97,22 @@ public struct ArtifactStore: Sendable {
         var last = "no response"
         for attempt in 0..<attempts {
             do {
-                var request = URLRequest(url: target)
-                request.setValue(
-                    "DecoyCorpusBuild/1.0 (https://github.com/nerdmenot-swift/decoy)",
-                    forHTTPHeaderField: "User-Agent")
-                let (data, response) = try await URLSession.shared.data(for: request)
-                let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-                if (200..<300).contains(status) { return [UInt8](data) }
+                let response = try await HTTP.send(
+                    target,
+                    headers: [
+                        "User-Agent": "DecoyCorpusBuild/1.0 (https://github.com/nerdmenot-swift/decoy)"
+                    ])
+                let status = response.status
+                if (200..<300).contains(status) { return [UInt8](response.body) }
                 last = "\(url) returned HTTP \(status)"
                 if (400..<500).contains(status) {
                     throw Failure.unreachable(url: url, attempts: attempt + 1, last: last)
                 }
             } catch let failure as Failure {
                 throw failure
+            } catch let failure as HTTP.Failure {
+                // Not a transient condition; retrying would only wait two minutes to say so.
+                throw Failure.unreachable(url: url, attempts: attempt + 1, last: failure.description)
             } catch {
                 last = error.localizedDescription
             }

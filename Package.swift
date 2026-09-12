@@ -83,7 +83,15 @@ let package = Package(
         .target(
             name: "DecoyAdapterKit",
             dependencies: ["Decoy"],
-            swiftSettings: [.swiftLanguageMode(.v6)]
+            swiftSettings: [
+                .swiftLanguageMode(.v6),
+                // The platforms the corpus is built on. The kit compiles everywhere the
+                // package is checked for compatibility -- iOS, watchOS, Wasm, Android --
+                // and on those it cannot launch a subprocess or open a connection, so
+                // the two places that do are guarded on this rather than on a list of
+                // operating systems that would go stale.
+                .define("DECOY_PIPELINE_HOST", .when(platforms: [.macOS, .linux, .windows])),
+            ]
         ),
         .target(
             name: "Decoy",
