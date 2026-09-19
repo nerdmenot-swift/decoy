@@ -22,7 +22,12 @@
     "One nuance worth stating rather than glossing: the State of Israel retains copyright in",
     "the data. Decoy is distributed under Apache-2.0 and the data travels with it under its",
     "own terms, credited in NOTICE -- Apache-2.0 governs the code and does not require Decoy",
-    "to own what it ships."
+    "to own what it ships.",
+    "",
+    "Re-pinned 2026-09-19. CBS re-published the file on 2026-09-07 with its SharePoint",
+    "catalogue terms trimmed; every worksheet and the shared-strings table are byte-identical",
+    "to the 2026-08-10 copy, so the retrieval date stands -- it is still when these names",
+    "and counts were taken."
   ],
   "artifacts": [
     {
@@ -30,7 +35,7 @@
       "format": "file",
       "filename": "shemot.xlsx",
       "url": "https://www.cbs.gov.il/he/mediarelease/DocLib/2025/391/11_25_391t1.xlsx",
-      "integrity": "sha512-nF930PBheCJw/nR8I6KogObLpFMR8l0+8KcQLoKdW2UVLC7Grmu/JtpgtC9bqqssN2/KgP5bPNFB3+lMi3b1nA=="
+      "integrity": "sha512-h3UkaFAcTrmoy8bw/TlvivA3htTyRyA0Mb4ffKxB2PQgpdlobRfP7R7dnCwKq1ki8U798Oh2DBoR3qh/fK+CNw=="
     }
   ]
 }
