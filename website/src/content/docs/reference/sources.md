@@ -34,7 +34,7 @@ diff. Two are written here, and say so.
 | `ine-apellidos` | [Frecuencia de apellidos (Instituto Nacional de Estadística)](https://www.ine.es/dyngs/INEbase/es/operacion.htm?c=Estadistica_C&cid=1254736177009) | `CC-BY-4.0` | 2026-08-19 |
 | `ine-nombres` | [Nombres por edad media (Instituto Nacional de Estadística), census 01/01/2025](https://www.ine.es/daco/daco42/nombyapel/nombyapel2.htm) | `CC-BY-4.0` | 2026-08-10 |
 | `insee-prenoms` | [INSEE — Fichier des prénoms depuis 1900](https://www.insee.fr/fr/statistiques/7633685) | `LicenseRef-EtalabOpenLicence-2.0` | 2026-08-09 |
-| `iso-4217-six` | [ISO 4217 currency list (SIX Group), published 2026-01-01](https://www.six-group.com/en/products-services/financial-information/data-standards.html) | `public-facts` | 2026-08-06 |
+| `iso-4217-six` | [ISO 4217 currency list (SIX Group), published 2026-09-17](https://www.six-group.com/en/products-services/financial-information/data-standards.html) | `public-facts` | 2026-10-04 |
 | `ldnoobw` | [List of Dirty, Naughty, Obscene and Otherwise Bad Words](https://github.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words) | `CC-BY-4.0` | 2026-08-09 |
 | `libaddressinput` | [Google libaddressinput (countryinfo.txt)](https://github.com/google/libaddressinput) | `Apache-2.0` | 2026-08-09 |
 | `libphonenumber` | [Google libphonenumber (PhoneNumberMetadata.xml)](https://github.com/google/libphonenumber) | `Apache-2.0` | 2026-08-09 |

@@ -1,6 +1,6 @@
 {
   "id": "iso-4217-six",
-  "name": "ISO 4217 currency list (SIX Group), published 2026-01-01",
+  "name": "ISO 4217 currency list (SIX Group), published 2026-09-17",
   "license": "public-facts",
   "mergedInto": "cldr-48",
   "mergedIntoNote": [
@@ -15,8 +15,8 @@
   ],
   "copyright": "",
   "url": "https://www.six-group.com/en/products-services/financial-information/data-standards.html",
-  "version": "2026-01-01",
-  "retrieved": "2026-08-06",
+  "version": "2026-09-17",
+  "retrieved": "2026-10-04",
   "note": [
     "SIX Group is the ISO 4217 maintenance agency -- this is the registry itself, not a",
     "redistribution of it. Taken over the LGPL-licensed iso-codes package and over MIT",
@@ -31,7 +31,14 @@
     "The URL is unversioned and changes in place, but the document declares its own",
     "publication date in the `Pblshd` attribute, and the adapter asserts that date",
     "matches `version` below. A republication therefore fails the integrity check first",
-    "and the date assertion second, rather than silently changing everyone's fixtures."
+    "and the date assertion second, rather than silently changing everyone's fixtures.",
+    "",
+    "Re-pinned 2026-10-04 for the 2026-09-17 republication. The only change to the data is",
+    "that two entries gained `IsFund=\"true\"`, the Arab Accounting Dinar and Uruguay's",
+    "Unidad Previsional. All 280 entries carry the same code, numeric code, name and minor",
+    "units as before; the adapter reads `CcyNbr` and ignores `IsFund`, so no drawn value",
+    "moves. The version bump is visible in every blob's provenance, which is where the",
+    "republication should show."
   ],
   "artifacts": [
     {
@@ -39,7 +46,7 @@
       "format": "file",
       "filename": "list-one.xml",
       "url": "https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml",
-      "integrity": "sha512-Qgrj50017JQ/nhvXOFYBozoaLsz4DWckUsg8Xs9I/xZ8taB3cQIO/QYzg7j5qnns2wAnX06ciHUxMucztFN2dg=="
+      "integrity": "sha512-Q1n0peTLxwvld5gNAxm2M9v7va8RyGE6Hj6PE6MAmqwhgs5n4CNJW6f0wBXJ4lg7rqLbTud96jN/7weo0obExA=="
     }
   ]
 }
