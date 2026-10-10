@@ -118,8 +118,33 @@ public enum Shell {
         #if os(Windows)
             return ("tar", ["-xOf", archive, name])
         #else
-            return ("unzip", ["-p", archive, name])
+            // `unzip` reads its member argument as a shell-style pattern, so a name
+            // containing brackets matches nothing: every xlsx has a `[Content_Types].xml`
+            // at its root, and asking for it by name returned "filename not matched" until
+            // the brackets were escaped. bsdtar on Windows takes the name literally.
+            let escaped = name.map { character -> String in
+                "[]*?".contains(character) ? "\\\(character)" : String(character)
+            }.joined()
+            return ("unzip", ["-p", archive, escaped])
         #endif
+    }
+
+    /// The names of every member of a zip, one per line.
+    ///
+    /// `unzip -Z1` rather than `-l`, whose listing carries sizes and timestamps that would
+    /// have to be parsed back off. bsdtar's `-tf` prints the same bare names on Windows.
+    public static func zipListing(of archive: String) throws -> [String] {
+        #if os(Windows)
+            let (tool, arguments) = ("tar", ["-tf", archive])
+        #else
+            let (tool, arguments) = ("unzip", ["-Z1", archive])
+        #endif
+        let result = try run(tool, arguments, captureOutput: true)
+        guard result.status == 0 else { return [] }
+        return String(decoding: result.output, as: UTF8.self)
+            .split(separator: "\n", omittingEmptySubsequences: true)
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
     }
 
     /// Runs a tool, returning its exit status and what it wrote where.

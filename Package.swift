@@ -56,6 +56,7 @@ let package = Package(
         .executable(name: "decoy-compile-corpus", targets: ["DecoyCorpusCompiler"]),
         .executable(name: "decoy-inspect", targets: ["DecoyCorpusInspector"]),
         .executable(name: "decoy-validate", targets: ["DecoyCorpusValidator"]),
+        .executable(name: "decoy-repin", targets: ["DecoyRepin"]),
         .library(name: "DecoyLocales", targets: ["DecoyLocales"]),
     ] + localeProducts,
     targets: [
@@ -136,6 +137,14 @@ let package = Package(
         .executableTarget(
             name: "DecoyCorpusInspector",
             dependencies: ["Decoy", "DecoyCorpusKit"],
+            swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
+        // Re-pins an upstream that moved, classifying the change first: container metadata,
+        // document content, or extracted data. The third it refuses, because adopting one is
+        // a corpus version decision.
+        .executableTarget(
+            name: "DecoyRepin",
+            dependencies: ["Decoy", "DecoyAdapterKit"],
             swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         // Checks a contribution before it lands: paths nothing draws, template tokens
