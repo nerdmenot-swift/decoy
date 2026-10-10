@@ -1,0 +1,179 @@
+{
+  "_comment" : [
+    "What each pinned artifact said last time somebody looked, and what was decided.",
+    "",
+    "`artifacts` records the content digest -- a canonical rendering of everything the",
+    "file states, not just the values an adapter reads -- beside the byte digest seen at",
+    "the time. A run whose bytes no longer match the descriptor compares content against",
+    "this: equal means only the container's own metadata moved and the run continues;",
+    "different means the document says something new and the run stops. `view` names the",
+    "recipe, so changing a renderer invalidates these rather than silently comparing old",
+    "digests against new rules.",
+    "",
+    "`deferred` records a data change that was understood and deliberately not adopted,",
+    "with the day it was first seen and the day the deferral expires. Past that date the",
+    "check fails: a snapshot may lag an upstream on purpose, but not by forgetting.",
+    "",
+    "Written by `decoy-repin`, never by hand."
+  ],
+  "artifacts" : {
+    "az-adlar/azerbaijani-names" : {
+      "bytes" : "8LlKj4WLU977PR9B+Z04VXdldl+RaqKBhiOxJQBgiYdZW6cpq030vdU3dYu5BGSqMfKknEsqDiAj+F4wtUpVjQ==",
+      "content" : "mLLfk+6iDzIt+obxvQMALMa8k2RH71x7/J49+zMT+dzGAE3rReUP8daZZkRBlVDT4EsxW/+UI41Dsqxajnx05w==",
+      "note" : "recorded from the pinned bytes (array of 5039)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "json/v1"
+    },
+    "cbs-shemot/israeli-names" : {
+      "bytes" : "h3UkaFAcTrmoy8bw/TlvivA3htTyRyA0Mb4ffKxB2PQgpdlobRfP7R7dnCwKq1ki8U798Oh2DBoR3qh/fK+CNw==",
+      "content" : "7Rg1/MJjVieme6L5DHY4jkWTVqhspyil1XK3hHtSWUtTMYd5tI3uVgQx1GSVJxneuEJmChfCXPjnWZBHL43R5g==",
+      "note" : "recorded from the pinned bytes (18 members)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "zip-container/v1"
+    },
+    "dvv-etunimet/finnish-names" : {
+      "bytes" : "WeJDrOnl6oHKVRFlqVqW7XK6S+Ot7I4wNTiR0sespuTpYRLCwqo0IvX+329r6ub5xCtsqsJuiNSrb2H32wpI0Q==",
+      "content" : "WsSK50/l5h4f6R1/eRpc6lyi7QaBjdYVDY72c62qrvWyFOKlIT9+C5w7qQU+weN7s2IH13t3CjoGfdLWmNiTBg==",
+      "note" : "recorded from the pinned bytes (18 members)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "zip-container/v1"
+    },
+    "gleif-elf/list" : {
+      "bytes" : "nCPStbTvaa8XpO9+Jd8Ia36j5AH0WIdmnhTtOigsMefy38DZDFO7qW/fipDEQRchuczlepYbFLVl9MOsYZzowg==",
+      "content" : "s6ymqIL+Wh7Yr2bQpc9QOXsNQHfY2XmCajacsOSM5WON9x+KxQC/1dEQcdgvFfBxrNAY37BDTxlfnDA3Sao+wQ==",
+      "note" : "recorded from the pinned bytes (4003 lines)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "lines/v1"
+    },
+    "iana-http-status/status" : {
+      "bytes" : "sgVI4U86FRNwbaaT4xDiDYBf+71N+NaNhuJjMhAt+cjCiEXEHbjKcATY3UGH3uMDm2YN6Nlq+a4vXOn/pL8L7g==",
+      "content" : "kijMqmY0YSUltckEB4cb4LkCvWQ/Itef0ESYVFAID0YRm3QsnLR5xl2Ag4pQD2xKWB+6wcSbstucmckvpDUdeA==",
+      "note" : "recorded from the pinned bytes (76 lines)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "lines/v1"
+    },
+    "iana-jose/jose" : {
+      "bytes" : "oVWxcyvHEOLcUlt50fH9HFSxwA6g3x/yI2TI3WnJ24NbGX18sI2XI+d32sYmIP9E28kpXbC6BE3K/29dJUM1jw==",
+      "content" : "QNcFEMbL3F315GtmbOkCyBSzsTBZ9rS2s+5Vecuf4tbqCepUxEHToMmxux0xDc8mpudHYXrBYp3u8UWqVUdY9g==",
+      "note" : "recorded from the pinned bytes (54 lines)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "lines/v1"
+    },
+    "iana-tld/tlds" : {
+      "bytes" : "aCqPvOus1kgTV2ngAF5HtR4D2foe80rqUCqR9fIwj+svOxPjgDrPORVtnDgvtQsMwKHFjgTUQGF8CJTcn+tq8A==",
+      "content" : "sXIToezPNSVCquYVtme9gz9Tqf7CLkgrcC4qH1G9N09pktOdHAWqs461aGHjfpy0IQp+vQWGBPFnQ18S9Xs87g==",
+      "note" : "recorded from the pinned bytes (1438 lines)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "lines/v1"
+    },
+    "ine-nombres/spanish-names" : {
+      "bytes" : "kirLf/oL+61L6eH1lF5rvnDZC/PJH+8Z3iQKodWPDxdNwiNlLVkvJ3dkEZKFdQVRjLdTUAVKTmyU978aeu+KFg==",
+      "content" : "Mw+4EBuLF7ZyVweniSGtLLCMhxg66o/6Ge14DVfHpWW3I/1utpDoBntQRoAqYsV6+WJLSniUipdrGY043rvbUQ==",
+      "note" : "recorded from the pinned bytes (13 members)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "zip-container/v1"
+    },
+    "iso-4217-six/list" : {
+      "bytes" : "Q1n0peTLxwvld5gNAxm2M9v7va8RyGE6Hj6PE6MAmqwhgs5n4CNJW6f0wBXJ4lg7rqLbTud96jN/7weo0obExA==",
+      "content" : "QVo0pe0LwGOZ156inPHITB1JaPBZvw8A8nveLaQ42MB9t4r+Rpb7lX1QDpYG/Qw4wj5scTLeHvhUdMb4ILlA5Q==",
+      "note" : "recorded from the pinned bytes (1673 elements)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "xml/v1"
+    },
+    "libaddressinput/countryinfo" : {
+      "bytes" : "iiXe0jj+Lre9e6AvqZnLibj/yLOIcuLY9dzvPPgr+espCVNAFH+fsSjV0B6pQZ+0CDgZBkatsNqwA8LGg6TaLg==",
+      "content" : "NXWKmmOIVbPiiQbSxf/TK8we1srxHjDCSz3r66ZBw8hvwmxYJG19p8+14LBDg2xxFgzq8lG5YSmsbmrExgCN1A==",
+      "note" : "recorded from the pinned bytes (11701 lines)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "lines/v1"
+    },
+    "libphonenumber/metadata" : {
+      "bytes" : "WeXAyeZ3ShTd1ft6ybhDz3UrEjr4mS48Qqx75GJdpiomjZmXdDV3wo1VQeehw5YlaVxPnWPhlcuIt8WkBiLHuw==",
+      "content" : "9FgWhFp8AeQxZOPVVcHqiHnD/ZjVmT5QFnePaaUsx7wSbq4NlhXAyprldTWA7CPRj7gteEODon0GkHFE2BfMzg==",
+      "note" : "recorded from the pinned bytes (8118 elements)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "xml/v1"
+    },
+    "moi-surnames/taiwanese-surnames" : {
+      "bytes" : "xdtJIZovY34rCqq6Sd7UHoHlZiKoQxX5HSOq81V1hkCp/z0JGpBz3QuhAe4F48n0cRzd35xaC/MmNY9LDh2Pig==",
+      "content" : "v9Xj9Wx6yXFA0WuNrbSeiZkdLYyicyN1vsrcsV6/LO1YTTc9pODH2F0QbrWKRLiPffMxrJlj2pvUKf1VhgfVrg==",
+      "note" : "recorded from the pinned bytes (8194 lines)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "lines/v1"
+    },
+    "ons-baby-names/uk-names" : {
+      "bytes" : "x33vdjdCkB9XTZXT2tqycj5A0aj3wL5O2TLA1YofzAHO4FkPDipOgXCQlWs/PCMFEcG76hQ2qwSqUHB8rdODQQ==",
+      "content" : "gbMI2c13ZOtvYPPlJR5Ql/udr+46W2qcv4OkkAPPEtVFepFAGu5WoUVSnp1Nte891lsltfSAjFzUH/g0TllF1w==",
+      "note" : "recorded from the pinned bytes (25 members)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "zip-container/v1"
+    },
+    "pesel-imiona/polish-female" : {
+      "bytes" : "NNxctmXqfFzOQudJgDAcL6l1KYgjFpxlqZbOi2ithM3mZTuiVUubLWzJZvNbHxJZ4a+WgJADmI9T14IOsDjzXg==",
+      "content" : "CG82dUVEWCbc6Bo/qM2MhBmkMc2iZ6boNWOhIEKKH5j9ssLBkQ0EYyxo1P2+U5h6nEBLcAETPPbVZczaDN0kuA==",
+      "note" : "recorded from the pinned bytes (28787 lines)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "lines/v1"
+    },
+    "pesel-imiona/polish-male" : {
+      "bytes" : "A8+ysxRISafO0FMADm64qs7B3DzKnUW7dnOysCJYm2zmdTXON860caI7A1nrH7+vWuGfGjXBntDh+ZlEw3XgeQ==",
+      "content" : "PEwGenMI/EZ80tNGIvQTswP8G7UJCLtfanxrsqmQhLKnOkDzeoIo8DzK79aEwypc9BMqC+P2rAETb3q3H8p9GA==",
+      "note" : "recorded from the pinned bytes (46203 lines)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "lines/v1"
+    },
+    "popular-names/forenames" : {
+      "bytes" : "hAimfo0aqLbkkKKZt+LYdGFNrMvduvDtJEalEmGpaH8VDUlBc+/d0KsQ86vtHJFcnlDCQPBbRr/oLFQS8+WqoA==",
+      "content" : "IYJggB9oLI9GaTpAAra7b9AkYWCF9H73RkdK7D/lcNIJBhMvW2tqX01KXtPPUd7s0eNyjcZ07O7yIOAUOXwHwQ==",
+      "note" : "recorded from the pinned bytes (2481 lines)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "lines/v1"
+    },
+    "popular-names/surnames" : {
+      "bytes" : "YxEPlAbJpJcTvzXw8N/7+gprMWQfYvhze6OUUBgk6jvGySeidAaYDGUEt8k3tqdarcOSN070vbef4+nA8ZmMSg==",
+      "content" : "OfhlpEDUdpB1siaGMGdfXZLi8lI3VQbHP53+qcOZY8+YSiQarG98rGLMdEinjIwN4w7mAW2kZiyltHFR2Tp62Q==",
+      "note" : "recorded from the pinned bytes (2577 lines)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "lines/v1"
+    },
+    "pubchem/table" : {
+      "bytes" : "gWCcs1r8TnsB9iFTgIFtdWa6+LO2GEloWIudROG9h/StI2ocLjwEJkeyQ3xMy6b7Q9QG1cTtfABeRJib+9U2SA==",
+      "content" : "tH1aCB11autlQ2vVBlZF0Kuaa7U4I5Cqm+Z3ZmfuW+ySGZA37lkcXaVBHIQ72dFoJ5CfFCNO+nIhL54zh1Vcww==",
+      "note" : "recorded from the pinned bytes (object with 1 keys)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "json/v1"
+    },
+    "scb-namn/swedish-names" : {
+      "bytes" : "UpShjtBiNaNbnDTtWCDJ9n1pa1rB6nBMQjk8vGb/HDf0n7mcUcQL/V4hkzhLG/NcyooopOHbl5Uw0kCGdP3n4g==",
+      "content" : "M9VAtBB7/e7VT6s9LljzQdqSUBPhda5YTYnMhtDKepU6CdzebVd5Eqg9gY3kdmHcXL8iYjgkH7yc1tMFDUfm+g==",
+      "note" : "recorded from the pinned bytes (31 members)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "zip-container/v1"
+    },
+    "unicode-emoji/emoji" : {
+      "bytes" : "91XUCjWgBbrRO91KGp6oAXJMSIy09W1/24szs1zXxlJ9FPII70tNVFNDpioSuu7UgMrRiZXrsS43ES8HIYRDXQ==",
+      "content" : "s4TTzZd9wDjAPOPkf8Vs2PCtWnzpXx7IdVqyxfjMTGOeUyWqywxp5sY0mtGK0EN2ptS3MOm6ynWPh2AauNRZKg==",
+      "note" : "recorded from the pinned bytes (5331 lines)",
+      "reviewedAt" : "2026-10-10",
+      "view" : "lines/v1"
+    }
+  },
+  "deferred" : {
+    "iana-jose" : {
+      "change" : [
+        "base.internet.jwt_algorithm: 38 -> 52 entries (+HPKE-0 +HPKE-0-KE +HPKE-1 ...)"
+      ],
+      "expires" : "2027-01-08",
+      "firstSeen" : "2026-10-10",
+      "reason" : "The JOSE registry gained 14 HPKE algorithms; an addition still moves seeded draws over that list, so adopt it with the next corpus bump"
+    },
+    "iana-tld" : {
+      "change" : [
+        "base.internet.domain_suffix: 1438 -> 1437 entries (-juniper)"
+      ],
+      "expires" : "2027-01-08",
+      "firstSeen" : "2026-10-10",
+      "reason" : "JUNIPER retired from the root zone; a removal is a major corpus bump, so adopt it at the next deliberate corpus refresh rather than on IANA's schedule"
+    }
+  }
+}
