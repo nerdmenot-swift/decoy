@@ -56,6 +56,18 @@ let outDirectory = root.appendingPathComponent("out")
 let writeBaselines = arguments.contains("--write-baselines")
 let baselineDirectory = root.appendingPathComponent("parity")
 
+/// `--check-upstreams` asks only "have our upstreams moved", and writes nothing.
+///
+/// The weekly job used to answer that question by rebuilding the corpus, which conflated it
+/// with "does this repository still work" and put a moved upstream on the CI badge. They are
+/// different questions with different audiences: one is answered by the committed corpus on
+/// every push, the other by fifty-four third parties on their own schedule.
+///
+/// In this mode every artifact is still fetched and verified, every adapter still runs, and
+/// the extracted data is still compared against `parity/` — so the report is as precise as a
+/// build's. What it does not do is produce a corpus, which is what let the two apart.
+let checkUpstreams = arguments.contains("--check-upstreams")
+
 func note(_ line: String) {
     FileHandle.standardError.write(Data((line + "\n").utf8))
 }
@@ -152,6 +164,35 @@ let chains = Dictionary(
 // MARK: - Sources
 
 let store = ArtifactStore(root: root)
+
+/// Content digests and recorded decisions. See `UpstreamLock`.
+let lock: UpstreamLock
+do { lock = try UpstreamLock.load(from: root) } catch {
+    fail("could not read \(UpstreamLock.filename): \(error)")
+}
+
+/// Upstreams whose bytes moved while everything the document states stayed put.
+var acceptedDrift: [ArtifactStore.Drift] = []
+/// Set while the check mode is measuring what a refused upstream would do to the data.
+///
+/// Scoped to the one phase that needs it: the preflight verifies for real, and only the
+/// adapter pass that follows it in `--check-upstreams` analyses. A normal build never sets
+/// it, so unverified bytes cannot reach a corpus.
+var analysing = false
+
+/// Upstreams that did not verify, collected rather than fatal on the first one.
+///
+/// Three Mondays in a row failed on three different sources, one per week, because the
+/// build stopped at the first. Collecting them means one run says everything it knows.
+var upstreamFailures: [(source: String, error: any Error)] = []
+
+func today() -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    formatter.timeZone = TimeZone(identifier: "UTC")
+    return formatter.string(from: Date())
+}
+
 var sourceRecords: [String: SourceDescriptor.Provenance] = [:]
 /// The order sources were first loaded, which is adapter order.
 ///
@@ -167,15 +208,42 @@ var sourceOrder: [String] = []
         from: Data(contentsOf: root.appendingPathComponent("sources/\(id).json")))
 }
 
+/// Sources already resolved this run, so that nothing is fetched or unpacked twice.
+///
+/// Both the preflight and the adapters ask for the same sources, and before this a check
+/// run fetched all fifty-four of them twice — once to verify, once to use. The second pass
+/// also re-read the cache, which in check mode is deliberately bypassed, so it would have
+/// measured the data against whatever was already on disk rather than against what the
+/// upstream now serves.
+var resolvedSources: [String: [String: URL]] = [:]
+var refusedSources: [String: any Error] = [:]
+
 /// Acquires, verifies and unpacks every artifact a source declares, and registers its
 /// provenance.
 @MainActor func load(_ id: String) async throws -> [String: URL] {
+    if let resolved = resolvedSources[id] { return resolved }
+    if let refused = refusedSources[id] { throw refused }
     let source = try descriptor(id)
 
     var artifacts: [String: URL] = [:]
     for artifact in source.artifacts ?? [] {
-        let path = try await store.acquire(artifact, source: id, log: note)
-        artifacts[artifact.name] = try store.materialise(artifact, at: path, source: id)
+        let acquired = try await store.acquire(
+            artifact, source: id, lock: lock, allowingUnverified: analysing,
+            // Checking means asking the upstream, not the cache. A build reads the cache,
+            // because a cached copy that satisfies the pin is the pinned file.
+            ignoringCache: checkUpstreams, attempts: checkUpstreams ? 3 : 6,
+            deadline: 180, log: note)
+        if acquired.unverified {
+            note("  \(artifact.name): unverified bytes, for measurement only")
+        }
+        if let drift = acquired.drift {
+            acceptedDrift.append(drift)
+            note(
+                "  \(drift.artifact): bytes moved, content unchanged (\(drift.view), "
+                    + "\(drift.shape))")
+        }
+        artifacts[artifact.name] = try store.materialise(
+            artifact, at: acquired.file, source: id)
     }
 
     // A version is transcribed, never read back out of the data.
@@ -196,6 +264,7 @@ var sourceOrder: [String] = []
     // failure inverted: crediting data that does not ship rather than failing to credit
     // data that does.
     provenance[source.id] = source.provenance
+    resolvedSources[id] = artifacts
     return artifacts
 }
 
@@ -216,7 +285,121 @@ if writeBaselines {
         at: baselineDirectory, withIntermediateDirectories: true)
 }
 
+// MARK: - Preflight
+//
+// Every artifact is acquired and verified before any adapter runs, so that a run reports
+// every upstream that moved instead of the first one. In check mode the net is wider: every
+// descriptor on disk, whether or not an enabled adapter names it, because "is this upstream
+// still published" is a question about all of them.
+let preflightSources: [String] = {
+    if checkUpstreams {
+        let files = (try? FileManager.default.contentsOfDirectory(
+            at: root.appendingPathComponent("sources"), includingPropertiesForKeys: nil)) ?? []
+        return files.filter { $0.pathExtension == "json" }
+            .map { $0.deletingPathExtension().lastPathComponent }.sorted()
+    }
+    var seen = Set<String>()
+    return adapters.flatMap(\.adapterSources).filter { seen.insert($0).inserted }
+}()
+
+for sourceID in preflightSources {
+    do { _ = try await load(sourceID) } catch {
+        upstreamFailures.append((sourceID, error))
+        // Remembered so the adapter pass neither re-fetches it nor reports it twice. In
+        // check mode the adapters run anyway, against the unverified bytes, which is what
+        // turns "SIX republished" into "two entries gained an attribute nobody reads".
+        refusedSources[sourceID] = error
+    }
+}
+
+// The refusals above were verdicts on verified bytes. Measuring what they would do to the
+// data means asking again, this time accepting what arrives — so the memo is cleared for
+// exactly those sources and exactly that purpose.
+if checkUpstreams { refusedSources.removeAll() }
+
+if !upstreamFailures.isEmpty, !checkUpstreams {
+    note("")
+    for failure in upstreamFailures { note("error: \(failure.error)") }
+    fail(
+        "\(upstreamFailures.count) upstream\(upstreamFailures.count == 1 ? "" : "s") did not "
+            + "verify. Nothing was built.")
+}
+
+// The preflight has already reported what failed. From here the check mode measures rather
+// than verifies, so that a refused upstream still yields "and this is what it would change".
+if checkUpstreams { analysing = true }
+
 var contributions: [Orchestrator.Contribution] = []
+
+/// Extracted data that no longer matches what `parity/` recorded.
+///
+/// Tier one, and the only one of the three that is a decision about the corpus: a value
+/// added, removed or changed moves every fixture drawn from it.
+var dataChanges: [(adapter: String, sources: [String], lines: [String])] = []
+
+/// What `parity/<id>.json` recorded for an adapter, as definitions.
+@MainActor func baseline(_ id: String) -> [String: [String: Definition]]? {
+    let url = baselineDirectory.appendingPathComponent("\(id).json")
+    guard let data = try? Data(contentsOf: url),
+        let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+        let raw = object["contributions"] as? [String: [String: Any]]
+    else { return nil }
+    return raw.mapValues { $0.mapValues(Definition.init(json:)) }
+}
+
+/// The value-level difference between an adapter's output and its baseline.
+///
+/// Phrased as gains and losses rather than as "first divergence", because the question a
+/// reader has is which values moved: `-JUNIPER` is the whole story of a retired TLD, and an
+/// index into two lists is not.
+func dataDifference(
+    _ now: [String: [String: Definition]], _ before: [String: [String: Definition]]
+) -> [String] {
+    var lines: [String] = []
+    for locale in Set(now.keys).union(before.keys).sorted() {
+        let mine = now[locale] ?? [:]
+        let theirs = before[locale] ?? [:]
+        for path in Set(mine.keys).union(theirs.keys).sorted() {
+            guard let a = mine[path] else {
+                lines.append("\(locale).\(path): gone")
+                continue
+            }
+            guard let b = theirs[path] else {
+                lines.append("\(locale).\(path): new")
+                continue
+            }
+            guard a != b else { continue }
+            if case .list(let now) = a, case .list(let before) = b {
+                let added = now.filter { !before.contains($0) }
+                let removed = before.filter { !now.contains($0) }
+                let summary =
+                    (removed.prefix(5).map { "-\(compactValue($0))" }
+                        + added.prefix(5).map { "+\(compactValue($0))" })
+                    .joined(separator: " ")
+                let more = (added.count + removed.count) > 10 ? " …" : ""
+                lines.append(
+                    "\(locale).\(path): \(before.count) → \(now.count) entries"
+                        + (summary.isEmpty ? "" : " (\(summary)\(more))"))
+            } else {
+                lines.append("\(locale).\(path): changed")
+            }
+        }
+    }
+    return lines
+}
+
+/// A value in a few characters, for a report line.
+func compactValue(_ value: Definition) -> String {
+    switch value {
+    case .string(let text): return text.count > 40 ? String(text.prefix(40)) + "…" : text
+    case .number(let number): return String(number)
+    case .bool(let flag): return String(flag)
+    case .null: return "null"
+    case .list(let items): return "[\(items.count)]"
+    case .object(let fields):
+        return "{" + fields.keys.sorted().prefix(3).joined(separator: ",") + "}"
+    }
+}
 
 for adapter in adapters {
     let id = adapter.adapterID
@@ -224,9 +407,19 @@ for adapter in adapters {
     note("adapter \(id) (\(sources.joined(separator: " + ")))")
 
     var artifacts: [String: URL] = [:]
+    var unverified = false
     for sourceID in sources {
         let loaded: [String: URL]
         do { loaded = try await load(sourceID) } catch {
+            // In check mode a source that cannot be read at all — unreachable, or bytes
+            // that will not parse — is the finding, not a crash: the other fifty-three
+            // still have to be reported.
+            guard !checkUpstreams else {
+                note("  skipped: \(sourceID) could not be read")
+                refusedSources[sourceID] = error
+                unverified = true
+                continue
+            }
             fail("\(id): \(error)")
         }
         for (name, path) in loaded {
@@ -236,6 +429,7 @@ for adapter in adapters {
             artifacts[name] = path
         }
     }
+    if unverified { continue }
 
     let output: AdapterOutput
     do {
@@ -251,6 +445,17 @@ for adapter in adapters {
     let summary = output.stats.filter { !$0.1.isEmpty }
         .map { "\($0.0)=\($0.1)" }.joined(separator: " ")
     if !summary.isEmpty { note("  \(summary)") }
+
+    // Tier one. The baseline is what this adapter last emitted; a difference here is data,
+    // and data is a corpus decision rather than a re-pin.
+    if !writeBaselines, let before = baseline(id) {
+        let lines = dataDifference(output.contributions.mapValues { $0 }, before)
+        if !lines.isEmpty {
+            dataChanges.append((adapter: id, sources: sources, lines: lines))
+            for line in lines.prefix(8) { note("  data: \(line)") }
+            if lines.count > 8 { note("  data: … \(lines.count - 8) more") }
+        }
+    }
 
     // What this adapter's filters threw away, kept for `filters.json`. The heaviest losses
     // go to the log as well: a filter keeping a tenth of what it saw is either doing its
@@ -300,6 +505,102 @@ for adapter in adapters {
             isFallback: false,
             contributions: output.contributions,
             sourceByLocale: output.sourceByLocale))
+}
+
+// MARK: - The upstream verdict
+//
+// Three tiers, reported together. Only the first is a decision about the corpus; the second
+// needs a human to look once; the third is noise that has been proven to be noise.
+
+/// A deferral that covers `sources`, if one is on record and still in date.
+func deferral(for sources: [String]) -> UpstreamLock.Deferral? {
+    sources.compactMap { lock.deferrals[$0] }.first
+}
+
+if checkUpstreams {
+    note("")
+    note("upstream check: \(preflightSources.count) descriptors")
+
+    var verdict = 0
+
+    for drift in acceptedDrift {
+        note(
+            "  stale pin  \(drift.source)/\(drift.artifact): content unchanged "
+                + "(\(drift.view), \(drift.shape)) — refresh with `decoy-repin "
+                + "\(drift.source) --refresh`")
+    }
+
+    for failure in upstreamFailures {
+        if let record = lock.deferrals[failure.source] {
+            if today() > record.expires {
+                note(
+                    "  EXPIRED    \(failure.source): deferred on \(record.firstSeen) until "
+                        + "\(record.expires), which has passed — \(record.reason)")
+                verdict = 1
+            } else {
+                note(
+                    "  deferred   \(failure.source): known change, adopt by \(record.expires) "
+                        + "— \(record.reason)")
+            }
+            continue
+        }
+        // "Did not answer" and "answered with something else" are different findings with
+        // different remedies, and reading the first as the second is how a flaky server
+        // comes to look like a republication.
+        let unreachable: Bool = {
+            guard let failure = failure.error as? ArtifactStore.Failure else { return false }
+            if case .unreachable = failure { return true }
+            return false
+        }()
+        note("  \(unreachable ? "UNREACHABLE" : "CHANGED    ") \(failure.source)")
+        for line in "\(failure.error)".split(separator: "\n") { note("             \(line)") }
+        verdict = 1
+    }
+
+    for change in dataChanges {
+        if let record = deferral(for: change.sources), today() <= record.expires {
+            note(
+                "  deferred   \(change.adapter): data change recorded, adopt by "
+                    + "\(record.expires)")
+            continue
+        }
+        note("  DATA       \(change.adapter): the extracted values moved")
+        for line in change.lines.prefix(12) { note("             \(line)") }
+        if change.lines.count > 12 { note("             … \(change.lines.count - 12) more") }
+        verdict = 1
+    }
+
+    // An expired deferral fails even when its upstream verified this week, because the thing
+    // that expired is the promise to come back to it.
+    for (source, record) in lock.deferrals.sorted(by: { $0.key < $1.key })
+    where today() > record.expires && !upstreamFailures.contains(where: { $0.source == source })
+        && !dataChanges.contains(where: { $0.sources.contains(source) })
+    {
+        note(
+            "  EXPIRED    \(source): deferred until \(record.expires), which has passed — "
+                + "\(record.reason)")
+        verdict = 1
+    }
+
+    if verdict == 0 {
+        note("")
+        note(
+            "nothing to report: every upstream matches what was recorded, or differs only in "
+                + "container metadata.")
+    }
+    exit(Int32(verdict))
+}
+
+if !dataChanges.isEmpty {
+    note("")
+    for change in dataChanges {
+        note("error: \(change.adapter): extracted values moved against parity/\(change.adapter).json")
+        for line in change.lines.prefix(12) { note("  \(line)") }
+        if change.lines.count > 12 { note("  … \(change.lines.count - 12) more") }
+    }
+    fail(
+        "the corpus data would change. That is a corpus version decision, not a re-pin: read "
+            + "the diff, then re-run with --write-baselines and bump the versions it names.")
 }
 
 let merged: Orchestrator.Result
