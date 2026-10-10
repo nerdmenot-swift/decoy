@@ -34,6 +34,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     container: swift:6.3
+    outputs:
+      status: ${{ steps.check.outputs.status }}
+      report: ${{ steps.check.outputs.report }}
     steps:
       # As in ci.yml: the Swift image is Debian slim, and the content view of an xlsx reads
       # its members with `unzip`.
@@ -58,17 +61,33 @@ jobs:
           set -e
           cat check.log
           echo "status=$status" >> "$GITHUB_OUTPUT"
+          # Handed on as an output rather than an artifact: it is a few lines of text, and
+          # the alternative is a second pair of actions to upload and download it.
+          echo "report<<DECOY_REPORT_EOF" >> "$GITHUB_OUTPUT"
+          sed -n '/^upstream check:/,$p' check.log >> "$GITHUB_OUTPUT"
+          echo "DECOY_REPORT_EOF" >> "$GITHUB_OUTPUT"
 
+  # A separate job because `gh` is on the runner and not in the Swift container, which is
+  # where the first attempt at this died: the check had already passed and the reporting
+  # step could not call the tool it needed.
+  report:
+    name: Report
+    needs: check
+    if: always() && needs.check.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
       # The report, not a link to a log. An issue that says "the weekly check failed, go
       # read 4,000 lines" is the red badge again with extra steps.
-      - name: Report
+      - name: Open, update or close the issue
         env:
           GH_TOKEN: ${{ github.token }}
-          STATUS: ${{ steps.check.outputs.status }}
+          GH_REPO: ${{ github.repository }}
+          STATUS: ${{ needs.check.outputs.status }}
+          REPORT: ${{ needs.check.outputs.report }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          set -eu
-          sed -n '/^upstream check:/,$p' check.log > report.txt
+          set -euo pipefail
+          printf '%s\n' "$REPORT" > report.txt
           # Created here rather than assumed: a label that exists only because somebody made
           # it by hand once is a workflow that fails the first time it runs in a fork.
           gh label create upstream-drift --description "A pinned upstream changed" \
@@ -78,7 +97,13 @@ jobs:
           if [ "$STATUS" = "0" ]; then
             cat report.txt
             if [ -n "$existing" ]; then
-              { echo "Resolved: every upstream now matches what is recorded."; echo; echo '```'; cat report.txt; echo '```'; } > body.md
+              {
+                echo "Resolved: every upstream now matches what is recorded."
+                echo
+                echo '```'
+                cat report.txt
+                echo '```'
+              } > body.md
               gh issue comment "$existing" --body-file body.md
               gh issue close "$existing" --comment "Closed by the weekly check."
             fi
