@@ -46,13 +46,18 @@ jobs:
       # upstreams themselves.
       - run: swift build -c release --product decoy-build-corpus
 
+      # Written for `sh`, not bash. The Swift container runs the former, where
+      # `${PIPESTATUS[0]}` is a syntax error rather than an exit code -- which failed this
+      # step on its first run while the check underneath it had just succeeded.
       - name: Check the upstreams
         id: check
         run: |
           set +e
-          .build/release/decoy-build-corpus --check-upstreams 2>&1 | tee check.log
-          echo "status=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
-          exit 0
+          .build/release/decoy-build-corpus --check-upstreams > check.log 2>&1
+          status=$?
+          set -e
+          cat check.log
+          echo "status=$status" >> "$GITHUB_OUTPUT"
 
       # The report, not a link to a log. An issue that says "the weekly check failed, go
       # read 4,000 lines" is the red badge again with extra steps.
@@ -62,7 +67,7 @@ jobs:
           STATUS: ${{ steps.check.outputs.status }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          set -euo pipefail
+          set -eu
           sed -n '/^upstream check:/,$p' check.log > report.txt
           # Created here rather than assumed: a label that exists only because somebody made
           # it by hand once is a workflow that fails the first time it runs in a fork.
