@@ -1,8 +1,9 @@
 # Decoy
 
 [![Release](https://img.shields.io/github/v/release/nerdmenot-swift/decoy?display_name=tag&sort=semver)](https://github.com/nerdmenot-swift/decoy/releases)
-[![CI](https://github.com/nerdmenot-swift/decoy/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/nerdmenot-swift/decoy/actions/workflows/ci.yml)
-[![Windows](https://github.com/nerdmenot-swift/decoy/actions/workflows/windows.yml/badge.svg?branch=main)](https://github.com/nerdmenot-swift/decoy/actions/workflows/windows.yml)
+[![CI](https://github.com/nerdmenot-swift/decoy/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/nerdmenot-swift/decoy/actions/workflows/ci.yml)
+[![Windows](https://github.com/nerdmenot-swift/decoy/actions/workflows/windows.yml/badge.svg?branch=main&event=push)](https://github.com/nerdmenot-swift/decoy/actions/workflows/windows.yml)
+[![Upstreams](https://github.com/nerdmenot-swift/decoy/actions/workflows/upstreams.yml/badge.svg)](https://github.com/nerdmenot-swift/decoy/actions/workflows/upstreams.yml)
 [![Swift versions](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fnerdmenot-swift%2Fdecoy%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/nerdmenot-swift/decoy)
 [![Platforms](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fnerdmenot-swift%2Fdecoy%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/nerdmenot-swift/decoy)
 [![Documentation](https://img.shields.io/badge/docs-decoy.nerdmenot.in-blue)](https://decoy.nerdmenot.in)
@@ -171,10 +172,12 @@ Tools/adapters/
   filters.json          what every filter kept and dropped, so a silent discard cannot hide
   data/*.json           snapshots of the sources that answer a query, not a URL
   parity/<id>.json      what each adapter last emitted, diffed on every run
+  upstream-lock.json    what each upstream last said, and what was decided about it
 
 Sources/DecoyAdapterKit/
   Adapters/<Name>.swift the transform, one per upstream
   ArtifactStore.swift   fetch, verify, cache, extract
+  ContentView.swift     what a file states, apart from the bytes it states it in
   Queries/              the fetchers behind `decoy-fetch`, run by hand
 ```
 
@@ -206,6 +209,21 @@ swift run decoy-inspect --coverage Corpus/binary          # native coverage per 
 swift run decoy-validate                                 # check a contribution
 swift run decoy-inspect --notice Corpus/binary \
   --licenses LICENSES                                     # attribution, generated
+```
+
+An upstream that moves is checked at three levels, because only one of them is a decision
+about the corpus: the values an adapter extracts, everything else the document states, and
+the container's own metadata. The first refuses the build and names the values that moved;
+the second stops it and is cleared with a recorded reason; the third is accepted, and that
+is the one place this pipeline decides something is fine without asking. See
+[Keeping upstream current](docs/corpus-strategy.md#keeping-upstream-current--built).
+
+```
+swift run decoy-build-corpus --check-upstreams             # have the upstreams moved?
+swift run decoy-repin <source>                             # what moved, exactly
+swift run decoy-repin <source> --refresh                   # adopt a stale pin, content equal
+swift run decoy-repin <source> --accept --note "…"         # adopt a content change, recorded
+swift run decoy-repin --defer <source> --reason "…"        # record a wait, with an expiry
 ```
 
 See [docs/corpus-strategy.md](docs/corpus-strategy.md) for why, and

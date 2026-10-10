@@ -130,9 +130,9 @@ jobs:
       # It also tested the wrong artifact. A freshly built corpus is not the corpus that
       # ships, so a release verified data no user would ever receive.
       #
-      # Rebuildability still matters and is still checked -- by the weekly scheduled run in
-      # ci.yml, where an upstream that moved fails loudly without standing between a tagged
-      # version and its release.
+      # Rebuildability still matters and is still checked -- by the Upstreams workflow,
+      # weekly, where an upstream that moved is classified and reported without standing
+      # between a tagged version and its release.
       - name: The committed corpus is present
         run: |
           count=$(ls Corpus/binary/*.decoy 2>/dev/null | wc -l | tr -d ' ')

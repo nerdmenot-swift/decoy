@@ -1,0 +1,104 @@
+name: Upstreams
+
+# Are the fifty-four pinned upstreams still serving what we recorded?
+#
+# This used to be the scheduled run of CI, which answered it by rebuilding the whole corpus.
+# That conflated two questions with different audiences and different remedies: whether this
+# repository works, which every push answers against the committed corpus, and whether a
+# third party has republished something, which is nobody's bug and arrives on its own
+# schedule. Worse, it put the second one on the CI badge, so the badge sat red for three
+# weeks over three different publishers and stopped meaning anything.
+#
+# `--check-upstreams` builds no corpus. It fetches every artifact, ignoring the cache
+# because a cache hit answers "is the cache still there", classifies what moved, and for a
+# change that reaches the data runs the adapter to say which values would move. Exit zero
+# means every upstream matches what was recorded or differs only in container metadata.
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+# `issues: write` so a moved upstream becomes a dated, assignable thing rather than a red
+# badge somebody learns to ignore.
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container: swift:6.3
+    steps:
+      # As in ci.yml: the Swift image is Debian slim, and the content view of an xlsx reads
+      # its members with `unzip`.
+      - name: Install archive tools
+        run: apt-get update -qq && apt-get install -y -qq xz-utils unzip
+
+      - uses: actions/checkout@v7
+
+      # Deliberately uncached. This is the one job whose entire purpose is to ask the
+      # upstreams themselves.
+      - run: swift build -c release --product decoy-build-corpus
+
+      - name: Check the upstreams
+        id: check
+        run: |
+          set +e
+          .build/release/decoy-build-corpus --check-upstreams 2>&1 | tee check.log
+          echo "status=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      # The report, not a link to a log. An issue that says "the weekly check failed, go
+      # read 4,000 lines" is the red badge again with extra steps.
+      - name: Report
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATUS: ${{ steps.check.outputs.status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          sed -n '/^upstream check:/,$p' check.log > report.txt
+          # Created here rather than assumed: a label that exists only because somebody made
+          # it by hand once is a workflow that fails the first time it runs in a fork.
+          gh label create upstream-drift --description "A pinned upstream changed" \
+            --color D4C5F9 2>/dev/null || true
+          existing=$(gh issue list --label upstream-drift --state open --json number --jq '.[0].number // empty')
+
+          if [ "$STATUS" = "0" ]; then
+            cat report.txt
+            if [ -n "$existing" ]; then
+              { echo "Resolved: every upstream now matches what is recorded."; echo; echo '```'; cat report.txt; echo '```'; } > body.md
+              gh issue comment "$existing" --body-file body.md
+              gh issue close "$existing" --comment "Closed by the weekly check."
+            fi
+            exit 0
+          fi
+
+          {
+            echo "The weekly upstream check found changes that need a decision."
+            echo
+            echo '```'
+            cat report.txt
+            echo '```'
+            echo
+            echo "- Content changed: \`decoy-repin <source>\` shows what moved, \`--accept --note \"…\"\` records it."
+            echo "- Stale pin, content unchanged: \`decoy-repin <source> --refresh\`."
+            echo "- The data moved: that is a corpus version decision. Adopt it with a rebuild and"
+            echo "  \`--write-baselines\`, or record a deliberate wait with"
+            echo "  \`decoy-repin --defer <source> --reason \"…\"\`."
+            echo
+            echo "Run: $RUN_URL"
+          } > body.md
+
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file body.md
+          else
+            gh issue create --title "Upstreams moved: $(date -u +%Y-%m-%d)" --label upstream-drift --body-file body.md
+          fi
+          exit 1

@@ -4,15 +4,6 @@ on:
   push:
     branches: [main]
   pull_request:
-  # Weekly, to find upstream rot before a contributor does. Forty-seven sources are fetched
-  # by URL, and a dead one does not announce itself -- it surfaces whenever somebody next
-  # rebuilds the corpus, which is the worst moment to discover it.
-  #
-  # The scheduled run deliberately skips the artifact cache (see below), because a cache hit
-  # would answer "is the cache still there" rather than "is the source still published",
-  # and go green on a URL that has 404'd for a month.
-  schedule:
-    - cron: '17 6 * * 1'
 
 # Read-only. The repository default is already read, so this is here to stop an
 # organisation-level change from silently widening what a pull request can do.
@@ -30,15 +21,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v7
-      # Keyed on the source descriptors, so adding or re-pinning a source misses the
-      # cache and re-fetches. A hit still re-verifies every artifact against its
-      # integrity hash in ArtifactStore, so this costs nothing in safety.
-      - name: Cache pinned upstreams
-        if: github.event_name != 'schedule'
-        uses: actions/cache@v6
-        with:
-          path: Tools/adapters/.cache
-          key: corpus-sources-${{ runner.os }}-${{ hashFiles('Tools/adapters/sources/*.json') }}
 
       # Pinned, not `latest`. A docs build that floats on whatever bun shipped this week
       # can start failing on a commit that changed nothing, and the whole argument of this
@@ -49,19 +31,6 @@ jobs:
 
       - run: swift --version
       - run: swift build
-
-      # Without a compiled corpus the integration suites skip rather than fail, so a
-      # regression in an adapter or in the compiler would go unnoticed.
-      # Rebuilt only on the weekly run. The corpus is committed, so a push tests the
-      # blobs that actually ship; rebuilding on every push made the whole suite depend on
-      # fifty-four upstreams being reachable and unchanged, and tested an artifact no user
-      # receives. The scheduled run still rebuilds, which is where an upstream that moved
-      # should surface -- loudly, and without standing between a tag and its release.
-      - name: Rebuild the corpus from source
-        if: github.event_name == 'schedule'
-        run: |
-          swift run -c release decoy-build-corpus
-          swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary
 
       - name: The committed corpus is present
         run: |
@@ -76,9 +45,9 @@ jobs:
       # regeneration is invisible until someone's fixtures quietly differ.
       #
       # Re-emitted from the committed blobs rather than from the pipeline's output, which
-      # exists only on the weekly run now that a push tests the corpus that ships. Every
-      # line in a module is recoverable from its blob, so this asks the same question of
-      # the same bytes a consumer receives.
+      # this job no longer produces: rebuilding from source is the Upstreams workflow's
+      # job. Every line in a module is recoverable from its blob, so this asks the same
+      # question of the same bytes a consumer receives.
       - name: Locale modules are current
         run: |
           swift run -c release decoy-compile-corpus --from-corpus Corpus/binary \
@@ -161,26 +130,9 @@ jobs:
         run: apt-get update -qq && apt-get install -y -qq xz-utils unzip
 
       - uses: actions/checkout@v7
-      - name: Cache pinned upstreams
-        if: github.event_name != 'schedule'
-        uses: actions/cache@v6
-        with:
-          path: Tools/adapters/.cache
-          key: corpus-sources-${{ runner.os }}-${{ hashFiles('Tools/adapters/sources/*.json') }}
 
       - run: swift --version
       - run: swift build
-
-      # Rebuilt only on the weekly run. The corpus is committed, so a push tests the
-      # blobs that actually ship; rebuilding on every push made the whole suite depend on
-      # fifty-four upstreams being reachable and unchanged, and tested an artifact no user
-      # receives. The scheduled run still rebuilds, which is where an upstream that moved
-      # should surface -- loudly, and without standing between a tag and its release.
-      - name: Rebuild the corpus from source
-        if: github.event_name == 'schedule'
-        run: |
-          swift run -c release decoy-build-corpus
-          swift run -c release decoy-compile-corpus Tools/adapters/out Corpus/binary
 
       - name: The committed corpus is present
         run: |

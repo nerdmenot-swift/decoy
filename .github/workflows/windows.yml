@@ -3,14 +3,12 @@ name: Windows
 # Split out of ci.yml so Windows has a badge of its own. The Swift Package Index builds
 # for every other platform Decoy claims and shows the result on its Platforms badge, but
 # it has no Windows builders, so this workflow is the only public record that Windows
-# works. Same triggers as CI: every push to main, every pull request, and the weekly
-# from-source rebuild.
+# works. Same triggers as CI: every push to main and every pull request. Rebuilding from
+# the upstreams is the Upstreams workflow's job, on all platforms at once.
 on:
   push:
     branches: [main]
   pull_request:
-  schedule:
-    - cron: '17 6 * * 1'
 
 permissions:
   contents: read
@@ -44,29 +42,9 @@ jobs:
         with:
           swift-version: swift-6.3.3-release
           swift-build: 6.3.3-RELEASE
-      # The other two jobs cache the pinned upstreams and this one did not, so it re-fetched
-      # all fifty-one artifacts on every run -- the only job fully exposed to a transient
-      # upstream, and it duly failed on a PubChem 503 that had nothing to do with Windows.
-      # A job that fails for reasons unrelated to what it tests stops being read at all.
-      - name: Cache pinned upstreams
-        if: github.event_name != 'schedule'
-        uses: actions/cache@v6
-        with:
-          path: Tools/adapters/.cache
-          key: corpus-sources-${{ runner.os }}-${{ hashFiles('Tools/adapters/sources/*.json') }}
 
       - run: swift --version
       - run: swift build
-
-      # This job used to run `swift test` with no corpus, so every suite gated on
-      # Corpus/binary skipped and Windows was only ever testing the built-in stub --
-      # which is exactly the platform where a byte-order or path assumption would show up.
-      # Schedule-only, as on the other two runners. The committed blobs are what ships.
-      - name: Rebuild the corpus from source
-        if: github.event_name == 'schedule'
-        run: |
-          swift run -c release decoy-build-corpus
-          swift run decoy-compile-corpus Tools/adapters/out Corpus/binary
 
       - name: The committed corpus is present
         shell: bash

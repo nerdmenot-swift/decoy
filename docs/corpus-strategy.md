@@ -533,12 +533,59 @@ It cost no format change: the index already interns each path string to confirm 
 matches during lookup, so enumeration is a sequential walk of data that was there for
 other reasons.
 
-### Keeping upstream current
+### Keeping upstream current — **Built**
 
 Every source is pinned by integrity hash, so refreshing one is deliberate rather than
 automatic: bump the version in the descriptor, re-pin, and read the diff. That is the
 intended workflow, not a limitation — an upstream that changed under a pinned hash is
 exactly the event worth a human look.
+
+What that intent missed is that most such events are not worth a human look, and burying
+the ones that are. Fourteen artifacts across thirteen sources sit at URLs that change in
+place, and over four weeks three of them moved: the Israeli bureau re-tagged a workbook in
+SharePoint, SIX added an `IsFund` attribute to two of 280 currency entries, and IANA
+retired the `JUNIPER` top-level domain. Only the third changed a generated value. All three
+failed the weekly rebuild identically, one per week, because the check stopped at the first
+one it met — and the CI badge stayed red throughout, which is a standing warning, which is
+the condition under which nobody reads the next one.
+
+So a pinned artifact is now checked at three levels, and only the first is a decision about
+the corpus:
+
+1. **The extracted data** — what the adapter emits, recorded in `parity/<id>.json`. A value
+   added, removed or changed moves every fixture drawn from it, so the builder refuses to
+   continue and names the values: `base.internet.domain_suffix: 1438 → 1437 entries
+   (-JUNIPER)`. Adopting one is a corpus version bump, taken deliberately with
+   `--write-baselines`.
+2. **The document's content** — a canonical rendering of *everything the file states*, not
+   the subset an adapter reads today, recorded in `upstream-lock.json` with the recipe that
+   produced it. A change here stops the run and says what kind of change it is. Clearing it
+   is one command and leaves a record: `decoy-repin <id> --accept --note "…"`. SIX's
+   attribute lands here — no value moved, and it is still not something to wave through,
+   because "nothing reads it today" is not "it does not matter".
+3. **The container's own metadata** — `docProps/` and `customXml/` inside a zip of parts.
+   Changes confined to these are accepted automatically, and this is the one place the
+   pipeline decides something is fine without asking. The reason it is allowed to is that
+   the file was parsed and everything it states was found identical; the cost is that a
+   CMS re-filing a document stops being news. That list of two directories is the whole
+   scope, and it is asserted in a test so that extending it is a deliberate act.
+
+Anything that cannot be rendered — a format with no view, a file that will not parse — is
+fatal, as it was before. A 247-byte "Request Rejected" page served with HTTP 200 cannot
+reach verdict 3.
+
+Not adopting a data change is also legitimate: the corpus is a curated snapshot, and taking
+every retired TLD the week it happens would move everybody's fixtures on IANA's schedule
+rather than on a release's. But a deferral is recorded and expires —
+`decoy-repin --defer <id> --reason "…"` writes the day it was seen and the day the wait runs
+out, and the check fails after that. A snapshot may lag an upstream on purpose; it may not
+lag by forgetting.
+
+The check itself is `decoy-build-corpus --check-upstreams`, which builds no corpus: it
+fetches every artifact ignoring the cache, classifies what moved, runs the adapters over
+what it refused to measure the effect on the data, and reports everything it found in one
+pass. It runs weekly as its own workflow and opens one issue, so a third party's
+republication is a dated and assignable thing rather than a red badge on this repository.
 
 The faker-js adapter additionally verifies Decoy's derived fallback chains against
 faker's own resolution on every run, across all 76 locales. **That check does not
