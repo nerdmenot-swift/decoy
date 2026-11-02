@@ -141,6 +141,29 @@ func digest(_ bytes: [UInt8], _ artifact: SourceDescriptor.Artifact) -> String {
     Integrity.digest(Integrity.normalised(bytes, ignoringLinesMatching: artifact.ignoreLinesMatching))
 }
 
+/// Puts accepted bytes in the cache, and their rendering beside them.
+///
+/// Once a change is accepted these *are* the pinned bytes, and leaving the old ones in the
+/// cache means every local build and `IntegrityTests` disagrees with the descriptor until
+/// something refetches. Found the honest way: the suite went red immediately after the
+/// first real re-pin.
+///
+/// The rendering is written for the same reason a build writes it — so the next time this
+/// artifact moves, the diff can be shown by line instead of by digest.
+func cache(
+    _ bytes: [UInt8], _ artifact: SourceDescriptor.Artifact, source: String,
+    rendering: ContentView.Rendering?
+) {
+    let cached = store.cacheDirectory.appendingPathComponent(
+        "\(source)-\(artifact.cacheSuffix)")
+    try? Data(bytes).write(to: cached)
+    if let rendering {
+        try? Data(rendering.text.utf8).write(
+            to: store.cacheDirectory.appendingPathComponent(
+                "\(source)-\(artifact.cacheSuffix).view"))
+    }
+}
+
 // MARK: - --list
 
 if listing {
@@ -277,6 +300,11 @@ for id in named {
         let actual = digest(fetched.bytes, artifact)
         if actual == pinned {
             say("  unchanged: the pinned bytes are what it serves.")
+            // Freshening the cache costs nothing here and keeps a local checkout agreeing
+            // with its own descriptors.
+            cache(
+                fetched.bytes, artifact, source: id,
+                rendering: try? ContentView.render(fetched.file, artifact: artifact, source: id))
             continue
         }
 
@@ -291,6 +319,7 @@ for id in named {
             try? replace(in: id, "sha512-\(pinned)", "sha512-\(actual)")
             lock.entries[key] = UpstreamLock.Entry(
                 content: "", view: "none", bytes: actual, reviewedAt: today(), note: note_)
+            cache(fetched.bytes, artifact, source: id, rendering: nil)
             changed = true
             say("  accepted on your word, with no content check: \(note_)")
             continue
@@ -317,6 +346,7 @@ for id in named {
             lock.entries[key] = UpstreamLock.Entry(
                 content: entry.content, view: entry.view, bytes: actual,
                 reviewedAt: entry.reviewedAt, note: entry.note)
+            cache(fetched.bytes, artifact, source: id, rendering: rendering)
             changed = true
             say("  pin refreshed. No value changes, so nothing else needs regenerating.")
             continue
@@ -357,6 +387,7 @@ for id in named {
         lock.entries[key] = UpstreamLock.Entry(
             content: rendering.digest, view: rendering.kind.rawValue, bytes: actual,
             reviewedAt: today(), note: note_)
+        cache(fetched.bytes, artifact, source: id, rendering: rendering)
         changed = true
         say("  accepted and recorded: \(note_)")
         say(

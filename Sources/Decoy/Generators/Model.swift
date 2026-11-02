@@ -45,7 +45,21 @@ extension Faker {
             guard let candidate = walk(model), !candidate.isEmpty else { continue }
             // Length first: it is a count rather than seven hash probes, and it rejects
             // more often than the filter does.
-            let length = candidate.count
+            //
+            // Counted in Unicode scalars because that is the unit the trainer recorded
+            // `minLength` and `maxLength` in, and because `String.count` is the wrong
+            // tool twice over. It counts grapheme clusters, so a Devanagari candidate of
+            // five scalars measures three and is compared against bounds derived from
+            // scalars — rejecting valid candidates and skewing what the model emits for
+            // every script that writes with combining marks.
+            //
+            // And grapheme breaking depends on the Unicode tables in the host runtime,
+            // which differ between platforms and toolchain versions. That makes
+            // `String.count` a reproducibility hazard in the one place this library
+            // cannot have one: the same seed would draw a different name on a machine
+            // whose ICU disagreed about a cluster boundary. A scalar is a scalar
+            // everywhere, forever.
+            let length = candidate.unicodeScalars.count
             guard length >= model.minLength, length <= model.maxLength else { continue }
             // Ordered by cost: a length check, then a scan for blocked substrings, then
             // the training-set probe. All three reject rather than repair — editing a

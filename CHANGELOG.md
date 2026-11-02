@@ -15,6 +15,38 @@ below, and anything that alters drawn values says so in bold.
 
 Entries are grouped by the corpus version in force when they landed.
 
+## Unreleased
+
+### Fixed
+
+- **Model-generated names change for every script that writes with combining marks.**
+  The n-gram trainer records a model's length bounds in Unicode scalars; the sampler was
+  filtering candidates with `String.count`, which counts grapheme clusters. A Devanagari
+  candidate of five scalars measured three and was compared against scalar-derived
+  bounds, so valid candidates were rejected and the names the model emitted skewed away
+  from its training distribution. Hindi, Bengali, Punjabi, Kannada, Nepali, Arabic,
+  Persian and Hebrew are the locales affected; Latin, Han and Kana output is unchanged,
+  because there a cluster and a scalar are the same thing.
+
+  The second half of this is worse than the skew. Grapheme breaking depends on the
+  Unicode tables in the host runtime, so the same seed could draw a different name on a
+  machine whose ICU disagreed about a cluster boundary — in the one library whose whole
+  promise is that it does not. A scalar is a scalar on every platform, forever.
+
+  Found while porting the reader to Go, by putting a Devanagari locale in the parity
+  vectors on the suspicion that this was exactly where two languages would disagree.
+
+- `decoy-repin` leaves the cache holding what it accepted. It updated the descriptor and
+  left the previous bytes on disk, so a local checkout disagreed with its own pin until
+  something refetched — which `IntegrityTests` reported immediately after the first real
+  re-pin.
+
+### Changed
+
+- `docs/corpus-format.md` documents the model chunk as it is actually written: the two
+  length fields and the blocked-substring filter were missing, which a second
+  implementation built from that section found the hard way.
+
 ## 1.1.2 — 2026-09-12
 
 **Identical to 1.1.1 for anyone using the library.** No API change, no corpus change —

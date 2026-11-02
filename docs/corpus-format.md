@@ -229,6 +229,8 @@ Packed like the other table chunks — a count, an offset directory, then the bo
 ```
 u32  sourceID         which upstream the training data came from
 u32  order            2...4; contexts are order - 1 symbols long
+u32  minLength        shortest word in the training set, in Unicode scalars
+u32  maxLength        longest word in the training set, in Unicode scalars
 u32  alphabetCount    1...65535; symbol 0 is the end-of-word sentinel
 u32  arenaIndex       * alphabetCount, each a one-character string
 u32  contextCount
@@ -244,7 +246,21 @@ u32  contextCount
 u32  filterHashCount
 u32  filterByteCount
 u8   filterBits       * filterByteCount
+u32  blockHashCount   Bloom filter over blocked substrings
+u32  blockMinLength   shortest substring worth testing
+u32  blockByteCount
+u8   blockBits        * blockByteCount
 ```
+
+The two length fields and the second filter were missing from this section until a Go
+reader was written from it and came out with the alphabet in the wrong place. A
+specification that a second implementation cannot be built from is a comment.
+
+**Lengths are counted in Unicode scalars**, which is the unit the trainer records and the
+sampler must filter on. Not grapheme clusters: a Devanagari word of five scalars is three
+clusters, so mixing the two rejects valid candidates, and cluster boundaries depend on the
+Unicode tables in the host runtime — which would make a seeded draw depend on the machine
+it ran on.
 
 **Why the key is packed into a `u64`.** A variable-length symbol run would make the index
 unsearchable without a second level of offsets. Three 16-bit symbols and a length byte fit
