@@ -27,7 +27,7 @@
       "format": "file",
       "filename": "http-status-codes-1.csv",
       "url": "https://www.iana.org/assignments/http-status-codes/http-status-codes-1.csv",
-      "integrity": "sha512-sgVI4U86FRNwbaaT4xDiDYBf+71N+NaNhuJjMhAt+cjCiEXEHbjKcATY3UGH3uMDm2YN6Nlq+a4vXOn/pL8L7g=="
+      "integrity": "sha512-yrPI3iuJ2IRLUd5Z+sGWEML39/WJv5uiDJOdOrVOYqesub/v2jI8CQLSLLZVaN5l8ieVkCkK6IiYZP8y+SBW5A=="
     }
   ]
 }

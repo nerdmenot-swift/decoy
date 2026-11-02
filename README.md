@@ -138,11 +138,12 @@ can move without the corpus moving. Anything that alters drawn values is marked.
 
 ## Platforms
 
-macOS, Linux, and Windows are all first-class targets; iOS/tvOS/watchOS/visionOS are
-supported for app developers. Each of the three builds, compiles a corpus and runs the
-full suite in its own CI job — Linux natively in a `swift:6.3` container rather than by
-cross-compiling. Windows is best-effort: a failure there should prompt a portability fix
-rather than block a release.
+macOS, Linux and Windows are all first-class targets: each builds, runs the full suite in
+its own CI job, and a failure on any of them blocks a merge — Linux natively in a
+`swift:6.3` container rather than by cross-compiling, and Windows in a workflow of its own
+because the Swift Package Index has no Windows builders, which makes that badge the only
+public record that Windows works. iOS, tvOS, watchOS, visionOS, Wasm and Android are
+supported for app developers and verified by the index rather than here.
 
 Running on three platforms catches a divergence once it reaches a test. Some do not:
 `URLSession` lives in `FoundationNetworking` off Apple platforms, and forgetting the

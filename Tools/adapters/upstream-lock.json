@@ -46,10 +46,10 @@
       "view" : "lines/v1"
     },
     "iana-http-status/status" : {
-      "bytes" : "sgVI4U86FRNwbaaT4xDiDYBf+71N+NaNhuJjMhAt+cjCiEXEHbjKcATY3UGH3uMDm2YN6Nlq+a4vXOn/pL8L7g==",
-      "content" : "kijMqmY0YSUltckEB4cb4LkCvWQ/Itef0ESYVFAID0YRm3QsnLR5xl2Ag4pQD2xKWB+6wcSbstucmckvpDUdeA==",
-      "note" : "recorded from the pinned bytes (76 lines)",
-      "reviewedAt" : "2026-10-10",
+      "bytes" : "yrPI3iuJ2IRLUd5Z+sGWEML39/WJv5uiDJOdOrVOYqesub/v2jI8CQLSLLZVaN5l8ieVkCkK6IiYZP8y+SBW5A==",
+      "content" : "MPjq1CHA20uzQVQnLzapeIUyOTBnShjPNHXqXaV2pScDAfLibo9OgZ057mRaiDAtw8K+2V+OqyyT3T379vSBug==",
+      "note" : "IANA reformatted the reference column (RFC9110 to RFC 9110, one bracket pair split); codes and descriptions identical, no drawn value moves",
+      "reviewedAt" : "2026-11-02",
       "view" : "lines/v1"
     },
     "iana-jose/jose" : {
